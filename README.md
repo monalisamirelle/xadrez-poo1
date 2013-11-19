@@ -1,4 +1,3 @@
-xadrez-poo1
-===========
+# Xadrez
 
-Jogo de xadrez criado para o trabalho de Programação Orientada a Objetos 1
+Jogo de xadrez criado para o trabalho de Programação Orientada a Objetos 1.
