@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 public class Cavalo extends Peca {
-
+// Testando
 	/**
 	 * Instancia um cavalo.
 	 */
