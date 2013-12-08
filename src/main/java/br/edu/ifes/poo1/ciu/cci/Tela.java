@@ -24,6 +24,7 @@ public class Tela {
 	 * @return Jogada do usuário.
 	 */
 	public String pedirJogada() {
+		
 		// TODO: Implementar.
 	}
 
