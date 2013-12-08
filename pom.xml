@@ -5,4 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Xadrez</name>
   <description>Jogo de xadrez desenvolvido para a disciplina de poo1.</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 </project>
