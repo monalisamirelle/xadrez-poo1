@@ -11,9 +11,19 @@ public class Bispo extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casa) {
-		// TODO Auto-generated method stub
-		return true;
+	public boolean podeAndar(Casa casaAtual, Casa casaDesejada) {
+		// linhaAtual = casaAtual.getPosicao().getLinha();
+		// colunaAtual = casaAtual.getPosicao().getColuna();
+		// linhaDesejada = casaDesejada.getPosicao().getLinha();
+		// colunaDesejada = casaDesejada.getPosicao().getColuna();
+		if (Math.abs(casaAtual.getPosicao().getLinha()
+				- casaDesejada.getPosicao().getLinha()) == Math.abs(casaAtual
+				.getPosicao().getColuna()
+				- casaDesejada.getPosicao().getColuna())) // TODO Auto-generated
+															// method stub
+			return true;
+		else
+			return false;
 	}
 
 	@Override

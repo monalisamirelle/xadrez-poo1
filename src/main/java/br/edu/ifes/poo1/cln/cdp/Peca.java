@@ -29,8 +29,8 @@ public abstract class Peca {
 	 *            Casa para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public abstract boolean podeAndar(Casa casa);
-
+	public boolean podeAndar(Casa casaAtual, Casa casaDesejada);
+		
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
 	 * sobrescrito por cada uma das implementações de 'Peca'. Assim cada peça
