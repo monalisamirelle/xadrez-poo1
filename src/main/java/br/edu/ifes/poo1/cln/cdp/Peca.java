@@ -14,7 +14,11 @@ public abstract class Peca {
 	 */
 	private int valor;
 	private Jogador jogador;
-	private Casa casa;
+	
+	/**
+	 * Indica se a peça já andou ou não 
+	 */
+	private boolean jaAndou;
 
 	public Peca(int valor, Jogador jogador) {
 		this.valor = valor;
