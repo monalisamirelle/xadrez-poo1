@@ -14,6 +14,7 @@ public abstract class Peca {
 	 */
 	private int valor;
 	private Jogador jogador;
+	private Casa casa;
 
 	public Peca(int valor, Jogador jogador) {
 		this.valor = valor;
