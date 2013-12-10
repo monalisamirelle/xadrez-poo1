@@ -11,9 +11,15 @@ public class Rainha extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casa) {
+	public boolean podeAndar(Casa casaAtual, Casa casaDesejada) {
+		if (Math.abs(casaAtual.getPosicao().getLinha()
+				- casaDesejada.getPosicao().getLinha()) > 0
+				& Math.abs(casaAtual.getPosicao().getColuna()
+						- casaDesejada.getPosicao().getColuna() > 0 )
+			return true;
+		else
+			return false;
 		// TODO Auto-generated method stub
-		return true;
 	}
 
 	@Override
