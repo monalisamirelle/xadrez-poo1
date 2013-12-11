@@ -11,16 +11,15 @@ public class Torre extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaAtual, Casa casaDesejada) {
-		if (Math.abs(casaAtual.getPosicao().getLinha()
-				- casaDesejada.getPosicao().getLinha()) == 0
-				& Math.abs(casaAtual.getPosicao().getColuna()
-						- casaDesejada.getPosicao().getColuna() > 0 
-				|| Math.abs(casaAtual.getPosicao().getLinha()
-						- casaDesejada.getPosicao().getLinha()) > 0
-				& Math.abs(casaAtual.getPosicao().getColuna()
-						- casaDesejada.getPosicao().getColuna()) == 0)
-
+	public boolean podeAndar(Casa casaDesejada) {
+		if ((this.valorMovimento(casa.getPosicao().getLinha(), casaDesejada
+				.getPosicao().getLinha()) == 0)
+				& (this.valorMovimento(casa.getPosicao().getColuna(),
+						casaDesejada.getPosicao().getColuna()) > 0)
+				|| (this.valorMovimento(casa.getPosicao().getLinha(),
+						casaDesejada.getPosicao().getLinha()) > 0)
+				& (this.valorMovimento(casa.getPosicao().getColuna(),
+						casaDesejada.getPosicao().getColuna()) == 0))
 			return true;
 		else
 			return false;

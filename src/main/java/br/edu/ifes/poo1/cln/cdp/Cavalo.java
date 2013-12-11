@@ -11,15 +11,15 @@ public class Cavalo extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casa) {
-		if (Math.abs(casaAtual.getPosicao().getLinha()
-				- casaDesejada.getPosicao().getLinha()) == 1
-				& Math.abs(casaAtual.getPosicao().getColuna()
-						- casaDesejada.getPosicao().getColuna()) == 2
-				|| Math.abs(casaAtual.getPosicao().getLinha()
-						- casaDesejada.getPosicao().getLinha()) == 2
-				& Math.abs(casaAtual.getPosicao().getColuna()
-						- casaDesejada.getPosicao().getColuna()) == 1)
+	public boolean podeAndar(Casa casaDesejada) {
+		if (this.valorMovimento(casa.getPosicao().getLinha(), casaDesejada
+				.getPosicao().getLinha()) == 1
+				& this.valorMovimento(casa.getPosicao().getColuna(),
+						casaDesejada.getPosicao().getColuna()) == 2
+				| this.valorMovimento(casa.getPosicao().getLinha(),
+						casaDesejada.getPosicao().getLinha()) == 2
+				& this.valorMovimento(casa.getPosicao().getColuna(),
+						casaDesejada.getPosicao().getColuna()) == 1)
 			return true;
 		else
 			return false;

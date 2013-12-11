@@ -15,10 +15,12 @@ public abstract class Peca {
 	private int valor;
 	private Jogador jogador;
 	
+	protected Casa casa;
+	
 	/**
 	 * Indica se a peça já andou ou não 
 	 */
-	private boolean jaAndou;
+	protected boolean jaAndou;
 
 	public Peca(int valor, Jogador jogador) {
 		this.valor = valor;
@@ -34,7 +36,7 @@ public abstract class Peca {
 	 *            Casa para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public boolean podeAndar(Casa casaAtual, Casa casaDesejada);
+	public boolean podeAndar(Casa casaDesejada);
 		
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
@@ -49,6 +51,10 @@ public abstract class Peca {
 
 	public int getValor() {
 		return valor;
+	}
+	
+	public int valorMovimento(int posicaoOcupada,int posicaoDesejada){
+		return (Math.abs(posicaoOcupada - posicaoDesejada));
 	}
 
 }

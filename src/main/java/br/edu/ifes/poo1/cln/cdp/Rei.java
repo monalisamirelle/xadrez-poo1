@@ -11,15 +11,15 @@ public class Rei extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaAtual, Casa casaDesejada) {
-			if (Math.abs(casaAtual.getPosicao().getLinha()
-				- casaDesejada.getPosicao().getLinha()) <= 1
-				& Math.abs(casaAtual.getPosicao().getColuna()
-						- casaDesejada.getPosicao().getColuna()) <= 1)
+	public boolean podeAndar(Casa casaDesejada) {
+		if ((this.valorMovimento(casa.getPosicao().getLinha(), casaDesejada
+				.getPosicao().getLinha()) == 1)
+				|| (this.valorMovimento(casa.getPosicao().getColuna(),
+						casaDesejada.getPosicao().getColuna()) == 1))
 			return true;
 		else
 			return false;
-			// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 	}
 
 	@Override

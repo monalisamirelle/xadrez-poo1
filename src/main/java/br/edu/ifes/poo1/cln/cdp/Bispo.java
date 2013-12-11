@@ -11,16 +11,13 @@ public class Bispo extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaAtual, Casa casaDesejada) {
-		// linhaAtual = casaAtual.getPosicao().getLinha();
-		// colunaAtual = casaAtual.getPosicao().getColuna();
-		// linhaDesejada = casaDesejada.getPosicao().getLinha();
-		// colunaDesejada = casaDesejada.getPosicao().getColuna();
-		if (Math.abs(casaAtual.getPosicao().getLinha()
-				- casaDesejada.getPosicao().getLinha()) == Math.abs(casaAtual
-				.getPosicao().getColuna()
-				- casaDesejada.getPosicao().getColuna())) // TODO Auto-generated
-															// method stub
+	public boolean podeAndar(Casa casaDesejada) {
+
+		// Ficaria a parte provar que a peça não se moveu, talvez criar um
+		// método para isso venha a ser interessante, mas.. onde colocar?
+		if (this.valorMovimento(casa.getPosicao().getLinha(), casaDesejada
+				.getPosicao().getLinha()) == this.valorMovimento(casa
+				.getPosicao().getLinha(), casaDesejada.getPosicao().getLinha()))
 			return true;
 		else
 			return false;
