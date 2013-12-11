@@ -77,5 +77,72 @@ public class Tabuleiro {
 			// TODO: Implementar.
 		}
 	}
-	
+
+	/**
+	 * Verifica se a peça atravessou o tabuleiro
+	 * 
+	 * @param casaDesejada
+	 * @return
+	 */
+	public static boolean atravessouTabuleiro(Casa casaDesejada) {
+		if (casaDesejada.getPosicao().getLinha() > 0
+				& casaDesejada.getPosicao().getLinha() <= 8
+				& casaDesejada.getPosicao().getColuna() > 0
+				& casaDesejada.getPosicao().getColuna() <= 8)
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Verifica se a peça pode se movimentar até o local desejado
+	 * 
+	 * @param casaAtual
+	 * @param casaDesejada
+	 * @return
+	 */
+	public boolean podeRealizarMovimentacao(Casa casaAtual, Casa casaDesejada) {
+		// Verifica se todas as posições intermediárias estão vazias
+		int linha = casaAtual.getPosicao().getLinha();
+		int coluna = casaAtual.getPosicao().getColuna();
+		int movimentoHorizontal = (int) Math.signum(casaDesejada.getPosicao()
+				.getLinha() - casaAtual.getPosicao().getLinha());
+		int movimentoVertical = (int) Math.signum(casaDesejada.getPosicao()
+				.getColuna() - casaAtual.getPosicao().getColuna());
+		do {
+			linha = linha + movimentoHorizontal;
+			coluna = coluna + movimentoVertical;
+			if (casas[linha][coluna].getPeca() != null)
+				return false;
+		} while (linha != casaDesejada.getPosicao().getLinha()
+				|| coluna != casaDesejada.getPosicao().getColuna());
+		return true;
+	}
+
+	/**
+	 * Verifica se a peça pode realmente ocupar a posição que deseja
+	 * 
+	 * @param casaAtual
+	 * @param casaDesejada
+	 * @return
+	 */
+	public boolean podeAlcancarCasa(Casa casaAtual, Casa casaDesejada) {
+		if (casas[casaDesejada.getPosicao().getLinha()][casaDesejada
+				.getPosicao().getColuna()].getPeca() == null
+				|| casas[casaDesejada.getPosicao().getLinha()][casaDesejada
+						.getPosicao().getColuna()].getPeca().getJogador() == casaAtual
+						.getPeca().getJogador())
+			return true;
+		return false;
+	}
+
+	public boolean relizaMovimento(Casa casaAtual, Casa casaDesejada) {
+		if (casaAtual.getPosicao().getLinha() == casaDesejada.getPosicao()
+				.getLinha()
+				&& casaAtual.getPosicao().getColuna() == casaDesejada
+						.getPosicao().getColuna())
+			return false;
+		return true;
+	}
+
 }

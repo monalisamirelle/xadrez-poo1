@@ -36,7 +36,7 @@ public abstract class Peca {
 	 *            Casa para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public boolean podeAndar(Casa casaDesejada);
+	public abstract boolean podeAndar(Casa casaDesejada);
 		
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
@@ -56,5 +56,10 @@ public abstract class Peca {
 	public int valorMovimento(int posicaoOcupada,int posicaoDesejada){
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
 	}
+
+	public Jogador getJogador() {
+		return jogador;
+	}
+
 
 }
