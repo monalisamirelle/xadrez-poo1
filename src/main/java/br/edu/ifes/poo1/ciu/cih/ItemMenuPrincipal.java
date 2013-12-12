@@ -7,7 +7,9 @@ package br.edu.ifes.poo1.ciu.cih;
  * 
  */
 public enum ItemMenuPrincipal {
-	NOVA_PARTIDA(1, "Iniciar nova partida"), SAIR(2, "Sair");
+	NOVA_PARTIDA(1, "Iniciar nova partida"),
+	DADOS(2, "Dados das partidas anteriores"),
+	SAIR(0, "Sair");
 
 	private int ordem;
 	private String descricao;
@@ -23,6 +25,7 @@ public enum ItemMenuPrincipal {
 	 */
 	private ItemMenuPrincipal(int ordem, String descricao) {
 		this.descricao = descricao;
+		this.ordem = ordem;
 	}
 
 	public String getDescricao() {
@@ -31,5 +34,9 @@ public enum ItemMenuPrincipal {
 
 	public int getOrdem() {
 		return ordem;
+	}
+	
+	public static int size() {
+		return ItemMenuPrincipal.values().length;
 	}
 }

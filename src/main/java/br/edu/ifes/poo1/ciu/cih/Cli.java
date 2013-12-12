@@ -1,5 +1,8 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import br.edu.ifes.poo1.cln.cdp.Jogador;
@@ -30,11 +33,67 @@ public abstract class Cli {
 	public abstract void atualizar(Tabuleiro tabuleiro, Jogador brancas,
 			Jogador pretas);
 
-	public abstract String lerJogada();
+	/**
+	 * Lê uma jogada da tela. Este método retorna uma String com a entrada pura
+	 * do jogador, sem nenhuma verificação.
+	 * 
+	 * @return Retorna uma String com a jogada do usuário.
+	 */
+	public String lerJogada() {
+		System.out.println("Entre com a jogada:");
+		System.out.print(" >> ");
+		return s.next();
+	}
 
-	public abstract String lerNomeJogadorBranco();
+	/**
+	 * Lê o nome do jogador que controla as peças brancas.
+	 * 
+	 * @return Nome do jogador.
+	 */
+	public String lerNomeJogadorBranco() {
+		System.out.print("Entre com o nome do jogador das peças brancas:");
+		System.out.print(" >> ");
+		return s.next();
+	}
 
-	public abstract String lerNomeJogadorPreto();
+	/**
+	 * Lê o nome do jogador que controla as peças pretas.
+	 * 
+	 * @return Nome do jogador.
+	 */
+	public String lerNomeJogadorPreto() {
+		System.out.print("Entre com o nome do jogador das peças pretas:");
+		System.out.print(" >> ");
+		return s.next();
+	}
 
-	public abstract void exibirMenuPrincipal() throws EntradaMenuInvalida;
+	public ItemMenuPrincipal exibirMenuPrincipal() throws EntradaMenuInvalida {
+		System.out.println("Menu Principal:");
+		for (ItemMenuPrincipal item : ItemMenuPrincipal.values()) {
+			System.out.println("\t" + item.getOrdem() + ". "
+					+ item.getDescricao());
+		}
+
+		int escolha;
+		try {
+			escolha = s.nextInt();
+			for (ItemMenuPrincipal item : ItemMenuPrincipal.values()) {
+				if (item.getOrdem() == escolha)
+					return item;
+			}
+
+			// Se até este momento nenhum item foi retornado, é poque o jogador
+			// escolheu um item que não está disponível no menu. Então lançamos
+			// a excessão.
+			throw new EntradaMenuInvalida();
+		} catch (InputMismatchException e) {
+			// Se o jogador entro com alguma sequência de caracteres que não
+			// possa ser identificada como um inteiro, então dizemos que a
+			// entrada escolhida foi inválida.
+			throw new EntradaMenuInvalida();
+		}
+
+		// TODO: Filtrar a escolha do usuário.
+
+	}
 }

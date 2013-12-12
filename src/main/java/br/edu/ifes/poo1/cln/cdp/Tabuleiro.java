@@ -77,5 +77,9 @@ public class Tabuleiro {
 			// TODO: Implementar.
 		}
 	}
+
+	public Peca getPeca(int coluna, int linha) {
+		return casas[--coluna][--linha].getPeca();
+	}
 	
 }

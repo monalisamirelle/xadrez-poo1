@@ -27,4 +27,12 @@ public class Jogador {
 	public String getNome() {
 		return nome;
 	}
+	
+	public List<Peca> getPecasCapturadas() {
+		return pecasCapturadas;
+	}
+	
+	public void acrescentarPecaCapturada(Peca peca) {
+		pecasCapturadas.add(peca);
+	}
 }

@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.ciu.cih;
 
 import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 /**
@@ -9,47 +10,66 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
  * @author lucas
  * 
  */
+// TODO: Implementar as cores no terminal.
 public class Terminal extends Cli {
-
-	// TODO: Implementar as cores no terminal.
 
 	@Override
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
-		// TODO Auto-generated method stub
+		// Imprime as peças capturadas pelo jogador das brancas.
+		System.out.println("---------------");
+		System.out.println("| " + brancas.getNome() + ": "
+				+ descricaoPecasCapturadas(brancas) + "= "
+				+ pontuacaoTotal(brancas));
 
-	}
+		// Imprime as peças capturadas pelo jogador das pretas.
+		System.out.println("---------------");
+		System.out.println("| " + pretas.getNome() + ": "
+				+ descricaoPecasCapturadas(pretas) + "= "
+				+ pontuacaoTotal(pretas));
 
-	@Override
-	public String lerJogada() {
-		System.out.println("Entre com a jogada:");
-		System.out.print(" >> ");
-		return s.next();
-	}
+		// Imprime o tabuleiro
+		System.out.println("---------------");
+		for (int l = 1; l <= 8; l++) { // Linha
+			for (int c = 1; c <= 8; c++) { // Coluna
+				Peca peca = tabuleiro.getPeca(c, l);
+				Jogador jogador = peca.getJogador();
 
-	@Override
-	public String lerNomeJogadorBranco() {
-		System.out.print("Entre com o nome do jogador das peças brancas:  ");
-		return s.next();
-	}
-
-	@Override
-	public String lerNomeJogadorPreto() {
-		System.out.print("Entre com o nome do jogador das peças pretas:  ");
-		return s.next();
-	}
-
-	@Override
-	public void exibirMenuPrincipal() throws EntradaMenuInvalida {
-		System.out.println("Menu Principal:");
-		for (ItemMenuPrincipal item : ItemMenuPrincipal.values()) {
-			System.out.println("\t" + item.getOrdem() + ". "
-					+ item.getDescricao());
+				// FIXME: Deve ser impresso qual é a peça, e não o seu valor.
+				System.out.print(peca.getValor() + "(" + jogador.getNome()
+						+ ") ");
+			}
+			System.out.println(""); // Quebra para a próxima linha do tabuleiro.
 		}
 
-		String escolha = s.next();
+		// Termina a moldura do tabuleiro.
+		System.out.println("---------------");
 
-		// TODO: Filtrar a escolha do usuário.
+	}
 
+	private String descricaoPecasCapturadas(Jogador jogador) {
+		String descricao = "";
+
+		// Junta cada peça que foi capturada em uma string.
+		for (Peca peca : jogador.getPecasCapturadas()) {
+			switch (peca.getValor()) {
+			case 1: // Peão
+				descricao += "P ";
+				break;
+			// TODO: Acrescentar as outras peças.
+
+			default:
+				break;
+			}
+		}
+		return descricao;
+	}
+
+	private int pontuacaoTotal(Jogador jogador) {
+		int pontuacao = 0;
+		for (Peca peca : jogador.getPecasCapturadas()) {
+			pontuacao += peca.getValor();
+		}
+		return pontuacao;
 	}
 
 }

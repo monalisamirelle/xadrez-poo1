@@ -46,4 +46,8 @@ public abstract class Peca {
 		return valor;
 	}
 
+	public Jogador getJogador() {
+		return jogador;
+	}
+
 }
