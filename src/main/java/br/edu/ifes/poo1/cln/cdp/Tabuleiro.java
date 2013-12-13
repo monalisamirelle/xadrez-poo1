@@ -9,9 +9,6 @@ package br.edu.ifes.poo1.cln.cdp;
  */
 public class Tabuleiro {
 
-	private Jogador jogadorBrancas;
-	private Jogador jogadorPretas;
-
 	/**
 	 * Casas do tabuleiro. Com colunas e linhas variando de 0 a 7. Mas deve
 	 * haver um controle interno para que quando as outras classes forem se
@@ -19,23 +16,39 @@ public class Tabuleiro {
 	 * primeiro índice da matriz é a coluna e em seguida a linha, igual no
 	 * xadrez.
 	 */
-	private Casa[][] casas = new Casa[8][8];
+	private Peca[][] pecas;
 
 	/**
-	 * Cria um tabuleiro com suas 64 casas vazias e com a referência de quem são
-	 * os jogadores.
+	 * Inicia um tabuleiro vazio, sem peça alguma.
 	 */
-	public Tabuleiro(Jogador brancas, Jogador pretas) {
-		this.jogadorBrancas = brancas;
-		this.jogadorPretas = pretas;
-		for (int i = 0; i < 8; i++) { // Coluna
-			for (int j = 0; j < 8; j++) { // Linha
+	public Tabuleiro() {
+		pecas = new Peca[8][8];
+	}
 
-				// Como as casas conhecem suas linhas e colunas de 1 a 8
-				// (diferente do tabuleiro, que conhece de 0 a 7), temos que
-				// fazer um incremento nos índice, antes de instanciar a casa.
-				casas[i][j] = new Casa(++i, ++j);
-			}
+	/**
+	 * Cria um tabuleiro já preenchido com as peças necessárias para uma partida
+	 * de xadrez comum. Para isso é necessário saber quem são os jogadores que
+	 * controlarão as peças criadas.
+	 * 
+	 * @param brancas
+	 *            Jogador que controla as peças brancas.
+	 * @param pretas
+	 *            Jogador que controla as peças pretas.
+	 */
+	// FIXME: Refazer isso aqui tudo de forma que não use as peças palhaço. Mas
+	// crie um tabuleiro padrão de xadrez.
+	public Tabuleiro(Jogador brancas, Jogador pretas) {
+		// Inicia um tabuleiro vazio.
+		this();
+
+		// Posiciona as peças brancas.
+		for (int c = 1; c <= 8; c++) { // Coluna
+			setPeca(--c, 1, new Palhaco(brancas));
+		}
+
+		// Posiciona as peças pretas.
+		for (int c = 1; c <= 8; c++) { // Coluna
+			setPeca(--c, 1, new Palhaco(pretas));
 		}
 	}
 
@@ -46,12 +59,13 @@ public class Tabuleiro {
 	 *            Posição a onde se encontra a peça a qual se deseja mover.
 	 * @param destino
 	 *            Posição para a qual deseja-se andar com a peça.
-	 * @throws JogadaInvalida
+	 * @throws JogadaInvalidaException
 	 *             Lançada se for impossível que a peça se mova para o local
 	 *             desejado. Ou se o local de destino não estiver vazio.
 	 */
+	@Deprecated
 	public void andarPeca(Posicao origem, Posicao destino)
-			throws JogadaInvalida {
+			throws JogadaInvalidaException {
 		// TODO: Implementar.
 	}
 
@@ -62,24 +76,59 @@ public class Tabuleiro {
 	 *            Posição onde está a peça a qual será usada para atacar.
 	 * @param destino
 	 *            Posição a onde está a peça que será atacada.
-	 * @throws JogadaInvalida
+	 * @throws JogadaInvalidaException
 	 *             Lançada se for impossível atacar o local com a peça
 	 *             selecionada, ou se não há peça na casa para ser atacada.
 	 */
+	@Deprecated
 	public void atacarPeca(Posicao origem, Posicao destino)
-			throws JogadaInvalida {
-		Casa casaOrigem = casas[origem.getColuna()][origem.getLinha()];
-		Casa casaDestino = casas[destino.getColuna()][destino.getLinha()];
-		Peca pecaAtacante = casaOrigem.getPeca();
-		Peca pecaAtacada = casaDestino.getPeca();
-
-		if (pecaAtacante.podeAtacar(casaDestino)) {
-			// TODO: Implementar.
-		}
+			throws JogadaInvalidaException {
+		// Casa casaOrigem = casas[origem.getColuna()][origem.getLinha()];
+		// Casa casaDestino = casas[destino.getColuna()][destino.getLinha()];
+		// Peca pecaAtacante = casaOrigem.getPeca();
+		// Peca pecaAtacada = casaDestino.getPeca();
+		//
+		// if (pecaAtacante.podeAtacar(casaDestino)) {
+		// // TODO: Implementar.
+		// }
 	}
 
-	public Peca getPeca(int coluna, int linha) {
-		return casas[--coluna][--linha].getPeca();
+	/**
+	 * Espia a peça que está na posição indicada. Se não houver peça na posição
+	 * indicada, será retornado 'null'.
+	 * 
+	 * @param posicao
+	 *            Posição do tabuleiro aonde deseja-se espiar.
+	 * @return A peça que ocupa aquele posição. Ou 'null', se não houver peça
+	 *         ali.
+	 */
+	public Peca espiarPeca(Posicao posicao) {
+		return pecas[posicao.getColuna() - 1][posicao.getLinha() - 1];
+	}
+
+	/**
+	 * Retira a peça da posição indicada e tal peça é retornada. Se não houver
+	 * qualquer peça no local indicado, nada será feito e será retornado 'null'.
+	 * 
+	 * @param posicao
+	 *            Posição da qual deseja-se retirar a peça.
+	 * @return A peça que "outrora" ocupava a posição indicada. Ou 'null' caso
+	 *         não haja peça na posição indicada.
+	 */
+	public Peca retirarPeca(Posicao posicao) {
+		Peca peca = pecas[posicao.getColuna() - 1][posicao.getLinha() - 1];
+		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = null;
+		return peca;
 	}
 	
+	public void colocarPeca(Posicao posicao, Peca peca) {
+		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null)
+			throw new CasaOcupada();
+		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
+	}
+
+	public void setPeca(Posicao posicao, Peca peca) {
+		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
+	}
+
 }

@@ -16,13 +16,13 @@ public class Peao extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Casa casa) {
+	public boolean podeAndar(Posicao posicao) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
-	public boolean podeAtacar(Casa casa) {
+	public boolean podeAtacar(Posicao posicao) {
 		// TODO Auto-generated method stub
 		return true;
 	}

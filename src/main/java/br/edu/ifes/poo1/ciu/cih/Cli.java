@@ -67,33 +67,46 @@ public abstract class Cli {
 		return s.next();
 	}
 
+	/**
+	 * Exibe o menu principal e deixa o jogador escolher uma de suas entradas.
+	 * Se ele indicar algum item que não está listado, ou fornecer uma entrada
+	 * não compreensível, a excessão EntradaMenuInvalida é lançada.
+	 * 
+	 * @return A entrada de menu selecionada pelo usuário.
+	 * @throws EntradaMenuInvalida
+	 *             Lançada caso não seja possível interpretar a escolha do
+	 *             usuário como uma entrada de menu válida.
+	 */
 	public ItemMenuPrincipal exibirMenuPrincipal() throws EntradaMenuInvalida {
+
+		// Imprime todo o menu principal
 		System.out.println("Menu Principal:");
 		for (ItemMenuPrincipal item : ItemMenuPrincipal.values()) {
 			System.out.println("\t" + item.getOrdem() + ". "
 					+ item.getDescricao());
 		}
 
+		// Tenta lê a escolha do usuário.
 		int escolha;
 		try {
+			// Lê a escolha do usuário.
 			escolha = s.nextInt();
-			for (ItemMenuPrincipal item : ItemMenuPrincipal.values()) {
-				if (item.getOrdem() == escolha)
-					return item;
-			}
-
-			// Se até este momento nenhum item foi retornado, é poque o jogador
-			// escolheu um item que não está disponível no menu. Então lançamos
-			// a excessão.
-			throw new EntradaMenuInvalida();
 		} catch (InputMismatchException e) {
-			// Se o jogador entro com alguma sequência de caracteres que não
+			// Se o jogador entrou com alguma sequência de caracteres que não
 			// possa ser identificada como um inteiro, então dizemos que a
-			// entrada escolhida foi inválida.
+			// entrada escolhida foi inválida. E lançamos a seguinte excessão.
 			throw new EntradaMenuInvalida();
 		}
 
-		// TODO: Filtrar a escolha do usuário.
+		// Retorna a entrada do menu correspondente a escolha do usuário.
+		for (ItemMenuPrincipal item : ItemMenuPrincipal.values()) {
+			if (item.getOrdem() == escolha)
+				return item;
+		}
 
+		// Se até este momento nenhum item foi retornado, é poque o jogador
+		// escolheu um item que não está disponível no menu. Então lançamos
+		// a excessão.
+		throw new EntradaMenuInvalida();
 	}
 }

@@ -9,17 +9,28 @@ package br.edu.ifes.poo1.cln.cdp;
  * 
  */
 public abstract class Peca {
-	/**
-	 * Pontuação a qual a peça se equivale.
-	 */
+	/** Pontuação a qual a peça se equivale. */
 	private int valor;
+	
+	/** Jogador que controla a peça. */
 	private Jogador jogador;
+	
+	/** Posição onde a peça se encontra no tabuleiro. */
+	protected Posicao posicao;
 
+	/**
+	 * Instancia um peça com o devido valor e o jogador que a controla.
+	 * 
+	 * @param valor
+	 *            Pontuação a qual a peça se equivale.
+	 * @param jogador
+	 *            Jogador que detém a peça.
+	 */
 	public Peca(int valor, Jogador jogador) {
 		this.valor = valor;
 		this.jogador = jogador;
 	}
-	
+
 	/**
 	 * Indica se esta peça pode se mover para a casa desejada. Este método será
 	 * sobrescrito por cada uma das implementações de 'Peca'. Assim cada peça
@@ -29,7 +40,7 @@ public abstract class Peca {
 	 *            Casa para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public abstract boolean podeAndar(Casa casa);
+	public abstract boolean podeAndar(Posicao posicao);
 
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
@@ -40,7 +51,7 @@ public abstract class Peca {
 	 *            Casa a qual deseja-se atacar.
 	 * @return Se é possível atacar a casa desejada.
 	 */
-	public abstract boolean podeAtacar(Casa casa);
+	public abstract boolean podeAtacar(Posicao posicao);
 
 	public int getValor() {
 		return valor;

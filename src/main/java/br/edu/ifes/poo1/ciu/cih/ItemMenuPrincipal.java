@@ -7,8 +7,9 @@ package br.edu.ifes.poo1.ciu.cih;
  * 
  */
 public enum ItemMenuPrincipal {
-	NOVA_PARTIDA(1, "Iniciar nova partida"),
-	DADOS(2, "Dados das partidas anteriores"),
+	SINGLEPLAYER(1, "Iniciar uma nova partida contra o computador"),
+	MULTIPLAYER(2, "Iniciar uma nova partida contra outro jogador"),
+	DADOS(3, "Dados das partidas anteriores"),
 	SAIR(0, "Sair");
 
 	private int ordem;
