@@ -12,24 +12,34 @@ public class Cavalo extends Peca {
 
 	@Override
 	public boolean podeAndar(Casa casaDesejada) {
-		if (this.valorMovimento(casa.getPosicao().getLinha(), casaDesejada
-				.getPosicao().getLinha()) == 1
-				& this.valorMovimento(casa.getPosicao().getColuna(),
-						casaDesejada.getPosicao().getColuna()) == 2
-				| this.valorMovimento(casa.getPosicao().getLinha(),
-						casaDesejada.getPosicao().getLinha()) == 2
-				& this.valorMovimento(casa.getPosicao().getColuna(),
-						casaDesejada.getPosicao().getColuna()) == 1)
-			return true;
-		else
-			return false;
+		if (super.podeAndar(casaDesejada))
+			if (this.tamanhoMovimento(casa.getPosicao().getLinha(),
+					casaDesejada.getPosicao().getLinha()) == 1
+					& this.tamanhoMovimento(casa.getPosicao().getColuna(),
+							casaDesejada.getPosicao().getColuna()) == 2
+					| this.tamanhoMovimento(casa.getPosicao().getLinha(),
+							casaDesejada.getPosicao().getLinha()) == 2
+					& this.tamanhoMovimento(casa.getPosicao().getColuna(),
+							casaDesejada.getPosicao().getColuna()) == 1)
+				return true;
+		return false;
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public boolean podeAtacar(Casa casa) {
+	public boolean podeAtacar(Casa casaDesejada) {
+		if (super.podeAtacar(casaDesejada))
+			if (this.tamanhoMovimento(casa.getPosicao().getLinha(),
+					casaDesejada.getPosicao().getLinha()) == 1
+					& this.tamanhoMovimento(casa.getPosicao().getColuna(),
+							casaDesejada.getPosicao().getColuna()) == 2
+					| this.tamanhoMovimento(casa.getPosicao().getLinha(),
+							casaDesejada.getPosicao().getLinha()) == 2
+					& this.tamanhoMovimento(casa.getPosicao().getColuna(),
+							casaDesejada.getPosicao().getColuna()) == 1)
+				return true;
+		return false;
 		// TODO Auto-generated method stub
-		return true;
 	}
 
 }

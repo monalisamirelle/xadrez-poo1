@@ -79,6 +79,23 @@ public class Tabuleiro {
 	}
 
 	/**
+	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
+	 * local
+	 * 
+	 * @param casaAtual
+	 * @param casaDesejada
+	 * @return
+	 */
+	public boolean relizaMovimento(Casa casaAtual, Casa casaDesejada) {
+		if (casaAtual.getPosicao().getLinha() == casaDesejada.getPosicao()
+				.getLinha()
+				&& casaAtual.getPosicao().getColuna() == casaDesejada
+						.getPosicao().getColuna())
+			return false;
+		return true;
+	}
+	
+	/**
 	 * Verifica se a peça atravessou o tabuleiro
 	 * 
 	 * @param casaDesejada
@@ -102,7 +119,6 @@ public class Tabuleiro {
 	 * @return
 	 */
 	public boolean podeRealizarMovimentacao(Casa casaAtual, Casa casaDesejada) {
-		// Verifica se todas as posições intermediárias estão vazias
 		int linha = casaAtual.getPosicao().getLinha();
 		int coluna = casaAtual.getPosicao().getColuna();
 		int movimentoHorizontal = (int) Math.signum(casaDesejada.getPosicao()
@@ -120,29 +136,31 @@ public class Tabuleiro {
 	}
 
 	/**
-	 * Verifica se a peça pode realmente ocupar a posição que deseja
+	 * Verifica se a peça pode realmente ocupar a posição que deseja (vazia)
 	 * 
 	 * @param casaAtual
 	 * @param casaDesejada
 	 * @return
 	 */
-	public boolean podeAlcancarCasa(Casa casaAtual, Casa casaDesejada) {
+	public boolean ehCasaVazia(Casa casaAtual, Casa casaDesejada) {
 		if (casas[casaDesejada.getPosicao().getLinha()][casaDesejada
-				.getPosicao().getColuna()].getPeca() == null
-				|| casas[casaDesejada.getPosicao().getLinha()][casaDesejada
-						.getPosicao().getColuna()].getPeca().getJogador() == casaAtual
-						.getPeca().getJogador())
+				.getPosicao().getColuna()].getPeca() == null)
 			return true;
 		return false;
 	}
 
-	public boolean relizaMovimento(Casa casaAtual, Casa casaDesejada) {
-		if (casaAtual.getPosicao().getLinha() == casaDesejada.getPosicao()
-				.getLinha()
-				&& casaAtual.getPosicao().getColuna() == casaDesejada
-						.getPosicao().getColuna())
-			return false;
-		return true;
+	/**
+	 * Verifica se a peça pode realmente ocupar a posição que deseja (casa inimiga)
+	 * @param casaAtual
+	 * @param casaDesejada
+	 * @return
+	 */
+	public boolean ehCasaPecaInimiga(Casa casaAtual, Casa casaDesejada) {
+		if (casas[casaDesejada.getPosicao().getLinha()][casaDesejada
+				.getPosicao().getColuna()].getPeca().getJogador() == casaAtual
+				.getPeca().getJogador())
+			return true;
+		return false;
 	}
-
+	
 }

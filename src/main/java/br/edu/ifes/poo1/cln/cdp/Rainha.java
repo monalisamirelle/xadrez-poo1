@@ -12,20 +12,28 @@ public class Rainha extends Peca {
 
 	@Override
 	public boolean podeAndar(Casa casaDesejada) {
-		if ((this.valorMovimento(casa.getPosicao().getLinha(), casaDesejada
-				.getPosicao().getLinha()) > 0)
-				|| (this.valorMovimento(casa.getPosicao().getColuna(),
-						casaDesejada.getPosicao().getColuna()) > 0))
-			return true;
-		else
-			return false;
+		if (super.podeAndar(casaDesejada)
+				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
+			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
+					casaDesejada.getPosicao().getLinha()) > 0)
+					|| (this.tamanhoMovimento(casa.getPosicao().getColuna(),
+							casaDesejada.getPosicao().getColuna()) > 0))
+				return true;
+		return false;
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public boolean podeAtacar(Casa casa) {
+	public boolean podeAtacar(Casa casaDesejada) {
+		if (super.podeAtacar(casaDesejada)
+				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
+			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
+					casaDesejada.getPosicao().getLinha()) > 0)
+					|| (this.tamanhoMovimento(casa.getPosicao().getColuna(),
+							casaDesejada.getPosicao().getColuna()) > 0))
+				return true;
+		return false;
 		// TODO Auto-generated method stub
-		return true;
 	}
 
 }
