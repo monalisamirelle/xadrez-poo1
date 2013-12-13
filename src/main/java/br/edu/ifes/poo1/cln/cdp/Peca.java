@@ -11,11 +11,16 @@ package br.edu.ifes.poo1.cln.cdp;
 public abstract class Peca {
 	/** Pontuação a qual a peça se equivale. */
 	private int valor;
-	
+
 	/** Jogador que controla a peça. */
 	private Jogador jogador;
-	
+
 	/** Posição onde a peça se encontra no tabuleiro. */
+	// FIXME: Quem atualiza essa referência da peça? Ela mesma não tem como
+	// saber, já que são outros que estão movendo ela. Talvez um bom lugar para
+	// atualizar isso seria nos métodos de tabuleiro. Mas apesar de parecer o
+	// melhor lugar para fazer tal coisa (uma vez que todo movimento das peças
+	// passa pelo tabuleiro), isso parece ferir o encapsulamento da peça.
 	protected Posicao posicao;
 
 	/**

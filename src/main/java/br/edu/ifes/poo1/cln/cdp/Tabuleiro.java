@@ -43,12 +43,26 @@ public class Tabuleiro {
 
 		// Posiciona as peças brancas.
 		for (int c = 1; c <= 8; c++) { // Coluna
-			setPeca(--c, 1, new Palhaco(brancas));
+			try {
+				colocarPeca(new Posicao(c - 1, 1), new Palhaco(brancas));
+			} catch (CasaOcupadaException e) {
+				// Não deveria haver casa sendo sobrescrita com peças na etapa
+				// de construção do tabuleiro. Se isso acontecer, o código deve
+				// ser verificado.
+				e.printStackTrace();
+			}
 		}
 
 		// Posiciona as peças pretas.
 		for (int c = 1; c <= 8; c++) { // Coluna
-			setPeca(--c, 1, new Palhaco(pretas));
+			try {
+				colocarPeca(new Posicao(c - 1, 1), new Palhaco(pretas));
+			} catch (CasaOcupadaException e) {
+				// Não deveria haver casa sendo sobrescrita com peças na etapa
+				// de construção do tabuleiro. Se isso acontecer, o código deve
+				// ser verificado.
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -120,15 +134,21 @@ public class Tabuleiro {
 		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = null;
 		return peca;
 	}
-	
-	public void colocarPeca(Posicao posicao, Peca peca) {
+
+	/**
+	 * Posiciona uma peça no tabuleiro. Se o lugar já estiver ocupado, lança uma
+	 * excessão.
+	 * 
+	 * @param posicao
+	 *            Local onde a peça será colocada.
+	 * @param peca
+	 *            Peça que será posicionada no tabuleiro.
+	 * @throws CasaOcupadaException
+	 */
+	public void colocarPeca(Posicao posicao, Peca peca)
+			throws CasaOcupadaException {
 		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null)
-			throw new CasaOcupada();
+			throw new CasaOcupadaException();
 		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
 	}
-
-	public void setPeca(Posicao posicao, Peca peca) {
-		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
-	}
-
 }
