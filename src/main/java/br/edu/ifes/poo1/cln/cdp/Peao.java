@@ -1,9 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 /**
- * 
- * @author lucas
- *
+ * Representa um peão do jogo de xadrez.
  */
 public class Peao extends Peca {
 
@@ -11,7 +9,7 @@ public class Peao extends Peca {
 	 * Instancia um peão.
 	 */
 	public Peao(Jogador jogador) {
-		super(1, jogador); // valor do peão é 1.
+		super(1, TipoPeca.PEAO, jogador); // valor do peão é 1.
 		// TODO Auto-generated constructor stub
 	}
 

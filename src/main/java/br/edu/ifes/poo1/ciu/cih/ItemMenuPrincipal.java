@@ -2,9 +2,6 @@ package br.edu.ifes.poo1.ciu.cih;
 
 /**
  * Descreve cada um dos itens do menu principal.
- * 
- * @author lucas
- * 
  */
 public enum ItemMenuPrincipal {
 	SINGLEPLAYER(1, "Iniciar uma nova partida contra o computador"),
@@ -36,7 +33,7 @@ public enum ItemMenuPrincipal {
 	public int getOrdem() {
 		return ordem;
 	}
-	
+
 	public static int size() {
 		return ItemMenuPrincipal.values().length;
 	}

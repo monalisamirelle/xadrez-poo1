@@ -1,8 +1,12 @@
 package br.edu.ifes.poo1.cln.cgt;
 
+import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
+/**
+ * Aplicação para o controle do modo multiplayer.
+ */
 public class AplMultiplayer {
 	private Jogador brancas;
 
@@ -42,7 +46,19 @@ public class AplMultiplayer {
 	 *            realizada.
 	 */
 	public void executarjogada(String jogada) {
-		// TODO: Implementar.
+		// Jogador do turno atual.
+		Jogador atualJogador = this.vez;
+
+	}
+
+	private Jogada decodificarJogada(String jogada) {
+		if (jogada.length() == 4) {
+			jogada.charAt(1);
+			Integer.
+		}
+		
+		// TODO: Tratar a promoção dos peões.
+		
 	}
 
 	/**
@@ -74,15 +90,15 @@ public class AplMultiplayer {
 	public boolean acabouOJogo() {
 		return acabouOJogo;
 	}
-	
+
 	public Jogador getBrancas() {
 		return brancas;
 	}
-	
+
 	public Jogador getPretas() {
 		return pretas;
 	}
-	
+
 	public Tabuleiro getTabuleiro() {
 		return tabuleiro;
 	}

@@ -6,14 +6,12 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 /**
  * Interface para Terminal do Unix.
- * 
- * @author lucas
- * 
  */
 // TODO: Implementar as cores no terminal.
 public class Terminal extends Cli {
 
 	@Override
+	// TODO: Terminar a implementação.
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
 		// Imprime as peças capturadas pelo jogador das brancas.
 		System.out.println("---------------");
@@ -31,7 +29,7 @@ public class Terminal extends Cli {
 		System.out.println("---------------");
 		for (int l = 1; l <= 8; l++) { // Linha
 			for (int c = 1; c <= 8; c++) { // Coluna
-				Peca peca = tabuleiro.getPeca(c, l);
+				Peca peca = tabuleiro.espiarPeca(c, l);
 				Jogador jogador = peca.getJogador();
 
 				// FIXME: Deve ser impresso qual é a peça, e não o seu valor.

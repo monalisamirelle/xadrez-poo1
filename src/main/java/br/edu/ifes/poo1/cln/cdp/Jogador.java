@@ -5,9 +5,6 @@ import java.util.List;
 
 /**
  * Representação de um jogador. Há no máximo 2 jogadores para o jogo de xadrez.
- * 
- * @author lucas
- * 
  */
 public class Jogador {
 

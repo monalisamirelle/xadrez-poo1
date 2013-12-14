@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.ciu.cci;
 
 import br.edu.ifes.poo1.ciu.cih.Cli;
-import br.edu.ifes.poo1.ciu.cih.EntradaMenuInvalida;
+import br.edu.ifes.poo1.ciu.cih.EntradaMenuInvalidaException;
 import br.edu.ifes.poo1.ciu.cih.ItemMenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
@@ -9,9 +9,6 @@ import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 
 /**
  * Controla a entrada e a saída da interface de linha de comando.
- * 
- * @author lucas
- * 
  */
 public class Controlador {
 	private Cli cli = new Terminal();
@@ -90,27 +87,6 @@ public class Controlador {
 	}
 
 	/**
-	 * Atualiza os elementos da tela.
-	 */
-	private void atualizar() {
-		// TODO: Implementar.
-	}
-
-	/**
-	 * Pede a jogada do usuário.
-	 */
-	private void pedirJogada() {
-		// TODO: Implementar.
-	}
-
-	/**
-	 * Pede o nome do jogado.
-	 */
-	private void pedirNome() {
-		// TODO: Implementar.
-	}
-
-	/**
 	 * Exibe o menu principal e pega a escolha do usuário.
 	 */
 	// FIXME: Deve ter um jeito melhor de fazer isso do que usando um laço
@@ -121,7 +97,7 @@ public class Controlador {
 			try {
 				// Retorna o item escolhido pelo jogador
 				return cli.exibirMenuPrincipal();
-			} catch (EntradaMenuInvalida e) {
+			} catch (EntradaMenuInvalidaException e) {
 				// Se o jogador escolher alguma entrada inválida, avise-o.
 				System.out.println("Entrada de menu inválida.");
 				continue; // E repita o laço.

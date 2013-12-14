@@ -3,9 +3,6 @@ package br.edu.ifes.poo1.cln.cdp;
 /**
  * Um tabuleiro é composto por 64 casas, estas podem estar ocupadas por uma peça
  * ou vazias.
- * 
- * @author lucas
- * 
  */
 public class Tabuleiro {
 

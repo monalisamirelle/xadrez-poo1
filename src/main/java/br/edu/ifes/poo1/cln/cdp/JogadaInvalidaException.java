@@ -2,9 +2,6 @@ package br.edu.ifes.poo1.cln.cdp;
 
 /**
  * Excessão lançada, quando uma jogada inválida é detectada.
- * 
- * @author lucas
- * 
  */
 public class JogadaInvalidaException extends Exception {
 

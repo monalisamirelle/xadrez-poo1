@@ -4,9 +4,6 @@ package br.edu.ifes.poo1.cln.cdp;
  * Representa uma peça qualquer do tabuleiro. Cada peça específica, como cavalo,
  * peão, rei, herdam desta classe e implementão as características específicas
  * do movimento.
- * 
- * @author lucas
- * 
  */
 public abstract class Peca {
 	/** Pontuação a qual a peça se equivale. */
@@ -14,6 +11,9 @@ public abstract class Peca {
 
 	/** Jogador que controla a peça. */
 	private Jogador jogador;
+	
+	/** Tipo da peça */
+	private TipoPeca tipoPeca;
 
 	/** Posição onde a peça se encontra no tabuleiro. */
 	// FIXME: Quem atualiza essa referência da peça? Ela mesma não tem como
@@ -31,8 +31,9 @@ public abstract class Peca {
 	 * @param jogador
 	 *            Jogador que detém a peça.
 	 */
-	public Peca(int valor, Jogador jogador) {
+	public Peca(int valor, TipoPeca tipoPeca, Jogador jogador) {
 		this.valor = valor;
+		this.tipoPeca = tipoPeca;
 		this.jogador = jogador;
 	}
 
@@ -66,4 +67,7 @@ public abstract class Peca {
 		return jogador;
 	}
 
+	public TipoPeca getTipoPeca() {
+		return tipoPeca;
+	}
 }

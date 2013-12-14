@@ -1,8 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 import br.edu.ifes.poo1.cln.cdp.Jogador;
@@ -11,9 +9,6 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 /**
  * Interface de Linha de Comando (CLI da sigla em inglês). É responsável pela
  * comunicação com os jogadores.
- * 
- * @author lucas
- * 
  */
 public abstract class Cli {
 	protected Scanner s = new Scanner(System.in);
@@ -73,11 +68,11 @@ public abstract class Cli {
 	 * não compreensível, a excessão EntradaMenuInvalida é lançada.
 	 * 
 	 * @return A entrada de menu selecionada pelo usuário.
-	 * @throws EntradaMenuInvalida
+	 * @throws EntradaMenuInvalidaException
 	 *             Lançada caso não seja possível interpretar a escolha do
 	 *             usuário como uma entrada de menu válida.
 	 */
-	public ItemMenuPrincipal exibirMenuPrincipal() throws EntradaMenuInvalida {
+	public ItemMenuPrincipal exibirMenuPrincipal() throws EntradaMenuInvalidaException {
 
 		// Imprime todo o menu principal
 		System.out.println("Menu Principal:");
@@ -95,7 +90,7 @@ public abstract class Cli {
 			// Se o jogador entrou com alguma sequência de caracteres que não
 			// possa ser identificada como um inteiro, então dizemos que a
 			// entrada escolhida foi inválida. E lançamos a seguinte excessão.
-			throw new EntradaMenuInvalida();
+			throw new EntradaMenuInvalidaException();
 		}
 
 		// Retorna a entrada do menu correspondente a escolha do usuário.
@@ -107,7 +102,7 @@ public abstract class Cli {
 		// Se até este momento nenhum item foi retornado, é poque o jogador
 		// escolheu um item que não está disponível no menu. Então lançamos
 		// a excessão.
-		throw new EntradaMenuInvalida();
+		throw new EntradaMenuInvalidaException();
 	}
 
 	/**

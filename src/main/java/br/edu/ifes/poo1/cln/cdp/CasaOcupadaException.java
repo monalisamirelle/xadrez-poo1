@@ -3,9 +3,6 @@ package br.edu.ifes.poo1.cln.cdp;
 /**
  * Lançada quando uma casa do tabuleiro está ocupada e alguém tenta posicionar
  * alguma peça sobre ela.
- * 
- * @author lucas
- * 
  */
 public class CasaOcupadaException extends Exception {
 
