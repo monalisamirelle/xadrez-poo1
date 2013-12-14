@@ -109,4 +109,16 @@ public abstract class Cli {
 		// a excessão.
 		throw new EntradaMenuInvalida();
 	}
+
+	/**
+	 * Parabeniza o vencedor de uma partida.
+	 * 
+	 * @param vencedor
+	 *            Vencedor da partida.
+	 */
+	public void parabenizarVencedor(Jogador vencedor) {
+		System.out.println("Parabéns a " + vencedor.getNome()
+				+ ", ganhador da partida");
+
+	}
 }

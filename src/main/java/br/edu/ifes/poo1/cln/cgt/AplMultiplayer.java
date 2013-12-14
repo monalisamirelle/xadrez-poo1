@@ -5,6 +5,7 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 public class AplMultiplayer {
 	private Jogador brancas;
+
 	private Jogador pretas;
 	private Tabuleiro tabuleiro;
 
@@ -72,5 +73,17 @@ public class AplMultiplayer {
 	 */
 	public boolean acabouOJogo() {
 		return acabouOJogo;
+	}
+	
+	public Jogador getBrancas() {
+		return brancas;
+	}
+	
+	public Jogador getPretas() {
+		return pretas;
+	}
+	
+	public Tabuleiro getTabuleiro() {
+		return tabuleiro;
 	}
 }
