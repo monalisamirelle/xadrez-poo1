@@ -11,17 +11,12 @@ public abstract class Peca {
 
 	/** Jogador que controla a peça. */
 	private Jogador jogador;
-	
+
 	/** Tipo da peça */
 	private TipoPeca tipoPeca;
-
-	/** Posição onde a peça se encontra no tabuleiro. */
-	// FIXME: Quem atualiza essa referência da peça? Ela mesma não tem como
-	// saber, já que são outros que estão movendo ela. Talvez um bom lugar para
-	// atualizar isso seria nos métodos de tabuleiro. Mas apesar de parecer o
-	// melhor lugar para fazer tal coisa (uma vez que todo movimento das peças
-	// passa pelo tabuleiro), isso parece ferir o encapsulamento da peça.
-	protected Posicao posicao;
+	
+	/** Indica se peça já se moveu em algum momento. */
+	private boolean jaMoveu;
 
 	/**
 	 * Instancia um peça com o devido valor e o jogador que a controla.
@@ -33,31 +28,36 @@ public abstract class Peca {
 	 */
 	public Peca(int valor, TipoPeca tipoPeca, Jogador jogador) {
 		this.valor = valor;
-		this.tipoPeca = tipoPeca;
 		this.jogador = jogador;
+		this.tipoPeca = tipoPeca;
+		this.jaMoveu = false;
 	}
 
 	/**
-	 * Indica se esta peça pode se mover para a casa desejada. Este método será
+	 * Indica se esta peça pode se mover para a casa indicada. Este método será
 	 * sobrescrito por cada uma das implementações de 'Peca'. Assim cada peça
 	 * dirá exatamente se pode, ou não, se mover para a casa indicada.
 	 * 
-	 * @param casa
-	 *            Casa para onde deseja-se andar a peça.
+	 * @param origem
+	 *            Posição atual da peça.
+	 * @param destino
+	 *            Posição para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public abstract boolean podeAndar(Posicao posicao);
+	public abstract boolean podeAndar(Posicao origem, Posicao destino);
 
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
 	 * sobrescrito por cada uma das implementações de 'Peca'. Assim cada peça
 	 * dirá exatamente se pode ou não atacar a casa.
 	 * 
-	 * @param casa
-	 *            Casa a qual deseja-se atacar.
-	 * @return Se é possível atacar a casa desejada.
+	 * @param origem
+	 *            Posição atual da peça.
+	 * @param destino
+	 *            Local o qual deseja-se atacar com a peça.
+	 * @return Se é possível usar esta peça para atacar a casa indicada.
 	 */
-	public abstract boolean podeAtacar(Posicao posicao);
+	public abstract boolean podeAtacar(Posicao origem, Posicao destino);
 
 	public int getValor() {
 		return valor;
@@ -69,5 +69,14 @@ public abstract class Peca {
 
 	public TipoPeca getTipoPeca() {
 		return tipoPeca;
+	}
+	
+	public boolean getJaMoveu() {
+		return jaMoveu;
+	}
+	
+	/** Marca a peça como já movimentada. */
+	public void setJaMoveu() {
+		this.jaMoveu = true;
 	}
 }

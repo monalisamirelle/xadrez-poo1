@@ -14,13 +14,14 @@ public class Palhaco extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Posicao posicao) {
-		return true;
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+		return false;
 	}
 
 	@Override
-	public boolean podeAtacar(Posicao posicao) {
-		return true;
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+		return false;
 	}
+
 
 }

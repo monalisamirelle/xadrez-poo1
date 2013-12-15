@@ -1,7 +1,9 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
+import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 /**
@@ -27,14 +29,12 @@ public class Terminal extends Cli {
 
 		// Imprime o tabuleiro
 		System.out.println("---------------");
-		for (int l = 1; l <= 8; l++) { // Linha
+		for (int l = 8; l >= 1; l--) { // Linha
 			for (int c = 1; c <= 8; c++) { // Coluna
-				Peca peca = tabuleiro.espiarPeca(c, l);
-				Jogador jogador = peca.getJogador();
+				imprimePosicao(tabuleiro, new Posicao(c, l));
 
-				// FIXME: Deve ser impresso qual é a peça, e não o seu valor.
-				System.out.print(peca.getValor() + "(" + jogador.getNome()
-						+ ") ");
+				// Dá um espaço para a próxima casa.
+				System.out.print(" ");
 			}
 			System.out.println(""); // Quebra para a próxima linha do tabuleiro.
 		}
@@ -42,6 +42,43 @@ public class Terminal extends Cli {
 		// Termina a moldura do tabuleiro.
 		System.out.println("---------------");
 
+	}
+
+	private void imprimePosicao(Tabuleiro tabuleiro, Posicao posicao) {
+		// Imprime uma casa vazia e só, se não houver peça.
+		if (tabuleiro.estaVazio(posicao)) {
+			System.out.print(" ");
+			return;
+		}
+		
+		Peca peca = tabuleiro.espiarPeca(posicao);
+
+		// Imprime a peça...
+		switch (peca.getTipoPeca()) {
+		case PEAO:
+			System.out.print("P");
+			break;
+		case TORRE:
+			System.out.print("T");
+			break;
+		case BISPO:
+			System.out.print("B");
+			break;
+		case CAVALO:
+			System.out.print("C");
+			break;
+		case REI:
+			System.out.print("R");
+			break;
+		case RAINHA:
+			System.out.print("D");
+			break;
+		}
+
+		// ... e o seu jogador.
+		Jogador jogador = peca.getJogador();
+		CorJogador corJogador = jogador.getCor();
+		System.out.print("(" + corJogador.toString() + ")");
 	}
 
 	private String descricaoPecasCapturadas(Jogador jogador) {

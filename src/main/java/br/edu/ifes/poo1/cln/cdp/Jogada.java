@@ -4,10 +4,19 @@ package br.edu.ifes.poo1.cln.cdp;
  * Contém as informações para uma jogada a ser realizada.
  */
 public class Jogada {
+	/** Origem do movimento. */
 	private Posicao origem;
+
+	/** Destino do movimento. */
 	private Posicao destino;
+
+	/** Se a jogada é um ataque (true), ou se a peça deve andar apenas (false). */
 	private boolean ehAtaque;
+
+	/** Se será necessária uma promoção de um peão (true), ou não (false). */
 	private boolean ehPromocao;
+
+	/** Para qual peça o peão deve ser promovido. */
 	private TipoPeca promocao;
 
 	/**
@@ -48,23 +57,23 @@ public class Jogada {
 		this.ehPromocao = true; // Re-atribui o valor a variável.
 		this.promocao = promocao;
 	}
-	
+
 	public Posicao getOrigem() {
 		return origem;
 	}
-	
+
 	public Posicao getDestino() {
 		return destino;
 	}
-	
-	public boolean isEhAtaque() {
+
+	public boolean ehAtaque() {
 		return ehAtaque;
 	}
-	
-	public boolean isEhPromocao() {
+
+	public boolean ehPromocao() {
 		return ehPromocao;
 	}
-	
+
 	public TipoPeca getPromocao() {
 		return promocao;
 	}

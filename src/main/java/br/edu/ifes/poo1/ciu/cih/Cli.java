@@ -32,10 +32,13 @@ public abstract class Cli {
 	 * Lê uma jogada da tela. Este método retorna uma String com a entrada pura
 	 * do jogador, sem nenhuma verificação.
 	 * 
+	 * @param jogador
+	 * 
 	 * @return Retorna uma String com a jogada do usuário.
 	 */
-	public String lerJogada() {
-		System.out.println("Entre com a jogada:");
+	public String lerJogada(Jogador jogador) {
+		System.out.println("Entre com a jogada (vez do jogador: "
+				+ jogador.getNome() + "):");
 		System.out.print(" >> ");
 		return s.next();
 	}
@@ -46,7 +49,7 @@ public abstract class Cli {
 	 * @return Nome do jogador.
 	 */
 	public String lerNomeJogadorBranco() {
-		System.out.print("Entre com o nome do jogador das peças brancas:");
+		System.out.println("Entre com o nome do jogador das peças brancas:");
 		System.out.print(" >> ");
 		return s.next();
 	}
@@ -57,7 +60,7 @@ public abstract class Cli {
 	 * @return Nome do jogador.
 	 */
 	public String lerNomeJogadorPreto() {
-		System.out.print("Entre com o nome do jogador das peças pretas:");
+		System.out.println("Entre com o nome do jogador das peças pretas:");
 		System.out.print(" >> ");
 		return s.next();
 	}
@@ -72,7 +75,8 @@ public abstract class Cli {
 	 *             Lançada caso não seja possível interpretar a escolha do
 	 *             usuário como uma entrada de menu válida.
 	 */
-	public ItemMenuPrincipal exibirMenuPrincipal() throws EntradaMenuInvalidaException {
+	public ItemMenuPrincipal exibirMenuPrincipal()
+			throws EntradaMenuInvalidaException {
 
 		// Imprime todo o menu principal
 		System.out.println("Menu Principal:");
@@ -115,5 +119,15 @@ public abstract class Cli {
 		System.out.println("Parabéns a " + vencedor.getNome()
 				+ ", ganhador da partida");
 
+	}
+
+	/**
+	 * Exibe uma mensagem de alerta ao usuário.
+	 * 
+	 * @param mensagem
+	 *            Mensagem a ser exibida para o usuário.
+	 */
+	public void exibirAlerta(String mensagem) {
+		System.out.println("[!] " + mensagem);
 	}
 }
