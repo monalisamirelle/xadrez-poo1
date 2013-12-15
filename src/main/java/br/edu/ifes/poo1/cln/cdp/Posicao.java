@@ -2,9 +2,6 @@ package br.edu.ifes.poo1.cln.cdp;
 
 /**
  * Indica uma casa do tabuleiro.
- * 
- * @author lucas
- * 
  */
 public class Posicao {
 	private int coluna;

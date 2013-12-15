@@ -4,44 +4,52 @@ package br.edu.ifes.poo1.cln.cdp;
  * Representa uma peça qualquer do tabuleiro. Cada peça específica, como cavalo,
  * peão, rei, herdam desta classe e implementão as características específicas
  * do movimento.
- * 
- * @author lucas
- * 
  */
 public abstract class Peca {
-	/**
-	 * Pontuação a qual a peça se equivale.
-	 */
+	/** Pontuação a qual a peça se equivale. */
 	private int valor;
+
+	/** Jogador que controla a peça. */
 	private Jogador jogador;
-	protected Casa casa;
-	// Preciso referenciar algo nessa classe, mas não preciso ter uma nova instância de tabuleiro. O que fazer?
-	Tabuleiro tabuleiro = new Tabuleiro();
+
+	/** Tipo da peça */
+	private TipoPeca tipoPeca;
+	
+	/** Indica se peça já se moveu em algum momento. */
+	private boolean jaMoveu;
 
 	/**
-	 * Indica se a peça já andou ou não
+	 * Instancia um peça com o devido valor e o jogador que a controla.
+	 * 
+	 * @param valor
+	 *            Pontuação a qual a peça se equivale.
+	 * @param jogador
+	 *            Jogador que detém a peça.
 	 */
-	protected boolean jaAndou;
-
-	public Peca(int valor, Jogador jogador) {
+	public Peca(int valor, TipoPeca tipoPeca, Jogador jogador) {
 		this.valor = valor;
 		this.jogador = jogador;
+		this.tipoPeca = tipoPeca;
+		this.jaMoveu = false;
 	}
 
-	
 	/**
-	 * Indica se esta peça pode se mover para a casa desejada. Este método será
+	 * Indica se esta peça pode se mover para a casa indicada. Este método será
 	 * sobrescrito por cada uma das implementações de 'Peca'. Assim cada peça
 	 * dirá exatamente se pode, ou não, se mover para a casa indicada.
 	 * 
-	 * @param casa
-	 *            Casa para onde deseja-se andar a peça.
+	 * @param origem
+	 *            Posição atual da peça.
+	 * @param destino
+	 *            Posição para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public boolean podeAndar(Casa casaDesejada) {
-		if (tabuleiro.relizaMovimento(this.casa, casaDesejada)
-				&& tabuleiro.atravessouTabuleiro(casaDesejada)
-				&& tabuleiro.ehCasaVazia(this.casa, casaDesejada))
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
+	// com os parâmetros recebidos. 
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+		if (Tabuleiro.relizaMovimento(this.casa, casaDesejada)
+				&& Tabuleiro.atravessouTabuleiro(casaDesejada)
+				&& Tabuleiro.ehCasaVazia(this.casa, casaDesejada))
 			return true;
 		return false;
 	}
@@ -51,24 +59,20 @@ public abstract class Peca {
 	 * sobrescrito por cada uma das implementações de 'Peca'. Assim cada peça
 	 * dirá exatamente se pode ou não atacar a casa.
 	 * 
-	 * @param casa
-	 *            Casa a qual deseja-se atacar.
-	 * @return Se é possível atacar a casa desejada.
+	 * @param origem
+	 *            Posição atual da peça.
+	 * @param destino
+	 *            Local o qual deseja-se atacar com a peça.
+	 * @return Se é possível usar esta peça para atacar a casa indicada.
 	 */
-	 public boolean podeAtacar(Casa casaDesejada) {
-		if (tabuleiro.relizaMovimento(this.casa, casaDesejada)
-				&& tabuleiro.atravessouTabuleiro(casaDesejada)
-				&& tabuleiro.ehCasaPecaInimiga(this.casa, casaDesejada))
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
+	// com os parâmetros recebidos.
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+		if (Tabuleiro.relizaMovimento(this.casa, casaDesejada)
+				&& Tabuleiro.atravessouTabuleiro(casaDesejada)
+				&& Tabuleiro.ehCasaPecaInimiga(this.casa, casaDesejada))
 			return true;
 		return false;
-	}
-	
-	 /**
-	  * Captura o valor da peça
-	  * @return
-	  */
-	public int getValor() {
-		return valor;
 	}
 	
 	/**
@@ -81,8 +85,25 @@ public abstract class Peca {
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
 	}
 
+	public int getValor() {
+		return valor;
+	}
+
 	public Jogador getJogador() {
 		return jogador;
 	}
 
+	public TipoPeca getTipoPeca() {
+		return tipoPeca;
+	}
+	
+	public boolean getJaMoveu() {
+		return jaMoveu;
+	}
+	
+	/** Marca a peça como já movimentada. */
+	public void setJaMoveu() {
+		this.jaMoveu = true;
+	}
 }
+>>>>>>> lucas

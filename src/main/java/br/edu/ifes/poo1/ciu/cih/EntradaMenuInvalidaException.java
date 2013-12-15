@@ -3,11 +3,8 @@ package br.edu.ifes.poo1.ciu.cih;
 /**
  * Excessão lançada quando o usuário seleciona uma entrada do menu principal
  * inválida.
- * 
- * @author lucas
- * 
  */
-public class EntradaMenuInvalida extends Exception {
+public class EntradaMenuInvalidaException extends Exception {
 
 	/**
 	 * Número de série, gerado automaticamente.
