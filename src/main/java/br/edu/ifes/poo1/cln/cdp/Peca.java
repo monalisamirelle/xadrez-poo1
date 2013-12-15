@@ -106,4 +106,3 @@ public abstract class Peca {
 		this.jaMoveu = true;
 	}
 }
->>>>>>> lucas
