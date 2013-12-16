@@ -27,7 +27,7 @@
 				<!-- Plugin para construir um JAR executável -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version><!-- Colocar aqui a versão do plugin --></version>
+				<!-- <version>Colocar aqui a versão do plugin</version> -->
 				<configuration>
 					<archive>
 						<manifest>
