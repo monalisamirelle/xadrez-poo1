@@ -1,13 +1,18 @@
 package br.edu.ifes.poo1.cln.cgt;
 
+import br.edu.ifes.poo1.cln.cdp.Bispo;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
+import br.edu.ifes.poo1.cln.cdp.Cavalo;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Palhaco;
+import br.edu.ifes.poo1.cln.cdp.Peao;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
+import br.edu.ifes.poo1.cln.cdp.Rainha;
+import br.edu.ifes.poo1.cln.cdp.Rei;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.Torre;
 
 /**
  * Aplicação para o controle do modo multiplayer.
@@ -47,39 +52,51 @@ public class AplMultiplayer {
 
 		// Coloca as brancas para iniciarem.
 		this.turno = brancas;
-		
+
 		// Posiciona as peças nos devidos lugares.
-		posicionarPecas();
+		try {
+			posicionarPecas();
+		} catch (CasaOcupadaException e) {
+			// Essa excessão nunca deveria ser lançada. Mas se for, o código em
+			// 'posicionarPecas()' está errado.
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Posiciona as peças no tabuleiro para o início da partida.
+	 * 
+	 * @throws CasaOcupadaException
 	 */
-	// FIXME: Refazer isso aqui tudo de forma que não use as peças palhaço. Mas
-	// crie um tabuleiro padrão de xadrez.
-	public void posicionarPecas() {
-		// Posiciona as peças brancas.
-		for (int c = 1; c <= 8; c++) { // Coluna
-			try {
-				tabuleiro.colocarPeca(new Posicao(c, 1), new Palhaco(brancas));
-			} catch (CasaOcupadaException e) {
-				// Não deveria haver casa sendo sobrescrita com peças na etapa
-				// de construção do tabuleiro. Se isso acontecer, o código deve
-				// ser verificado.
-				System.out.println("Tela azul!!!");
-			}
+	public void posicionarPecas() throws CasaOcupadaException {
+		// Posiciona as peças brancas, exceto os peões.
+		tabuleiro.colocarPeca(new Posicao(1, 1), new Torre(brancas));
+		tabuleiro.colocarPeca(new Posicao(2, 1), new Cavalo(brancas));
+		tabuleiro.colocarPeca(new Posicao(3, 1), new Bispo(brancas));
+		tabuleiro.colocarPeca(new Posicao(4, 1), new Rainha(brancas));
+		tabuleiro.colocarPeca(new Posicao(5, 1), new Rei(brancas));
+		tabuleiro.colocarPeca(new Posicao(6, 1), new Bispo(brancas));
+		tabuleiro.colocarPeca(new Posicao(7, 1), new Cavalo(brancas));
+		tabuleiro.colocarPeca(new Posicao(8, 1), new Torre(brancas));
+
+		// Posiciona os peões brancos.
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			tabuleiro.colocarPeca(new Posicao(coluna, 2), new Peao(brancas));
 		}
 
-		// Posiciona as peças pretas.
-		for (int c = 1; c <= 8; c++) { // Coluna
-			try {
-				tabuleiro.colocarPeca(new Posicao(c, 8), new Palhaco(pretas));
-			} catch (CasaOcupadaException e) {
-				// Não deveria haver casa sendo sobrescrita com peças na etapa
-				// de construção do tabuleiro. Se isso acontecer, o código deve
-				// ser verificado.
-				System.out.println("Tela azul!!!");
-			}
+		// Posiciona as peças brancas, exceto os peões.
+		tabuleiro.colocarPeca(new Posicao(1, 8), new Torre(pretas));
+		tabuleiro.colocarPeca(new Posicao(2, 8), new Cavalo(pretas));
+		tabuleiro.colocarPeca(new Posicao(3, 8), new Bispo(pretas));
+		tabuleiro.colocarPeca(new Posicao(4, 8), new Rei(pretas));
+		tabuleiro.colocarPeca(new Posicao(5, 8), new Rainha(pretas));
+		tabuleiro.colocarPeca(new Posicao(6, 8), new Bispo(pretas));
+		tabuleiro.colocarPeca(new Posicao(7, 8), new Cavalo(pretas));
+		tabuleiro.colocarPeca(new Posicao(8, 8), new Torre(pretas));
+
+		// Posiciona os peões pretos.
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			tabuleiro.colocarPeca(new Posicao(coluna, 7), new Peao(pretas));
 		}
 	}
 
@@ -94,10 +111,10 @@ public class AplMultiplayer {
 	public void executarjogada(Jogada jogada) throws JogadaInvalidaException {
 		// Pega o jogador do turno atual.
 		Jogador atualJogador = this.turno;
-		
+
 		// Solicita-o que faça o movimento
 		atualJogador.movimentarPeca(jogada);
-		
+
 		// Troca para o próximo jogador.
 		if (turno == brancas)
 			turno = pretas;
