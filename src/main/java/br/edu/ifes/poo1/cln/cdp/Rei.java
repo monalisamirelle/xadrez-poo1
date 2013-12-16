@@ -13,7 +13,7 @@ public class Rei extends Peca {
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino) {
 		if (super.podeAndar(origem, destino)
-				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if ((this.tamanhoMovimento(origem.getLinha(),
 					destino.getLinha()) == 1)
 					|| (this.tamanhoMovimento(origem.getColuna(),
@@ -29,7 +29,7 @@ public class Rei extends Peca {
 	 */
 	public boolean podeAtacar(Posicao origem, Posicao destino) {
 		if (super.podeAndar(origem, destino)
-				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if ((this.tamanhoMovimento(origem.getLinha(),
 					destino.getLinha()) == 1)
 					|| (this.tamanhoMovimento(origem.getColuna(),

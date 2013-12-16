@@ -13,7 +13,7 @@ public class Tabuleiro {
 	 * primeiro índice da matriz é a coluna e em seguida a linha, igual no
 	 * xadrez.
 	 */
-	private Peca[][] pecas;
+	private static Peca[][] pecas;
 
 	/**
 	 * Inicia um tabuleiro vazio, sem peça alguma.
@@ -31,7 +31,7 @@ public class Tabuleiro {
 	 * @return A peça que ocupa aquele posição. Ou 'null', se não houver peça
 	 *         ali.
 	 */
-	public Peca espiarPeca(Posicao posicao) {
+	public static Peca espiarPeca(Posicao posicao) {
 		return pecas[posicao.getColuna() - 1][posicao.getLinha() - 1];
 	}
 
@@ -74,9 +74,21 @@ public class Tabuleiro {
 	 *            Posição no tabuleiro.
 	 * @return Se está vazio.
 	 */
-	public boolean estaVazio(Posicao destino) {
+	public static boolean estaVazio(Posicao posicao) {
 		// Está vazio quando não houver peça ali.
-		return espiarPeca(destino) == null;
+		return espiarPeca(posicao) == null;
+	}
+	
+	/**
+	 * Indica se uma determinada posição do tabuleiro está vazia ou não.
+	 * 
+	 * @param destino
+	 *            Posição no tabuleiro.
+	 * @return Se está vazio.
+	 */
+	public static boolean estaInimigo(Jogador jogador, Posicao posicao) {
+		// Está vazio quando não houver peça ali.
+		return (espiarPeca(posicao) != null && espiarPeca(posicao).getJogador()!=jogador);
 	}
 
 	/**
@@ -87,8 +99,8 @@ public class Tabuleiro {
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
 	public static boolean atravessouTabuleiro(Posicao destino) {
-		if (destino.getLinha() > 0 & destino.getLinha() <= 8
-				& destino.getColuna() > 0 & destino.getColuna() <= 8)
+		if (destino.getLinha() >= 0 & destino.getLinha() < 8
+				& destino.getColuna() >= 0 & destino.getColuna() < 8)
 			return true;
 		else
 			return false;
@@ -103,7 +115,7 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
+	public static boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
 		int linha = origem.getLinha();
 		int coluna = origem.getColuna();
 		int movimentoHorizontal = (int) Math.signum(destino.getLinha() - origem.getLinha());
@@ -111,7 +123,7 @@ public class Tabuleiro {
 		do {
 			linha = linha + movimentoHorizontal;
 			coluna = coluna + movimentoVertical;
-			if (casas[linha][coluna].getPeca() != null)
+			if (pecas[coluna - 1][linha - 1] != null)
 				return false;
 		} while (linha != destino.getLinha()
 				|| coluna != destino.getColuna());
@@ -128,7 +140,7 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public boolean relizaMovimento(Posicao origem, Posicao destino) {
+	public static boolean saiuPosicao(Posicao origem, Posicao destino) {
 		if (origem.getLinha() == destino
 				.getLinha()
 				&& origem.getColuna() == destino

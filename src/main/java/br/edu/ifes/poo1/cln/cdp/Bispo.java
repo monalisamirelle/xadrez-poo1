@@ -13,7 +13,7 @@ public class Bispo extends Peca {
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino) {
 		if (super.podeAndar(origem, destino)
-				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if (this.tamanhoMovimento(origem.getLinha(),
 					destino.getLinha()) == this
 					.tamanhoMovimento(origem.getLinha(),
@@ -25,7 +25,7 @@ public class Bispo extends Peca {
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino) {
 		if (super.podeAtacar(origem, destino)
-				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if (this.tamanhoMovimento(origem.getLinha(),
 					destino.getLinha()) == this
 					.tamanhoMovimento(origem.getLinha(),

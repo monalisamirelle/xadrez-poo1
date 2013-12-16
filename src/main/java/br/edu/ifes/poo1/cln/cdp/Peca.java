@@ -47,9 +47,9 @@ public abstract class Peca {
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
 	// com os parâmetros recebidos. 
 	public boolean podeAndar(Posicao origem, Posicao destino) {
-		if (Tabuleiro.relizaMovimento(origem, destino)
+		if (Tabuleiro.saiuPosicao(origem, destino)
 				&& Tabuleiro.atravessouTabuleiro(destino)
-				&& Tabuleiro.ehCasaVazia(origem, destino))
+				&& Tabuleiro.estaVazio(destino))
 			return true;
 		return false;
 	}
@@ -68,9 +68,9 @@ public abstract class Peca {
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
 	// com os parâmetros recebidos.
 	public boolean podeAtacar(Posicao origem, Posicao destino) {
-		if (Tabuleiro.relizaMovimento(origem, destino)
+		if (Tabuleiro.saiuPosicao(origem, destino)
 				&& Tabuleiro.atravessouTabuleiro(destino)
-				&& Tabuleiro.ehCasaPecaInimiga(origem, destino))
+				&& Tabuleiro.estaInimigo(this.jogador, destino))
 			return true;
 		return false;
 	}
