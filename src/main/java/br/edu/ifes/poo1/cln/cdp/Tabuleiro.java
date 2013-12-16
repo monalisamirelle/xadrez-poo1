@@ -70,25 +70,25 @@ public class Tabuleiro {
 	/**
 	 * Indica se uma determinada posição do tabuleiro está vazia ou não.
 	 * 
-	 * @param posicao
+	 * @param destino
 	 *            Posição no tabuleiro.
 	 * @return Se está vazio.
 	 */
-	public boolean estaVazio(Posicao posicao) {
+	public boolean estaVazio(Posicao destino) {
 		// Está vazio quando não houver peça ali.
-		return espiarPeca(posicao) == null;
+		return espiarPeca(destino) == null;
 	}
 
 	/**
 	 * Verifica se a posição indicada está fora dos limites do tabuleiro.
 	 * 
-	 * @param posicao
+	 * @param destino
 	 *            Posição que deseja-se verificar
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
-	public static boolean atravessouTabuleiro(Posicao posicao) {
-		if (posicao.getLinha() > 0 & posicao.getLinha() <= 8
-				& posicao.getColuna() > 0 & posicao.getColuna() <= 8)
+	public static boolean atravessouTabuleiro(Posicao destino) {
+		if (destino.getLinha() > 0 & destino.getLinha() <= 8
+				& destino.getColuna() > 0 & destino.getColuna() <= 8)
 			return true;
 		else
 			return false;
@@ -97,26 +97,24 @@ public class Tabuleiro {
 	/**
 	 * Verifica se a peça pode se movimentar até o local desejado
 	 * 
-	 * @param casaAtual
-	 * @param casaDesejada
+	 * @param origem
+	 * @param destino
 	 * @return
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public boolean podeRealizarMovimentacao(Casa casaAtual, Casa casaDesejada) {
-		int linha = casaAtual.getPosicao().getLinha();
-		int coluna = casaAtual.getPosicao().getColuna();
-		int movimentoHorizontal = (int) Math.signum(casaDesejada.getPosicao()
-				.getLinha() - casaAtual.getPosicao().getLinha());
-		int movimentoVertical = (int) Math.signum(casaDesejada.getPosicao()
-				.getColuna() - casaAtual.getPosicao().getColuna());
+	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
+		int linha = origem.getLinha();
+		int coluna = origem.getColuna();
+		int movimentoHorizontal = (int) Math.signum(destino.getLinha() - origem.getLinha());
+		int movimentoVertical = (int) Math.signum(destino.getColuna() - origem.getColuna());
 		do {
 			linha = linha + movimentoHorizontal;
 			coluna = coluna + movimentoVertical;
 			if (casas[linha][coluna].getPeca() != null)
 				return false;
-		} while (linha != casaDesejada.getPosicao().getLinha()
-				|| coluna != casaDesejada.getPosicao().getColuna());
+		} while (linha != destino.getLinha()
+				|| coluna != destino.getColuna());
 		return true;
 	}
 
@@ -124,17 +122,17 @@ public class Tabuleiro {
 	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
 	 * local
 	 * 
-	 * @param casaAtual
-	 * @param casaDesejada
+	 * @param origem
+	 * @param destino
 	 * @return
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public boolean relizaMovimento(Casa casaAtual, Casa casaDesejada) {
-		if (casaAtual.getPosicao().getLinha() == casaDesejada.getPosicao()
+	public boolean relizaMovimento(Posicao origem, Posicao destino) {
+		if (origem.getLinha() == destino
 				.getLinha()
-				&& casaAtual.getPosicao().getColuna() == casaDesejada
-						.getPosicao().getColuna())
+				&& origem.getColuna() == destino
+						.getColuna())
 			return false;
 		return true;
 	}
