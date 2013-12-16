@@ -11,27 +11,27 @@ public class Peao extends Peca {
 	 * Instancia um peão.
 	 */
 	public Peao(Jogador jogador) {
-		super(1, jogador); // valor do peão é 1.
+		super(1, TipoPeca.PEAO, jogador); // valor do peão é 1.
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaDesejada) {
-		if (super.podeAndar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
+	public boolean podeAndar(Posicao origem,Posicao destino) {
+		if (super.podeAndar(origem, destino)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			// Se o peão quer avançar, não quer se movimentar na coluna
-			if ((casa.getPosicao().getLinha()
-					- casaDesejada.getPosicao().getLinha() > 0)
-					& (casa.getPosicao().getColuna()
-							- casaDesejada.getPosicao().getColuna() == 0)) {
+			if ((origem.getLinha()
+					- destino.getLinha() > 0)
+					& (origem.getColuna()
+							- destino.getColuna() == 0)) {
 				// Se o peão já se movimentou alguma vez
 				if (jaAndou == true) {
-					if ((casa.getPosicao().getLinha() - casaDesejada
-							.getPosicao().getLinha()) == 1)
+					if ((origem.getLinha() - destino
+							.getLinha()) == 1)
 						return true;
 				} else {
-					if ((casa.getPosicao().getLinha() - casaDesejada
-							.getPosicao().getLinha()) < 3)
+					if ((origem.getLinha() - destino
+							.getLinha()) < 3)
 						return true;
 				}
 			}
@@ -40,13 +40,13 @@ public class Peao extends Peca {
 	}
 
 	@Override
-	public boolean podeAtacar(Casa casaDesejada) {
-		if (super.podeAtacar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((casa.getPosicao().getLinha() - casaDesejada.getPosicao()
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+		if (super.podeAtacar(origem, destino)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if ((origem.getLinha() - destino
 					.getLinha() == 1)
-					&& (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) == 1))
+					&& (this.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()) == 1))
 				return true;
 		// TODO Auto-generated method stub
 		return false;

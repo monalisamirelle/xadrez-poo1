@@ -6,31 +6,29 @@ public class Rainha extends Peca {
 	 * Instancia uma rainha.
 	 */
 	public Rainha(Jogador jogador) {
-		super(9, jogador); // valor da dama é 9.
+		super(9, TipoPeca.RAINHA, jogador); // valor da dama é 9.
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaDesejada) {
-		if (super.podeAndar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) > 0)
-					|| (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) > 0))
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+		if (super.podeAndar(origem, destino)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) > 0)
+					|| (this.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()) > 0))
 				return true;
 		return false;
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public boolean podeAtacar(Casa casaDesejada) {
-		if (super.podeAtacar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) > 0)
-					|| (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) > 0))
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+		if (super.podeAtacar(origem, destino)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) > 0)
+					|| (this.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()) > 0))
 				return true;
 		return false;
 		// TODO Auto-generated method stub

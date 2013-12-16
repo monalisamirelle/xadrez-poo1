@@ -6,18 +6,18 @@ public class Rei extends Peca {
 	 * Instancia um rei.
 	 */
 	public Rei(Jogador jogador) {
-		super(1, jogador); // REI NÃO TEM VALOR!.
+		super(1, TipoPeca.REI, jogador); // REI NÃO TEM VALOR!.
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaDesejada) {
-		if (super.podeAndar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) == 1)
-					|| (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) == 1))
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+		if (super.podeAndar(origem, destino)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if ((this.tamanhoMovimento(origem.getLinha(),
+					destino.getLinha()) == 1)
+					|| (this.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()) == 1))
 				return true;
 		return false;
 		// TODO Auto-generated method stub
@@ -27,13 +27,13 @@ public class Rei extends Peca {
 	/**
 	 * MUITO MAIS COMPLEXO !
 	 */
-	public boolean podeAtacar(Casa casaDesejada) {
-		if (super.podeAndar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) == 1)
-					|| (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) == 1))
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+		if (super.podeAndar(origem, destino)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if ((this.tamanhoMovimento(origem.getLinha(),
+					destino.getLinha()) == 1)
+					|| (this.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()) == 1))
 				return true;
 		return false;
 	}
