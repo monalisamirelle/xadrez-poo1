@@ -78,4 +78,94 @@ public class Tabuleiro {
 		// Está vazio quando não houver peça ali.
 		return espiarPeca(posicao) == null;
 	}
+
+	/**
+	 * Indica se uma determinada posição do tabuleiro está vazia ou não.
+	 * 
+	 * @param destino
+	 *            Posição no tabuleiro.
+	 * @return Se está vazio.
+	 */
+	public static boolean estaInimigo(Jogador jogador, Posicao posicao) {
+		// Está vazio quando não houver peça ali.
+//		return (espiarPeca(posicao) != null && espiarPeca(posicao).getJogador()!=jogador);
+		return true; // FIXME: Só enquanto a linha acima não é acertada.
+	}
+
+	/**
+	 * Verifica se a posição indicada está fora dos limites do tabuleiro.
+	 * 
+	 * @param destino
+	 *            Posição que deseja-se verificar
+	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
+	 */
+	public static boolean atravessouTabuleiro(Posicao destino) {
+		if (destino.getLinha() >= 0 & destino.getLinha() < 8
+				& destino.getColuna() >= 0 & destino.getColuna() < 8)
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Verifica se a peça pode se movimentar até o local desejado
+	 * 
+	 * @param origem
+	 * @param destino
+	 * @return
+	 */
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
+	// sendo usado adequadamente.
+	public static boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
+//		int linha = origem.getLinha();
+//		int coluna = origem.getColuna();
+//		int movimentoHorizontal = (int) Math.signum(destino.getLinha() - origem.getLinha());
+//		int movimentoVertical = (int) Math.signum(destino.getColuna() - origem.getColuna());
+//		do {
+//			linha = linha + movimentoHorizontal;
+//			coluna = coluna + movimentoVertical;
+//			if (pecas[coluna - 1][linha - 1] != null)
+//				return false;
+//		} while (linha != destino.getLinha()
+//				|| coluna != destino.getColuna());
+		return true;
+	}
+
+	/**
+	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
+	 * local
+	 * 
+	 * @param origem
+	 * @param destino
+	 * @return
+	 */
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
+	// sendo usado adequadamente.
+	public static boolean saiuPosicao(Posicao origem, Posicao destino) {
+		if (origem.getLinha() == destino
+				.getLinha()
+				&& origem.getColuna() == destino
+						.getColuna())
+			return false;
+		return true;
+	}
+
+	/**
+	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
+	 * local
+	 * 
+	 * @param origem
+	 * @param destino
+	 * @return
+	 */
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
+	// sendo usado adequadamente.
+	public boolean relizaMovimento(Posicao origem, Posicao destino) {
+		if (origem.getLinha() == destino
+				.getLinha()
+				&& origem.getColuna() == destino
+						.getColuna())
+			return false;
+		return true;
+	}
 }

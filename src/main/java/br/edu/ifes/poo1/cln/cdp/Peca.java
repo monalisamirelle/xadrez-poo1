@@ -44,7 +44,15 @@ public abstract class Peca {
 	 *            Posição para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	public abstract boolean podeAndar(Posicao origem, Posicao destino);
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
+	// com os parâmetros recebidos. 
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+//		if (Tabuleiro.saiuPosicao(origem, destino)
+//				&& Tabuleiro.atravessouTabuleiro(destino)
+//				&& Tabuleiro.estaVazio(destino))
+//			return true;
+		return false;
+	}
 
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
@@ -57,7 +65,25 @@ public abstract class Peca {
 	 *            Local o qual deseja-se atacar com a peça.
 	 * @return Se é possível usar esta peça para atacar a casa indicada.
 	 */
-	public abstract boolean podeAtacar(Posicao origem, Posicao destino);
+	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
+	// com os parâmetros recebidos.
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+//		if (Tabuleiro.saiuPosicao(origem, destino)
+//				&& Tabuleiro.atravessouTabuleiro(destino)
+//				&& Tabuleiro.estaInimigo(this.jogador, destino))
+//			return true;
+		return false;
+	}
+	
+	/**
+	 * Vê o valor absoluto de um movimento (utiliza o valor desejado menos o valor atual)
+	 * @param posicaoOcupada
+	 * @param posicaoDesejada
+	 * @return
+	 */
+	public int tamanhoMovimento(int posicaoOcupada, int posicaoDesejada) {
+		return (Math.abs(posicaoOcupada - posicaoDesejada));
+	}
 
 	public int getValor() {
 		return valor;

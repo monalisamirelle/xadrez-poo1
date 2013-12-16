@@ -8,7 +8,7 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 /**
  * Interface para o Prompt do Windows.
  */
-public class Terminal extends Cli {
+public class Prompt extends Cli {
 
 	@Override
 	// TODO: Terminar a implementação.
@@ -59,17 +59,17 @@ public class Terminal extends Cli {
 
 		switch (peca.getTipoPeca()) {
 		case PEAO:
-			return "♟";
+			return "P";
 		case TORRE:
-			return "♜";
+			return "T";
 		case BISPO:
-			return "♝";
+			return "B";
 		case CAVALO:
-			return "♞";
+			return "C";
 		case REI:
-			return "♚";
+			return "R";
 		case RAINHA:
-			return "♛";
+			return "D";
 		default:
 			return "Erro!";
 		}
