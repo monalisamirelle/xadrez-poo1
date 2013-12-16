@@ -45,14 +45,14 @@ public abstract class Peca {
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
-	// com os parâmetros recebidos.
-	public abstract boolean podeAndar(Posicao origem, Posicao destino);
-//		if (Tabuleiro.relizaMovimento(origem, destino)
+	// com os parâmetros recebidos. 
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+//		if (Tabuleiro.saiuPosicao(origem, destino)
 //				&& Tabuleiro.atravessouTabuleiro(destino)
-//				&& Tabuleiro.ehCasaVazia(origem, destino))
+//				&& Tabuleiro.estaVazio(destino))
 //			return true;
-//		return false;
-//	}
+		return false;
+	}
 
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
@@ -67,13 +67,13 @@ public abstract class Peca {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
 	// com os parâmetros recebidos.
-	public abstract boolean podeAtacar(Posicao origem, Posicao destino);// {
-//		if (Tabuleiro.relizaMovimento(origem, destino)
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+//		if (Tabuleiro.saiuPosicao(origem, destino)
 //				&& Tabuleiro.atravessouTabuleiro(destino)
-//				&& Tabuleiro.ehCasaPecaInimiga(origem, destino))
+//				&& Tabuleiro.estaInimigo(this.jogador, destino))
 //			return true;
-//		return false;
-//	}
+		return false;
+	}
 	
 	/**
 	 * Vê o valor absoluto de um movimento (utiliza o valor desejado menos o valor atual)

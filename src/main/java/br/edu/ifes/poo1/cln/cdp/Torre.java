@@ -12,7 +12,7 @@ public class Torre extends Peca {
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino) {
 //		if (super.podeAndar(origem, destino)
-//				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+//				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
 //			if ((this.tamanhoMovimento(origem.getLinha(),
 //					destino.getLinha()) == 0)
 //					& (this.tamanhoMovimento(origem.getColuna(),
@@ -29,7 +29,7 @@ public class Torre extends Peca {
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino) {
 //		if (super.podeAtacar(origem, destino)
-//				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+//				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
 //			if ((this.tamanhoMovimento(origem.getLinha(),
 //					destino.getLinha()) == 0)
 //					& (this.tamanhoMovimento(origem.getColuna(),
