@@ -10,36 +10,34 @@ public class Cavalo extends Peca {
 
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino) {
-//		if (super.podeAndar(posicaoDesejada))
-//			if (this.tamanhoMovimento(this.posicao.getLinha(),
-//					posicaoDesejada.getLinha()) == 1
-//					& this.tamanhoMovimento(this.posicao.getColuna(),
-//							posicaoDesejada.getColuna()) == 2
-//					| this.tamanhoMovimento(this.posicao.getLinha(),
-//							posicaoDesejada.getLinha()) == 2
-//					& this.tamanhoMovimento(this.posicao.getColuna(),
-//							posicaoDesejada.getColuna()) == 1)
+//		if (super.podeAndar(origem, destino))
+//			if (this.tamanhoMovimento(origem.getLinha(),
+//					destino.getLinha()) == 1
+//					& this.tamanhoMovimento(origem.getColuna(),
+//							destino.getColuna()) == 2
+//					| this.tamanhoMovimento(origem.getLinha(),
+//							destino.getLinha()) == 2
+//					& this.tamanhoMovimento(origem.getColuna(),
+//							destino.getColuna()) == 1)
 //				return true;
-//		return false;
-//		// TODO Auto-generated method stub
-		return true;
+		return false;
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino) {
-//		if (super.podeAtacar(posicaoDesejada))
-//			if (this.tamanhoMovimento(this.posicao.getLinha(),
-//					posicaoDesejada.getLinha()) == 1
-//					& this.tamanhoMovimento(this.posicao.getColuna(),
-//							posicaoDesejada.getColuna()) == 2
-//					| this.tamanhoMovimento(this.posicao.getLinha(),
-//							posicaoDesejada.getLinha()) == 2
-//					& this.tamanhoMovimento(this.posicao.getColuna(),
-//							posicaoDesejada.getColuna()) == 1)
+//		if (super.podeAtacar(origem, destino))
+//			if (this.tamanhoMovimento(origem.getLinha(),
+//					destino.getLinha()) == 1
+//					& this.tamanhoMovimento(origem.getColuna(),
+//							destino.getColuna()) == 2
+//					| this.tamanhoMovimento(origem.getLinha(),
+//							destino.getLinha()) == 2
+//					& this.tamanhoMovimento(origem.getColuna(),
+//							destino.getColuna()) == 1)
 //				return true;
-//		return false;
-//		// TODO Auto-generated method stub
-		return true;
+		return false;
+		// TODO Auto-generated method stub
 	}
 
 }

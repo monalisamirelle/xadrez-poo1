@@ -45,11 +45,11 @@ public abstract class Peca {
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
-	// com os parâmetros recebidos. 
-	public abstract boolean podeAndar(Posicao origem, Posicao destino);// {
+	// com os parâmetros recebidos.
+	public abstract boolean podeAndar(Posicao origem, Posicao destino);
 //		if (Tabuleiro.relizaMovimento(origem, destino)
 //				&& Tabuleiro.atravessouTabuleiro(destino)
-//				&& Tabuleiro.estaVazio(origem, destino))
+//				&& Tabuleiro.ehCasaVazia(origem, destino))
 //			return true;
 //		return false;
 //	}
@@ -68,9 +68,9 @@ public abstract class Peca {
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
 	// com os parâmetros recebidos.
 	public abstract boolean podeAtacar(Posicao origem, Posicao destino);// {
-//		if (Tabuleiro.relizaMovimento(this.casa, casaDesejada)
-//				&& Tabuleiro.atravessouTabuleiro(casaDesejada)
-//				&& Tabuleiro.ehCasaPecaInimiga(this.casa, casaDesejada))
+//		if (Tabuleiro.relizaMovimento(origem, destino)
+//				&& Tabuleiro.atravessouTabuleiro(destino)
+//				&& Tabuleiro.ehCasaPecaInimiga(origem, destino))
 //			return true;
 //		return false;
 //	}

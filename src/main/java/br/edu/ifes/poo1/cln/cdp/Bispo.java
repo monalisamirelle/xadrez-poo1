@@ -12,27 +12,26 @@ public class Bispo extends Peca {
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino) {
 //		if (super.podeAndar(origem, destino)
-//				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
+//				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 //			if (this.tamanhoMovimento(origem.getLinha(),
-//					posicaoDesejada.getLinha()) == this.tamanhoMovimento(
-//					origem.getColuna(), posicaoDesejada.getColuna()))
+//					destino.getLinha()) == this
+//					.tamanhoMovimento(origem.getLinha(),
+//							destino.getLinha()))
 //				return true;
-//		return false;
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino) {
-//		if (super.podeAtacar(destino)
-//				&& Tabuleiro.podeRealizarMovimentacao(origem,
-//						destino))
+//		if (super.podeAtacar(origem, destino)
+//				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 //			if (this.tamanhoMovimento(origem.getLinha(),
-//					destino.getLinha()) == this.tamanhoMovimento(
-//					origem.getLinha(), destino.getLinha()))
+//					destino.getLinha()) == this
+//					.tamanhoMovimento(origem.getLinha(),
+//							destino.getLinha()))
 //				return true;
-//		return false;
-//		// TODO Auto-generated method stub
-		return true;
+		return false;
+		// TODO Auto-generated method stub
 	}
 
 }

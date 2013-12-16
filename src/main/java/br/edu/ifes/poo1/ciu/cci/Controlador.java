@@ -4,6 +4,7 @@ import br.edu.ifes.poo1.ciu.cih.Cli;
 import br.edu.ifes.poo1.ciu.cih.EntradaMenuInvalidaException;
 import br.edu.ifes.poo1.ciu.cih.ItemMenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
+import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
@@ -15,7 +16,7 @@ import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
  * Controla a entrada e a saída da interface de linha de comando.
  */
 public class Controlador {
-	private Cli cli = new Prompt();
+	private Cli cli = new Terminal();
 
 	/**
 	 * Inicia o jogo.
