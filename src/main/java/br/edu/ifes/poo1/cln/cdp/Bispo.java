@@ -6,33 +6,33 @@ public class Bispo extends Peca {
 	 * Instancia um bispo.
 	 */
 	public Bispo(Jogador jogador) {
-		super(3, jogador); // valor do bispo é 3.
-		// TODO Auto-generated constructor stub
+		super(3, TipoPeca.BISPO, jogador);
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaDesejada) {
-		if (super.podeAndar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if (this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) == this
-					.tamanhoMovimento(casa.getPosicao().getLinha(),
-							casaDesejada.getPosicao().getLinha()))
-				return true;
-		return false;
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+//		if (super.podeAndar(origem, destino)
+//				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
+//			if (this.tamanhoMovimento(origem.getLinha(),
+//					posicaoDesejada.getLinha()) == this.tamanhoMovimento(
+//					origem.getColuna(), posicaoDesejada.getColuna()))
+//				return true;
+//		return false;
+		return true;
 	}
 
 	@Override
-	public boolean podeAtacar(Casa casaDesejada) {
-		if (super.podeAtacar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if (this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) == this
-					.tamanhoMovimento(casa.getPosicao().getLinha(),
-							casaDesejada.getPosicao().getLinha()))
-				return true;
-		return false;
-		// TODO Auto-generated method stub
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+//		if (super.podeAtacar(destino)
+//				&& Tabuleiro.podeRealizarMovimentacao(origem,
+//						destino))
+//			if (this.tamanhoMovimento(origem.getLinha(),
+//					destino.getLinha()) == this.tamanhoMovimento(
+//					origem.getLinha(), destino.getLinha()))
+//				return true;
+//		return false;
+//		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

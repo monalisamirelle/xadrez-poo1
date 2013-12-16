@@ -12,8 +12,8 @@
 
 	<!-- Dependências -->
 	<dependencies>
+		<!-- JUnit -->
 		<dependency>
-			<!-- JUnit -->
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
@@ -23,11 +23,11 @@
 
 	<build>
 		<plugins>
+			<!-- Plugin para construir um JAR executável -->
 			<plugin>
-				<!-- Plugin para construir um JAR executável -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<!-- <version>Colocar aqui a versão do plugin</version> -->
+				<version>2.4</version>
 				<configuration>
 					<archive>
 						<manifest>

@@ -46,13 +46,13 @@ public abstract class Peca {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
 	// com os parâmetros recebidos. 
-	public boolean podeAndar(Posicao origem, Posicao destino) {
-		if (Tabuleiro.relizaMovimento(this.casa, casaDesejada)
-				&& Tabuleiro.atravessouTabuleiro(casaDesejada)
-				&& Tabuleiro.ehCasaVazia(this.casa, casaDesejada))
-			return true;
-		return false;
-	}
+	public abstract boolean podeAndar(Posicao origem, Posicao destino);// {
+//		if (Tabuleiro.relizaMovimento(origem, destino)
+//				&& Tabuleiro.atravessouTabuleiro(destino)
+//				&& Tabuleiro.estaVazio(origem, destino))
+//			return true;
+//		return false;
+//	}
 
 	/**
 	 * Indica se esta peça pode atacar a casa desejada. Este método será
@@ -67,13 +67,13 @@ public abstract class Peca {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
 	// com os parâmetros recebidos.
-	public boolean podeAtacar(Posicao origem, Posicao destino) {
-		if (Tabuleiro.relizaMovimento(this.casa, casaDesejada)
-				&& Tabuleiro.atravessouTabuleiro(casaDesejada)
-				&& Tabuleiro.ehCasaPecaInimiga(this.casa, casaDesejada))
-			return true;
-		return false;
-	}
+	public abstract boolean podeAtacar(Posicao origem, Posicao destino);// {
+//		if (Tabuleiro.relizaMovimento(this.casa, casaDesejada)
+//				&& Tabuleiro.atravessouTabuleiro(casaDesejada)
+//				&& Tabuleiro.ehCasaPecaInimiga(this.casa, casaDesejada))
+//			return true;
+//		return false;
+//	}
 	
 	/**
 	 * Vê o valor absoluto de um movimento (utiliza o valor desejado menos o valor atual)

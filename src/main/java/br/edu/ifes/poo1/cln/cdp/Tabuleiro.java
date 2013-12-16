@@ -103,22 +103,23 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public boolean podeRealizarMovimentacao(Casa casaAtual, Casa casaDesejada) {
-		int linha = casaAtual.getPosicao().getLinha();
-		int coluna = casaAtual.getPosicao().getColuna();
-		int movimentoHorizontal = (int) Math.signum(casaDesejada.getPosicao()
-				.getLinha() - casaAtual.getPosicao().getLinha());
-		int movimentoVertical = (int) Math.signum(casaDesejada.getPosicao()
-				.getColuna() - casaAtual.getPosicao().getColuna());
-		do {
-			linha = linha + movimentoHorizontal;
-			coluna = coluna + movimentoVertical;
-			if (casas[linha][coluna].getPeca() != null)
-				return false;
-		} while (linha != casaDesejada.getPosicao().getLinha()
-				|| coluna != casaDesejada.getPosicao().getColuna());
-		return true;
-	}
+	// FIXME: Remover este método, se não for necessário.
+//	public boolean podeRealizarMovimentacao(Casa casaAtual, Casa casaDesejada) {
+//		int linha = casaAtual.getPosicao().getLinha();
+//		int coluna = casaAtual.getPosicao().getColuna();
+//		int movimentoHorizontal = (int) Math.signum(casaDesejada.getPosicao()
+//				.getLinha() - casaAtual.getPosicao().getLinha());
+//		int movimentoVertical = (int) Math.signum(casaDesejada.getPosicao()
+//				.getColuna() - casaAtual.getPosicao().getColuna());
+//		do {
+//			linha = linha + movimentoHorizontal;
+//			coluna = coluna + movimentoVertical;
+//			if (casas[linha][coluna].getPeca() != null)
+//				return false;
+//		} while (linha != casaDesejada.getPosicao().getLinha()
+//				|| coluna != casaDesejada.getPosicao().getColuna());
+//		return true;
+//	}
 
 	/**
 	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
@@ -130,12 +131,13 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public boolean relizaMovimento(Casa casaAtual, Casa casaDesejada) {
-		if (casaAtual.getPosicao().getLinha() == casaDesejada.getPosicao()
-				.getLinha()
-				&& casaAtual.getPosicao().getColuna() == casaDesejada
-						.getPosicao().getColuna())
-			return false;
-		return true;
-	}
+	// FIXME: Remover este método, se não for necessário.
+//	public boolean relizaMovimento(Casa casaAtual, Casa casaDesejada) {
+//		if (casaAtual.getPosicao().getLinha() == casaDesejada.getPosicao()
+//				.getLinha()
+//				&& casaAtual.getPosicao().getColuna() == casaDesejada
+//						.getPosicao().getColuna())
+//			return false;
+//		return true;
+//	}
 }

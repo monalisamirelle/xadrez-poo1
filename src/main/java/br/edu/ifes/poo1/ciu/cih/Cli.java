@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 /**
@@ -130,4 +131,40 @@ public abstract class Cli {
 	public void exibirAlerta(String mensagem) {
 		System.out.println("[!] " + mensagem);
 	}
+	
+	/**
+	 * Retorna uma string com uma descrição de que peças foram captura
+	 * 
+	 * @param jogador
+	 * @return
+	 */
+	protected String getDescricaoPecasCapturadas(Jogador jogador) {
+		// Inicia a descrição com o nome do jogador.
+		String descricao = jogador.getNome() + ": ";
+
+		// Junta cada peça que foi capturada na string.
+		for (Peca peca : jogador.getPecasCapturadas()) {
+			descricao += PecaToString(peca) + " ";
+		}
+
+		// Junta a string com a pontuação total do jogador.
+		descricao += "= " + pontuacaoTotal(jogador);
+
+		return descricao;
+	}
+	
+	/**
+	 * Calcula a pontuação total de um jogador.
+	 * @param jogador Jogador do qual serão calculados os pontos.
+	 * @return Pontuação do jogador.
+	 */
+	protected int pontuacaoTotal(Jogador jogador) {
+		int pontuacao = 0;
+		for (Peca peca : jogador.getPecasCapturadas()) {
+			pontuacao += peca.getValor();
+		}
+		return pontuacao;
+	}
+	
+	public abstract String PecaToString(Peca peca);
 }

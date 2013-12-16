@@ -6,41 +6,41 @@ public class Torre extends Peca {
 	 * Instancia uma torre.
 	 */
 	public Torre(Jogador jogador) {
-		super(5, jogador); // valor da torre é 5.
-		// TODO Auto-generated constructor stub
+		super(5, TipoPeca.TORRE, jogador);
+	}
+	
+	@Override
+	public boolean podeAndar(Posicao origem, Posicao destino) {
+//		if (super.podeAndar(posicaoDesejada)
+//				&& Tabuleiro.podeRealizarMovimentacao(this.posicao, posicaoDesejada))
+//			if ((this.tamanhoMovimento(posicao.getLinha(),
+//					posicaoDesejada.getLinha()) == 0)
+//					& (this.tamanhoMovimento(posicao.getColuna(),
+//							posicaoDesejada.getColuna()) > 0)
+//					|| (this.tamanhoMovimento(posicao.getLinha(),
+//							posicaoDesejada.getLinha()) > 0)
+//					& (this.tamanhoMovimento(posicao.getColuna(),
+//							posicaoDesejada.getColuna()) == 0))
+//				return true;
+//		return false;
+//		// TODO Auto-generated method stub
+		return true;
 	}
 
 	@Override
-	public boolean podeAndar(Casa casaDesejada) {
-		if (super.podeAndar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) == 0)
-					& (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) > 0)
-					|| (this.tamanhoMovimento(casa.getPosicao().getLinha(),
-							casaDesejada.getPosicao().getLinha()) > 0)
-					& (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) == 0))
-				return true;
-		return false;
-		// TODO Auto-generated method stub
+	public boolean podeAtacar(Posicao origem, Posicao destino) {
+//		if (super.podeAtacar(posicaoDesejada)
+//				&& Tabuleiro.podeRealizarMovimentacao(this.posicao, posicaoDesejada))
+//			if ((this.tamanhoMovimento(posicao.getLinha(),
+//					posicaoDesejada.getLinha()) == 0)
+//					& (this.tamanhoMovimento(posicao.getColuna(),
+//							posicaoDesejada.getColuna()) > 0)
+//					|| (this.tamanhoMovimento(posicao.getLinha(),
+//							posicaoDesejada.getLinha()) > 0)
+//					& (this.tamanhoMovimento(posicao.getColuna(),
+//							posicaoDesejada.getColuna()) == 0))
+//				return true;
+//		return false;
+		return true;
 	}
-
-	@Override
-	public boolean podeAtacar(Casa casaDesejada) {
-		if (super.podeAtacar(casaDesejada)
-				&& tabuleiro.podeRealizarMovimentacao(this.casa, casaDesejada))
-			if ((this.tamanhoMovimento(casa.getPosicao().getLinha(),
-					casaDesejada.getPosicao().getLinha()) == 0)
-					& (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) > 0)
-					|| (this.tamanhoMovimento(casa.getPosicao().getLinha(),
-							casaDesejada.getPosicao().getLinha()) > 0)
-					& (this.tamanhoMovimento(casa.getPosicao().getColuna(),
-							casaDesejada.getPosicao().getColuna()) == 0))
-				return true;
-		return false;
-	}
-
 }
