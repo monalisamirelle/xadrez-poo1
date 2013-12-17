@@ -80,6 +80,41 @@ public class Tabuleiro {
 	}
 
 	/**
+	 * Indica se alguma peça da cor indicada ameaça a posição indicada
+	 * 
+	 * @param posicao
+	 *            Posição a ser verificada.
+	 * @param cor
+	 *            Cor do jogador que pode estar ameaçando a posição.
+	 * @return Se a o jogador da cor indicada está ameçando a posição com alguma
+	 *         peça.
+	 */
+	public boolean estaAmeacadoPor(Posicao posicao, CorJogador cor) {
+		// Verifica se alguma peça da cor indicada ameaça a posição indicada.
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			for (int linha = 0; linha <= 8; linha++) {
+				Posicao origem = new Posicao(coluna, linha);
+				Peca peca = espiarPeca(origem);
+
+				// Pula as peças que não forem do jogador indicado.
+				if (peca.getJogador().getCor() != cor)
+					continue;
+
+				// FIXME: Isso não está funcionando completamente. Pense no caso
+				// do peão. É preciso um método que use apenas a possível
+				// movimentação da peça, e não faça verificações do tipo: se a
+				// há uma peça para poder ser atacada. Mas faça verificação de
+				// se não há peças no meio do caminho.
+				if (peca.podeAtacar(origem, posicao))
+					return true;
+			}
+		}
+
+		// Caso não haja peça que possa ameaçar a posição, retorna falso.
+		return false;
+	}
+
+	/**
 	 * Indica se uma determinada posição do tabuleiro está vazia ou não.
 	 * 
 	 * @param destino
@@ -88,7 +123,8 @@ public class Tabuleiro {
 	 */
 	public static boolean estaInimigo(Jogador jogador, Posicao posicao) {
 		// Está vazio quando não houver peça ali.
-//		return (espiarPeca(posicao) != null && espiarPeca(posicao).getJogador()!=jogador);
+		// return (espiarPeca(posicao) != null &&
+		// espiarPeca(posicao).getJogador()!=jogador);
 		return true; // FIXME: Só enquanto a linha acima não é acertada.
 	}
 
@@ -116,18 +152,21 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public static boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
-//		int linha = origem.getLinha();
-//		int coluna = origem.getColuna();
-//		int movimentoHorizontal = (int) Math.signum(destino.getLinha() - origem.getLinha());
-//		int movimentoVertical = (int) Math.signum(destino.getColuna() - origem.getColuna());
-//		do {
-//			linha = linha + movimentoHorizontal;
-//			coluna = coluna + movimentoVertical;
-//			if (pecas[coluna - 1][linha - 1] != null)
-//				return false;
-//		} while (linha != destino.getLinha()
-//				|| coluna != destino.getColuna());
+	public static boolean podeRealizarMovimentacao(Posicao origem,
+			Posicao destino) {
+		// int linha = origem.getLinha();
+		// int coluna = origem.getColuna();
+		// int movimentoHorizontal = (int) Math.signum(destino.getLinha() -
+		// origem.getLinha());
+		// int movimentoVertical = (int) Math.signum(destino.getColuna() -
+		// origem.getColuna());
+		// do {
+		// linha = linha + movimentoHorizontal;
+		// coluna = coluna + movimentoVertical;
+		// if (pecas[coluna - 1][linha - 1] != null)
+		// return false;
+		// } while (linha != destino.getLinha()
+		// || coluna != destino.getColuna());
 		return true;
 	}
 
@@ -142,10 +181,8 @@ public class Tabuleiro {
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
 	public static boolean saiuPosicao(Posicao origem, Posicao destino) {
-		if (origem.getLinha() == destino
-				.getLinha()
-				&& origem.getColuna() == destino
-						.getColuna())
+		if (origem.getLinha() == destino.getLinha()
+				&& origem.getColuna() == destino.getColuna())
 			return false;
 		return true;
 	}
@@ -161,10 +198,8 @@ public class Tabuleiro {
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
 	public boolean relizaMovimento(Posicao origem, Posicao destino) {
-		if (origem.getLinha() == destino
-				.getLinha()
-				&& origem.getColuna() == destino
-						.getColuna())
+		if (origem.getLinha() == destino.getLinha()
+				&& origem.getColuna() == destino.getColuna())
 			return false;
 		return true;
 	}
