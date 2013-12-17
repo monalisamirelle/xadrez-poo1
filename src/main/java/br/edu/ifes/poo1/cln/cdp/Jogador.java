@@ -59,7 +59,7 @@ public class Jogador {
 		// E verifica se a peça em origem é do jogador
 		if (pecaOrigem.getJogador() != this)
 			throw new JogadaInvalidaException();
-
+		
 		// Se a jogada for uma promoção de peão, na origem do movimento deve
 		// estar um peão e o destino deve ser o a linha do lado oposto ao de
 		// início das peças.
@@ -92,6 +92,10 @@ public class Jogador {
 			// inválida.
 			if (pecaDestino == null)
 				throw new JogadaInvalidaException();
+			
+			// Verifica se a peça pode se mover para o destino.
+			if (!pecaOrigem.podeAtacar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
+				throw new JogadaInvalidaException();
 
 			// Remove a peça do destino e acrescenta a lista de peças
 			// capturadas, já que se trata de um ataque.
@@ -100,6 +104,10 @@ public class Jogador {
 		} else {
 			// O destino deve estar livre, se a jogada não for um ataque.
 			if (pecaDestino != null)
+				throw new JogadaInvalidaException();
+			
+			// Verifica se a peça pode se mover para o destino.
+			if (!pecaOrigem.podeAndar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
 				throw new JogadaInvalidaException();
 		}
 
