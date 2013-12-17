@@ -14,7 +14,7 @@ public abstract class Peca {
 
 	/** Tipo da peça */
 	private TipoPeca tipoPeca;
-	
+
 	/** Indica se peça já se moveu em algum momento. */
 	private boolean jaMoveu;
 
@@ -45,12 +45,13 @@ public abstract class Peca {
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
-	// com os parâmetros recebidos. 
-	public boolean podeAndar(Posicao origem, Posicao destino) {
-//		if (Tabuleiro.saiuPosicao(origem, destino)
-//				&& Tabuleiro.atravessouTabuleiro(destino)
-//				&& Tabuleiro.estaVazio(destino))
-//			return true;
+	// com os parâmetros recebidos.
+	public boolean podeAndar(Posicao origem, Posicao destino,
+			Tabuleiro tabuleiro) {
+		if (tabuleiro.saiuPosicao(origem, destino)
+				&& tabuleiro.atravessouTabuleiro(destino)
+				&& tabuleiro.estaVazio(destino))
+			return true;
 		return false;
 	}
 
@@ -65,18 +66,19 @@ public abstract class Peca {
 	 *            Local o qual deseja-se atacar com a peça.
 	 * @return Se é possível usar esta peça para atacar a casa indicada.
 	 */
-	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
-	// com os parâmetros recebidos.
-	public boolean podeAtacar(Posicao origem, Posicao destino) {
-//		if (Tabuleiro.saiuPosicao(origem, destino)
-//				&& Tabuleiro.atravessouTabuleiro(destino)
-//				&& Tabuleiro.estaInimigo(this.jogador, destino))
-//			return true;
+	public boolean podeAtacar(Posicao origem, Posicao destino,
+			Tabuleiro tabuleiro) {
+		if (tabuleiro.saiuPosicao(origem, destino)
+				&& tabuleiro.atravessouTabuleiro(destino)
+				&& tabuleiro.estaInimigo(this.jogador, destino))
+			return true;
 		return false;
 	}
-	
+
 	/**
-	 * Vê o valor absoluto de um movimento (utiliza o valor desejado menos o valor atual)
+	 * Vê o valor absoluto de um movimento (utiliza o valor desejado menos o
+	 * valor atual)
+	 * 
 	 * @param posicaoOcupada
 	 * @param posicaoDesejada
 	 * @return
@@ -96,11 +98,11 @@ public abstract class Peca {
 	public TipoPeca getTipoPeca() {
 		return tipoPeca;
 	}
-	
+
 	public boolean getJaMoveu() {
 		return jaMoveu;
 	}
-	
+
 	/** Marca a peça como já movimentada. */
 	public void setJaMoveu() {
 		this.jaMoveu = true;

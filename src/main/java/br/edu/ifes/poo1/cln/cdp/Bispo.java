@@ -10,28 +10,27 @@ public class Bispo extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Posicao origem, Posicao destino) {
-//		if (super.podeAndar(origem, destino)
-//				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
-//			if (this.tamanhoMovimento(origem.getLinha(),
-//					destino.getLinha()) == this
-//					.tamanhoMovimento(origem.getLinha(),
-//							destino.getLinha()))
-//				return true;
+	public boolean podeAndar(Posicao origem, Posicao destino, Tabuleiro tabuleiro) {
+		if (super.podeAndar(origem, destino, tabuleiro)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if (this.tamanhoMovimento(origem.getLinha(),
+					destino.getLinha()) == this
+					.tamanhoMovimento(origem.getLinha(),
+							destino.getLinha()))
+				return true;
 		return false;
 	}
 
 	@Override
-	public boolean podeAtacar(Posicao origem, Posicao destino) {
-//		if (super.podeAtacar(origem, destino)
-//				&& Tabuleiro.podeRealizarMovimentacao(origem, destino))
-//			if (this.tamanhoMovimento(origem.getLinha(),
-//					destino.getLinha()) == this
-//					.tamanhoMovimento(origem.getLinha(),
-//							destino.getLinha()))
-//				return true;
+	public boolean podeAtacar(Posicao origem, Posicao destino, Tabuleiro tabuleiro) {
+		if (super.podeAtacar(origem, destino, tabuleiro)
+				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
+			if (this.tamanhoMovimento(origem.getLinha(),
+					destino.getLinha()) == this
+					.tamanhoMovimento(origem.getLinha(),
+							destino.getLinha()))
+				return true;
 		return false;
-		// TODO Auto-generated method stub
 	}
 
 }

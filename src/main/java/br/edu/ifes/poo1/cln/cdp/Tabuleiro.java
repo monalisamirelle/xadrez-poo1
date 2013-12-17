@@ -86,7 +86,7 @@ public class Tabuleiro {
 	 *            Posição no tabuleiro.
 	 * @return Se está vazio.
 	 */
-	public static boolean estaInimigo(Jogador jogador, Posicao posicao) {
+	public boolean estaInimigo(Jogador jogador, Posicao posicao) {
 		// Está vazio quando não houver peça ali.
 //		return (espiarPeca(posicao) != null && espiarPeca(posicao).getJogador()!=jogador);
 		return true; // FIXME: Só enquanto a linha acima não é acertada.
@@ -99,7 +99,7 @@ public class Tabuleiro {
 	 *            Posição que deseja-se verificar
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
-	public static boolean atravessouTabuleiro(Posicao destino) {
+	public boolean atravessouTabuleiro(Posicao destino) {
 		if (destino.getLinha() >= 0 & destino.getLinha() < 8
 				& destino.getColuna() >= 0 & destino.getColuna() < 8)
 			return true;
@@ -116,7 +116,7 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public static boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
+	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
 //		int linha = origem.getLinha();
 //		int coluna = origem.getColuna();
 //		int movimentoHorizontal = (int) Math.signum(destino.getLinha() - origem.getLinha());
@@ -141,7 +141,7 @@ public class Tabuleiro {
 	 */
 	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
 	// sendo usado adequadamente.
-	public static boolean saiuPosicao(Posicao origem, Posicao destino) {
+	public boolean saiuPosicao(Posicao origem, Posicao destino) {
 		if (origem.getLinha() == destino
 				.getLinha()
 				&& origem.getColuna() == destino
