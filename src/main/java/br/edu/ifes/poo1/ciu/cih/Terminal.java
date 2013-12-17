@@ -24,14 +24,15 @@ public class Terminal extends Cli {
 	private BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
 
 	@Override
-	// TODO: Terminar a implementação.
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
-		// Imprime as peças capturadas pelo jogador das brancas.
+		
+		
+		// Imprime as peças capturadas pelos jogadores e suas pontuações.
+		System.out.println(":: Pontuação dos jogadores");
 		System.out.println(getDescricaoPecasCapturadas(brancas));
-
-		// Imprime as peças capturadas pelo jogador das pretas.
 		System.out.println(getDescricaoPecasCapturadas(pretas));
-
+		System.out.println();
+		
 		// Imprime o tabuleiro
 		for (int linha = 8; linha >= 1; linha--) {
 			for (int coluna = 1; coluna <= 8; coluna++) {
@@ -77,9 +78,6 @@ public class Terminal extends Cli {
 	 * @return A cor com que a casa deve ser colorida.
 	 */
 	public BackgroundColor getCorCasa(Posicao posicao) {
-		// FIXME: Acho que a regra é: se a soma da linha e coluna for ímpar, é
-		// cor clara, se for par é cor escura. Porém não sei como fazer a
-		// operação de módulo.
 		if ((posicao.getLinha() + posicao.getColuna()) % 2 == 0)
 			return corInferiorEsquerdo;
 		else
@@ -89,7 +87,7 @@ public class Terminal extends Cli {
 	@Override
 	public String PecaToString(Peca peca) {
 		if (peca == null)
-			return " ";
+			return "  ";
 
 		switch (peca.getTipoPeca()) {
 		case PEAO:
