@@ -15,8 +15,8 @@ public class Bispo extends Peca {
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if (this.tamanhoMovimento(origem.getLinha(),
 					destino.getLinha()) == this
-					.tamanhoMovimento(origem.getLinha(),
-							destino.getLinha()))
+					.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()))
 				return true;
 		return false;
 	}
@@ -27,8 +27,8 @@ public class Bispo extends Peca {
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if (this.tamanhoMovimento(origem.getLinha(),
 					destino.getLinha()) == this
-					.tamanhoMovimento(origem.getLinha(),
-							destino.getLinha()))
+					.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()))
 				return true;
 		return false;
 	}
