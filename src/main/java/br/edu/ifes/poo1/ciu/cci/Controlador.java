@@ -67,8 +67,8 @@ public class Controlador {
 						jogadaInterpretada = interpretarJogada(jogadaCrua);
 						aplmulti.executarjogada(jogadaInterpretada);
 					} catch (JogadaInvalidaException e) {
-						// Avisa o usuário do erro, o alerta e continua o jogo.
-						cli.exibirAlerta("Jogada inválida.");
+						// Avisa o usuário do erro e continua o jogo.
+						cli.exibirAlerta(e.getMessage());
 						continue;
 					}
 				}
@@ -129,7 +129,7 @@ public class Controlador {
 	 *             Lançada se a entrada do usuário não puder ser convertida para
 	 *             uma jogada válida.
 	 */
-	private Jogada interpretarJogada(String jogada)
+	private static Jogada interpretarJogada(String jogada)
 			throws JogadaInvalidaException {
 		// Inicia os dados necessários para criação da jogada.
 		String strOrigem;
@@ -151,7 +151,8 @@ public class Controlador {
 		case 5: // Será uma jogada simples do tipo ataque, como: 24x53
 			// Verifica o 'x' no meio.
 			if (jogada.charAt(2) != 'x')
-				throw new JogadaInvalidaException();
+				throw new JogadaInvalidaException(
+						"O comando dado não pode ser interpretado.");
 
 			// Preenche os dados necessários.
 			strOrigem = jogada.substring(0, 2);
@@ -163,7 +164,8 @@ public class Controlador {
 		case 6: // Jogada sem ataque, mas com promoção de peão, como: 4568=D
 			// Verifica o '=' da promoção.
 			if (jogada.charAt(4) != '=')
-				throw new JogadaInvalidaException();
+				throw new JogadaInvalidaException(
+						"O comando dado não pode ser interpretado.");
 
 			// Preenche os dados necessários.
 			strOrigem = jogada.substring(0, 2);
@@ -175,7 +177,8 @@ public class Controlador {
 		case 7: // Jogada com ataque e promoção de peão, como: 57x48=T
 			// Verifica o 'x' do ataque e o '=' da promoção.
 			if (jogada.charAt(2) != 'x' || jogada.charAt(4) != '=')
-				throw new JogadaInvalidaException();
+				throw new JogadaInvalidaException(
+						"O comando dado não pode ser interpretado.");
 
 			// Preenche os dados necessários.
 			strOrigem = jogada.substring(0, 2);
@@ -185,7 +188,8 @@ public class Controlador {
 			promocaoChar = jogada.charAt(6);
 			break;
 		default: // Qualquer outro tipo de jogada será inválida.
-			throw new JogadaInvalidaException();
+			throw new JogadaInvalidaException(
+					"O comando dado não pode ser interpretado.");
 		}
 
 		// Pega as colunas e as linhas.
@@ -202,7 +206,8 @@ public class Controlador {
 			intDestinoColuna = Integer.parseInt(destinoColuna);
 			intDestinoLinha = Integer.parseInt(destinoLinha);
 		} catch (NumberFormatException e) {
-			throw new JogadaInvalidaException();
+			throw new JogadaInvalidaException(
+					"O comando dado não pode ser interpretado. Use algo como: 1213");
 		}
 
 		// Verifica se estão dentro dos limites do tabuleiro.
@@ -210,7 +215,8 @@ public class Controlador {
 				|| intOrigemLinha > 8 || intDestinoColuna < 1
 				|| intDestinoColuna > 8 || intDestinoLinha < 1
 				|| intDestinoLinha > 8)
-			throw new JogadaInvalidaException();
+			throw new JogadaInvalidaException(
+					"Você está indicando uma casa fora dos limites do tabuleiro.");
 
 		// Retorna a jogada interpretada.
 		if (ehPromocao) {
@@ -232,7 +238,8 @@ public class Controlador {
 
 			default:
 				// Qualquer outra peça solicitada é inválida.
-				throw new JogadaInvalidaException();
+				throw new JogadaInvalidaException(
+						"As promoções apenas podem acontecer para: rainha (D), torre(T), bispo (B) e cavalo(C).");
 			}
 
 			// Retorna uma jogada com promoção.
