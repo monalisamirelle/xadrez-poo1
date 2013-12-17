@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
@@ -10,46 +11,79 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
  */
 public class Terminal extends Cli {
 
+	/** Cor das peças brancas */
+	private ForegroundColor corBrancas = ForegroundColor.AZUL_ESCURO;
+
+	/** Cor das peças pretas */
+	private ForegroundColor corPretas = ForegroundColor.VERMELHO;
+
+	/** Cor da casa do canto esquerdo das peças brancas */
+	private BackgroundColor corInferiorEsquerdo = BackgroundColor.PRETO;
+
+	/** Cor da casa do canto direito das peças brancas */
+	private BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
+
 	@Override
 	// TODO: Terminar a implementação.
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
 		// Imprime as peças capturadas pelo jogador das brancas.
-		System.out.println("---------------");
-		System.out.println("| " + getDescricaoPecasCapturadas(brancas));
+		System.out.println(getDescricaoPecasCapturadas(brancas));
 
 		// Imprime as peças capturadas pelo jogador das pretas.
-		System.out.println("---------------");
-		System.out.println("| " + getDescricaoPecasCapturadas(pretas));
+		System.out.println(getDescricaoPecasCapturadas(pretas));
 
 		// Imprime o tabuleiro
 		for (int linha = 8; linha >= 1; linha--) {
-			// Imprime o cabeçalho da linha.
-			System.out
-					.println("-----------------------------------------------------------------");
 			for (int coluna = 1; coluna <= 8; coluna++) {
-				System.out.print("|");
+				Posicao posicao = new Posicao(coluna, linha);
 
 				// Descobre a peça que está no tabuleiro.
-				Peca peca = tabuleiro.espiarPeca(new Posicao(coluna, linha));
+				Peca peca = tabuleiro.espiarPeca(posicao);
 
-				// Imprime a peça e quem a controla.
-				if (peca == null) // Se estiver vazio, imprime o espaço da casa.
-					System.out.print("       ");
-				else { // Se estiver ocupada, impreme sua representação.
+				// Adequa as cores a serem usadas na casa e na peça.
+				if (peca == null) {
+					trocarCor(ForegroundColor.ROSA, getCorCasa(posicao));
+					System.out.print("  ");
+				} else {
+					trocarCor(getCorPeca(peca), getCorCasa(posicao));
 					System.out.print(PecaToString(peca));
-					if (peca.getJogador() == brancas)
-						System.out.print(" (br.)");
-					else
-						System.out.print(" (pr.)");
 				}
 			}
-			System.out.println("|");
+			// Restaura as cores normais do terminal.
+			resetarCor();
+			System.out.println();
 		}
+	}
 
-		// Termina a moldura do tabuleiro.
-		System.out
-				.println("-----------------------------------------------------------------");
+	/**
+	 * Determina com qual cor a peça deve ser colorida.
+	 * 
+	 * @param peca
+	 *            Peca a colorir.
+	 * @return Cor com que a peça deve ser colorida.
+	 */
+	public ForegroundColor getCorPeca(Peca peca) {
+		if (peca.getJogador().getCor() == CorJogador.BRANCO)
+			return corBrancas;
+		else
+			return corPretas;
+	}
 
+	/**
+	 * Informa a cor com que uma determinada casa deve ser colorida.
+	 * 
+	 * @param posicao
+	 *            Posição no tabuleiro que será colorida.
+	 * @return A cor com que a casa deve ser colorida.
+	 */
+	public BackgroundColor getCorCasa(Posicao posicao) {
+		// FIXME: Acho que a regra é: se a soma da linha e coluna for ímpar, é
+		// cor clara, se for par é cor escura. Porém não sei como fazer a
+		// operação de módulo.
+		if ((posicao.getLinha() + posicao.getColuna()) % 2 == 0)
+			return corInferiorEsquerdo;
+		else
+			return corInferiorDireito;
 	}
 
 	@Override
@@ -59,20 +93,40 @@ public class Terminal extends Cli {
 
 		switch (peca.getTipoPeca()) {
 		case PEAO:
-			return "♟";
+			return "♟ ";
 		case TORRE:
-			return "♜";
+			return "♜ ";
 		case BISPO:
-			return "♝";
+			return "♝ ";
 		case CAVALO:
-			return "♞";
+			return "♞ ";
 		case REI:
-			return "♚";
+			return "♚ ";
 		case RAINHA:
-			return "♛";
+			return "♛ ";
 		default:
 			return "Erro!";
 		}
 	}
 
+	/**
+	 * Troca a cor com que será impresso no terminal.
+	 * 
+	 * @param fg
+	 *            Cor que será aplicado no texto.
+	 * @param bg
+	 *            Cor que será aplicada ao fundo do texto.
+	 */
+	public static void trocarCor(ForegroundColor fg, BackgroundColor bg) {
+		System.out.print("\u001b[" + fg.getSequencia() + ";"
+				+ bg.getSequencia() + "m");
+	}
+
+	/**
+	 * Troca a cor do que será impresso no terminal para a cor padrão do
+	 * ambiente.
+	 */
+	public static void resetarCor() {
+		System.out.print("\u001b[0m");
+	}
 }
