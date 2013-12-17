@@ -49,7 +49,7 @@ public abstract class Peca {
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
 		if (tabuleiro.saiuPosicao(origem, destino)
-				&& tabuleiro.atravessouTabuleiro(destino)
+				&& !tabuleiro.atravessouTabuleiro(destino)
 				&& tabuleiro.estaVazio(destino))
 			return true;
 		return false;
@@ -69,7 +69,7 @@ public abstract class Peca {
 	public boolean podeAtacar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
 		if (tabuleiro.saiuPosicao(origem, destino)
-				&& tabuleiro.atravessouTabuleiro(destino)
+				&& !tabuleiro.atravessouTabuleiro(destino)
 				&& tabuleiro.estaInimigo(this.jogador, destino))
 			return true;
 		return false;

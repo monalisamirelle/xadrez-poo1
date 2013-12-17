@@ -16,6 +16,7 @@ public class Peao extends Peca {
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
+		// FIXME: PEÃO BRANCO ANDA +1 E PEÃO PRETO ANDA -1
 		if (super.podeAndar(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			// Se o peão quer avançar, não quer se movimentar na coluna

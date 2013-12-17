@@ -100,10 +100,10 @@ public class Tabuleiro {
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
 	public boolean atravessouTabuleiro(Posicao destino) {
-		if (destino.getLinha() >= 0 & destino.getLinha() < 8
-				& destino.getColuna() >= 0 & destino.getColuna() < 8)
+		if (destino.getLinha() < 1 & destino.getLinha() > 8
+				& destino.getColuna() < 1 & destino.getColuna() > 8){
 			return true;
-		else
+		}else
 			return false;
 	}
 
