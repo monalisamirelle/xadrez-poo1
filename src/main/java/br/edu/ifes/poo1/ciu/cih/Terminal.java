@@ -132,7 +132,7 @@ public class Terminal extends Cli {
 	/**
 	 * Limpar a tela e retorna o cursors
 	 */
-	public void limparTela() {
+	public static void limparTela() {
 		// Limpa a tela (ANSI_CLS)
 		System.out.print("\u001b[2J");
 

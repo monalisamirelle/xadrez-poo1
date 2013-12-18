@@ -10,26 +10,6 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
  */
 public class Prompt extends Cli {
 
-	// @Override
-	// TODO: Terminar a implementação.
-	// public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador
-	// pretas) {
-	// // Imprime as peças capturadas pelo jogador das brancas.
-	// System.out.println("---------------");
-	// System.out.println("| " + getDescricaoPecasCapturadas(brancas));
-	//
-	// // Imprime as peças capturadas pelo jogador das pretas.
-	// System.out.println("---------------");
-	// System.out.println("| " + getDescricaoPecasCapturadas(pretas));
-	//
-	// // Imprime o tabuleiro
-	//
-	// // Termina a moldura do tabuleiro.
-	// System.out
-	// .println("-----------------------------------------------------------------");
-	//
-	// }
-
 	@Override
 	protected void imprimirTabuleiro(Tabuleiro tabuleiro) {
 		for (int linha = 8; linha >= 1; linha--) {
