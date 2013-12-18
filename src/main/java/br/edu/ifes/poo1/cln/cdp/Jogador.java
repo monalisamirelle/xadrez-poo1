@@ -13,7 +13,7 @@ public class Jogador {
 	/** Cor do jogador. */
 	private CorJogador cor;
 
-	/** Peças as quais já capturou. */
+	/** Peças que o jogador já capturou. */
 	List<Peca> pecasCapturadas = new ArrayList<Peca>();
 
 	/** Tabuleiro no qual está jogando. */

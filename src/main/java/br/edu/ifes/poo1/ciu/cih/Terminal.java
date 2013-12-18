@@ -12,27 +12,28 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 public class Terminal extends Cli {
 
 	/** Cor das peças brancas */
-	private ForegroundColor corBrancas = ForegroundColor.AZUL_ESCURO;
+	private final ForegroundColor corBrancas = ForegroundColor.AZUL_ESCURO;
 
 	/** Cor das peças pretas */
-	private ForegroundColor corPretas = ForegroundColor.VERMELHO;
+	private final ForegroundColor corPretas = ForegroundColor.VERMELHO;
 
 	/** Cor da casa do canto esquerdo das peças brancas */
-	private BackgroundColor corInferiorEsquerdo = BackgroundColor.PRETO;
+	private final BackgroundColor corInferiorEsquerdo = BackgroundColor.PRETO;
 
 	/** Cor da casa do canto direito das peças brancas */
-	private BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
+	private final BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
 
 	@Override
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
-		
-		
-		// Imprime as peças capturadas pelos jogadores e suas pontuações.
-		System.out.println(":: Pontuação dos jogadores");
-		System.out.println(getDescricaoPecasCapturadas(brancas));
-		System.out.println(getDescricaoPecasCapturadas(pretas));
-		System.out.println();
-		
+		// Limpa a tela, antes de qualquer coisa.
+		limparTela();
+
+		// Procede com a atualização dos objetos na tela.
+		super.atualizar(tabuleiro, brancas, pretas);
+	}
+
+	@Override
+	public void imprimirTabuleiro(Tabuleiro tabuleiro) {
 		// Imprime o tabuleiro
 		for (int linha = 8; linha >= 1; linha--) {
 			for (int coluna = 1; coluna <= 8; coluna++) {
@@ -127,4 +128,16 @@ public class Terminal extends Cli {
 	public static void resetarCor() {
 		System.out.print("\u001b[0m");
 	}
+
+	/**
+	 * Limpar a tela e retorna o cursors
+	 */
+	public void limparTela() {
+		// Limpa a tela (ANSI_CLS)
+		System.out.print("\u001b[2J");
+
+		// Retorna o cursor (ANSI_HOME)
+		System.out.print("\u001b[H");
+	}
+
 }

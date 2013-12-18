@@ -26,8 +26,38 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	public abstract void atualizar(Tabuleiro tabuleiro, Jogador brancas,
-			Jogador pretas);
+	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
+		// Imprime as peças capturadas pelos jogadores e suas pontuações.
+		imprimirPontuacoes(brancas, pretas);
+
+		// Imprime o tabuleiro.
+		imprimirTabuleiro(tabuleiro);
+	}
+
+	/**
+	 * Imprime na tela uma representação do estado atual do tabuleiro indicado
+	 * por parâmetro.
+	 * 
+	 * @param tabuleiro
+	 *            Tabuleiro a ser impresso.
+	 */
+	protected abstract void imprimirTabuleiro(Tabuleiro tabuleiro);
+
+	/**
+	 * Imprime as peças capturadas pelos jogadores e a pontuação de cada um.
+	 * 
+	 * @param brancas
+	 *            Jogador que controla as brancas.
+	 * @param pretas
+	 *            Jogador que controla as pretas.
+	 */
+	private void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
+		System.out.println(":: Pontuação dos jogadores");
+		System.out.println(":: -----------------------");
+		System.out.println(":: " + getDescricaoPecasCapturadas(brancas));
+		System.out.println(":: " + getDescricaoPecasCapturadas(pretas));
+		System.out.println();
+	}
 
 	/**
 	 * Lê uma jogada da tela. Este método retorna uma String com a entrada pura
@@ -131,7 +161,7 @@ public abstract class Cli {
 	public void exibirAlerta(String mensagem) {
 		System.out.println("[!] " + mensagem);
 	}
-	
+
 	/**
 	 * Retorna uma string com uma descrição de que peças foram captura
 	 * 
@@ -152,10 +182,12 @@ public abstract class Cli {
 
 		return descricao;
 	}
-	
+
 	/**
 	 * Calcula a pontuação total de um jogador.
-	 * @param jogador Jogador do qual serão calculados os pontos.
+	 * 
+	 * @param jogador
+	 *            Jogador do qual serão calculados os pontos.
 	 * @return Pontuação do jogador.
 	 */
 	protected int pontuacaoTotal(Jogador jogador) {
@@ -165,6 +197,6 @@ public abstract class Cli {
 		}
 		return pontuacao;
 	}
-	
+
 	public abstract String PecaToString(Peca peca);
 }
