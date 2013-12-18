@@ -249,4 +249,8 @@ public abstract class Cli {
 		System.out.print(" >> ");
 		return s.next();
 	}
+
+	public void exibir(String mensagem) {
+		System.out.println(mensagem);
+	}
 }
