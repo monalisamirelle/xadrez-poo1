@@ -26,8 +26,38 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	public abstract void atualizar(Tabuleiro tabuleiro, Jogador brancas,
-			Jogador pretas);
+	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
+		// Imprime as peças capturadas pelos jogadores e suas pontuações.
+		imprimirPontuacoes(brancas, pretas);
+
+		// Imprime o tabuleiro.
+		imprimirTabuleiro(tabuleiro);
+	}
+
+	/**
+	 * Imprime na tela uma representação do estado atual do tabuleiro indicado
+	 * por parâmetro.
+	 * 
+	 * @param tabuleiro
+	 *            Tabuleiro a ser impresso.
+	 */
+	protected abstract void imprimirTabuleiro(Tabuleiro tabuleiro);
+
+	/**
+	 * Imprime as peças capturadas pelos jogadores e a pontuação de cada um.
+	 * 
+	 * @param brancas
+	 *            Jogador que controla as brancas.
+	 * @param pretas
+	 *            Jogador que controla as pretas.
+	 */
+	private void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
+		System.out.println(":: Pontuação dos jogadores");
+		System.out.println(":: -----------------------");
+		System.out.println(":: " + getDescricaoPecasCapturadas(brancas));
+		System.out.println(":: " + getDescricaoPecasCapturadas(pretas));
+		System.out.println();
+	}
 
 	/**
 	 * Lê uma jogada da tela. Este método retorna uma String com a entrada pura
@@ -38,10 +68,8 @@ public abstract class Cli {
 	 * @return Retorna uma String com a jogada do usuário.
 	 */
 	public String lerJogada(Jogador jogador) {
-		System.out.println("Entre com a jogada (vez do jogador: "
-				+ jogador.getNome() + "):");
-		System.out.print(" >> ");
-		return s.next();
+		return pedir("Entre com a jogada (vez do jogador: " + jogador.getNome()
+				+ "):");
 	}
 
 	/**
@@ -50,9 +78,7 @@ public abstract class Cli {
 	 * @return Nome do jogador.
 	 */
 	public String lerNomeJogadorBranco() {
-		System.out.println("Entre com o nome do jogador das peças brancas:");
-		System.out.print(" >> ");
-		return s.next();
+		return pedir("Entre com o nome do jogador das peças brancas:");
 	}
 
 	/**
@@ -61,9 +87,7 @@ public abstract class Cli {
 	 * @return Nome do jogador.
 	 */
 	public String lerNomeJogadorPreto() {
-		System.out.println("Entre com o nome do jogador das peças pretas:");
-		System.out.print(" >> ");
-		return s.next();
+		return pedir("Entre com o nome do jogador das peças pretas:");
 	}
 
 	/**
@@ -72,12 +96,12 @@ public abstract class Cli {
 	 * não compreensível, a excessão EntradaMenuInvalida é lançada.
 	 * 
 	 * @return A entrada de menu selecionada pelo usuário.
-	 * @throws EntradaMenuInvalidaException
+	 * @throws EntradaInvalidaException
 	 *             Lançada caso não seja possível interpretar a escolha do
 	 *             usuário como uma entrada de menu válida.
 	 */
-	public ItemMenuPrincipal exibirMenuPrincipal()
-			throws EntradaMenuInvalidaException {
+	public ItemMenuPrincipal selecionarItemMenuPrincipal()
+			throws EntradaInvalidaException {
 
 		// Imprime todo o menu principal
 		System.out.println("Menu Principal:");
@@ -90,12 +114,13 @@ public abstract class Cli {
 		int escolha;
 		try {
 			// Lê a escolha do usuário.
-			escolha = s.nextInt();
+			escolha = Integer.parseInt(pedir("Selecione uma opção:"));
 		} catch (InputMismatchException e) {
 			// Se o jogador entrou com alguma sequência de caracteres que não
 			// possa ser identificada como um inteiro, então dizemos que a
 			// entrada escolhida foi inválida. E lançamos a seguinte excessão.
-			throw new EntradaMenuInvalidaException();
+			throw new EntradaInvalidaException(
+					"A entrada recebida não pode ser interpretada como uma das opções listadas.");
 		}
 
 		// Retorna a entrada do menu correspondente a escolha do usuário.
@@ -107,7 +132,8 @@ public abstract class Cli {
 		// Se até este momento nenhum item foi retornado, é poque o jogador
 		// escolheu um item que não está disponível no menu. Então lançamos
 		// a excessão.
-		throw new EntradaMenuInvalidaException();
+		throw new EntradaInvalidaException(
+				"Você não selecionou um item válido da lista.");
 	}
 
 	/**
@@ -131,7 +157,7 @@ public abstract class Cli {
 	public void exibirAlerta(String mensagem) {
 		System.out.println("[!] " + mensagem);
 	}
-	
+
 	/**
 	 * Retorna uma string com uma descrição de que peças foram captura
 	 * 
@@ -152,10 +178,12 @@ public abstract class Cli {
 
 		return descricao;
 	}
-	
+
 	/**
 	 * Calcula a pontuação total de um jogador.
-	 * @param jogador Jogador do qual serão calculados os pontos.
+	 * 
+	 * @param jogador
+	 *            Jogador do qual serão calculados os pontos.
 	 * @return Pontuação do jogador.
 	 */
 	protected int pontuacaoTotal(Jogador jogador) {
@@ -165,6 +193,64 @@ public abstract class Cli {
 		}
 		return pontuacao;
 	}
-	
+
+	/**
+	 * Retorna uma String que represente a peça indicada.
+	 * 
+	 * @param peca
+	 *            Peca que deve ser convertida para String.
+	 * @return String que representa a peça.
+	 */
 	public abstract String PecaToString(Peca peca);
+
+	public Ambiente selecionarAmbiente() throws EntradaInvalidaException {
+		// Imprime todos os ambientes
+		System.out.println("Ambientes disponíveis:");
+		for (Ambiente ambiente : Ambiente.values()) {
+			System.out.println("\t" + ambiente.getOrdem() + ". " + ambiente);
+		}
+
+		// Tenta ler a escolha do usuário.
+		int escolha;
+		try {
+			// Lê a escolha do usuário.
+			escolha = Integer.parseInt(pedir("Selecione uma opção:"));
+		} catch (InputMismatchException e) {
+			// Se o jogador entrou com alguma sequência de caracteres que não
+			// possa ser identificada como um inteiro, então dizemos que a
+			// entrada escolhida foi inválida. E lançamos a seguinte excessão.
+			throw new EntradaInvalidaException(
+					"A entrada recebida não pode ser interpretada como uma das opções listadas.");
+		}
+
+		// Retorna a entrada do menu correspondente a escolha do usuário.
+		for (Ambiente ambiente : Ambiente.values()) {
+			if (ambiente.getOrdem() == escolha)
+				return ambiente;
+		}
+
+		// Se até este momento nenhum item foi retornado, é poque o jogador
+		// escolheu um item que não está disponível no menu. Então lançamos
+		// a excessão.
+		throw new EntradaInvalidaException(
+				"Você não selecionou um item válido da lista.");
+	}
+
+	/**
+	 * Exibe a mensagem indicada por parâmetro ao usuário e solicita uma
+	 * resposta.
+	 * 
+	 * @param solicitacao
+	 *            Mensagem expressando um pedido ao usuário.
+	 * @return Reposta do usuário.
+	 */
+	public String pedir(String solicitacao) {
+		System.out.println(solicitacao);
+		System.out.print(" >> ");
+		return s.next();
+	}
+
+	public void exibir(String mensagem) {
+		System.out.println(mensagem);
+	}
 }

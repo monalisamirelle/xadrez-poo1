@@ -1,6 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
-import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
@@ -11,21 +11,11 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 public class Prompt extends Cli {
 
 	@Override
-	// TODO: Terminar a implementação.
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
-		// Imprime as peças capturadas pelo jogador das brancas.
-		System.out.println("---------------");
-		System.out.println("| " + getDescricaoPecasCapturadas(brancas));
-
-		// Imprime as peças capturadas pelo jogador das pretas.
-		System.out.println("---------------");
-		System.out.println("| " + getDescricaoPecasCapturadas(pretas));
-
-		// Imprime o tabuleiro
+	protected void imprimirTabuleiro(Tabuleiro tabuleiro) {
 		for (int linha = 8; linha >= 1; linha--) {
 			// Imprime o cabeçalho da linha.
 			System.out
-					.println("-----------------------------------------------------------------");
+					.println("-------------------------------------------------------------------------");
 			for (int coluna = 1; coluna <= 8; coluna++) {
 				System.out.print("|");
 
@@ -33,23 +23,20 @@ public class Prompt extends Cli {
 				Peca peca = tabuleiro.espiarPeca(new Posicao(coluna, linha));
 
 				// Imprime a peça e quem a controla.
-				if (peca == null) // Se estiver vazio, imprime o espaço da casa.
-					System.out.print("       ");
-				else { // Se estiver ocupada, impreme sua representação.
+				if (peca == null)
+					System.out.print("        ");
+				else {
 					System.out.print(PecaToString(peca));
-					if (peca.getJogador() == brancas)
-						System.out.print(" (br.)");
+					if (peca.getJogador().getCor() == CorJogador.BRANCO)
+						System.out.print(" branco");
 					else
-						System.out.print(" (pr.)");
+						System.out.print(" preto ");
 				}
 			}
 			System.out.println("|");
 		}
-
-		// Termina a moldura do tabuleiro.
 		System.out
-				.println("-----------------------------------------------------------------");
-
+				.println("-------------------------------------------------------------------------");
 	}
 
 	@Override

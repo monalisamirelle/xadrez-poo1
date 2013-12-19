@@ -1,21 +1,62 @@
 package br.edu.ifes.poo1.ciu.cci;
 
+import br.edu.ifes.poo1.ciu.cih.Ambiente;
 import br.edu.ifes.poo1.ciu.cih.Cli;
-import br.edu.ifes.poo1.ciu.cih.EntradaMenuInvalidaException;
+import br.edu.ifes.poo1.ciu.cih.EntradaInvalidaException;
+import br.edu.ifes.poo1.ciu.cih.Interpretador;
 import br.edu.ifes.poo1.ciu.cih.ItemMenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
+import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.TipoPeca;
 import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 
 /**
  * Controla a entrada e a saída da interface de linha de comando.
  */
 public class Controlador {
-	private Cli cli = new Prompt();
+	private Cli cli = new Terminal();
+
+	/**
+	 * Pede ao usuário para selecionar a interface a ser usada.
+	 */
+	public Controlador() {
+		instanciarAmbiente(selecionarAmbiente());
+	}
+
+	/**
+	 * Inicia o controlador indicando que ambiente deverá ser usado para a
+	 * comunicação com o usuário.
+	 * 
+	 * @param ambiente
+	 *            Ambiente a ser usado.
+	 */
+	public Controlador(Ambiente ambiente) {
+		instanciarAmbiente(ambiente);
+
+	}
+
+	/**
+	 * Intancia o modo de comunicação com o usuário.
+	 * 
+	 * @param ambiente
+	 *            Ambiente a ser usado para a comunicação.
+	 */
+	public void instanciarAmbiente(Ambiente ambiente) {
+		switch (ambiente) {
+		case PROMPT:
+			cli = new Prompt();
+			break;
+		case TERMINAL:
+			cli = new Terminal();
+			break;
+
+		default:
+			cli = new Prompt();
+			break;
+		}
+	}
 
 	/**
 	 * Inicia o jogo.
@@ -25,7 +66,7 @@ public class Controlador {
 		ItemMenuPrincipal itemEscolhido;
 
 		// Inicia o menu deixando a escolha para o usuário do que fazer.
-		itemEscolhido = menuPrincipal();
+		itemEscolhido = selecionarMenuPrincipal();
 
 		// Só termina o laço quando o jogador selecionar a opção de sair no menu
 		// principal.
@@ -64,11 +105,12 @@ public class Controlador {
 					// Executa o movimento do jogador.
 					Jogada jogadaInterpretada;
 					try {
-						jogadaInterpretada = interpretarJogada(jogadaCrua);
+						jogadaInterpretada = Interpretador
+								.interpretarJogada(jogadaCrua);
 						aplmulti.executarjogada(jogadaInterpretada);
 					} catch (JogadaInvalidaException e) {
-						// Avisa o usuário do erro, o alerta e continua o jogo.
-						cli.exibirAlerta("Jogada inválida.");
+						// Avisa o usuário do erro e continua o jogo.
+						cli.exibirAlerta(e.getMessage());
 						continue;
 					}
 				}
@@ -94,154 +136,45 @@ public class Controlador {
 			}
 
 			// Re-exibe o menu para que o jogador selecione o que deseja.
-			itemEscolhido = menuPrincipal();
+			itemEscolhido = selecionarMenuPrincipal();
 		}
 
 		// Se a execução chegou aqui, é porque o jogador optou por sair.
 	}
 
 	/**
-	 * Exibe o menu principal e pega a escolha do usuário.
+	 * Exibe o menu principal e pega uma escolha válida do usuário.
+	 * 
+	 * @return Item do menu principal selecionado.
 	 */
-	// FIXME: Deve ter um jeito melhor de fazer isso do que usando um laço
-	// infinito.
-	private ItemMenuPrincipal menuPrincipal() {
+	private ItemMenuPrincipal selecionarMenuPrincipal() {
 		do {
-			// Tenta retornar uma entrada de menu selecionada pelo jogador.
 			try {
-				// Retorna o item escolhido pelo jogador
-				return cli.exibirMenuPrincipal();
-			} catch (EntradaMenuInvalidaException e) {
-				// Se o jogador escolher alguma entrada inválida, avise-o.
-				System.out.println("Entrada de menu inválida.");
-				continue; // E repita o laço.
+				// Tenta retornar o item escolhido pelo jogador
+				return cli.selecionarItemMenuPrincipal();
+			} catch (EntradaInvalidaException e) {
+				// Se o jogador escolher alguma entrada inválida, avise-o...
+				cli.exibirAlerta(e.getMessage());
+				continue; // ... e repita o laço.
 			}
 		} while (true);
 	}
 
 	/**
-	 * Decodifica a entrada do jogador para o formato adequado.
+	 * Pega uma escolha de ambiente válida do usuário.
 	 * 
-	 * @param jogada
-	 *            Entrada do jogador.
-	 * @return Uma jogada já interpretada.
-	 * @throws JogadaInvalidaException
-	 *             Lançada se a entrada do usuário não puder ser convertida para
-	 *             uma jogada válida.
+	 * @return Ambiente escolhido.
 	 */
-	private Jogada interpretarJogada(String jogada)
-			throws JogadaInvalidaException {
-		// Inicia os dados necessários para criação da jogada.
-		String strOrigem;
-		String strDestino;
-		boolean ehAtaque;
-		boolean ehPromocao;
-		char promocaoChar = 0; // Será sobrescrito depois, se necessário.
-
-		// Dicerne o tipo da jogada.
-		switch (jogada.length()) {
-		case 4: // Será uma jogada simples sem ataque, como: 1253
-			// Preenche os dados necessários.
-			strOrigem = jogada.substring(0, 2);
-			strDestino = jogada.substring(2, 4);
-			ehAtaque = false;
-			ehPromocao = false;
-			break;
-
-		case 5: // Será uma jogada simples do tipo ataque, como: 24x53
-			// Verifica o 'x' no meio.
-			if (jogada.charAt(2) != 'x')
-				throw new JogadaInvalidaException();
-
-			// Preenche os dados necessários.
-			strOrigem = jogada.substring(0, 2);
-			strDestino = jogada.substring(3, 5);
-			ehAtaque = true;
-			ehPromocao = false;
-			break;
-
-		case 6: // Jogada sem ataque, mas com promoção de peão, como: 4568=D
-			// Verifica o '=' da promoção.
-			if (jogada.charAt(4) != '=')
-				throw new JogadaInvalidaException();
-
-			// Preenche os dados necessários.
-			strOrigem = jogada.substring(0, 2);
-			strDestino = jogada.substring(2, 4);
-			ehAtaque = false;
-			ehPromocao = true;
-			promocaoChar = jogada.charAt(5);
-			break;
-		case 7: // Jogada com ataque e promoção de peão, como: 57x48=T
-			// Verifica o 'x' do ataque e o '=' da promoção.
-			if (jogada.charAt(2) != 'x' || jogada.charAt(4) != '=')
-				throw new JogadaInvalidaException();
-
-			// Preenche os dados necessários.
-			strOrigem = jogada.substring(0, 2);
-			strDestino = jogada.substring(3, 5);
-			ehAtaque = true;
-			ehPromocao = true;
-			promocaoChar = jogada.charAt(6);
-			break;
-		default: // Qualquer outro tipo de jogada será inválida.
-			throw new JogadaInvalidaException();
-		}
-
-		// Pega as colunas e as linhas.
-		String origemColuna = strOrigem.substring(0, 1);
-		String origemLinha = strOrigem.substring(1, 2);
-		String destinoColuna = strDestino.substring(0, 1);
-		String destinoLinha = strDestino.substring(1, 2);
-
-		// Convertendo as colunas e linhas para inteiro.
-		int intOrigemColuna, intOrigemLinha, intDestinoColuna, intDestinoLinha;
-		try {
-			intOrigemColuna = Integer.parseInt(origemColuna);
-			intOrigemLinha = Integer.parseInt(origemLinha);
-			intDestinoColuna = Integer.parseInt(destinoColuna);
-			intDestinoLinha = Integer.parseInt(destinoLinha);
-		} catch (NumberFormatException e) {
-			throw new JogadaInvalidaException();
-		}
-
-		// Verifica se estão dentro dos limites do tabuleiro.
-		if (intOrigemColuna < 1 || intOrigemColuna > 8 || intOrigemLinha < 1
-				|| intOrigemLinha > 8 || intDestinoColuna < 1
-				|| intDestinoColuna > 8 || intDestinoLinha < 1
-				|| intDestinoLinha > 8)
-			throw new JogadaInvalidaException();
-
-		// Retorna a jogada interpretada.
-		if (ehPromocao) {
-			// Filtra o tipo de peça para o qual deseja-se promover o peão.
-			TipoPeca promocao;
-			switch (promocaoChar) {
-			case 'D':
-				promocao = TipoPeca.RAINHA;
-				break;
-			case 'T':
-				promocao = TipoPeca.TORRE;
-				break;
-			case 'B':
-				promocao = TipoPeca.BISPO;
-				break;
-			case 'C':
-				promocao = TipoPeca.CAVALO;
-				break;
-
-			default:
-				// Qualquer outra peça solicitada é inválida.
-				throw new JogadaInvalidaException();
+	private Ambiente selecionarAmbiente() {
+		do {
+			try {
+				// Tenta retornar o item escolhido pelo jogador
+				return cli.selecionarAmbiente();
+			} catch (EntradaInvalidaException e) {
+				// Se o jogador escolher alguma entrada inválida, avise-o...
+				cli.exibirAlerta(e.getMessage());
+				continue; // ... e repita o laço.
 			}
-
-			// Retorna uma jogada com promoção.
-			return new Jogada(new Posicao(intOrigemColuna, intOrigemLinha),
-					new Posicao(intDestinoColuna, intDestinoLinha), ehAtaque,
-					promocao);
-		} else
-			// Retorna uma jogada simples, sem promoção.
-			return new Jogada(new Posicao(intOrigemColuna, intOrigemLinha),
-					new Posicao(intDestinoColuna, intDestinoLinha), ehAtaque);
+		} while (true);
 	}
 }

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TesteTabuleiro {
-	
+
 	Tabuleiro tabuleiro;
 
 	@Before
@@ -17,7 +17,7 @@ public class TesteTabuleiro {
 	@Test
 	public void espiarPeca() throws CasaOcupadaException {
 		// Instancia uma peça qualquer.
-		Peca peca = new Palhaco(null);
+		Peca peca = new Peao(null);
 
 		// Coloca a peça no tabuleiro.
 		tabuleiro.colocarPeca(new Posicao(1, 1), peca);
@@ -32,7 +32,7 @@ public class TesteTabuleiro {
 	@Test
 	public void retirarPeca() throws CasaOcupadaException {
 		// Instancia uma peça qualquer.
-		Peca peca = new Palhaco(null);
+		Peca peca = new Peao(null);
 
 		// Coloca a peça no tabuleiro.
 		tabuleiro.colocarPeca(new Posicao(1, 1), peca);
@@ -47,22 +47,22 @@ public class TesteTabuleiro {
 	@Test
 	public void colocarPeca_emCasaVazia() throws CasaOcupadaException {
 		// Coloca uma peça em uma casa vazia.
-		tabuleiro.colocarPeca(new Posicao(1, 1), new Palhaco(null));
+		tabuleiro.colocarPeca(new Posicao(1, 1), new Peao(null));
 	}
 
 	@Test(expected = CasaOcupadaException.class)
 	public void colocarPeca_emCasaOcupada() throws CasaOcupadaException {
 		// Coloca uma peça em uma casa vazia.
-		tabuleiro.colocarPeca(new Posicao(1, 1), new Palhaco(null));
+		tabuleiro.colocarPeca(new Posicao(1, 1), new Peao(null));
 
 		// Coloca uma peça em uma casa OCUPADA.
-		tabuleiro.colocarPeca(new Posicao(1, 1), new Palhaco(null));
+		tabuleiro.colocarPeca(new Posicao(1, 1), new Peao(null));
 	}
 
 	@Test
 	public void estaVazio() throws CasaOcupadaException {
 		// Adiciona uma peça ao tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(1, 1), new Palhaco(null));
+		tabuleiro.colocarPeca(new Posicao(1, 1), new Peao(null));
 
 		// Testa a casa ocupada.
 		Assert.assertFalse(tabuleiro.estaVazio(new Posicao(1, 1)));

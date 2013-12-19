@@ -5,16 +5,16 @@ package br.edu.ifes.poo1.ciu.cih;
  * cor varia de 40 a 47.
  */
 public enum BackgroundColor {
-	ZERO("40"),
-	UM("41"),
-	DOIS("42"),
-	TRES("43"),
-	QUATRO("44"),
-	CINCO("45"),
-	SEIS("46"),
-	SETE("47");
+	PRETO      ("40"),
+	VERMELHO   ("41"),
+	VERDE      ("42"),
+	AMARELO    ("43"),
+	AZUL_ESCURO("44"),
+	ROSA       ("45"),
+	AZUL_CLARO ("46"),
+	BRANCO     ("47");
 
-	/** Número que codifica a cor. */
+	/** String com o número que codifica a cor. */
 	private String sequencia;
 
 	private BackgroundColor(String sequencia) {

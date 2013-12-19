@@ -80,17 +80,38 @@ public class Tabuleiro {
 	}
 
 	/**
-	 * Indica se uma determinada posição do tabuleiro está vazia ou não.
+	 * Indica se alguma peça da cor indicada ameaça a posição indicada
 	 * 
-	 * @param destino
-	 *            Posição no tabuleiro.
-	 * @return Se está vazio.
+	 * @param posicao
+	 *            Posição a ser verificada.
+	 * @param cor
+	 *            Cor do jogador que pode estar ameaçando a posição.
+	 * @return Se a o jogador da cor indicada está ameçando a posição com alguma
+	 *         peça.
 	 */
-	public boolean estaInimigo(Jogador jogador, Posicao posicao) {
-		// Está vazio quando não houver peça ali.
-		// return (espiarPeca(posicao) != null &&
-		// espiarPeca(posicao).getJogador()!=jogador);
-		return true; // FIXME: Só enquanto a linha acima não é acertada.
+	public boolean estaAmeacadoPor(Posicao posicao, CorJogador cor) {
+		// Verifica se alguma peça da cor indicada ameaça a posição indicada.
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			for (int linha = 0; linha <= 8; linha++) {
+				Posicao origem = new Posicao(coluna, linha);
+				Peca peca = espiarPeca(origem);
+
+				// Pula as peças que não forem do jogador indicado.
+				if (peca.getJogador().getCor() != cor)
+					continue;
+
+				// FIXME: Isso não está funcionando completamente. Pense no caso
+				// do peão. É preciso um método que use apenas a possível
+				// movimentação da peça, e não faça verificações do tipo: se a
+				// há uma peça para poder ser atacada. Mas faça verificação de
+				// se não há peças no meio do caminho.
+				if (peca.podeAtacar(origem, posicao, this))
+					return true;
+			}
+		}
+
+		// Caso não haja peça que possa ameaçar a posição, retorna falso.
+		return false;
 	}
 
 	/**
@@ -100,11 +121,11 @@ public class Tabuleiro {
 	 *            Posição que deseja-se verificar
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
-	public boolean atravessouTabuleiro(Posicao destino) {
-		if (destino.getLinha() < 1 || destino.getLinha() > 8
-				|| destino.getColuna() < 1 || destino.getColuna() > 8) {
+	public static boolean atravessouTabuleiro(Posicao destino) {
+		if (destino.getLinha() >= 0 & destino.getLinha() < 8
+				& destino.getColuna() >= 0 & destino.getColuna() < 8)
 			return true;
-		} else
+		else
 			return false;
 	}
 
@@ -141,9 +162,7 @@ public class Tabuleiro {
 	 * @param destino
 	 * @return
 	 */
-	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
-	// sendo usado adequadamente.
-	public boolean saiuPosicao(Posicao origem, Posicao destino) {
+	public static boolean saiuPosicao(Posicao origem, Posicao destino) {
 		if (origem.getLinha() == destino.getLinha()
 				&& origem.getColuna() == destino.getColuna())
 			return false;
@@ -238,5 +257,4 @@ public class Tabuleiro {
 			}
 		return false;
 	}
-
 }
