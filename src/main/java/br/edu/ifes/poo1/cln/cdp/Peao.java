@@ -17,7 +17,7 @@ public class Peao extends Peca {
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
 		int avanca;
-		if ((this.getJogador().getCor().toString()).equals("BRANCO"))
+		if (this.getJogador().getCor() == CorJogador.BRANCO)
 			avanca = 1;
 		else
 			avanca = -1;

@@ -150,7 +150,7 @@ public class Tabuleiro {
 	 * @param destino
 	 * @return
 	 */
-	// FIXME: E conferir se o método está sendo usado adequadamente.
+	// FIXME: Conferir se o método está sendo usado adequadamente.
 	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
 		int linha = origem.getLinha();
 		int coluna = origem.getColuna();
@@ -190,8 +190,7 @@ public class Tabuleiro {
 	 * @param destino
 	 * @return
 	 */
-	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
-	// sendo usado adequadamente.
+	// FIXME: Conferir se o método está sendo usado adequadamente.
 	public boolean relizaMovimento(Posicao origem, Posicao destino) {
 		if (origem.getLinha() == destino.getLinha()
 				&& origem.getColuna() == destino.getColuna())
@@ -204,11 +203,11 @@ public class Tabuleiro {
 	 * @param jogador
 	 * @return
 	 */
-	public boolean RoqueMenor(Pessoa jogador) {
+	public boolean RoqueMenor(Jogador jogador) {
 		Posicao posicaoRei;
 		Posicao posicaoTorre;
 		// Se for um roque menor do jogador de peças brancas
-		if (jogador.getCor().toString().equals(("Branca")))
+		if (jogador.getCor() == CorJogador.BRANCO)
 			// Se o rei e a torre ainda não se moveram
 			if (pecas[4][0].getJaMoveu() == false
 					& pecas[7][0].getJaMoveu() == false) {
@@ -240,11 +239,11 @@ public class Tabuleiro {
 	 * @param jogador
 	 * @return
 	 */
-	public boolean RoqueMaior(Pessoa jogador) {
+	public boolean RoqueMaior(Jogador jogador) {
 		Posicao posicaoRei;
 		Posicao posicaoTorre;
 		// Se for um roque menor do jogador de peças brancas
-		if (jogador.getCor().toString().equals(("Branca")))
+		if (jogador.getCor() == CorJogador.BRANCO)
 			// Se o rei e a torre ainda não se moveram
 			if (pecas[4][0].getJaMoveu() == false
 					& pecas[0][0].getJaMoveu() == false) {
