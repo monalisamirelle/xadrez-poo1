@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.ciu.cih;
 
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
-import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.Pessoa;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
@@ -24,7 +24,7 @@ public class Terminal extends Cli {
 	private final BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
 
 	@Override
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
+	public void atualizar(Tabuleiro tabuleiro, Pessoa brancas, Pessoa pretas) {
 		// Limpa a tela, antes de qualquer coisa.
 		limparTela();
 

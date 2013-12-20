@@ -5,7 +5,7 @@ public class Rainha extends Peca {
 	/**
 	 * Instancia uma rainha.
 	 */
-	public Rainha(Jogador jogador) {
+	public Rainha(Pessoa jogador) {
 		super(9, TipoPeca.RAINHA, jogador);
 	}
 

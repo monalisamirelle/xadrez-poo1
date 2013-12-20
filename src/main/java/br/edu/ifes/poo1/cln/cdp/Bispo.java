@@ -5,7 +5,7 @@ public class Bispo extends Peca {
 	/**
 	 * Instancia um bispo.
 	 */
-	public Bispo(Jogador jogador) {
+	public Bispo(Pessoa jogador) {
 		super(3, TipoPeca.BISPO, jogador);
 	}
 

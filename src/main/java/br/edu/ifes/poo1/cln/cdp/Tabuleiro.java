@@ -204,7 +204,7 @@ public class Tabuleiro {
 	 * @param jogador
 	 * @return
 	 */
-	public boolean RoqueMenor(Jogador jogador) {
+	public boolean RoqueMenor(Pessoa jogador) {
 		Posicao posicaoRei;
 		Posicao posicaoTorre;
 		// Se for um roque menor do jogador de peças brancas
@@ -240,7 +240,7 @@ public class Tabuleiro {
 	 * @param jogador
 	 * @return
 	 */
-	public boolean RoqueMaior(Jogador jogador) {
+	public boolean RoqueMaior(Pessoa jogador) {
 		Posicao posicaoRei;
 		Posicao posicaoTorre;
 		// Se for um roque menor do jogador de peças brancas

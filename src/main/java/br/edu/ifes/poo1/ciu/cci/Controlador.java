@@ -9,7 +9,7 @@ import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
-import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.Pessoa;
 import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 
 /**
@@ -117,7 +117,7 @@ public class Controlador {
 
 				// Após o fim do jogo, pegamos o vencedor, atualizamos o
 				// tabuleiro mais uma vez e comprimentamos o ganhador.
-				Jogador vencedor = aplmulti.getVencedor();
+				Pessoa vencedor = aplmulti.getVencedor();
 				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
 						aplmulti.getPretas());
 				cli.parabenizarVencedor(vencedor);

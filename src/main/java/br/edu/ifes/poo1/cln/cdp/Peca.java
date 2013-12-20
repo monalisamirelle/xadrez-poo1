@@ -10,7 +10,7 @@ public abstract class Peca {
 	private int valor;
 
 	/** Jogador que controla a peça. */
-	private Jogador jogador;
+	private Pessoa jogador;
 
 	/** Tipo da peça */
 	private TipoPeca tipoPeca;
@@ -26,7 +26,7 @@ public abstract class Peca {
 	 * @param jogador
 	 *            Jogador que detém a peça.
 	 */
-	public Peca(int valor, TipoPeca tipoPeca, Jogador jogador) {
+	public Peca(int valor, TipoPeca tipoPeca, Pessoa jogador) {
 		this.valor = valor;
 		this.jogador = jogador;
 		this.tipoPeca = tipoPeca;
@@ -91,7 +91,7 @@ public abstract class Peca {
 		return valor;
 	}
 
-	public Jogador getJogador() {
+	public Pessoa getJogador() {
 		return jogador;
 	}
 

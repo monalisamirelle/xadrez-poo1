@@ -6,7 +6,7 @@ import br.edu.ifes.poo1.cln.cdp.Cavalo;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
-import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.Pessoa;
 import br.edu.ifes.poo1.cln.cdp.Peao;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Rainha;
@@ -19,16 +19,16 @@ import br.edu.ifes.poo1.cln.cdp.Torre;
  */
 public class AplMultiplayer {
 	/** Jogador que controla as peças brancas. */
-	private Jogador brancas;
+	private Pessoa brancas;
 
 	/** Jogador que controla as peças pretas. */
-	private Jogador pretas;
+	private Pessoa pretas;
 
 	/** Tabuleiro do jogo. */
 	private Tabuleiro tabuleiro;
 
 	/** Indica de quem é a vez de realizar a próxima jogada */
-	private Jogador turno;
+	private Pessoa turno;
 
 	/** Indica se o jogo já acabou (true). Ou se está em andamento (false). */
 	private boolean acabouJogo = false;
@@ -46,9 +46,9 @@ public class AplMultiplayer {
 		this.tabuleiro = new Tabuleiro();
 
 		// Inicia os jogadores.
-		this.brancas = new Jogador(nomeBrancas, CorJogador.BRANCO,
+		this.brancas = new Pessoa(nomeBrancas, CorJogador.BRANCO,
 				this.tabuleiro);
-		this.pretas = new Jogador(nomePretas, CorJogador.PRETO, this.tabuleiro);
+		this.pretas = new Pessoa(nomePretas, CorJogador.PRETO, this.tabuleiro);
 
 		// Coloca as brancas para iniciarem.
 		this.turno = brancas;
@@ -110,7 +110,7 @@ public class AplMultiplayer {
 	 */
 	public void executarjogada(Jogada jogada) throws JogadaInvalidaException {
 		// Pega o jogador do turno atual.
-		Jogador atualJogador = this.turno;
+		Pessoa atualJogador = this.turno;
 
 		// Solicita-o que faça o movimento
 		atualJogador.movimentarPeca(jogada);
@@ -128,7 +128,7 @@ public class AplMultiplayer {
 	 * 
 	 * @return O vencedor da partida.
 	 */
-	public Jogador getVencedor() {
+	public Pessoa getVencedor() {
 		return this.brancas;
 		// TODO: Implementar.
 	}
@@ -138,7 +138,7 @@ public class AplMultiplayer {
 	 * 
 	 * @return Jogador que deve realizar a próxima jogada.
 	 */
-	public Jogador getTurno() {
+	public Pessoa getTurno() {
 		return this.turno;
 	}
 
@@ -152,11 +152,11 @@ public class AplMultiplayer {
 		return acabouJogo;
 	}
 
-	public Jogador getBrancas() {
+	public Pessoa getBrancas() {
 		return brancas;
 	}
 
-	public Jogador getPretas() {
+	public Pessoa getPretas() {
 		return pretas;
 	}
 

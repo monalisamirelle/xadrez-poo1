@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.ciu.cih;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.Pessoa;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
@@ -26,7 +26,7 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
+	public void atualizar(Tabuleiro tabuleiro, Pessoa brancas, Pessoa pretas) {
 		// Imprime as peças capturadas pelos jogadores e suas pontuações.
 		imprimirPontuacoes(brancas, pretas);
 
@@ -51,7 +51,7 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as pretas.
 	 */
-	private void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
+	private void imprimirPontuacoes(Pessoa brancas, Pessoa pretas) {
 		System.out.println(":: Pontuação dos jogadores");
 		System.out.println(":: -----------------------");
 		System.out.println(":: " + getDescricaoPecasCapturadas(brancas));
@@ -67,7 +67,7 @@ public abstract class Cli {
 	 * 
 	 * @return Retorna uma String com a jogada do usuário.
 	 */
-	public String lerJogada(Jogador jogador) {
+	public String lerJogada(Pessoa jogador) {
 		return pedir("Entre com a jogada (vez do jogador: " + jogador.getNome()
 				+ "):");
 	}
@@ -142,7 +142,7 @@ public abstract class Cli {
 	 * @param vencedor
 	 *            Vencedor da partida.
 	 */
-	public void parabenizarVencedor(Jogador vencedor) {
+	public void parabenizarVencedor(Pessoa vencedor) {
 		System.out.println("Parabéns a " + vencedor.getNome()
 				+ ", ganhador da partida");
 
@@ -164,7 +164,7 @@ public abstract class Cli {
 	 * @param jogador
 	 * @return
 	 */
-	protected String getDescricaoPecasCapturadas(Jogador jogador) {
+	protected String getDescricaoPecasCapturadas(Pessoa jogador) {
 		// Inicia a descrição com o nome do jogador.
 		String descricao = jogador.getNome() + ": ";
 
@@ -186,7 +186,7 @@ public abstract class Cli {
 	 *            Jogador do qual serão calculados os pontos.
 	 * @return Pontuação do jogador.
 	 */
-	protected int pontuacaoTotal(Jogador jogador) {
+	protected int pontuacaoTotal(Pessoa jogador) {
 		int pontuacao = 0;
 		for (Peca peca : jogador.getPecasCapturadas()) {
 			pontuacao += peca.getValor();
