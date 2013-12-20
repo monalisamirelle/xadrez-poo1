@@ -78,7 +78,21 @@ public class Tabuleiro {
 		// Está vazio quando não houver peça ali.
 		return espiarPeca(posicao) == null;
 	}
-
+	
+	/**
+	 * Indica se uma determinada posição do tabuleiro está ocupada por um inimigo ou não.
+	 * 
+	 * @param posicao
+	 *            Posição no tabuleiro.
+	 * @return Se está vazio.
+	 */
+	// TODO verificar se está funcionando
+	public boolean estaInimigo(Jogador jogador, Posicao destino) {
+		if(pecas[destino.getColuna()-1][destino.getLinha()-1].getJogador().getCor() != null && pecas[destino.getColuna()-1][destino.getLinha()-1].getJogador().getCor() != jogador.getCor())
+			return true;
+		return false;
+	}
+	
 	/**
 	 * Indica se alguma peça da cor indicada ameaça a posição indicada
 	 * 
@@ -121,7 +135,7 @@ public class Tabuleiro {
 	 *            Posição que deseja-se verificar
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
-	public static boolean atravessouTabuleiro(Posicao destino) {
+	public boolean atravessouTabuleiro(Posicao destino) {
 		if (destino.getLinha() >= 0 & destino.getLinha() < 8
 				& destino.getColuna() >= 0 & destino.getColuna() < 8)
 			return true;
@@ -136,8 +150,7 @@ public class Tabuleiro {
 	 * @param destino
 	 * @return
 	 */
-	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E conferir se o método está
-	// sendo usado adequadamente.
+	// FIXME: E conferir se o método está sendo usado adequadamente.
 	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
 		int linha = origem.getLinha();
 		int coluna = origem.getColuna();
@@ -162,7 +175,7 @@ public class Tabuleiro {
 	 * @param destino
 	 * @return
 	 */
-	public static boolean saiuPosicao(Posicao origem, Posicao destino) {
+	public boolean saiuPosicao(Posicao origem, Posicao destino) {
 		if (origem.getLinha() == destino.getLinha()
 				&& origem.getColuna() == destino.getColuna())
 			return false;
