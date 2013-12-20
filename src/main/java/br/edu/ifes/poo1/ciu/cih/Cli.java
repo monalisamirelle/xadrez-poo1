@@ -26,9 +26,11 @@ public abstract class Cli {
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
 		// Imprime as peças capturadas pelos jogadores e suas pontuações.
 		imprimirPontuacoes(brancas, pretas);
+		imprimirLinha(""); // Dá uma folga para o próximo elemento.
 
 		// Imprime o tabuleiro.
 		imprimirTabuleiro(tabuleiro);
+		imprimirLinha(""); // Dá uma folga para o próximo elemento.
 	}
 
 	/**
@@ -51,6 +53,7 @@ public abstract class Cli {
 
 		// Exibe a mensagem de aviso.
 		exibirAlerta(aviso);
+		imprimirLinha("");
 	}
 
 	/**
@@ -71,11 +74,10 @@ public abstract class Cli {
 	 *            Jogador que controla as pretas.
 	 */
 	private void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
-		exibir(":: Pontuação dos jogadores");
-		exibir(":: -----------------------");
-		exibir(":: " + getDescricaoPecasCapturadas(brancas));
-		exibir(":: " + getDescricaoPecasCapturadas(pretas));
-		exibir("");
+		imprimirLinha(":: Pontuação dos jogadores");
+		imprimirLinha(":: -----------------------");
+		imprimirLinha(":: " + getDescricaoPecasCapturadas(brancas));
+		imprimirLinha(":: " + getDescricaoPecasCapturadas(pretas));
 	}
 
 	/**
@@ -117,7 +119,7 @@ public abstract class Cli {
 	 *            Vencedor da partida.
 	 */
 	public void parabenizarVencedor(Jogador vencedor) {
-		exibir("Parabéns a " + vencedor.getNome() + ", ganhador da partida");
+		imprimirLinha("Parabéns a " + vencedor.getNome() + ", ganhador da partida");
 	}
 
 	/**
@@ -177,7 +179,7 @@ public abstract class Cli {
 	 *            Mensagem a ser exibida para o usuário.
 	 */
 	public void exibirAlerta(String mensagem) {
-		io.exibirAlerta(mensagem);
+		io.imprimirLinha("[!] " + mensagem);
 	}
 
 	/**
@@ -194,14 +196,25 @@ public abstract class Cli {
 
 	/**
 	 * Exibe o texto recebido por parâmetro. Será escrito exatamente como
+	 * recebido no parâmetro.
+	 * 
+	 * @param texto
+	 *            Texto a ser exibido.
+	 */
+	public void imprimir(String texto) {
+		io.imprimir(texto);
+	}
+	
+	/**
+	 * Exibe o texto recebido por parâmetro. Será escrito exatamente como
 	 * recebido no parâmetro, porém com a adição de uma quebra de linha no
 	 * final.
 	 * 
 	 * @param texto
 	 *            Texto a ser exibido.
 	 */
-	public void exibir(String texto) {
-		io.exibir(texto);
+	public void imprimirLinha(String texto) {
+		io.imprimirLinha(texto);
 	}
 
 	/** Retorna o objeto usado para escrita na linha de comando. */

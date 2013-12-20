@@ -55,7 +55,7 @@ public abstract class Menu {
 	public ItemMenu selecionarItem(EntradaSaida io)
 			throws EntradaInvalidaException {
 		// Imprime todo o menu principal
-		io.exibir(this.toString());
+		io.imprimirLinha(this.toString());
 
 		// Tenta ler a escolha do usuário.
 		int escolha;
@@ -102,7 +102,7 @@ public abstract class Menu {
 				return this.selecionarItem(io);
 			} catch (EntradaInvalidaException e) {
 				// Se o jogador escolher alguma entrada inválida, avise-o...
-				io.exibirAlerta(e.getMessage());
+				io.imprimirLinha("[!] " + e.getMessage());
 				continue; // ... e repita o laço.
 			}
 		} while (true);

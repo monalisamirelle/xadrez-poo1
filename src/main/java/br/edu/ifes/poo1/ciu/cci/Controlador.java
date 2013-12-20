@@ -116,10 +116,19 @@ public class Controlador {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
 		String jogadaCrua;
+		String aviso = "";
 		while (!aplmulti.getAcabouJogo()) {
-			// Atualiza o que é visual para os jogadores.
-			cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
-					aplmulti.getPretas());
+			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
+			// necessário.
+			if (aviso == "")
+				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
+						aplmulti.getPretas());
+			else
+				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
+						aplmulti.getPretas(), aviso);
+
+			// Retira a mensagem de aviso.
+			aviso = "";
 
 			// Pede o movimento do jogador.
 			jogadaCrua = cli.lerJogada(aplmulti.getTurno());
@@ -131,9 +140,11 @@ public class Controlador {
 						.interpretarJogada(jogadaCrua);
 				aplmulti.executarjogada(jogadaInterpretada);
 			} catch (JogadaInvalidaException e) {
-				// Avisa o usuário do erro e continua o jogo.
-				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
-						aplmulti.getPretas(), e.getMessage());
+				// Prepara um aviso para ser exibido na tela quando ela
+				// atualizar.
+				aviso = e.getMessage();
+
+				// E continua o ritmo do jogo.
 				continue;
 			}
 		}

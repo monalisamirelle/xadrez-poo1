@@ -11,18 +11,6 @@ public class EntradaSaida {
 	private Scanner s = new Scanner(System.in);
 
 	/**
-	 * Exibe uma mensagem de alerta ao usuário. A mensagem recebida por
-	 * parâmetro será devidamente formatada para ser exibida ao usuário como um
-	 * alerta.
-	 * 
-	 * @param mensagem
-	 *            Mensagem a ser exibida para o usuário.
-	 */
-	public void exibirAlerta(String mensagem) {
-		System.out.println("[!] " + mensagem);
-	}
-
-	/**
 	 * Exibe a mensagem indicada por parâmetro ao usuário e em seguida solicita
 	 * uma resposta do usuário, que é retornada no formato de uma String.
 	 * 
@@ -35,7 +23,7 @@ public class EntradaSaida {
 		System.out.print(" >> ");
 		String resposta = s.next();
 		System.out.println();
-		
+
 		return resposta;
 	}
 
@@ -47,8 +35,19 @@ public class EntradaSaida {
 	 * @param texto
 	 *            Texto a ser exibido.
 	 */
-	public void exibir(String texto) {
+	public void imprimirLinha(String texto) {
 		System.out.println(texto);
+	}
+
+	/**
+	 * Exibe o texto recebido por parâmetro. Será escrito exatamente como
+	 * recebido no parâmetro. *
+	 * 
+	 * @param texto
+	 *            Texto a ser exibido.
+	 */
+	public void imprimir(String texto) {
+		System.out.print(texto);
 	}
 
 }
