@@ -2,9 +2,14 @@ package br.edu.ifes.poo1.ciu.cih;
 
 import java.util.ArrayList;
 
+/**
+ * Classe para um menu com as atividades principais do jogo, como jogar,
+ * visualizar dados e sair do jogo.
+ */
 public class MenuPrincipal extends Menu {
 	public MenuPrincipal() {
 		super("Menu Principal", new ArrayList<ItemMenu>() {
+
 			/** Serial gerado automaticamente. */
 			private static final long serialVersionUID = -2202065529317389240L;
 
@@ -17,8 +22,5 @@ public class MenuPrincipal extends Menu {
 				add(new ItemMenu("Sair", "Sair"));
 			}
 		});
-
-		// TODO: Entender melhor o que foi feito aqui. Referência:
-		// http://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line
 	}
 }

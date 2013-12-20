@@ -1,8 +1,7 @@
 package br.edu.ifes.poo1.ciu.cih;
 
 /**
- * Excessão lançada quando o usuário seleciona uma entrada do menu principal
- * inválida.
+ * Excessão lançada quando o usuário seleciona uma entrada do menu inválida.
  */
 public class EntradaInvalidaException extends Exception {
 
