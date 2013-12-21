@@ -12,7 +12,9 @@ import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cgt.AplJogo;
 import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
+import br.edu.ifes.poo1.cln.cgt.AplSingleplayer;
 
 /**
  * Controla a entrada e a saída da interface de linha de comando.
@@ -99,6 +101,61 @@ public class Controlador {
 
 		// Se a execução chegou aqui, é porque o jogador optou por sair de todo
 		// o jogo.
+	}
+
+	public void controlarSinglePlayer() {
+		// Pega o nome dos jogadores.
+		String nomeBrancas = cli.lerNomeJogadorBranco();
+		String nomePretas = "ZEUS";
+
+		// Contrói a aplicação do jogo
+		AplJogo apl = new AplSingleplayer(nomeBrancas, nomePretas);
+
+		// Enquando não acabar o jogo, continuamos executando as jogadas
+		// dos jogadores e exibindo o estado do tabuleiro.
+		String jogadaCrua;
+		String aviso = "";
+		while (!apl.getAcabouJogo()) {
+			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
+			// necessário.
+			if (aviso == "")
+				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
+						apl.getPretas());
+			else
+				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
+						apl.getPretas(), aviso);
+
+			// Retira a mensagem de aviso.
+			aviso = "";
+
+			// Pede o movimento do humano.
+			jogadaCrua = cli.lerJogada(apl.getTurno());
+
+			// Executa o movimento do humano.
+			Jogada jogadaInterpretada;
+			try {
+				jogadaInterpretada = Interpretador
+						.interpretarJogada(jogadaCrua);
+				apl.executarjogada(jogadaInterpretada);
+			} catch (JogadaInvalidaException e) {
+				// Prepara um aviso para ser exibido na tela quando ela
+				// atualizar.
+				aviso = e.getMessage();
+
+				// E continua o ritmo do jogo.
+				continue;
+			}
+			
+			// Pede o movimento da máquina.
+			Jogada jogadaMaquina;
+		}
+
+		// Após o fim do jogo, pegamos o vencedor, atualizamos o
+		// tabuleiro mais uma vez e comprimentamos o ganhador.
+		Jogador vencedor = apl.getVencedor();
+		cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
+				apl.getPretas());
+		cli.parabenizarVencedor(vencedor);
 	}
 
 	/**
