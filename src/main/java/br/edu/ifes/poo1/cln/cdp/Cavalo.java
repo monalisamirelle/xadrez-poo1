@@ -4,7 +4,7 @@ public class Cavalo extends Peca {
 	/**
 	 * Instancia um cavalo.
 	 */
-	public Cavalo(Pessoa jogador) {
+	public Cavalo(Jogador jogador) {
 		super(3, TipoPeca.CAVALO, jogador);
 	}
 
