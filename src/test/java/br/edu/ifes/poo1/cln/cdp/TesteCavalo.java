@@ -14,15 +14,15 @@ public class TesteCavalo {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		cavaloBranco = new Cavalo(new Jogador(CorJogador.BRANCO, tabuleiro));
-		peaoPreto = new Peao(new Jogador(CorJogador.PRETO, tabuleiro));
-		peaoBranco = new Peao(new Jogador(CorJogador.BRANCO, tabuleiro));
+		cavaloBranco = new Cavalo(new Jogador("Teste", CorJogador.BRANCO));
+		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
+		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 4), peaoPreto);
 		tabuleiro.colocarPeca(new Posicao(8, 8), peaoPreto);
 		tabuleiro.colocarPeca(new Posicao(5, 3), peaoPreto);
-		
+
 		/** Coloca peça aliada no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(2, 2), peaoBranco);
 	}
@@ -59,7 +59,7 @@ public class TesteCavalo {
 				new Posicao(8, 8), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(6, 5),
 				new Posicao(5, 3), tabuleiro));
-		
+
 		/** Verifica se o cavalo pode atacar uma posição vazia */
 		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(4, 4),
 				new Posicao(6, 5), tabuleiro));
@@ -67,9 +67,9 @@ public class TesteCavalo {
 				new Posicao(6, 2), tabuleiro));
 		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(4, 4),
 				new Posicao(3, 6), tabuleiro));
-		
+
 		/** Verifica se o cavalo pode atacar uma posição com peça aliada */
 		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(3, 4),
-				new Posicao(2, 2), tabuleiro));	
+				new Posicao(2, 2), tabuleiro));
 	}
 }

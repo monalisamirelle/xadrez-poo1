@@ -15,12 +15,12 @@ public class TestePeao {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		peaoBranco = new Peao(new Jogador(CorJogador.BRANCO, tabuleiro));
-		peaoBrancoMovimentado = new Peao(new Jogador(CorJogador.BRANCO,
-				tabuleiro));
+		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
+		peaoBrancoMovimentado = new Peao(
+				new Jogador("Teste", CorJogador.BRANCO));
 		peaoBrancoMovimentado.setJaMoveu();
-		peaoPreto = new Peao(new Jogador(CorJogador.PRETO, tabuleiro));
-		cavaloBranco = new Cavalo(new Jogador(CorJogador.BRANCO, tabuleiro));
+		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
+		cavaloBranco = new Cavalo(new Jogador("Teste", CorJogador.BRANCO));
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 6), peaoPreto);
@@ -90,7 +90,7 @@ public class TestePeao {
 		/** Verifica se o peão pode atacar uma posição vazia de frente */
 		Assert.assertFalse(peaoBranco.podeAtacar(new Posicao(6, 4),
 				new Posicao(6, 5), tabuleiro));
-		
+
 		/** Verifica se o peão pode atacar uma posição vazia em diagonal */
 		Assert.assertFalse(peaoBranco.podeAtacar(new Posicao(7, 3),
 				new Posicao(8, 4), tabuleiro));
