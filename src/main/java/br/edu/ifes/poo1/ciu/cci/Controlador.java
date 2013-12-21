@@ -1,28 +1,30 @@
 package br.edu.ifes.poo1.ciu.cci;
 
-import br.edu.ifes.poo1.ciu.cih.Ambiente;
 import br.edu.ifes.poo1.ciu.cih.Cli;
-import br.edu.ifes.poo1.ciu.cih.EntradaInvalidaException;
+import br.edu.ifes.poo1.ciu.cih.EntradaSaida;
 import br.edu.ifes.poo1.ciu.cih.Interpretador;
-import br.edu.ifes.poo1.ciu.cih.ItemMenuPrincipal;
+import br.edu.ifes.poo1.ciu.cih.ItemMenu;
+import br.edu.ifes.poo1.ciu.cih.Menu;
+import br.edu.ifes.poo1.ciu.cih.MenuAmbiente;
+import br.edu.ifes.poo1.ciu.cih.MenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
-import br.edu.ifes.poo1.cln.cdp.Pessoa;
+import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 
 /**
  * Controla a entrada e a saída da interface de linha de comando.
  */
 public class Controlador {
-	private Cli cli = new Terminal();
+	private Cli cli;
 
 	/**
 	 * Pede ao usuário para selecionar a interface a ser usada.
 	 */
 	public Controlador() {
-		instanciarAmbiente(selecionarAmbiente());
+		this(new MenuAmbiente().insistirPorEntradaValida(new EntradaSaida()));
 	}
 
 	/**
@@ -32,23 +34,12 @@ public class Controlador {
 	 * @param ambiente
 	 *            Ambiente a ser usado.
 	 */
-	public Controlador(Ambiente ambiente) {
-		instanciarAmbiente(ambiente);
-
-	}
-
-	/**
-	 * Intancia o modo de comunicação com o usuário.
-	 * 
-	 * @param ambiente
-	 *            Ambiente a ser usado para a comunicação.
-	 */
-	public void instanciarAmbiente(Ambiente ambiente) {
-		switch (ambiente) {
-		case PROMPT:
+	public Controlador(ItemMenu ambiente) {
+		switch (ambiente.getNome()) {
+		case "PROMPT":
 			cli = new Prompt();
 			break;
-		case TERMINAL:
+		case "TERMINAL":
 			cli = new Terminal();
 			break;
 
@@ -59,72 +50,39 @@ public class Controlador {
 	}
 
 	/**
-	 * Inicia o jogo.
+	 * Inicia o jogo. Serão exibidos os menus necessários e faz todo o controle
+	 * necessário do jogo.
 	 */
-	public void iniciarJogo() {
+	public void iniciar() {
 		// Este é o item do menu que o jogador escolheu (escolherá).
-		ItemMenuPrincipal itemEscolhido;
+		// ItemMenuPrincipal itemEscolhido;
+		Menu menuPrincipal = new MenuPrincipal();
 
 		// Inicia o menu deixando a escolha para o usuário do que fazer.
-		itemEscolhido = selecionarMenuPrincipal();
+		// itemEscolhido = selecionarMenuPrincipal();
+		ItemMenu itemEscolhido = menuPrincipal.insistirPorEntradaValida(cli
+				.getIo());
 
 		// Só termina o laço quando o jogador selecionar a opção de sair no menu
 		// principal.
-		while (itemEscolhido != ItemMenuPrincipal.SAIR) {
+		while (itemEscolhido.getNome() != "SAIR") {
 			// Busca qual foi a escolha do jogador.
-			switch (itemEscolhido) {
+			switch (itemEscolhido.getNome()) {
 
 			// Se o jogador tiver escolhido jogar o singleplayer.
-			case SINGLEPLAYER:
+			case "SINGLEPLAYER":
 				System.out
 						.println("O singleplayer não foi implementado ainda. :S");
 				// TODO: Implementar o singleplayer.
 				break;
 
 			// Se o jogador tiver escolhido o multiplayer.
-			case MULTIPLAYER:
-				// Pega o nome dos jogadores.
-				String nomeBrancas = cli.lerNomeJogadorBranco();
-				String nomePretas = cli.lerNomeJogadorPreto();
-
-				// Constrói a aplicação do jogo.
-				AplMultiplayer aplmulti = new AplMultiplayer(nomeBrancas,
-						nomePretas);
-
-				// Enquando não acabar o jogo, continuamos executando as jogadas
-				// dos jogadores e exibindo o estado do tabuleiro.
-				String jogadaCrua;
-				while (!aplmulti.getAcabouJogo()) {
-					// Atualiza o que é visual para os jogadores.
-					cli.atualizar(aplmulti.getTabuleiro(),
-							aplmulti.getBrancas(), aplmulti.getPretas());
-
-					// Pede o movimento do jogador.
-					jogadaCrua = cli.lerJogada(aplmulti.getTurno());
-
-					// Executa o movimento do jogador.
-					Jogada jogadaInterpretada;
-					try {
-						jogadaInterpretada = Interpretador
-								.interpretarJogada(jogadaCrua);
-						aplmulti.executarjogada(jogadaInterpretada);
-					} catch (JogadaInvalidaException e) {
-						// Avisa o usuário do erro e continua o jogo.
-						cli.exibirAlerta(e.getMessage());
-						continue;
-					}
-				}
-
-				// Após o fim do jogo, pegamos o vencedor, atualizamos o
-				// tabuleiro mais uma vez e comprimentamos o ganhador.
-				Pessoa vencedor = aplmulti.getVencedor();
-				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
-						aplmulti.getPretas());
-				cli.parabenizarVencedor(vencedor);
+			case "MULTIPLAYER":
+				controlarMultiplayer();
 				break;
 
 			// Se o jogador tiver escolhido ver os dados das partidas.
-			case DADOS:
+			case "DADOS":
 				System.out
 						.println("A visualização dos dados não foi implementado ainda. :S");
 				// TODO: Implementar a visualização dos dados.
@@ -136,45 +94,66 @@ public class Controlador {
 			}
 
 			// Re-exibe o menu para que o jogador selecione o que deseja.
-			itemEscolhido = selecionarMenuPrincipal();
+			itemEscolhido = menuPrincipal.insistirPorEntradaValida(cli.getIo());
 		}
 
-		// Se a execução chegou aqui, é porque o jogador optou por sair.
+		// Se a execução chegou aqui, é porque o jogador optou por sair de todo
+		// o jogo.
 	}
 
 	/**
-	 * Exibe o menu principal e pega uma escolha válida do usuário.
-	 * 
-	 * @return Item do menu principal selecionado.
+	 * Controla tudo o que é necessário para uma partida multiplayer. Ao final
+	 * do método, a partida terá encerrado.
 	 */
-	private ItemMenuPrincipal selecionarMenuPrincipal() {
-		do {
-			try {
-				// Tenta retornar o item escolhido pelo jogador
-				return cli.selecionarItemMenuPrincipal();
-			} catch (EntradaInvalidaException e) {
-				// Se o jogador escolher alguma entrada inválida, avise-o...
-				cli.exibirAlerta(e.getMessage());
-				continue; // ... e repita o laço.
-			}
-		} while (true);
-	}
+	public void controlarMultiplayer() {
+		// Pega o nome dos jogadores.
+		String nomeBrancas = cli.lerNomeJogadorBranco();
+		String nomePretas = cli.lerNomeJogadorPreto();
 
-	/**
-	 * Pega uma escolha de ambiente válida do usuário.
-	 * 
-	 * @return Ambiente escolhido.
-	 */
-	private Ambiente selecionarAmbiente() {
-		do {
+		// Constrói a aplicação do jogo.
+		AplMultiplayer aplmulti = new AplMultiplayer(nomeBrancas, nomePretas);
+
+		// Enquando não acabar o jogo, continuamos executando as jogadas
+		// dos jogadores e exibindo o estado do tabuleiro.
+		String jogadaCrua;
+		String aviso = "";
+		while (!aplmulti.getAcabouJogo()) {
+			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
+			// necessário.
+			if (aviso == "")
+				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
+						aplmulti.getPretas());
+			else
+				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
+						aplmulti.getPretas(), aviso);
+
+			// Retira a mensagem de aviso.
+			aviso = "";
+
+			// Pede o movimento do jogador.
+			jogadaCrua = cli.lerJogada(aplmulti.getTurno());
+
+			// Executa o movimento do jogador.
+			Jogada jogadaInterpretada;
 			try {
-				// Tenta retornar o item escolhido pelo jogador
-				return cli.selecionarAmbiente();
-			} catch (EntradaInvalidaException e) {
-				// Se o jogador escolher alguma entrada inválida, avise-o...
-				cli.exibirAlerta(e.getMessage());
-				continue; // ... e repita o laço.
+				jogadaInterpretada = Interpretador
+						.interpretarJogada(jogadaCrua);
+				aplmulti.executarjogada(jogadaInterpretada);
+			} catch (JogadaInvalidaException e) {
+				// Prepara um aviso para ser exibido na tela quando ela
+				// atualizar.
+				aviso = e.getMessage();
+
+				// E continua o ritmo do jogo.
+				continue;
 			}
-		} while (true);
+		}
+
+		// Após o fim do jogo, pegamos o vencedor, atualizamos o
+		// tabuleiro mais uma vez e comprimentamos o ganhador.
+		Jogador vencedor = aplmulti.getVencedor();
+		cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
+				aplmulti.getPretas());
+		cli.parabenizarVencedor(vencedor);
 	}
 }

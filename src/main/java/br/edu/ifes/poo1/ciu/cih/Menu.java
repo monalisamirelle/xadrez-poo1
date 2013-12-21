@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -13,6 +14,15 @@ public abstract class Menu {
 	/** Lista de itens a ser preenchida pelas classes filhas. */
 	private List<ItemMenu> itens;
 
+	/**
+	 * Contrói um menu com as devidas informações necessárias. Que são o seu
+	 * título e os itens do menu.
+	 * 
+	 * @param titulo
+	 *            Título do menu.
+	 * @param itens
+	 *            Cada itens do menu.
+	 */
 	public Menu(String titulo, List<ItemMenu> itens) {
 		this.titulo = titulo;
 		this.itens = itens;
@@ -30,7 +40,6 @@ public abstract class Menu {
 		}
 
 		return descricao;
-
 	}
 
 	/**
@@ -43,16 +52,17 @@ public abstract class Menu {
 	 *             Lançada caso não seja possível interpretar a escolha do
 	 *             usuário como uma entrada de menu válida.
 	 */
-	// TODO: Acertar a implementação, se esse método realmente for ser usado.
-	public ItemMenu selecionarItem(Cli cli) throws EntradaInvalidaException {
+	public ItemMenu selecionarItem(EntradaSaida io)
+			throws EntradaInvalidaException {
 		// Imprime todo o menu principal
-		cli.exibir(this.toString());
+		io.imprimirLinha(this.toString());
 
-		// Tenta lê a escolha do usuário.
+		// Tenta ler a escolha do usuário.
 		int escolha;
 		try {
 			// Lê a escolha do usuário.
-			escolha = Integer.parseInt(cli.pedir("Selecione uma opção:"));
+			escolha = Integer
+					.parseInt(io.pedir("Selecione uma opção do menu:"));
 		} catch (InputMismatchException e) {
 			// Se o jogador entrou com alguma sequência de caracteres que não
 			// possa ser identificada como um inteiro, então dizemos que a
@@ -62,9 +72,9 @@ public abstract class Menu {
 		}
 
 		// Retorna a entrada do menu correspondente a escolha do usuário.
-		for (ItemMenu item : itens) {
-			if (item.getOrdem() == escolha)
-				return item;
+		for (int i = 0; i < itens.size(); i++) {
+			if (i == escolha)
+				return itens.get(i);
 		}
 
 		// Se até este momento nenhum item foi retornado, é poque o jogador
@@ -74,13 +84,56 @@ public abstract class Menu {
 				"Você não selecionou um item válido da lista.");
 	}
 
+	/**
+	 * Insiste como o usuário até conseguir dele um item do menu válido.
+	 * Enquanto o usuário não der uma entrada válida, o método perguntará a ele
+	 * continuamente por uma entrada. Exibindo também os devidos avisos.
+	 * 
+	 * @param cli
+	 *            Interface de linha de comando a ser usada para se comunicar
+	 *            com o jogador.
+	 * @return Item escolhido pelo usuário.
+	 */
+	public ItemMenu insistirPorEntradaValida(EntradaSaida io) {
+		do {
+			try {
+				// Tenta pegar uma entrada do jogador e retornar um item
+				// escolhido pelo jogador.
+				return this.selecionarItem(io);
+			} catch (EntradaInvalidaException e) {
+				// Se o jogador escolher alguma entrada inválida, avise-o...
+				io.imprimirLinha("[!] " + e.getMessage());
+				continue; // ... e repita o laço.
+			}
+		} while (true);
+	}
+
+	/**
+	 * Retorna o título do menu.
+	 * 
+	 * @return Título do menu.
+	 */
 	public String getTitulo() {
 		return titulo;
 	}
 
-	// TODO: Pensar na possíbilidade de retornar umas simples array (ItemMenu[])
-	// e colocar o nome values() para este método. Assim como é uma enum.
+	/**
+	 * Fornece uma lista dos itens que há neste menu. É importante notar que a
+	 * lista forncecida é apenas uma cópia, e qualquer alteração feita nela não
+	 * reflete no Menu.
+	 * 
+	 * @return Uma lista com os itens deste menu.
+	 */
 	public List<ItemMenu> getItens() {
-		return itens;
+		return new ArrayList<ItemMenu>(itens);
+	}
+
+	/**
+	 * Retorna o número de itens de menu que a neste menu.
+	 * 
+	 * @return Número de itens no menu.
+	 */
+	public int size() {
+		return this.itens.size();
 	}
 }

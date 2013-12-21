@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.ciu.cih;
 
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
-import br.edu.ifes.poo1.cln.cdp.Pessoa;
+import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
@@ -24,7 +24,7 @@ public class Terminal extends Cli {
 	private final BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
 
 	@Override
-	public void atualizar(Tabuleiro tabuleiro, Pessoa brancas, Pessoa pretas) {
+	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
 		// Limpa a tela, antes de qualquer coisa.
 		limparTela();
 
@@ -34,8 +34,14 @@ public class Terminal extends Cli {
 
 	@Override
 	public void imprimirTabuleiro(Tabuleiro tabuleiro) {
+		// Imprime um cabeçalho com o número das colunas.
+		imprimirLinha("  1 2 3 4 5 6 7 8");
+
 		// Imprime o tabuleiro
 		for (int linha = 8; linha >= 1; linha--) {
+			// Imprimir o número da linha.
+			imprimir(linha + " ");
+
 			for (int coluna = 1; coluna <= 8; coluna++) {
 				Posicao posicao = new Posicao(coluna, linha);
 
@@ -43,18 +49,18 @@ public class Terminal extends Cli {
 				Peca peca = tabuleiro.espiarPeca(posicao);
 
 				// Adequa as cores a serem usadas na casa e na peça.
-				if (peca == null) {
-					trocarCor(ForegroundColor.ROSA, getCorCasa(posicao));
-					System.out.print("  ");
-				} else {
-					trocarCor(getCorPeca(peca), getCorCasa(posicao));
-					System.out.print(PecaToString(peca));
-				}
+				trocarCor(getCorPeca(peca), getCorCasa(posicao));
+				imprimir(PecaToString(peca));
 			}
 			// Restaura as cores normais do terminal.
 			resetarCor();
-			System.out.println();
+
+			// Imprimir o número da linha e salta para a próxima linha.
+			imprimirLinha(" " + linha);
 		}
+
+		// Imprime um rodapé com o número das colunas.
+		imprimirLinha("  1 2 3 4 5 6 7 8");
 	}
 
 	/**
@@ -65,6 +71,11 @@ public class Terminal extends Cli {
 	 * @return Cor com que a peça deve ser colorida.
 	 */
 	public ForegroundColor getCorPeca(Peca peca) {
+		// Se não houver peça, pouco importa a sua cor.
+		if (peca == null)
+			return corBrancas;
+
+		// Confere a cor da peça para retornar a cor adequada.
 		if (peca.getJogador().getCor() == CorJogador.BRANCO)
 			return corBrancas;
 		else
@@ -116,28 +127,27 @@ public class Terminal extends Cli {
 	 * @param bg
 	 *            Cor que será aplicada ao fundo do texto.
 	 */
-	public static void trocarCor(ForegroundColor fg, BackgroundColor bg) {
-		System.out.print("\u001b[" + fg.getSequencia() + ";"
-				+ bg.getSequencia() + "m");
+	public void trocarCor(ForegroundColor fg, BackgroundColor bg) {
+		imprimir("\u001b[" + fg.getSequencia() + ";" + bg.getSequencia() + "m");
 	}
 
 	/**
 	 * Troca a cor do que será impresso no terminal para a cor padrão do
 	 * ambiente.
 	 */
-	public static void resetarCor() {
-		System.out.print("\u001b[0m");
+	public void resetarCor() {
+		imprimir("\u001b[0m");
 	}
 
 	/**
 	 * Limpar a tela e retorna o cursors
 	 */
-	public static void limparTela() {
+	public void limparTela() {
 		// Limpa a tela (ANSI_CLS)
-		System.out.print("\u001b[2J");
+		imprimir("\u001b[2J");
 
 		// Retorna o cursor (ANSI_HOME)
-		System.out.print("\u001b[H");
+		imprimir("\u001b[H");
 	}
 
 }

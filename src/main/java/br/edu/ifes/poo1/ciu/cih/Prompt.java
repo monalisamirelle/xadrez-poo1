@@ -13,30 +13,30 @@ public class Prompt extends Cli {
 	@Override
 	protected void imprimirTabuleiro(Tabuleiro tabuleiro) {
 		for (int linha = 8; linha >= 1; linha--) {
-			// Imprime o cabeçalho da linha.
-			System.out
-					.println("-------------------------------------------------------------------------");
+			// Imprime o sepador de linhas.
+			imprimirLinha("-------------------------------------------------------------------------");
 			for (int coluna = 1; coluna <= 8; coluna++) {
-				System.out.print("|");
+				// Imprime separador de casas.
+				imprimir("|");
 
 				// Descobre a peça que está no tabuleiro.
 				Peca peca = tabuleiro.espiarPeca(new Posicao(coluna, linha));
 
-				// Imprime a peça e quem a controla.
+				imprimir(PecaToString(peca));
 				if (peca == null)
-					System.out.print("        ");
-				else {
-					System.out.print(PecaToString(peca));
-					if (peca.getJogador().getCor() == CorJogador.BRANCO)
-						System.out.print(" branco");
-					else
-						System.out.print(" preto ");
-				}
+					// Quantidade de espaços equivalente ao texto da cor do
+					// jogador nos casos logo abaixo.
+					imprimir("       ");
+				else if (peca.getJogador().getCor() == CorJogador.BRANCO)
+					imprimir(" branco");
+				else
+					imprimir(" preto ");
 			}
-			System.out.println("|");
+			// Imprime separador de casas e pula para a próxima linha.
+			imprimirLinha("|");
 		}
-		System.out
-				.println("-------------------------------------------------------------------------");
+		// Imprime o sepador de linhas.
+		imprimirLinha("-------------------------------------------------------------------------");
 	}
 
 	@Override

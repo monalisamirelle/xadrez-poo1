@@ -10,7 +10,7 @@ public class App {
 	public static void main(String[] args) {
 		// Inicia o jogo.
 		Controlador ctrl = new Controlador();
-		ctrl.iniciarJogo();
+		ctrl.iniciar();
 	}
 
 }
