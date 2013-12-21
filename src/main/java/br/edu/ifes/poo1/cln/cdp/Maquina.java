@@ -53,18 +53,22 @@ public class Maquina extends Jogador {
 			casaSelecionada = posicoesPossiveis.get(indiceAleatorio);
 			posicao = new Posicao((casaSelecionada % 8) - 1,
 					casaSelecionada / 8);
-			// Se a posição selecionada pelo tabuleiro for diferente de uma peça da máquina
-			if(tabuleiro.estaInimigo(this,posicao) == true || tabuleiro.estaVazio(posicao));
-				// Removemos a posição do escopo de posições possiveis
-				posicoesPossiveis.remove(indiceAleatorio);
-		// Faça isso enquanto...
-		} while (posicoesPossiveis.size()!=0 && (tabuleiro.estaInimigo(this,posicao) == true || tabuleiro.estaVazio(posicao)));
+			// Se a posição selecionada pelo tabuleiro for diferente de uma peça
+			// da máquina
+			if (tabuleiro.estaInimigo(this, posicao) == true
+					|| tabuleiro.estaVazio(posicao))
+				;
+			// Removemos a posição do escopo de posições possiveis
+			posicoesPossiveis.remove(indiceAleatorio);
+			// Faça isso enquanto...
+		} while (posicoesPossiveis.size() != 0
+				&& (tabuleiro.estaInimigo(this, posicao) == true || tabuleiro
+						.estaVazio(posicao)));
 		// Se todas as posições (peças) já foram analisadas. Retorne nulo
-		if(posicoesPossiveis.size()==0)
+		if (posicoesPossiveis.size() == 0)
 			return null;
 		// Retorne a posição possível
-		return (new Posicao((casaSelecionada % 8) - 1,
-				casaSelecionada / 8));
+		return (new Posicao((casaSelecionada % 8) - 1, casaSelecionada / 8));
 	}
 
 	/**
@@ -129,26 +133,26 @@ public class Maquina extends Jogador {
 	public Jogada escolherJogada() {
 		inicializaLista();
 		Posicao posicaoEscolhida;
-		Posicao ataque;
+		Posicao realizaAtaque;
 		// Tenta realizar um ataque
 		do {
 			posicaoEscolhida = escolhePeca();
-			ataque = ataqueEscolhido(posicaoEscolhida);
-		} while (ataque == null && posicaoEscolhida != null);
+			realizaAtaque = ataqueEscolhido(posicaoEscolhida);
+		} while (realizaAtaque == null && posicaoEscolhida != null);
 		// Se um ataque pode ser realizado
-		if (ataque != null) {
-			return new Jogada(posicaoEscolhida, ataque, true);
+		if (realizaAtaque != null) {
+			return new Jogada(posicaoEscolhida, realizaAtaque, TipoJogada.ATACAR);
 			// Tenta realizar movimento (caso um ataque não possa ser realizado)
 		} else {
 			inicializaLista();
-			Posicao movimento;
-			// Tenta realizar um ataque
+			Posicao realizaMovimento;
+			// Tenta realizar um movimento
 			do {
 				posicaoEscolhida = escolhePeca();
-				movimento = movimentoEscolhido(posicaoEscolhida);
-			} while (movimento == null && posicaoEscolhida != null);
-			if (movimento != null)
-				return new Jogada(posicaoEscolhida, movimento, true);
+				realizaMovimento = movimentoEscolhido(posicaoEscolhida);
+			} while (realizaMovimento == null && posicaoEscolhida != null);
+			if (realizaMovimento != null)
+				return new Jogada(posicaoEscolhida, realizaMovimento, TipoJogada.ANDAR);
 		}
 		return null;
 	}

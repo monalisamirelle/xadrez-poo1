@@ -71,7 +71,7 @@ public class Jogador {
 		}
 
 		// Faz as verificações para o ataque ou um simples andar da peça.
-		if (jogada.ehAtaque()) {
+		if (jogada.getTipoJogada()==TipoJogada.ATACAR) {
 			// Se não houver peça no destino e for um ataque, a jogada é
 			// inválida.
 			if (pecaDestino == null)
