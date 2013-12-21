@@ -57,11 +57,9 @@ public class Controlador {
 	 */
 	public void iniciar() {
 		// Este é o item do menu que o jogador escolheu (escolherá).
-		// ItemMenuPrincipal itemEscolhido;
 		Menu menuPrincipal = new MenuPrincipal();
 
 		// Inicia o menu deixando a escolha para o usuário do que fazer.
-		// itemEscolhido = selecionarMenuPrincipal();
 		ItemMenu itemEscolhido = menuPrincipal.insistirPorEntradaValida(cli
 				.getIo());
 
@@ -73,9 +71,7 @@ public class Controlador {
 
 			// Se o jogador tiver escolhido jogar o singleplayer.
 			case "SINGLEPLAYER":
-				System.out
-						.println("O singleplayer não foi implementado ainda. :S");
-				// TODO: Implementar o singleplayer.
+				controlarSinglePlayer();
 				break;
 
 			// Se o jogador tiver escolhido o multiplayer.
@@ -112,7 +108,7 @@ public class Controlador {
 		AplJogo apl = new AplSingleplayer(nomeBrancas, nomePretas);
 
 		// Enquando não acabar o jogo, continuamos executando as jogadas
-		// dos jogadores e exibindo o estado do tabuleiro.
+		// do jogador e exibindo o estado do tabuleiro.
 		String jogadaCrua;
 		String aviso = "";
 		while (!apl.getAcabouJogo()) {
@@ -131,7 +127,8 @@ public class Controlador {
 			// Pede o movimento do humano.
 			jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
 
-			// Executa o movimento do humano.
+			// Executa o movimento do humano. E a apl executa o movimento da IA
+			// logo em seguida.
 			Jogada jogadaInterpretada;
 			try {
 				jogadaInterpretada = Interpretador
@@ -145,18 +142,12 @@ public class Controlador {
 				// E continua o ritmo do jogo.
 				continue;
 			}
-			
-			// Pede o movimento da máquina.
-			Jogada jogadaMaquina;
-			
-			// TODO: Terminar implementação.
 		}
 
 		// Após o fim do jogo, pegamos o vencedor, atualizamos o
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
 		Jogador vencedor = apl.getVencedor();
-		cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
-				apl.getPretas());
+		cli.atualizar(apl.getTabuleiro(), apl.getBrancas(), apl.getPretas());
 		cli.parabenizarVencedor(vencedor);
 	}
 

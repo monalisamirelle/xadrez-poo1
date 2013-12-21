@@ -23,14 +23,6 @@ public class AplMultiplayer extends AplJogo {
 				nomePretas, CorJogador.PRETO));
 	}
 
-	/**
-	 * Processa a jogada recebida, executando-a no modelo.
-	 * 
-	 * @param jogada
-	 *            Entrada do jogador que codifica a jogada que deverá ser
-	 *            realizada.
-	 * @throws JogadaInvalidaException
-	 */
 	@Override
 	public void executarjogada(Jogada jogada) throws JogadaInvalidaException {
 		// Pega o jogador do turno atual.

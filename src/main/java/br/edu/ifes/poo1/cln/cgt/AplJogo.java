@@ -50,6 +50,14 @@ public abstract class AplJogo {
 		pretas.setTabuleiro(tabuleiro);
 	}
 
+	/**
+	 * Processa a jogada recebida, executando-a no modelo.
+	 * 
+	 * @param jogada
+	 *            Entrada do jogador que codifica a jogada que deverá ser
+	 *            realizada.
+	 * @throws JogadaInvalidaException
+	 */
 	public abstract void executarjogada(Jogada jogada)
 			throws JogadaInvalidaException;
 
