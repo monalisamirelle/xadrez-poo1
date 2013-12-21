@@ -14,9 +14,9 @@ public class TesteTorre {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		torreBranca = new Torre(new Jogador(CorJogador.BRANCO, tabuleiro));
-		peaoPreto = new Peao(new Jogador(CorJogador.PRETO, tabuleiro));
-		peaoBranco = new Peao(new Jogador(CorJogador.BRANCO, tabuleiro));
+		torreBranca = new Torre(new Jogador("Teste", CorJogador.BRANCO));
+		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
+		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 6), peaoPreto);
@@ -59,7 +59,7 @@ public class TesteTorre {
 				new Posicao(8, 8), tabuleiro));
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(1, 1),
 				new Posicao(5, 1), tabuleiro));
-		
+
 		/** Verifica se a torre pode atacar uma posição vazia */
 		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(6, 7),
 				new Posicao(6, 5), tabuleiro));

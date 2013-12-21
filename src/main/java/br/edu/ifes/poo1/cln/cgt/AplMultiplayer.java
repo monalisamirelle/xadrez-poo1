@@ -1,18 +1,9 @@
 package br.edu.ifes.poo1.cln.cgt;
 
-import br.edu.ifes.poo1.cln.cdp.Bispo;
-import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
-import br.edu.ifes.poo1.cln.cdp.Cavalo;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Pessoa;
-import br.edu.ifes.poo1.cln.cdp.Peao;
-import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Rainha;
-import br.edu.ifes.poo1.cln.cdp.Rei;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
-import br.edu.ifes.poo1.cln.cdp.Torre;
 
 /**
  * Aplicação para o controle do modo multiplayer.
@@ -47,9 +38,9 @@ public class AplMultiplayer extends AplJogo {
 
 		// Solicita-o que faça o movimento
 		atualJogador.executarJogada(jogada);
-		
+
 		// TODO: Fazer verificação do Xeque e o Xeque Mate.
-		
+
 		super.trocarTurno();
 	}
 }
