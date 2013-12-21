@@ -45,7 +45,7 @@ public abstract class AplJogo {
 			e.printStackTrace();
 		}
 
-		// Informa os jogadores de qual o tabuleiro que está em uso na partida.
+		// Informa os jogadores sobre qual o tabuleiro que está em uso na partida.
 		brancas.setTabuleiro(tabuleiro);
 		pretas.setTabuleiro(tabuleiro);
 	}
