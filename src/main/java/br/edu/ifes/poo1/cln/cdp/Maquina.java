@@ -42,7 +42,7 @@ public class Maquina extends Jogador {
 	 * 
 	 * @return
 	 */
-	private Posicao escolhePeca() {
+	private PosicaoEscolhida escolhePeca() {
 		int indiceAleatorio;
 		int casaSelecionada;
 		Posicao posicao;
@@ -52,14 +52,10 @@ public class Maquina extends Jogador {
 			casaSelecionada = posicoesPossiveis.get(indiceAleatorio);
 			posicao = new Posicao(((casaSelecionada - 1) % 8) + 1,
 					((casaSelecionada - 1) / 8) + 1);
-			// System.out.println("esta vazio?" + tabuleiro.estaVazio(posicao));
-			// System.out.println("esta inimigo?"
-			// + tabuleiro.estaInimigo(this, posicao));
 			// Se a posição selecionada pelo tabuleiro for diferente de uma peça
 			// da máquina
 			if (tabuleiro.estaInimigo(this, posicao) == true
 					|| tabuleiro.estaVazio(posicao) == true) {
-				//System.out.println("Peça removida");
 				// Removemos a posição do escopo de posições possiveis
 				posicoesPossiveis.remove(indiceAleatorio);
 			}
@@ -67,13 +63,14 @@ public class Maquina extends Jogador {
 		} while (posicoesPossiveis.size() != 0
 				&& (tabuleiro.estaInimigo(this, posicao) == true || tabuleiro
 						.estaVazio(posicao)));
-		System.out.println(casaSelecionada);
 		// Se todas as posições (peças) já foram analisadas. Retorne nulo
-		if (posicoesPossiveis.size() == 0)
+		if (posicoesPossiveis.size() == 0) {
 			return null;
+		}
 		// Retorne a posição possível
-		return (new Posicao(((casaSelecionada - 1) % 8) + 1,
-				((casaSelecionada - 1) / 8) + 1));
+		return new PosicaoEscolhida(new Posicao(
+				((casaSelecionada - 1) % 8) + 1,
+				((casaSelecionada - 1) / 8) + 1), indiceAleatorio);
 	}
 
 	/**
@@ -84,7 +81,6 @@ public class Maquina extends Jogador {
 	 */
 	private Posicao ataqueEscolhido(Posicao origem) {
 		Peca peca = tabuleiro.espiarPeca(origem);
-		//System.out.println("verifica: "+peca.podeAndar(new Posicao(6,4), new Posicao(6,8), tabuleiro));
 		ArrayList<Integer> ataquesPossiveis = new ArrayList<Integer>(64);
 		ataquesPossiveis = inicializaLista(ataquesPossiveis);
 		int indiceAleatorio;
@@ -92,23 +88,16 @@ public class Maquina extends Jogador {
 		Posicao destino;
 		do {
 			indiceAleatorio = geraIndiceAleatorio(ataquesPossiveis);
-			//System.out.println("Indice Aleatorio: " + indiceAleatorio);
 			casaSelecionada = ataquesPossiveis.get(indiceAleatorio);
-			//System.out.println("casa selecionada: " + casaSelecionada);
 			destino = new Posicao(((casaSelecionada - 1) % 8) + 1,
 					((casaSelecionada - 1) / 8) + 1);
-			//System.out.println(peca.podeAtacar(origem, destino, tabuleiro));
 			if (peca.podeAtacar(origem, destino, tabuleiro) == false)
 				ataquesPossiveis.remove(indiceAleatorio);
-		//	System.out.println("Ataques: "+ataquesPossiveis);
 		} while (peca.podeAtacar(origem, destino, tabuleiro) == false
 				&& ataquesPossiveis.size() != 0);
 		if (ataquesPossiveis.size() == 0) {
-			System.out.println("falhei");
 			return null;
 		}// Retorne o ataque
-		//System.out.println("atacar!");
-	//	System.out.println(destino.getLinha() + " " + destino.getColuna());
 		return destino;
 	}
 
@@ -146,24 +135,22 @@ public class Maquina extends Jogador {
 	 * 
 	 * @return
 	 */
-	public boolean escolherJogada() {
-
+	public Jogada escolherJogada() {
 		posicoesPossiveis = inicializaLista(posicoesPossiveis);
-		Posicao posicaoEscolhida;
-		Posicao realizaAtaque;
+		PosicaoEscolhida posicaoEscolhida;
+		Posicao realizaAtaque = new Posicao(0, 0); // Só para testar
 		// Tenta realizar um ataque
 		do {
 			posicaoEscolhida = escolhePeca();
-			System.out.println("posicao escolhida: "+posicaoEscolhida);
-			realizaAtaque = ataqueEscolhido(posicaoEscolhida);
-			//System.out.println("realizaAtaque: "+realizaAtaque);
-			posicoesPossiveis.remove(posicaoEscolhida);
-		} while (realizaAtaque == null && posicoesPossiveis != null);
+			if (posicaoEscolhida != null) {
+				realizaAtaque = ataqueEscolhido(posicaoEscolhida.getPosicao());
+				posicoesPossiveis.remove(posicaoEscolhida.getIndice());
+			}
+		} while (realizaAtaque == null && posicoesPossiveis.size() != 0);
 		// Se um ataque pode ser realizado
 		if (realizaAtaque != null) {
-			return true;
-			// return new Jogada(posicaoEscolhida, realizaAtaque,
-			// TipoJogada.ATACAR);
+			return new Jogada(posicaoEscolhida.getPosicao(), realizaAtaque,
+					TipoJogada.ATACAR);
 			// Tenta realizar movimento (caso um ataque não possa ser realizado)
 		} else {
 			posicoesPossiveis = inicializaLista(posicoesPossiveis);
@@ -171,19 +158,15 @@ public class Maquina extends Jogador {
 			// Tenta realizar um movimento
 			do {
 				posicaoEscolhida = escolhePeca();
-				System.out.println("Peça foi escolhida para movimentar\n"
-						+ "linha " + posicaoEscolhida.getLinha() + " coluna: "
-						+ posicaoEscolhida.getColuna());
-				realizaMovimento = movimentoEscolhido(posicaoEscolhida);
+				realizaMovimento = movimentoEscolhido(posicaoEscolhida
+						.getPosicao());
 			} while (realizaMovimento == null && posicaoEscolhida != null);
 			if (realizaMovimento != null) {
-				System.out.println("movimentou");
-				return true;
-				// return new Jogada(posicaoEscolhida, realizaMovimento,
-				// TipoJogada.ANDAR);
+				return new Jogada(posicaoEscolhida.getPosicao(),
+						realizaMovimento, TipoJogada.ANDAR);
 			}
 		}
-		return false;
+		return null;
 	}
 
 }
