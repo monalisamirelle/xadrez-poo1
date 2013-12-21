@@ -23,7 +23,6 @@ public class Maquina extends Jogador {
 		int contadorIndice;
 		for (contadorIndice = 0; contadorIndice <= 64; contadorIndice++)
 			posicoesPossiveis.add(contadorIndice);
-		System.out.println(posicoesPossiveis);
 	}
 
 	/**
@@ -50,6 +49,7 @@ public class Maquina extends Jogador {
 		do {
 			// Cria um valor correspondente a uma posição aleatória
 			indiceAleatorio = geraIndiceAleatorio(posicoesPossiveis);
+			System.out.println(indiceAleatorio);
 			casaSelecionada = posicoesPossiveis.get(indiceAleatorio);
 			posicao = new Posicao((casaSelecionada % 8) - 1,
 					casaSelecionada / 8);
@@ -57,13 +57,13 @@ public class Maquina extends Jogador {
 			// da máquina
 			if (tabuleiro.estaInimigo(this, posicao) == true
 					|| tabuleiro.estaVazio(posicao))
-				;
-			// Removemos a posição do escopo de posições possiveis
-			posicoesPossiveis.remove(indiceAleatorio);
+				// Removemos a posição do escopo de posições possiveis
+				posicoesPossiveis.remove(indiceAleatorio);
 			// Faça isso enquanto...
 		} while (posicoesPossiveis.size() != 0
 				&& (tabuleiro.estaInimigo(this, posicao) == true || tabuleiro
 						.estaVazio(posicao)));
+		System.out.println(casaSelecionada);
 		// Se todas as posições (peças) já foram analisadas. Retorne nulo
 		if (posicoesPossiveis.size() == 0)
 			return null;
@@ -130,18 +130,23 @@ public class Maquina extends Jogador {
 	 * 
 	 * @return
 	 */
-	public Jogada escolherJogada() {
+	public boolean escolherJogada() {
+		System.out.println("Iniciou teste");
 		inicializaLista();
 		Posicao posicaoEscolhida;
 		Posicao realizaAtaque;
 		// Tenta realizar um ataque
 		do {
+			System.out.println("u");
 			posicaoEscolhida = escolhePeca();
+			System.out.println("o");
 			realizaAtaque = ataqueEscolhido(posicaoEscolhida);
 		} while (realizaAtaque == null && posicaoEscolhida != null);
 		// Se um ataque pode ser realizado
 		if (realizaAtaque != null) {
-			return new Jogada(posicaoEscolhida, realizaAtaque, TipoJogada.ATACAR);
+			return true;
+			// return new Jogada(posicaoEscolhida, realizaAtaque,
+			// TipoJogada.ATACAR);
 			// Tenta realizar movimento (caso um ataque não possa ser realizado)
 		} else {
 			inicializaLista();
@@ -152,9 +157,11 @@ public class Maquina extends Jogador {
 				realizaMovimento = movimentoEscolhido(posicaoEscolhida);
 			} while (realizaMovimento == null && posicaoEscolhida != null);
 			if (realizaMovimento != null)
-				return new Jogada(posicaoEscolhida, realizaMovimento, TipoJogada.ANDAR);
+				return true;
+			// return new Jogada(posicaoEscolhida, realizaMovimento,
+			// TipoJogada.ANDAR);
 		}
-		return null;
+		return false;
 	}
 
 }
