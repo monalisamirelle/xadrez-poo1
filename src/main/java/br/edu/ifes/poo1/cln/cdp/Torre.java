@@ -5,7 +5,7 @@ public class Torre extends Peca {
 	/**
 	 * Instancia uma torre.
 	 */
-	public Torre(Pessoa jogador) {
+	public Torre(Jogador jogador) {
 		super(5, TipoPeca.TORRE, jogador);
 	}
 

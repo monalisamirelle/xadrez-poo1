@@ -10,7 +10,7 @@ public abstract class Peca {
 	private int valor;
 
 	/** Jogador que controla a peça. */
-	private Pessoa jogador;
+	private Jogador jogador;
 
 	/** Tipo da peça */
 	private TipoPeca tipoPeca;
@@ -26,7 +26,7 @@ public abstract class Peca {
 	 * @param jogador
 	 *            Jogador que detém a peça.
 	 */
-	public Peca(int valor, TipoPeca tipoPeca, Pessoa jogador) {
+	public Peca(int valor, TipoPeca tipoPeca, Jogador jogador) {
 		this.valor = valor;
 		this.jogador = jogador;
 		this.tipoPeca = tipoPeca;
@@ -44,8 +44,7 @@ public abstract class Peca {
 	 *            Posição para onde deseja-se andar a peça.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	// FIXME: Usar 'Posicao' ao invés de 'Casa'. E trabalhar de forma adequada
-	// com os parâmetros recebidos.
+	// FIXME: Trabalhar de forma adequada com os parâmetros recebidos.
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
 		if (tabuleiro.saiuPosicao(origem, destino)
@@ -70,9 +69,9 @@ public abstract class Peca {
 			Tabuleiro tabuleiro) {
 		if (tabuleiro.saiuPosicao(origem, destino)
 				&& !tabuleiro.atravessouTabuleiro(destino)
-				&& tabuleiro.estaInimigo(this.jogador, destino))
+				&& tabuleiro.estaInimigo(this.jogador, destino)){
 			return true;
-		return false;
+		}return false;
 	}
 
 	/**
@@ -91,7 +90,7 @@ public abstract class Peca {
 		return valor;
 	}
 
-	public Pessoa getJogador() {
+	public Jogador getJogador() {
 		return jogador;
 	}
 

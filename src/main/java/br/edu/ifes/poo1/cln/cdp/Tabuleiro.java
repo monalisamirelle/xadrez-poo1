@@ -78,21 +78,24 @@ public class Tabuleiro {
 		// Está vazio quando não houver peça ali.
 		return espiarPeca(posicao) == null;
 	}
-	
+
 	/**
-	 * Indica se uma determinada posição do tabuleiro está ocupada por um inimigo ou não.
+	 * Indica se uma determinada posição do tabuleiro está ocupada por um
+	 * inimigo ou não.
 	 * 
 	 * @param posicao
 	 *            Posição no tabuleiro.
 	 * @return Se está vazio.
 	 */
-	// TODO verificar se está funcionando
 	public boolean estaInimigo(Jogador jogador, Posicao destino) {
-		if(pecas[destino.getColuna()-1][destino.getLinha()-1].getJogador().getCor() != null && pecas[destino.getColuna()-1][destino.getLinha()-1].getJogador().getCor() != jogador.getCor())
+		if (this.espiarPeca(new Posicao(destino.getColuna(), destino.getLinha())) != null
+				&& this.espiarPeca(
+						new Posicao(destino.getColuna(), destino.getLinha()))
+						.getJogador().getCor() != jogador.getCor())
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * Indica se alguma peça da cor indicada ameaça a posição indicada
 	 * 
@@ -136,11 +139,11 @@ public class Tabuleiro {
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
 	public boolean atravessouTabuleiro(Posicao destino) {
-		if (destino.getLinha() >= 0 & destino.getLinha() < 8
-				& destino.getColuna() >= 0 & destino.getColuna() < 8)
-			return true;
-		else
+		if (destino.getLinha() > 0 & destino.getLinha() <= 8
+				& destino.getColuna() > 0 & destino.getColuna() <= 8)
 			return false;
+		else
+			return true;
 	}
 
 	/**
@@ -158,12 +161,17 @@ public class Tabuleiro {
 				- origem.getLinha());
 		int movimentoVertical = (int) Math.signum(destino.getColuna()
 				- origem.getColuna());
-		do {
+		while (linha != destino.getLinha() || coluna != destino.getColuna()) {
+			// Se não tivermos chegado na posição
 			linha = linha + movimentoHorizontal;
 			coluna = coluna + movimentoVertical;
-			if (pecas[coluna - 1][linha - 1] != null)
-				return false;
-		} while (linha != destino.getLinha() || coluna != destino.getColuna());
+			if (!(linha == destino.getLinha() && coluna == destino.getColuna())) {
+				// Se a posição no tabuleiro não for nula, informe que o
+				// movimento é proibido
+				if (pecas[coluna - 1][linha - 1] != null)
+					return false;
+			}
+		}
 		return true;
 	}
 
@@ -183,23 +191,8 @@ public class Tabuleiro {
 	}
 
 	/**
-	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
-	 * local
-	 * 
-	 * @param origem
-	 * @param destino
-	 * @return
-	 */
-	// FIXME: Conferir se o método está sendo usado adequadamente.
-	public boolean relizaMovimento(Posicao origem, Posicao destino) {
-		if (origem.getLinha() == destino.getLinha()
-				&& origem.getColuna() == destino.getColuna())
-			return false;
-		return true;
-	}
-	
-	/**
 	 * Verifica se pode ser realizado o roque menor
+	 * 
 	 * @param jogador
 	 * @return
 	 */
@@ -233,9 +226,10 @@ public class Tabuleiro {
 			}
 		return false;
 	}
-	
+
 	/**
-	 * Verifica se pode ser realizado o roque maior 
+	 * Verifica se pode ser realizado o roque maior
+	 * 
 	 * @param jogador
 	 * @return
 	 */

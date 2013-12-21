@@ -5,7 +5,7 @@ public class Rei extends Peca {
 	/**
 	 * Instancia um rei.
 	 */
-	public Rei(Pessoa jogador) {
+	public Rei(Jogador jogador) {
 		// O rei nunca poderá ser capturado, então o seu valor não é relevante.
 		super(8000, TipoPeca.REI, jogador);
 	}
