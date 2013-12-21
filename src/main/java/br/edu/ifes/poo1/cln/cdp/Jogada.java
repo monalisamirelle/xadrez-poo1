@@ -20,6 +20,29 @@ public class Jogada {
 	private TipoPeca tipoPromocao;
 
 	/**
+	 * Inicia uma jogada, mas somente do tipo roque. Qualquer outro tipo de
+	 * jogada indicado será recusado.
+	 * 
+	 * @param tipoRoque
+	 *            Tipo da jogada que será feita. Deve ser estritamente um Roque
+	 *            Menor ou um Roque Maior.
+	 * @throws JogadaInvalidaException 
+	 */
+	public Jogada(TipoJogada tipoRoque) throws JogadaInvalidaException {
+		switch (tipoRoque) {
+		case ANDAR:
+		case ATACAR:
+			throw new JogadaInvalidaException(
+					"Para realizer uma jogada que não seja um Roque, você deve especificar a origem e o destino do movimento.");
+
+		default:
+			this.tipoJogada = tipoRoque;
+			this.ehPromocao = false;
+			break;
+		}
+	}
+
+	/**
 	 * Inicia uma jogada que não inclua a promoção de um peão.
 	 * 
 	 * @param origem
