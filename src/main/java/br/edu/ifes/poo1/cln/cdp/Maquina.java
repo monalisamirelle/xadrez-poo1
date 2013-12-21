@@ -21,7 +21,7 @@ public class Maquina extends Jogador {
 	 */
 	private void inicializaLista() {
 		int contadorIndice;
-		for (contadorIndice = 0; contadorIndice <= 64; contadorIndice++)
+		for (contadorIndice = 1; contadorIndice <= 64; contadorIndice++)
 			posicoesPossiveis.add(contadorIndice);
 	}
 
@@ -49,10 +49,17 @@ public class Maquina extends Jogador {
 		do {
 			// Cria um valor correspondente a uma posição aleatória
 			indiceAleatorio = geraIndiceAleatorio(posicoesPossiveis);
-			System.out.println(indiceAleatorio);
+			System.out.println("Indice Aleatório: " + indiceAleatorio);
 			casaSelecionada = posicoesPossiveis.get(indiceAleatorio);
-			posicao = new Posicao((casaSelecionada % 8) - 1,
+			System.out.println("Casa selecionada: " + casaSelecionada);
+			posicao = new Posicao((casaSelecionada - 1) % 8,
 					casaSelecionada / 8);
+			System.out.println("Posicao linha: " + posicao.getLinha()
+					+ "\nPosicao coluna: " + posicao.getColuna());
+			System.out.println("Testes");
+			System.out.println("esta vazio?" + tabuleiro.estaVazio(posicao));
+			System.out.println("esta inimigo?"
+					+ tabuleiro.estaInimigo(this, posicao));
 			// Se a posição selecionada pelo tabuleiro for diferente de uma peça
 			// da máquina
 			if (tabuleiro.estaInimigo(this, posicao) == true
@@ -68,7 +75,7 @@ public class Maquina extends Jogador {
 		if (posicoesPossiveis.size() == 0)
 			return null;
 		// Retorne a posição possível
-		return (new Posicao((casaSelecionada % 8) - 1, casaSelecionada / 8));
+		return (new Posicao((casaSelecionada - 1) % 8, casaSelecionada / 8));
 	}
 
 	/**
@@ -133,13 +140,15 @@ public class Maquina extends Jogador {
 	public boolean escolherJogada() {
 		System.out.println("Iniciou teste");
 		inicializaLista();
+		System.out.println(posicoesPossiveis);
 		Posicao posicaoEscolhida;
 		Posicao realizaAtaque;
 		// Tenta realizar um ataque
 		do {
-			System.out.println("u");
 			posicaoEscolhida = escolhePeca();
-			System.out.println("o");
+			System.out.println("Peça foi escolhida\n" + "linha "
+					+ posicaoEscolhida.getLinha() + "coluna: "
+					+ posicaoEscolhida.getColuna());
 			realizaAtaque = ataqueEscolhido(posicaoEscolhida);
 		} while (realizaAtaque == null && posicaoEscolhida != null);
 		// Se um ataque pode ser realizado
