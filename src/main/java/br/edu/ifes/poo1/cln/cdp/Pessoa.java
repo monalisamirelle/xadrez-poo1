@@ -5,9 +5,8 @@ package br.edu.ifes.poo1.cln.cdp;
  */
 public class Pessoa extends Jogador {
 
-	public Pessoa(String nome, CorJogador cor, Tabuleiro tabuleiro){
-		super(cor,tabuleiro);
-		this.nome = nome;
+	public Pessoa(String nome, CorJogador cor){
+		super(nome, cor);
 	}
 
 	/**

@@ -22,9 +22,9 @@ public class Jogador {
 	 * @param nome
 	 *            Nome do jogador.
 	 */
-	public Jogador(CorJogador cor, Tabuleiro tabuleiro) {
+	public Jogador(String nome, CorJogador cor) {
+		this.nome = nome;
 		this.cor = cor;
-		this.tabuleiro = tabuleiro;
 	}
 
 	/**
@@ -47,6 +47,11 @@ public class Jogador {
 
 	public CorJogador getCor() {
 		return cor;
+	}
+
+	/** O tabuleiro só deve ser alterado, antes do início da partida. */
+	public void setTabuleiro(Tabuleiro tabuleiro) {
+		this.tabuleiro = tabuleiro;
 	}
 
 }
