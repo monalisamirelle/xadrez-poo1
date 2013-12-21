@@ -30,7 +30,6 @@ public class TesteRainha {
 
 	@Test
 	public void podeAndar() {
-
 		/** Verifica se a rainha pode realizar determinado movimento */
 		Assert.assertTrue(rainhaBranca.podeAndar(new Posicao(4, 4),
 				new Posicao(5, 5), tabuleiro));
@@ -40,27 +39,6 @@ public class TesteRainha {
 				new Posicao(7, 7), tabuleiro));
 		Assert.assertTrue(rainhaBranca.podeAndar(new Posicao(4, 4),
 				new Posicao(6, 6), tabuleiro));
-
-		// FIXME: Não sei se esses testes entram aqui
-		/**
-		 * // Verifica se a peça realiza movimento atravessando o tabuleiro
-		 * Assert.assertFalse(rainhaBranca.podeAndar(new Posicao(4, 4), new
-		 * Posicao(9, 9), tabuleiro));
-		 * Assert.assertFalse(rainhaBranca.podeAndar(new Posicao(4, 4), new
-		 * Posicao(4, 0), tabuleiro));
-		 * 
-		 * // Verifica se a peça realiza movimento não saindo da posição
-		 * Assert.assertFalse(rainhaBranca.podeAndar(new Posicao(5, 5), new
-		 * Posicao(5, 5), tabuleiro));
-		 * Assert.assertFalse(rainhaBranca.podeAndar(new Posicao(7, 7), new
-		 * Posicao(7, 7), tabuleiro));
-		 * 
-		 * // Verifica se a peça está encontrando outra peça como obstáculo
-		 * Assert.assertFalse(rainhaBranca.podeAndar(new Posicao(4, 4), new
-		 * Posicao(8, 4), tabuleiro));
-		 * Assert.assertFalse(rainhaBranca.podeAndar(new Posicao(4, 4), new
-		 * Posicao(6, 2), tabuleiro));
-		 */
 	}
 
 	@Test
