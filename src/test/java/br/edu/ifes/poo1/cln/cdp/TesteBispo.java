@@ -16,6 +16,7 @@ public class TesteBispo {
 		tabuleiro = new Tabuleiro();
 		bispoBranco = new Bispo(new Jogador(CorJogador.BRANCO, tabuleiro));
 		peaoPreto = new Peao(new Jogador(CorJogador.PRETO, tabuleiro));
+		peaoBranco = new Peao(new Jogador(CorJogador.BRANCO, tabuleiro));
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 4), peaoPreto);

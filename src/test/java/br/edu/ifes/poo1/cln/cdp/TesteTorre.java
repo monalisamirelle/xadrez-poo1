@@ -16,6 +16,7 @@ public class TesteTorre {
 		tabuleiro = new Tabuleiro();
 		torreBranca = new Torre(new Jogador(CorJogador.BRANCO, tabuleiro));
 		peaoPreto = new Peao(new Jogador(CorJogador.PRETO, tabuleiro));
+		peaoBranco = new Peao(new Jogador(CorJogador.BRANCO, tabuleiro));
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 6), peaoPreto);
