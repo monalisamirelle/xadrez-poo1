@@ -113,7 +113,7 @@ public class AplMultiplayer {
 		Pessoa atualJogador = this.turno;
 
 		// Solicita-o que faça o movimento
-		atualJogador.movimentarPeca(jogada);
+		atualJogador.executarJogada(jogada);
 
 		// Troca para o próximo jogador.
 		if (turno == brancas)
