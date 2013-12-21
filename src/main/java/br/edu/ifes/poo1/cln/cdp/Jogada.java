@@ -10,14 +10,14 @@ public class Jogada {
 	/** Destino do movimento. */
 	private Posicao destino;
 
-	/** Se a jogada é um ataque (true), ou se a peça deve andar apenas (false). */
-	private boolean ehAtaque;
+	/** Indica o tipo de jogada que deve ser realizada. */
+	private TipoJogada tipoJogada;
 
 	/** Se será necessária uma promoção de um peão (true), ou não (false). */
 	private boolean ehPromocao;
 
 	/** Para qual peça o peão deve ser promovido. */
-	private TipoPeca promocao;
+	private TipoPeca tipoPromocao;
 
 	/**
 	 * Inicia uma jogada que não inclua a promoção de um peão.
@@ -26,36 +26,34 @@ public class Jogada {
 	 *            Posição da peça que será movida.
 	 * @param destino
 	 *            Destino do movimento.
-	 * @param ehAtaque
-	 *            Indica se a jogada é um ataque (true) ou um movimento do tipo
-	 *            andar (false).
+	 * @param tipo
+	 *            Indica o tipo de jogada que deve ser realizado.
 	 */
-	public Jogada(Posicao origem, Posicao destino, boolean ehAtaque) {
+	public Jogada(Posicao origem, Posicao destino, TipoJogada tipo) {
 		this.origem = origem;
 		this.destino = destino;
-		this.ehAtaque = ehAtaque;
+		this.tipoJogada = tipo;
 		this.ehPromocao = false;
 	}
 
 	/**
-	 * Inicia uma jogada que inclua a promoção de um peão.
+	 * Inicia uma jogada que incluirá a promoção de um peão.
 	 * 
 	 * @param origem
 	 *            Posição da peça que será movida.
 	 * @param destino
 	 *            Destino do movimento.
-	 * @param ehAtaque
-	 *            Indica se a jogada é um ataque (true) ou um movimento do tipo
-	 *            andar (false).
+	 * @param tipo
+	 *            Indica o tipo de jogada que deve ser realizado.
 	 * @param promocao
 	 *            O tipo de peça para o qual o peão será promovido.
 	 */
-	public Jogada(Posicao origem, Posicao destino, boolean ehAtaque,
+	public Jogada(Posicao origem, Posicao destino, TipoJogada tipo,
 			TipoPeca promocao) {
-		this(origem, destino, ehAtaque);
+		this(origem, destino, tipo);
 
 		this.ehPromocao = true; // Re-atribui o valor a variável.
-		this.promocao = promocao;
+		this.tipoPromocao = promocao;
 	}
 
 	public Posicao getOrigem() {
@@ -66,8 +64,8 @@ public class Jogada {
 		return destino;
 	}
 
-	public boolean ehAtaque() {
-		return ehAtaque;
+	public TipoJogada getTipoJogada() {
+		return tipoJogada;
 	}
 
 	public boolean ehPromocao() {
@@ -75,6 +73,6 @@ public class Jogada {
 	}
 
 	public TipoPeca getPromocao() {
-		return promocao;
+		return tipoPromocao;
 	}
 }
