@@ -129,7 +129,7 @@ public class Controlador {
 			aviso = "";
 
 			// Pede o movimento do humano.
-			jogadaCrua = cli.lerJogada(apl.getTurno());
+			jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
 
 			// Executa o movimento do humano.
 			Jogada jogadaInterpretada;
@@ -148,6 +148,8 @@ public class Controlador {
 			
 			// Pede o movimento da máquina.
 			Jogada jogadaMaquina;
+			
+			// TODO: Terminar implementação.
 		}
 
 		// Após o fim do jogo, pegamos o vencedor, atualizamos o
@@ -188,7 +190,7 @@ public class Controlador {
 			aviso = "";
 
 			// Pede o movimento do jogador.
-			jogadaCrua = cli.lerJogada(aplmulti.getTurno());
+			jogadaCrua = cli.lerJogada(aplmulti.getJogadorTurnoAtual());
 
 			// Executa o movimento do jogador.
 			Jogada jogadaInterpretada;

@@ -30,7 +30,7 @@ public class AplSingleplayer extends AplJogo {
 		super.trocarTurno();
 		
 		// Pede a jogada da máquina.
-		Jogada jogadaMaquina;
+		Jogada jogadaMaquina = ((Maquina) pretas).escolherJogada();
 		
 		// Executa a jogada da máquina.
 		pretas.executarJogada(jogadaMaquina);
