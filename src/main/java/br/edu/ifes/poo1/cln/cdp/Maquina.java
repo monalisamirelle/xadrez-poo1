@@ -11,9 +11,8 @@ public class Maquina extends Jogador {
 	 */
 	private ArrayList<Integer> posicoesPossiveis = new ArrayList<Integer>(64);
 
-	public Maquina(CorJogador cor, Tabuleiro tabuleiro) {
-		super(cor, tabuleiro);
-		this.nome = "Zeus";
+	public Maquina(String nome, CorJogador cor) {
+		super(nome, cor);
 	}
 
 	/**
