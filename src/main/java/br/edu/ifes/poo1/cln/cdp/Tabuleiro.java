@@ -161,17 +161,23 @@ public class Tabuleiro {
 				- origem.getLinha());
 		int movimentoVertical = (int) Math.signum(destino.getColuna()
 				- origem.getColuna());
-		while (linha != destino.getLinha() || coluna != destino.getColuna()) {
+		while ((linha != destino.getLinha() || coluna != destino.getColuna())) {
 			// Se não tivermos chegado na posição
 			linha = linha + movimentoHorizontal;
 			coluna = coluna + movimentoVertical;
+			if (atravessouTabuleiro(new Posicao(coluna,linha))==true){
+				return false;
+			}
 			if (!(linha == destino.getLinha() && coluna == destino.getColuna())) {
 				// Se a posição no tabuleiro não for nula, informe que o
 				// movimento é proibido
-				if (pecas[coluna - 1][linha - 1] != null)
+				if (pecas[coluna - 1][linha - 1] != null) {
+		//			System.out.println("movimento proibido");
 					return false;
+				}
 			}
 		}
+	//	System.out.println("movimento permitido");
 		return true;
 	}
 

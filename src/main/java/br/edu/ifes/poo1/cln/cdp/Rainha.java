@@ -24,13 +24,19 @@ public class Rainha extends Peca {
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
-		if (super.podeAtacar(origem, destino, tabuleiro)
-				&& tabuleiro.podeRealizarMovimentacao(origem, destino)) {
-			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) > 0)
-					|| (this.tamanhoMovimento(origem.getColuna(),
-							destino.getColuna()) > 0))
-				return true;
+		if (super.podeAtacar(origem, destino, tabuleiro)) {
+			if (tabuleiro.podeRealizarMovimentacao(origem, destino)) {
+				if ((this.tamanhoMovimento(origem.getLinha(),
+						destino.getLinha()) > 0)
+						|| (this.tamanhoMovimento(origem.getColuna(),
+								destino.getColuna()) > 0)) {
+					//System.out.println("rainha atacou");
+					return true;
+				}
+			}
 		}
+		//System.out.println("rainha não atacou");
 		return false;
 	}
+
 }
