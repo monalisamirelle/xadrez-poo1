@@ -11,11 +11,10 @@ public class TesteMaquina {
 	Rainha rainhaPreta;
 	Peao peaoBranco;
 	Jogada jogada;
-	CorJogador cor;
 
 	@Before
 	public void before() throws CasaOcupadaException {
-		maquina = new Maquina("Zeus",cor.PRETO);
+		maquina = new Maquina("Zeus",CorJogador.PRETO);
 		tabuleiro = new Tabuleiro();
 		rainhaPreta = new Rainha(new Jogador("Teste", CorJogador.PRETO));
 		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
