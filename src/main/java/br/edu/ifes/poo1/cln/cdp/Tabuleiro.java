@@ -234,33 +234,33 @@ public class Tabuleiro {
 	 * @return
 	 */
 	public boolean RoqueMenor(Jogador jogador) {
-		Posicao posicaoRei;
-		Posicao posicaoTorre;
+		Posicao posicaoDesejadaRei;
+		Posicao posicaoDesejadaTorre;
 		// Se for um roque menor do jogador de peças brancas
-		if (jogador.getCor() == CorJogador.BRANCO)
+		if (jogador.getCor() == CorJogador.BRANCO) {
 			// Se o rei e a torre ainda não se moveram
-			if (pecas[4][0].getJaMoveu() == false
-					& pecas[7][0].getJaMoveu() == false) {
+			if (this.espiarPeca(new Posicao(5, 1)).getJaMoveu() == false
+					& this.espiarPeca(new Posicao(8, 1)).getJaMoveu() == false) {
 				// Se as casas que serão ocupadas por eles estão vazias
-				posicaoRei = new Posicao(1, 7);
-				posicaoTorre = new Posicao(1, 6);
-				if (this.estaVazio(posicaoRei) == true
-						&& this.estaVazio(posicaoTorre) == true)
+				posicaoDesejadaRei = new Posicao(7, 1);
+				posicaoDesejadaTorre = new Posicao(6, 1);
+				if (this.estaVazio(posicaoDesejadaRei) == true
+						&& this.estaVazio(posicaoDesejadaTorre) == true)
 					return true;
 			}
-			// Se for um roque menor do jogador de peças pretas
-			else {
-				// Se o rei e a torre ainda não se moveram
-				if (pecas[4][7].getJaMoveu() == false
-						& pecas[7][7].getJaMoveu() == false) {
-					// Se as casas que serão ocupadas por eles estão vazias
-					posicaoRei = new Posicao(8, 7);
-					posicaoTorre = new Posicao(8, 6);
-					if (this.estaVazio(posicaoRei) == true
-							&& this.estaVazio(posicaoTorre) == true)
-						return true;
-				}
+		// Se for um roque menor do jogador de peças pretas
+		} else {
+			// Se o rei e a torre ainda não se moveram
+			if (this.espiarPeca(new Posicao(5, 8)).getJaMoveu() == false
+					& this.espiarPeca(new Posicao(8, 8)).getJaMoveu() == false) {
+				// Se as casas que serão ocupadas por eles estão vazias
+				posicaoDesejadaRei = new Posicao(7, 8);
+				posicaoDesejadaTorre = new Posicao(6, 8);
+				if (this.estaVazio(posicaoDesejadaRei) == true
+						&& this.estaVazio(posicaoDesejadaTorre) == true)
+					return true;
 			}
+		}
 		return false;
 	}
 
@@ -271,33 +271,33 @@ public class Tabuleiro {
 	 * @return
 	 */
 	public boolean RoqueMaior(Jogador jogador) {
-		Posicao posicaoRei;
-		Posicao posicaoTorre;
-		// Se for um roque menor do jogador de peças brancas
-		if (jogador.getCor() == CorJogador.BRANCO)
+		Posicao posicaoDesejadaRei;
+		Posicao posicaoDesejadaTorre;
+		// Se for um roque maior do jogador de peças brancas
+		if (jogador.getCor() == CorJogador.BRANCO) {
 			// Se o rei e a torre ainda não se moveram
-			if (pecas[4][0].getJaMoveu() == false
-					& pecas[0][0].getJaMoveu() == false) {
+			if (this.espiarPeca(new Posicao(5, 1)).getJaMoveu() == false
+					& this.espiarPeca(new Posicao(1, 1)).getJaMoveu() == false) {
 				// Se as casas que serão ocupadas por eles estão vazias
-				posicaoRei = new Posicao(1, 3);
-				posicaoTorre = new Posicao(1, 4);
-				if (this.estaVazio(posicaoRei) == true
-						&& this.estaVazio(posicaoTorre) == true)
+				posicaoDesejadaRei = new Posicao(3, 1);
+				posicaoDesejadaTorre = new Posicao(4, 1);
+				if (this.estaVazio(posicaoDesejadaRei) == true
+						&& this.estaVazio(posicaoDesejadaTorre) == true)
 					return true;
 			}
-			// Se for um roque menor do jogador de peças pretas
-			else {
-				// Se o rei e a torre ainda não se moveram
-				if (pecas[4][7].getJaMoveu() == false
-						& pecas[0][7].getJaMoveu() == false) {
-					// Se as casas que serão ocupadas por eles estão vazias
-					posicaoRei = new Posicao(8, 3);
-					posicaoTorre = new Posicao(8, 4);
-					if (this.estaVazio(posicaoRei) == true
-							&& this.estaVazio(posicaoTorre) == true)
-						return true;
-				}
+		// Se for um roque maior do jogador de peças pretas
+		} else {
+			// Se o rei e a torre ainda não se moveram
+			if (this.espiarPeca(new Posicao(5, 8)).getJaMoveu() == false
+					& this.espiarPeca(new Posicao(1, 8)).getJaMoveu() == false) {
+				// Se as casas que serão ocupadas por eles estão vazias
+				posicaoDesejadaRei = new Posicao(3, 8);
+				posicaoDesejadaTorre = new Posicao(4, 8);
+				if (this.estaVazio(posicaoDesejadaRei) == true
+						&& this.estaVazio(posicaoDesejadaTorre) == true)
+					return true;
 			}
+		}
 		return false;
 	}
 
