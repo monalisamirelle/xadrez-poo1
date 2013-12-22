@@ -20,15 +20,15 @@ public class TesteMaquina {
 		maquina.setTabuleiro(tabuleiro);
 
 		/** Coloca peças no tabuleiro */
-		tabuleiro.colocarPeca(new Posicao(6, 4), rainhaPreta);
+		tabuleiro.colocarPeca(new Posicao(5, 8), rainhaPreta);
 		tabuleiro.colocarPeca(new Posicao(7, 2), torrePreta);
 		tabuleiro.colocarPeca(new Posicao(7, 7), peaoBranco);
 	}
 
 	// TODO fazer teste
-
 	/**
-	 * @Test public void escolherJogada() {
-	 *       Assert.assertTrue(maquina.escolherJogada()); }
+	 * @Test public void escolherJogada() { Assert.assertEquals(new Jogada(new
+	 *       Posicao(7, 7), new Posicao(5, 5), TipoJogada.ATACAR),
+	 *       maquina.escolherJogada()); }
 	 */
 }
