@@ -59,10 +59,11 @@ public class TesteTorre {
 				new Posicao(8, 8), tabuleiro));
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(1, 1),
 				new Posicao(5, 1), tabuleiro));
-
+		 
+		
 		/** Verifica se a torre pode atacar uma posição vazia. */
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(6, 7),
-				new Posicao(6, 5), tabuleiro));
+				new Posicao(6, 8), tabuleiro));
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(8, 2),
 				new Posicao(6, 2), tabuleiro));
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(3, 8),
