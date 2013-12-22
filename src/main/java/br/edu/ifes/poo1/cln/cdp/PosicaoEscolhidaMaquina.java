@@ -1,10 +1,10 @@
 package br.edu.ifes.poo1.cln.cdp;
 
-public class PosicaoEscolhida {
+public class PosicaoEscolhidaMaquina {
 	private Posicao posicao;
 	private int indice;
 
-	PosicaoEscolhida(Posicao posicao, int indice) {
+	PosicaoEscolhidaMaquina(Posicao posicao, int indice) {
 		this.posicao = posicao;
 		this.indice = indice;
 	}

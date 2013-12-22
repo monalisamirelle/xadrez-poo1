@@ -42,7 +42,7 @@ public class Maquina extends Jogador {
 	 * 
 	 * @return
 	 */
-	private PosicaoEscolhida escolhePeca() {
+	private PosicaoEscolhidaMaquina escolhePeca() {
 		int indiceAleatorio;
 		int casaSelecionada;
 		Posicao posicao;
@@ -68,7 +68,7 @@ public class Maquina extends Jogador {
 			return null;
 		}
 		// Retorne a posição possível
-		return new PosicaoEscolhida(new Posicao(
+		return new PosicaoEscolhidaMaquina(new Posicao(
 				((casaSelecionada - 1) % 8) + 1,
 				((casaSelecionada - 1) / 8) + 1), indiceAleatorio);
 	}
@@ -136,7 +136,7 @@ public class Maquina extends Jogador {
 	 */
 	public Jogada escolherJogada() {
 		posicoesPossiveis = inicializaLista(posicoesPossiveis);
-		PosicaoEscolhida posicaoEscolhida;
+		PosicaoEscolhidaMaquina posicaoEscolhida;
 		Posicao realizaAtaque = null;
 
 		// Tenta realizar um ataque
