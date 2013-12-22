@@ -98,7 +98,7 @@ public abstract class Peca {
 	}
 
 	/**
-	 * Vê o valor absoluto de um movimento (utiliza o valor desejado menos o
+	 * Vê o valor absoluto de um movimento horizontal ou vertical (utiliza o valor desejado menos o
 	 * valor atual)
 	 * 
 	 * @param posicaoOcupada
