@@ -36,6 +36,10 @@ public class Tabuleiro {
 	 * @throws CasaOcupadaException
 	 */
 	public Tabuleiro(Jogador brancas, Jogador pretas) {
+		// Inicia o tabuleiro sem nenhuma peça.
+		this();
+
+		// Posiciona as peças.
 		try {
 			// Posiciona as peças brancas, exceto os peões.
 			this.colocarPeca(new Posicao(1, 1), new Torre(brancas));
@@ -113,8 +117,11 @@ public class Tabuleiro {
 	 */
 	public void colocarPeca(Posicao posicao, Peca peca)
 			throws CasaOcupadaException {
+		// Não é possível posicionar a peça se a casa estiver ocupada.
 		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null)
 			throw new CasaOcupadaException();
+
+		// Coloca a peça na posição indicada.
 		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
 	}
 
@@ -171,6 +178,10 @@ public class Tabuleiro {
 				// Pega a peça na casa varrida.
 				Peca peca = espiarPeca(origem);
 
+				// Se for um rei, pula.
+				if (peca.getTipoPeca() == TipoPeca.REI)
+					continue;
+				
 				// Pula as peças que não forem da cor indicada.
 				if (peca.getJogador().getCor() != cor)
 					continue;
@@ -328,7 +339,7 @@ public class Tabuleiro {
 	public Posicao encontrarRei(CorJogador cor) {
 		// Varre o tabuleiro procurando o rei da cor indicada.
 		for (int coluna = 1; coluna <= 8; coluna++) {
-			for (int linha = 0; linha <= 8; linha++) {
+			for (int linha = 1; linha <= 8; linha++) {
 				// Forma a posição que estamos a verificar.
 				Posicao posicao = new Posicao(coluna, linha);
 
@@ -385,14 +396,18 @@ public class Tabuleiro {
 		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna(), posicaoRei
 				.getLinha() + 1));
 
-		// Retira da lista as posições que estão fora do tabuleiro.
+		List<Posicao> posicoesAoRedorValidas = new ArrayList<Posicao>();
+		// Filtra as posições, verificando quais estão dentro dos limites do
+		// tabuleiro.
 		for (Posicao posicao : posicoesAoRedor) {
-			if (estaForaDoTabuleiro(posicao))
-				posicoesAoRedor.remove(posicao);
+			// Se a posição está dentro do tabuleiro ela é adcionada como
+			// válida.
+			if (!estaForaDoTabuleiro(posicao))
+				posicoesAoRedorValidas.add(posicao);
 		}
 
 		// Retorna a lista pronta.
-		return posicoesAoRedor;
+		return posicoesAoRedorValidas;
 	}
 
 	/**
