@@ -220,12 +220,10 @@ public class Tabuleiro {
 				// Se a posição no tabuleiro não for nula, informe que o
 				// movimento é proibido
 				if (pecas[coluna - 1][linha - 1] != null) {
-					// System.out.println("movimento proibido");
 					return false;
 				}
 			}
 		}
-		// System.out.println("movimento permitido");
 		return true;
 	}
 
