@@ -95,9 +95,9 @@ public class Maquina extends Jogador {
 				ataquesPossiveis.remove(indiceAleatorio);
 		} while (peca.podeAtacar(origem, destino, tabuleiro) == false
 				&& ataquesPossiveis.size() != 0);
-		if (ataquesPossiveis.size() == 0) {
+		if (ataquesPossiveis.size() == 0)
 			return null;
-		}// Retorne o ataque
+		// Retorne o ataque
 		return destino;
 	}
 
@@ -107,7 +107,6 @@ public class Maquina extends Jogador {
 	 * @param origem
 	 * @return
 	 */
-	// Trabalhando de 1 a 8
 	private Posicao movimentoEscolhido(Posicao origem) {
 		Peca peca = tabuleiro.espiarPeca(origem);
 		ArrayList<Integer> movimentosPossiveis = new ArrayList<Integer>(64);
@@ -138,7 +137,8 @@ public class Maquina extends Jogador {
 	public Jogada escolherJogada() {
 		posicoesPossiveis = inicializaLista(posicoesPossiveis);
 		PosicaoEscolhida posicaoEscolhida;
-		Posicao realizaAtaque = new Posicao(0, 0); // Só para testar
+		Posicao realizaAtaque = null;
+
 		// Tenta realizar um ataque
 		do {
 			posicaoEscolhida = escolhePeca();
@@ -154,13 +154,14 @@ public class Maquina extends Jogador {
 			// Tenta realizar movimento (caso um ataque não possa ser realizado)
 		} else {
 			posicoesPossiveis = inicializaLista(posicoesPossiveis);
-			Posicao realizaMovimento;
+			Posicao realizaMovimento = null;
 			// Tenta realizar um movimento
 			do {
 				posicaoEscolhida = escolhePeca();
 				realizaMovimento = movimentoEscolhido(posicaoEscolhida
 						.getPosicao());
 			} while (realizaMovimento == null && posicaoEscolhida != null);
+
 			if (realizaMovimento != null) {
 				return new Jogada(posicaoEscolhida.getPosicao(),
 						realizaMovimento, TipoJogada.ANDAR);
