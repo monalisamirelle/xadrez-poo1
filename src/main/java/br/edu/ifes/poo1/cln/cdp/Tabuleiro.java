@@ -198,8 +198,10 @@ public class Tabuleiro {
 	 * Verifica se a peça pode se movimentar até o local desejado
 	 * 
 	 * @param origem
+	 *            Onde a peça se encontra
 	 * @param destino
-	 * @return
+	 *            Onde a peça deseja chegar
+	 * @return se a peça pode realizar movimento ou não
 	 */
 	// FIXME: Conferir se o método está sendo usado adequadamente.
 	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
@@ -231,10 +233,15 @@ public class Tabuleiro {
 	 * Verifica se o roque é válido, dado suas posições
 	 * 
 	 * @param posicaoRei
+	 *            Posição que o rei se encontra
 	 * @param posicaoTorre
+	 *            Posição que a torre se encontra
 	 * @param posicaoDesejadaRei
+	 *            Posição que o o rei deseja ocupar
 	 * @param posicaoDesejadaTorre
-	 * @return
+	 *            Posição que a torre deseja ocupar
+	 * @return A verificação se as peças já se moveram e se as casas desejadas
+	 *         estão vazias
 	 */
 	private boolean verificaRoque(Posicao posicaoRei, Posicao posicaoTorre,
 			Posicao posicaoDesejadaRei, Posicao posicaoDesejadaTorre) {
@@ -253,7 +260,8 @@ public class Tabuleiro {
 	 * Verifica se pode ser realizado o roque menor
 	 * 
 	 * @param jogador
-	 * @return
+	 *            Jogador que quer realizar o roque menor
+	 * @return Se o roque foi possivel ou não
 	 */
 	public boolean roqueMenor(Jogador jogador) {
 		// Se for um roque menor do jogador de peças brancas
@@ -270,7 +278,8 @@ public class Tabuleiro {
 	 * Verifica se pode ser realizado o roque maior
 	 * 
 	 * @param jogador
-	 * @return
+	 *            Jogador que quer realizar o roque maior
+	 * @return se o roque foi possivel ou não
 	 */
 	public boolean roqueMaior(Jogador jogador) {
 		// Se for um roque maior do jogador de peças brancas
@@ -284,7 +293,7 @@ public class Tabuleiro {
 	}
 
 	/**
-	 * Verifica se o rei dá cor indicada está em Xeque.
+	 * Verifica se o rei da cor indicada está em Xeque.
 	 * 
 	 * @param cor
 	 *            Cor do rei.
