@@ -161,7 +161,7 @@ public class Tabuleiro {
 		// Verifica se há alguma peça da cor indicada que ameaça a posição
 		// indicada.
 		for (int coluna = 1; coluna <= 8; coluna++) {
-			for (int linha = 0; linha <= 8; linha++) {
+			for (int linha = 1; linha <= 8; linha++) {
 				Posicao origem = new Posicao(coluna, linha);
 
 				// Pula as casas vazias.

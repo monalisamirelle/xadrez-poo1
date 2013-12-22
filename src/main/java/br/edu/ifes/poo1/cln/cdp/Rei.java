@@ -11,14 +11,21 @@ public class Rei extends Peca {
 	}
 
 	@Override
-	// FIXME: MUITO MAIS COMPLEXO !
 	public boolean podeSeMover(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
+		// Verifica se o rei não vai entrar em Xeque com a jogada.
+		if (tabuleiro.estaAmeacadoPor(destino,
+				CorJogador.getCorOposta(this.getJogador().getCor())))
+			return false;
+
+		// Verifica o movimento natural do rei.
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
-			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) == 1)
-					&& (this.tamanhoMovimento(origem.getColuna(),
-							destino.getColuna()) == 1))
+			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) > 1)
+					|| (this.tamanhoMovimento(origem.getColuna(),
+							destino.getColuna()) > 1))
+				return false;
+			else
 				return true;
 		return false;
 	}
