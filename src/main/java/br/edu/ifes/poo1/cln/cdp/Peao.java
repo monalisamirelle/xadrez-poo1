@@ -9,8 +9,7 @@ public class Peao extends Peca {
 	 * Instancia um peão.
 	 */
 	public Peao(Jogador jogador) {
-		super(1, TipoPeca.PEAO, jogador); // valor do peão é 1.
-		// TODO Auto-generated constructor stub
+		super(1, TipoPeca.PEAO, jogador);
 	}
 
 	@Override

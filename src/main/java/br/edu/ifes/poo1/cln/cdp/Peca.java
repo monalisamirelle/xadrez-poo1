@@ -41,17 +41,15 @@ public abstract class Peca {
 	 * @param origem
 	 *            Posição atual da peça.
 	 * @param destino
-	 *            Posição para onde deseja-se andar a peça.
+	 *            Posição para onde a peça deve ser movida.
 	 * @return Se é possível andar com a peça até a casa desejada.
 	 */
-	// FIXME: Trabalhar de forma adequada com os parâmetros recebidos.
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
-		if (tabuleiro.saiuPosicao(origem, destino)
-				&& !Tabuleiro.estaForaDoTabuleiro(destino)
-				&& tabuleiro.estaVazio(destino))
-			return true;
-		return false;
+		// Puramente verifica se a peça pode se mover para o local indicado. No
+		// caso do peão, este método será sobrescrito, pois anda de forma
+		// diferente a que ataca.
+		return podeSeMover(origem, destino, tabuleiro);
 	}
 
 	/**
@@ -62,16 +60,41 @@ public abstract class Peca {
 	 * @param origem
 	 *            Posição atual da peça.
 	 * @param destino
-	 *            Local o qual deseja-se atacar com a peça.
+	 *            Local a ser atacado pela peça.
 	 * @return Se é possível usar esta peça para atacar a casa indicada.
 	 */
 	public boolean podeAtacar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
-		if (tabuleiro.saiuPosicao(origem, destino)
-				&& !Tabuleiro.estaForaDoTabuleiro(destino)
-				&& tabuleiro.estaInimigo(this.jogador, destino)){
+		// Puramente verifica se a peça pode se mover para o local indicado. No
+		// caso do peão, este método será sobrescrito, pois anda de forma
+		// diferente a que ataca.
+		return podeSeMover(origem, destino, tabuleiro);
+	}
+
+	/**
+	 * Indica se está peça alcança o destino saindo de sua origem, ao longo do
+	 * tabuleiro.
+	 * 
+	 * @param origem
+	 *            Posição da qual a peça está saindo.
+	 * @param destino
+	 *            Posicao em que a peça deve chegar.
+	 * @param tabuleiro
+	 *            Tabuleiro em que será feita movimentação.
+	 * @return Se a peça pode se mover.
+	 */
+	protected boolean podeSeMover(Posicao origem, Posicao destino,
+			Tabuleiro tabuleiro) {
+		// As posições devem ser internas ao tabuleiro.
+		if (Tabuleiro.estaForaDoTabuleiro(origem)
+				|| Tabuleiro.estaForaDoTabuleiro(destino))
+			return false;
+
+		// Não é um movimento se as posições forem as mesmas.
+		if (origem.equals(destino))
+			return false;
+		else
 			return true;
-		}return false;
 	}
 
 	/**

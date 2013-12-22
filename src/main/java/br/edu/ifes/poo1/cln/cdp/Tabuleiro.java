@@ -228,21 +228,6 @@ public class Tabuleiro {
 	}
 
 	/**
-	 * Verifica se a peça realmente se movimentou ou se permaneceu no mesmo
-	 * local
-	 * 
-	 * @param origem
-	 * @param destino
-	 * @return
-	 */
-	public boolean saiuPosicao(Posicao origem, Posicao destino) {
-		if (origem.getLinha() == destino.getLinha()
-				&& origem.getColuna() == destino.getColuna())
-			return false;
-		return true;
-	}
-
-	/**
 	 * Verifica se pode ser realizado o roque menor
 	 * 
 	 * @param jogador

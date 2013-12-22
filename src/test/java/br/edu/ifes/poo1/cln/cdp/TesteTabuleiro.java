@@ -105,16 +105,7 @@ public class TesteTabuleiro {
 		Assert.assertFalse(tabuleiro.podeRealizarMovimentacao(
 				new Posicao(1, 3), new Posicao(4, 3)));
 	}
-
-	@Test
-	public void saiuPosicao() {
-		// Testa se saiu da posição
-		Assert.assertFalse(tabuleiro.saiuPosicao(new Posicao(4, 4),
-				new Posicao(4, 4)));
-		Assert.assertTrue(tabuleiro.saiuPosicao(new Posicao(5, 5), new Posicao(
-				6, 6)));
-	}
-
+	
 	@Test
 	public void roqueMenor() {
 		

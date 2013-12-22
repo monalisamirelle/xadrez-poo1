@@ -11,25 +11,13 @@ public class Rei extends Peca {
 	}
 
 	@Override
-	public boolean podeAndar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
-		if (super.podeAndar(origem, destino, tabuleiro)
-				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
-			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) == 1)
-					|| (this.tamanhoMovimento(origem.getColuna(),
-							destino.getColuna()) == 1))
-				return true;
-		return false;
-	}
-
-	@Override
 	// FIXME: MUITO MAIS COMPLEXO !
-	public boolean podeAtacar(Posicao origem, Posicao destino,
+	public boolean podeSeMover(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
-		if (super.podeAtacar(origem, destino, tabuleiro)
+		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) == 1)
-					|| (this.tamanhoMovimento(origem.getColuna(),
+					&& (this.tamanhoMovimento(origem.getColuna(),
 							destino.getColuna()) == 1))
 				return true;
 		return false;
