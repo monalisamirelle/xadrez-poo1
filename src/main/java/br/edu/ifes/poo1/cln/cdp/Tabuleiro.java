@@ -1,5 +1,8 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Um tabuleiro é composto por 64 casas, estas podem estar ocupadas por uma peça
  * ou vazias.
@@ -20,6 +23,54 @@ public class Tabuleiro {
 	 */
 	public Tabuleiro() {
 		pecas = new Peca[8][8];
+	}
+
+	/**
+	 * Inicia um tabuleiro padrão de xadrez, com as peças já posicionadas e com
+	 * suas referências para os jogadores corretos.
+	 * 
+	 * @param brancas
+	 *            Jogador que controla as peças brancas.
+	 * @param pretas
+	 *            Jogador que controla as peças pretas.
+	 * @throws CasaOcupadaException
+	 */
+	public Tabuleiro(Jogador brancas, Jogador pretas) {
+		try {
+			// Posiciona as peças brancas, exceto os peões.
+			this.colocarPeca(new Posicao(1, 1), new Torre(brancas));
+			this.colocarPeca(new Posicao(2, 1), new Cavalo(brancas));
+			this.colocarPeca(new Posicao(3, 1), new Bispo(brancas));
+			this.colocarPeca(new Posicao(4, 1), new Rainha(brancas));
+			this.colocarPeca(new Posicao(5, 1), new Rei(brancas));
+			this.colocarPeca(new Posicao(6, 1), new Bispo(brancas));
+			this.colocarPeca(new Posicao(7, 1), new Cavalo(brancas));
+			this.colocarPeca(new Posicao(8, 1), new Torre(brancas));
+
+			// Posiciona os peões brancos.
+			for (int coluna = 1; coluna <= 8; coluna++) {
+				this.colocarPeca(new Posicao(coluna, 2), new Peao(brancas));
+			}
+
+			// Posiciona as peças brancas, exceto os peões.
+			this.colocarPeca(new Posicao(1, 8), new Torre(pretas));
+			this.colocarPeca(new Posicao(2, 8), new Cavalo(pretas));
+			this.colocarPeca(new Posicao(3, 8), new Bispo(pretas));
+			this.colocarPeca(new Posicao(4, 8), new Rei(pretas));
+			this.colocarPeca(new Posicao(5, 8), new Rainha(pretas));
+			this.colocarPeca(new Posicao(6, 8), new Bispo(pretas));
+			this.colocarPeca(new Posicao(7, 8), new Cavalo(pretas));
+			this.colocarPeca(new Posicao(8, 8), new Torre(pretas));
+
+			// Posiciona os peões pretos.
+			for (int coluna = 1; coluna <= 8; coluna++) {
+				this.colocarPeca(new Posicao(coluna, 7), new Peao(pretas));
+			}
+		} catch (CasaOcupadaException e) {
+			// Se a excessão for lançada, o construtor está tentando posicionar
+			// peças onde já há alguma e deve ser refeito.
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -107,21 +158,18 @@ public class Tabuleiro {
 	 *         peça.
 	 */
 	public boolean estaAmeacadoPor(Posicao posicao, CorJogador cor) {
-		// Verifica se alguma peça da cor indicada ameaça a posição indicada.
+		// Verifica se há alguma peça da cor indicada que ameaça a posição
+		// indicada.
 		for (int coluna = 1; coluna <= 8; coluna++) {
 			for (int linha = 0; linha <= 8; linha++) {
 				Posicao origem = new Posicao(coluna, linha);
 				Peca peca = espiarPeca(origem);
 
-				// Pula as peças que não forem do jogador indicado.
+				// Pula as peças que não forem da cor indicada.
 				if (peca.getJogador().getCor() != cor)
 					continue;
 
-				// FIXME: Isso não está funcionando completamente. Pense no caso
-				// do peão. É preciso um método que use apenas a possível
-				// movimentação da peça, e não faça verificações do tipo: se a
-				// há uma peça para poder ser atacada. Mas faça verificação de
-				// se não há peças no meio do caminho.
+				// Verifica se a pessa pode atacar a posição indicada.
 				if (peca.podeAtacar(origem, posicao, this))
 					return true;
 			}
@@ -165,19 +213,19 @@ public class Tabuleiro {
 			// Se não tivermos chegado na posição
 			linha = linha + movimentoHorizontal;
 			coluna = coluna + movimentoVertical;
-			if (atravessouTabuleiro(new Posicao(coluna,linha))==true){
+			if (atravessouTabuleiro(new Posicao(coluna, linha)) == true) {
 				return false;
 			}
 			if (!(linha == destino.getLinha() && coluna == destino.getColuna())) {
 				// Se a posição no tabuleiro não for nula, informe que o
 				// movimento é proibido
 				if (pecas[coluna - 1][linha - 1] != null) {
-		//			System.out.println("movimento proibido");
+					// System.out.println("movimento proibido");
 					return false;
 				}
 			}
 		}
-	//	System.out.println("movimento permitido");
+		// System.out.println("movimento permitido");
 		return true;
 	}
 
@@ -268,5 +316,131 @@ public class Tabuleiro {
 				}
 			}
 		return false;
+	}
+
+	/**
+	 * Verifica se o rei dá cor indicada está em Xeque.
+	 * 
+	 * @param cor
+	 *            Cor do rei.
+	 * @return Se a o rei está em Xeque.
+	 */
+	public boolean verificarXeque(CorJogador cor) {
+		// Encontra a posição do rei.
+		Posicao posicaoRei = encontrarRei(cor);
+
+		// Retorna se a posição do rei está ameaçada.
+		if (cor == CorJogador.BRANCO)
+			return estaAmeacadoPor(posicaoRei, CorJogador.PRETO);
+		else
+			return estaAmeacadoPor(posicaoRei, CorJogador.BRANCO);
+	}
+
+	/**
+	 * Encontra a posição no tabuleiro em que o rei da cor indicada está. Se o
+	 * rei não for encontrado (o que é impossível numa partida de xadrez), o
+	 * método retorna 'null'.
+	 * 
+	 * @param cor
+	 *            Cor do rei a procurar.
+	 * @return Onde está o rei.
+	 */
+	public Posicao encontrarRei(CorJogador cor) {
+		// Varre o tabuleiro procurando o rei da cor indicada.
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			for (int linha = 0; linha <= 8; linha++) {
+				// Forma a posição que estamos a verificar.
+				Posicao posicao = new Posicao(coluna, linha);
+
+				// Pula se não houver peça ali.
+				if (estaVazio(posicao))
+					continue;
+
+				// Pega a peça que está ali.
+				Peca peca = espiarPeca(posicao);
+
+				// Verifica se é o rei da cor indicada. E retorna-o.
+				if (peca.getTipoPeca() == TipoPeca.REI
+						&& peca.getJogador().getCor() == cor) {
+					return posicao;
+				}
+			}
+		}
+
+		// Se o rei for encontrado (o que não acontece em uma partida de
+		// xadrez), retorna 'null'.
+		return null;
+	}
+
+	/**
+	 * Retorna uma lista de posições válidas que estão ao redor do rei da cor
+	 * indicada, mesmo vazias ou não.
+	 * 
+	 * @param cor
+	 *            Cor do rei
+	 * @return Posições ao redor do rei.
+	 */
+	private List<Posicao> posicoesAoRedorDoRei(CorJogador cor) {
+		// Encontra a posição do rei.
+		Posicao posicaoRei = encontrarRei(cor);
+
+		// Inicia uma lista de posições ao redor.
+		List<Posicao> posicoesAoRedor = new ArrayList<Posicao>();
+
+		// Adiciona todas as posições acima e abaixo do rei.
+		for (int coluna = posicaoRei.getColuna() - 1; coluna < posicaoRei
+				.getColuna() + 1; coluna++) {
+			// Acima do rei.
+			posicoesAoRedor.add(new Posicao(coluna, posicaoRei.getLinha() + 1));
+
+			// Abaixo do rei.
+			posicoesAoRedor.add(new Posicao(coluna, posicaoRei.getLinha() - 1));
+		}
+
+		// Adiciona a posição a esquerda do rei.
+		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna(), posicaoRei
+				.getLinha() - 1));
+
+		// Adiciona a posição a direita do rei.
+		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna(), posicaoRei
+				.getLinha() + 1));
+
+		// Retira da lista as posições que estão fora do tabuleiro.
+		for (Posicao posicao : posicoesAoRedor) {
+			if (atravessouTabuleiro(posicao))
+				posicoesAoRedor.remove(posicao);
+		}
+
+		// Retorna a lista pronta.
+		return posicoesAoRedor;
+	}
+
+	/**
+	 * Verifica se houve Xeque Mate na cor indicada.
+	 * 
+	 * @param cor
+	 *            Cor do rei que está em Xeque Mate.
+	 * @return Se a cor indicada sofreu Xeque Mate.
+	 */
+	public boolean verificarXequeMate(CorJogador cor) {
+		// Encontra o rei.
+		Posicao posicaoRei = encontrarRei(cor);
+		Peca rei = espiarPeca(posicaoRei);
+
+		// Pega as posições que estão ao redor do rei.
+		List<Posicao> posicoes = posicoesAoRedorDoRei(cor);
+
+		// Verifica se há alguma posição para onde o rei pode se mover.
+		boolean podeSeMover = false;
+		for (Posicao posicao : posicoes) {
+			// Verifica se ele pode se mover ou atacar, para sair da posição
+			// atual.
+			if (rei.podeAndar(posicaoRei, posicao, this)
+					|| rei.podeAtacar(posicaoRei, posicao, this))
+				podeSeMover = true;
+		}
+
+		// É Xeque Mate se o rei está em Xeque e não há para onde ele se mover.
+		return verificarXeque(cor) && !podeSeMover;
 	}
 }
