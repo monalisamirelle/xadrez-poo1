@@ -169,7 +169,7 @@ public class Tabuleiro {
 				if (peca.getJogador().getCor() != cor)
 					continue;
 
-				// Verifica se a pessa pode atacar a posição indicada.
+				// Verifica se a peça pode atacar a posição indicada.
 				if (peca.podeAtacar(origem, posicao, this))
 					return true;
 			}
@@ -341,7 +341,7 @@ public class Tabuleiro {
 			}
 		}
 
-		// Se o rei for encontrado (o que não acontece em uma partida de
+		// Se o rei não for encontrado (o que não acontece em uma partida de
 		// xadrez), retorna 'null'.
 		return null;
 	}
