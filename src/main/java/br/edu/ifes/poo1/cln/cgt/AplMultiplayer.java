@@ -24,8 +24,7 @@ public class AplMultiplayer extends AplJogo {
 	}
 
 	@Override
-	public void executarjogada(Jogada jogada) throws JogadaInvalidaException,
-			FimDeJogoException {
+	public void executarjogada(Jogada jogada) throws JogadaInvalidaException {
 		// Pega o jogador do turno atual.
 		Pessoa atualJogador = (Pessoa) getJogadorTurnoAtual();
 
@@ -35,9 +34,8 @@ public class AplMultiplayer extends AplJogo {
 		// Vê se o jogador conseguiu dar um Xeque Mate no oponente. E finaliza a
 		// partida, caso tenha conseguido.
 		if (tabuleiro.verificarXequeMate(super.getOutraCor(turno))) {
-			finalizarPartida(getJogadorTurnoAtual());
-			throw new FimDeJogoException(getJogadorTurnoAtual().getNome()
-					+ "venceu a partida.");
+			finalizarPartida(getJogadorTurnoAtual(), false);
+			return;
 		}
 
 		super.trocarTurno();

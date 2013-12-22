@@ -118,8 +118,9 @@ public abstract class Cli {
 	 * @param vencedor
 	 *            Vencedor da partida.
 	 */
-	public void parabenizarVencedor(Jogador vencedor) {
-		imprimirLinha("Parabéns a " + vencedor.getNome() + ", ganhador da partida");
+	public void fechamentoDaPartida(String mensagemFinalizacao) {
+		imprimirLinha("");
+		imprimirLinha(mensagemFinalizacao);
 	}
 
 	/**

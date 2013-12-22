@@ -4,6 +4,7 @@ import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.MotivoFimDaPartida;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 public abstract class AplJogo {
@@ -24,6 +25,9 @@ public abstract class AplJogo {
 
 	/** Só é instanciado ao término da partida. */
 	private Jogador vencedor;
+
+	/** Indica o motivo pelo qual a partida terminou. */
+	private MotivoFimDaPartida motivoDeFinalizacao;
 
 	public AplJogo(Jogador brancas, Jogador pretas) {
 		// Pega os jogadores.
@@ -55,7 +59,7 @@ public abstract class AplJogo {
 	 * @throws FimDeJogoException
 	 */
 	public abstract void executarjogada(Jogada jogada)
-			throws JogadaInvalidaException, FimDeJogoException;
+			throws JogadaInvalidaException;
 
 	/**
 	 * Retorna o vencedor da partida, ou 'null' caso a partida não tenha
@@ -132,15 +136,36 @@ public abstract class AplJogo {
 	}
 
 	/**
-	 * Faz todo o necessário para finalizar uma partida, que um jogador tenha
-	 * ganho.
+	 * Termina uma partida em que tenha havido um jogador vitorioso.
 	 * 
 	 * @param ganhador
 	 *            ganhador da partida.
 	 */
-	protected void finalizarPartida(Jogador ganhador) {
+	protected void finalizarPartida(Jogador ganhador, boolean houveDesistencia) {
 		this.vencedor = ganhador;
-
+		this.acabouJogo = true;
+		if (houveDesistencia)
+			this.motivoDeFinalizacao = MotivoFimDaPartida.DESISTENCIA;
+		else
+			this.motivoDeFinalizacao = MotivoFimDaPartida.VITORIA;
 		// TODO: Salvar o histórico da partida.
+	}
+
+	/**
+	 * Faz o término da partida, tendo havido um empate.
+	 */
+	protected void finalizarPartida() {
+		this.acabouJogo = true;
+		this.motivoDeFinalizacao = MotivoFimDaPartida.EMPATE;
+		// TODO: Salvar o histórico da partida.
+	}
+
+	/**
+	 * Indica o motivo pelo qual a partida acabou.
+	 * 
+	 * @return Motivo de finalização.
+	 */
+	public MotivoFimDaPartida getMotivoDeFinalizacao() {
+		return this.motivoDeFinalizacao;
 	}
 }

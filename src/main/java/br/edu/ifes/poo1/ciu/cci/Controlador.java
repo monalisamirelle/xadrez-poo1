@@ -12,6 +12,7 @@ import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
+import br.edu.ifes.poo1.cln.cdp.MotivoFimDaPartida;
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
 import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 import br.edu.ifes.poo1.cln.cgt.AplSingleplayer;
@@ -144,11 +145,8 @@ public class Controlador {
 			}
 		}
 
-		// Após o fim do jogo, pegamos o vencedor, atualizamos o
-		// tabuleiro mais uma vez e comprimentamos o ganhador.
-		Jogador vencedor = apl.getVencedor();
-		cli.atualizar(apl.getTabuleiro(), apl.getBrancas(), apl.getPretas());
-		cli.parabenizarVencedor(vencedor);
+		// Encerra a partida.
+		encerrarPartida(apl);
 	}
 
 	/**
@@ -199,11 +197,36 @@ public class Controlador {
 			}
 		}
 
+		// Encerra a partida.
+		encerrarPartida(aplmulti);
+	}
+
+	/**
+	 * Términa a partida exibindo um cumprimento aos jogadores.
+	 * 
+	 * @param apljogo
+	 *            Apl que em que a partida encerrou.
+	 */
+	private void encerrarPartida(AplJogo apljogo) {
 		// Após o fim do jogo, pegamos o vencedor, atualizamos o
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
-		Jogador vencedor = aplmulti.getVencedor();
-		cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
-				aplmulti.getPretas());
-		cli.parabenizarVencedor(vencedor);
+		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(), apljogo.getPretas());
+		MotivoFimDaPartida motivoFim = apljogo.getMotivoDeFinalizacao();
+
+		// Vê o fim da partida para fazer o encerramento de forma adequada.
+		switch (motivoFim) {
+		// Se houve desistência, ou vitória, houve um ganhador.
+		case VITORIA:
+		case DESISTENCIA:
+			Jogador vencedor = apljogo.getVencedor();
+			cli.fechamentoDaPartida("Vitória para o jogador: "
+					+ vencedor.getNome());
+			break;
+
+		// A partida terminou em um empate.
+		case EMPATE:
+			cli.fechamentoDaPartida("A partida terminou em um empate.");
+			break;
+		}
 	}
 }
