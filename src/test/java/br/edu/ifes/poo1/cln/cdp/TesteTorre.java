@@ -60,16 +60,21 @@ public class TesteTorre {
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(1, 1),
 				new Posicao(5, 1), tabuleiro));
 
-		/** Verifica se a torre pode atacar uma posição vazia */
-		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(6, 7),
+		/** Verifica se a torre pode atacar uma posição vazia. */
+		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(6, 7),
 				new Posicao(6, 5), tabuleiro));
-		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(8, 2),
+		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(8, 2),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(3, 8),
+		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(3, 8),
 				new Posicao(3, 6), tabuleiro));
 
-		/** Verifica se a torre pode atacar uma posição com peça aliada */
-		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(2, 5),
+		/**
+		 * Verifica se a torre pode atacar uma posição com peça aliada.
+		 * 
+		 * Pode porque o método podeAtacar(..) não deve fazer verificação do que
+		 * está na casa e destino.
+		 */
+		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(2, 5),
 				new Posicao(2, 2), tabuleiro));
 	}
 }

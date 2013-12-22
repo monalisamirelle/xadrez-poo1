@@ -52,16 +52,31 @@ public class TesteRainha {
 		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(6, 3),
 				new Posicao(5, 3), tabuleiro));
 
-		/** Verifica se a rainha pode atacar uma posição vazia */
-		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(6, 3),
-				new Posicao(6, 5), tabuleiro));
-		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(6, 3),
+		/**
+		 * Verifica se a rainha pode atacar uma posição vazia
+		 * 
+		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
+		 * no destino.
+		 */
+		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(6, 3),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(6, 3),
+		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(6, 3),
 				new Posicao(3, 6), tabuleiro));
 
-		/** Verifica se a rainha pode atacar uma posição com peça aliada */
-		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(4, 4),
+		/**
+		 * Verifica se a rainha pode se mover havendo um peão no meio do
+		 * caminho.
+		 */
+		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(6, 3),
+				new Posicao(6, 5), tabuleiro));
+		
+		/**
+		 * Verifica se a rainha pode atacar uma posição com peça aliada
+		 * 
+		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
+		 * no destino.
+		 */
+		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(4, 4),
 				new Posicao(2, 2), tabuleiro));
 	}
 }

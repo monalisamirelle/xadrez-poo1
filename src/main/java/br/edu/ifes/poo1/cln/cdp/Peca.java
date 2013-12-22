@@ -105,7 +105,7 @@ public abstract class Peca {
 	 * @param posicaoDesejada
 	 * @return
 	 */
-	public int tamanhoMovimento(int posicaoOcupada, int posicaoDesejada) {
+	protected int tamanhoMovimento(int posicaoOcupada, int posicaoDesejada) {
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
 	}
 

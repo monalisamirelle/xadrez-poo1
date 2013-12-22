@@ -43,6 +43,6 @@ public class Posicao {
 				&& this.getColuna() == outraPosicao.getColuna())
 			return true;
 		else
-			return true;
+			return false;
 	}
 }

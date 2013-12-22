@@ -6,34 +6,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TesteBispo {
-	Tabuleiro tabuleiro;
-	Bispo bispoBranco;
-	Peao peaoPreto;
-	Peao peaoBranco;
+	private Tabuleiro tabuleiro;
+	private Bispo bispoBranco;
+	private Jogador brancas;
+	private Jogador pretas;
 
 	@Before
 	public void before() throws CasaOcupadaException {
+		// Inicia um tabuleiro vazio.
 		tabuleiro = new Tabuleiro();
-		bispoBranco = new Bispo(new Jogador("Teste",CorJogador.BRANCO));
-		peaoPreto = new Peao(new Jogador("Teste",CorJogador.PRETO));
-		peaoBranco = new Peao(new Jogador("Teste",CorJogador.BRANCO));
 
-		/** Coloca peças inimigas no tabuleiro */
-		tabuleiro.colocarPeca(new Posicao(6, 4), peaoPreto);
-		tabuleiro.colocarPeca(new Posicao(8, 8), peaoPreto);
-		tabuleiro.colocarPeca(new Posicao(5, 3), peaoPreto);
+		// Inicia os jogadores.
+		brancas = new Jogador("TesteBranco", CorJogador.BRANCO);
+		pretas = new Jogador("TestePreto", CorJogador.PRETO);
 
-		/** Coloca peça aliada no tabuleiro */
-		tabuleiro.colocarPeca(new Posicao(2, 2), peaoBranco);
+		// Inicia o bispo.
+		bispoBranco = new Bispo(brancas);
+
+		// Coloca peças inimigas no tabuleiro.
+		tabuleiro.colocarPeca(new Posicao(6, 4), new Peao(pretas));
+		tabuleiro.colocarPeca(new Posicao(8, 8), new Peao(pretas));
+		tabuleiro.colocarPeca(new Posicao(5, 3), new Peao(pretas));
+
+		// Coloca peça aliada no tabuleiro.
+		tabuleiro.colocarPeca(new Posicao(2, 2), new Peao(brancas));
 	}
 
 	@Test
 	public void podeAndar() {
+		// Verifica se o bispo pode realizar determinados movimentos (não se
+		// importando em diferenciar bispos de casas pretas e brancas).
 
-		/**
-		 * Verifica se o bispo pode realizar determinado movimento (não se
-		 * importando em diferenciar bispos de casas pretas e brancas)
-		 */
 		Assert.assertTrue(bispoBranco.podeAndar(new Posicao(4, 4), new Posicao(
 				5, 5), tabuleiro));
 		Assert.assertTrue(bispoBranco.podeAndar(new Posicao(4, 4), new Posicao(
@@ -54,25 +57,28 @@ public class TesteBispo {
 
 	@Test
 	public void podeAtacar() {
-
-		/** Verifica se o bispo pode realizar determinado ataque */
+		// Verifica se o bispo pode realizar determinado ataque.
 		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(7, 3),
 				new Posicao(6, 4), tabuleiro));
 		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(6, 6),
 				new Posicao(8, 8), tabuleiro));
 		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(3, 5),
 				new Posicao(5, 3), tabuleiro));
-		
-		/** Verifica se o bispo pode atacar uma posição vazia */
-		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(3, 7),
-				new Posicao(6, 5), tabuleiro));
-		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(8, 4),
+
+		// Verifica se o bispo pode atacar uma posição vazia.
+		// Deve ser possível, pois podeAndar(..) não deve verificar a o que há
+		// no destino.
+		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(3, 7),
+				new Posicao(6, 4), tabuleiro));
+		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(8, 4),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(1, 8),
+		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(1, 8),
 				new Posicao(3, 6), tabuleiro));
 
-		/** Verifica se o bispo pode atacar uma posição com peça aliada */
-		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(5, 5),
+		// Verifica se o bispo pode atacar uma posição com peça aliada.
+		// Deve ser possível, pois podeAndar(..) não deve verificar a o que há
+		// no destino.
+		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(5, 5),
 				new Posicao(2, 2), tabuleiro));
 	}
 }

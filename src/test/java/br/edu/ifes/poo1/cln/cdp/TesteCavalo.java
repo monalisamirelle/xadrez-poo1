@@ -29,8 +29,7 @@ public class TesteCavalo {
 
 	@Test
 	public void podeAndar() {
-
-		/** Verifica se o cavalo pode realizar determinado movimento */
+		// Verifica se o cavalo pode realizar determinado movimento.
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
 				new Posicao(5, 6), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
@@ -52,7 +51,7 @@ public class TesteCavalo {
 	@Test
 	public void podeAtacar() {
 
-		/** Verifica se o cavalo pode realizar determinado ataque */
+		// Verifica se o cavalo pode realizar determinado ataque.
 		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(4, 3),
 				new Posicao(6, 4), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(7, 6),
@@ -60,16 +59,20 @@ public class TesteCavalo {
 		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(6, 5),
 				new Posicao(5, 3), tabuleiro));
 
-		/** Verifica se o cavalo pode atacar uma posição vazia */
-		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(4, 4),
+		// Verifica se o cavalo pode atacar uma posição vazia. Deve ser
+		// possível, pois podeAndar(..) não deve verificar a o que há no
+		// destino.
+		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(4, 4),
 				new Posicao(6, 5), tabuleiro));
-		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(8, 3),
+		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(8, 3),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(4, 4),
+		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(4, 4),
 				new Posicao(3, 6), tabuleiro));
 
-		/** Verifica se o cavalo pode atacar uma posição com peça aliada */
-		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(3, 4),
+		// Verifica se o cavalo pode atacar uma posição com peça aliada. Deve
+		// ser possível, pois podeAndar(..) não deve verificar a o que há no
+		// destino.
+		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(3, 4),
 				new Posicao(2, 2), tabuleiro));
 	}
 }
