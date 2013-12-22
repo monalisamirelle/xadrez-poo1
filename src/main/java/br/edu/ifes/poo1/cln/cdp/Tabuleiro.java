@@ -182,13 +182,13 @@ public class Tabuleiro {
 	/**
 	 * Verifica se a posição indicada está fora dos limites do tabuleiro.
 	 * 
-	 * @param destino
-	 *            Posição que deseja-se verificar
+	 * @param posicao
+	 *            Posição a ser verificada.
 	 * @return Se a posição está fora do tabuleiro (true), ou dentro (false).
 	 */
-	public boolean atravessouTabuleiro(Posicao destino) {
-		if (destino.getLinha() > 0 & destino.getLinha() <= 8
-				& destino.getColuna() > 0 & destino.getColuna() <= 8)
+	public static boolean estaForaDoTabuleiro(Posicao posicao) {
+		if (posicao.getLinha() > 0 & posicao.getLinha() <= 8
+				& posicao.getColuna() > 0 & posicao.getColuna() <= 8)
 			return false;
 		else
 			return true;
@@ -213,7 +213,7 @@ public class Tabuleiro {
 			// Se não tivermos chegado na posição
 			linha = linha + movimentoHorizontal;
 			coluna = coluna + movimentoVertical;
-			if (atravessouTabuleiro(new Posicao(coluna, linha)) == true) {
+			if (estaForaDoTabuleiro(new Posicao(coluna, linha)) == true) {
 				return false;
 			}
 			if (!(linha == destino.getLinha() && coluna == destino.getColuna())) {
@@ -405,7 +405,7 @@ public class Tabuleiro {
 
 		// Retira da lista as posições que estão fora do tabuleiro.
 		for (Posicao posicao : posicoesAoRedor) {
-			if (atravessouTabuleiro(posicao))
+			if (estaForaDoTabuleiro(posicao))
 				posicoesAoRedor.remove(posicao);
 		}
 
@@ -439,6 +439,8 @@ public class Tabuleiro {
 		}
 
 		// É Xeque Mate se o rei está em Xeque e não há para onde ele se mover.
+		// FIXME: Na verdade, para que o Xeque Mate ocorra, nenhuma peça pode
+		// conseguir ajudar o rei. Mas isto está fora do escopo do trabalho.
 		return verificarXeque(cor) && !podeSeMover;
 	}
 }

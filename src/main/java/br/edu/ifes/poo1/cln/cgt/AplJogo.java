@@ -1,18 +1,10 @@
 package br.edu.ifes.poo1.cln.cgt;
 
-import br.edu.ifes.poo1.cln.cdp.Bispo;
-import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
-import br.edu.ifes.poo1.cln.cdp.Cavalo;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Peao;
-import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Rainha;
-import br.edu.ifes.poo1.cln.cdp.Rei;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
-import br.edu.ifes.poo1.cln.cdp.Torre;
 
 public abstract class AplJogo {
 	/** Jogador que controla as peças brancas. */
@@ -30,22 +22,25 @@ public abstract class AplJogo {
 	/** Indica se o jogo já acabou (true). Ou se está em andamento (false). */
 	private boolean acabouJogo = false;
 
+	/** Só é instanciado ao término da partida. */
+	private Jogador vencedor;
+
 	public AplJogo(Jogador brancas, Jogador pretas) {
+		// Pega os jogadores.
 		this.brancas = brancas;
 		this.pretas = pretas;
 
-		this.tabuleiro = new Tabuleiro();
+		// As brancas iniciam.
+		this.turno = CorJogador.BRANCO;
 
-		// Posiciona as peças nos devidos lugares do tabuleiro.
-		try {
-			posicionarPecas();
-		} catch (CasaOcupadaException e) {
-			// Essa excessão nunca deveria ser lançada. Mas se for, o código em
-			// 'posicionarPecas()' está errado.
-			e.printStackTrace();
-		}
+		// Só está começando. ;)
+		this.acabouJogo = false;
 
-		// Informa os jogadores sobre qual o tabuleiro que está em uso na partida.
+		// Inicia o tabuleiro, com as peças já posicionadas.
+		this.tabuleiro = new Tabuleiro(brancas, pretas);
+
+		// Informa os jogadores sobre qual o tabuleiro que está em uso na
+		// partida.
 		brancas.setTabuleiro(tabuleiro);
 		pretas.setTabuleiro(tabuleiro);
 	}
@@ -57,46 +52,10 @@ public abstract class AplJogo {
 	 *            Entrada do jogador que codifica a jogada que deverá ser
 	 *            realizada.
 	 * @throws JogadaInvalidaException
+	 * @throws FimDeJogoException
 	 */
 	public abstract void executarjogada(Jogada jogada)
-			throws JogadaInvalidaException;
-
-	/**
-	 * Posiciona as peças no tabuleiro para o início da partida.
-	 * 
-	 * @throws CasaOcupadaException
-	 */
-	public void posicionarPecas() throws CasaOcupadaException {
-		// Posiciona as peças brancas, exceto os peões.
-		tabuleiro.colocarPeca(new Posicao(1, 1), new Torre(brancas));
-		tabuleiro.colocarPeca(new Posicao(2, 1), new Cavalo(brancas));
-		tabuleiro.colocarPeca(new Posicao(3, 1), new Bispo(brancas));
-		tabuleiro.colocarPeca(new Posicao(4, 1), new Rainha(brancas));
-		tabuleiro.colocarPeca(new Posicao(5, 1), new Rei(brancas));
-		tabuleiro.colocarPeca(new Posicao(6, 1), new Bispo(brancas));
-		tabuleiro.colocarPeca(new Posicao(7, 1), new Cavalo(brancas));
-		tabuleiro.colocarPeca(new Posicao(8, 1), new Torre(brancas));
-
-		// Posiciona os peões brancos.
-		for (int coluna = 1; coluna <= 8; coluna++) {
-			tabuleiro.colocarPeca(new Posicao(coluna, 2), new Peao(brancas));
-		}
-
-		// Posiciona as peças brancas, exceto os peões.
-		tabuleiro.colocarPeca(new Posicao(1, 8), new Torre(pretas));
-		tabuleiro.colocarPeca(new Posicao(2, 8), new Cavalo(pretas));
-		tabuleiro.colocarPeca(new Posicao(3, 8), new Bispo(pretas));
-		tabuleiro.colocarPeca(new Posicao(4, 8), new Rei(pretas));
-		tabuleiro.colocarPeca(new Posicao(5, 8), new Rainha(pretas));
-		tabuleiro.colocarPeca(new Posicao(6, 8), new Bispo(pretas));
-		tabuleiro.colocarPeca(new Posicao(7, 8), new Cavalo(pretas));
-		tabuleiro.colocarPeca(new Posicao(8, 8), new Torre(pretas));
-
-		// Posiciona os peões pretos.
-		for (int coluna = 1; coluna <= 8; coluna++) {
-			tabuleiro.colocarPeca(new Posicao(coluna, 7), new Peao(pretas));
-		}
-	}
+			throws JogadaInvalidaException, FimDeJogoException;
 
 	/**
 	 * Retorna o vencedor da partida, ou 'null' caso a partida não tenha
@@ -105,8 +64,7 @@ public abstract class AplJogo {
 	 * @return O vencedor da partida.
 	 */
 	public Jogador getVencedor() {
-		return this.brancas;
-		// TODO: Implementar.
+		return this.vencedor;
 	}
 
 	/**
@@ -141,13 +99,24 @@ public abstract class AplJogo {
 	}
 
 	/**
+	 * Retorna a cor oposta a cor indicada.
+	 * 
+	 * @param cor
+	 *            Cor da qual deseja-se a oposta.
+	 * @return Cor oposta a cor indicada.
+	 */
+	public CorJogador getOutraCor(CorJogador cor) {
+		if (cor == CorJogador.BRANCO)
+			return CorJogador.PRETO;
+		else
+			return CorJogador.BRANCO;
+	}
+
+	/**
 	 * Troca o jogador que está a jogar o turno atual.
 	 */
 	public void trocarTurno() {
-		if (turno == CorJogador.BRANCO)
-			turno = CorJogador.PRETO;
-		else
-			turno = CorJogador.BRANCO;
+		turno = getOutraCor(turno);
 	}
 
 	/**
@@ -160,5 +129,18 @@ public abstract class AplJogo {
 			return brancas;
 		else
 			return pretas;
+	}
+
+	/**
+	 * Faz todo o necessário para finalizar uma partida, que um jogador tenha
+	 * ganho.
+	 * 
+	 * @param ganhador
+	 *            ganhador da partida.
+	 */
+	protected void finalizarPartida(Jogador ganhador) {
+		this.vencedor = ganhador;
+
+		// TODO: Salvar o histórico da partida.
 	}
 }

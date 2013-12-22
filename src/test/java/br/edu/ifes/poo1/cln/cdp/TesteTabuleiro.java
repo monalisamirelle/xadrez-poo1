@@ -74,14 +74,14 @@ public class TesteTabuleiro {
 	@Test
 	public void atravessouTabuleiro() {
 		// Testa os limites do tabuleiro
-		Assert.assertFalse(tabuleiro.atravessouTabuleiro(new Posicao(1, 1)));
-		Assert.assertFalse(tabuleiro.atravessouTabuleiro(new Posicao(8, 8)));
+		Assert.assertFalse(Tabuleiro.estaForaDoTabuleiro(new Posicao(1, 1)));
+		Assert.assertFalse(Tabuleiro.estaForaDoTabuleiro(new Posicao(8, 8)));
 
 		// Testa quando atravessa o tabuleiro
-		Assert.assertTrue(tabuleiro.atravessouTabuleiro(new Posicao(4, 9)));
-		Assert.assertTrue(tabuleiro.atravessouTabuleiro(new Posicao(4, 0)));
-		Assert.assertTrue(tabuleiro.atravessouTabuleiro(new Posicao(9, 5)));
-		Assert.assertTrue(tabuleiro.atravessouTabuleiro(new Posicao(0, 5)));
+		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(4, 9)));
+		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(4, 0)));
+		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(9, 5)));
+		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(0, 5)));
 	}
 
 	@Test
