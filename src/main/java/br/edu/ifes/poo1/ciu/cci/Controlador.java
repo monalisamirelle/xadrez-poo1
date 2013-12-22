@@ -18,7 +18,10 @@ import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 import br.edu.ifes.poo1.cln.cgt.AplSingleplayer;
 
 /**
- * Controla a entrada e a saída da interface de linha de comando.
+ * Faz o intermédio entre a camada do modelo de dados e a parte da visão. Para
+ * que as entradas do jogador sejam interpretadas e executadas devidamente no
+ * modelo. Também atualiza as informações que estão disponíveis na tela do
+ * jogador.
  */
 public class Controlador {
 	private Cli cli;
@@ -210,7 +213,8 @@ public class Controlador {
 	private void encerrarPartida(AplJogo apljogo) {
 		// Após o fim do jogo, pegamos o vencedor, atualizamos o
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
-		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(), apljogo.getPretas());
+		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(),
+				apljogo.getPretas());
 		MotivoFimDaPartida motivoFim = apljogo.getMotivoDeFinalizacao();
 
 		// Vê o fim da partida para fazer o encerramento de forma adequada.
