@@ -163,13 +163,19 @@ public class Tabuleiro {
 		for (int coluna = 1; coluna <= 8; coluna++) {
 			for (int linha = 0; linha <= 8; linha++) {
 				Posicao origem = new Posicao(coluna, linha);
+
+				// Pula as casas vazias.
+				if (estaVazio(origem))
+					continue;
+
+				// Pega a peça na casa varrida.
 				Peca peca = espiarPeca(origem);
 
 				// Pula as peças que não forem da cor indicada.
 				if (peca.getJogador().getCor() != cor)
 					continue;
 
-				// Verifica se a peça pode atacar a posição indicada.
+				// Verifica se a pessa pode atacar a posição indicada.
 				if (peca.podeAtacar(origem, posicao, this))
 					return true;
 			}
