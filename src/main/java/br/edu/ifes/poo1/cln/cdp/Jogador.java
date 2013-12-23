@@ -168,7 +168,7 @@ public class Jogador {
 	 * 
 	 * @throws JogadaInvalidaException
 	 */
-	public void aplicarRoqueMenor() throws JogadaInvalidaException {
+	private void aplicarRoqueMenor() throws JogadaInvalidaException {
 		// Pega a linha em que o roque deve ser feito.
 		int linha = getMinhaLinhaDeRoque();
 
