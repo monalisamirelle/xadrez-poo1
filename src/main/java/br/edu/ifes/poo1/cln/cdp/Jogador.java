@@ -35,7 +35,33 @@ public class Jogador {
 	 * @throws JogadaInvalidaException
 	 */
 	public void executarJogada(Jogada jogada) throws JogadaInvalidaException {
-		// Espia o que há na origem e no destino.
+		// Se for um roque menor, o executa.
+		switch (jogada.getTipoJogada()) {
+		case ROQUE_MENOR:
+			// Verifica se pode fazer o Roque Menor.
+			if (tabuleiro.roqueMenor(this))
+				// ... e o faz.
+				aplicarRoqueMenor();
+			else
+				throw new JogadaInvalidaException(
+						"Não é possível realizar o roque menor.");
+			return;
+
+		case ROQUE_MAIOR:
+			// Verifica se pode fazer o Roque Maior.
+			if (tabuleiro.roqueMaior(this))
+				// ... e o faz.
+				aplicarRoqueMaior();
+			else
+				throw new JogadaInvalidaException(
+						"Não é possível realizar o roque maior.");
+			return;
+		default:
+			break;
+		}
+
+		// Para as outras jogadas, é necessário saber o que há na origem e no
+		// destino.
 		Peca pecaOrigem = tabuleiro.espiarPeca(jogada.getOrigem());
 		Peca pecaDestino = tabuleiro.espiarPeca(jogada.getDestino());
 
@@ -50,8 +76,8 @@ public class Jogador {
 					"A peça que você está tentando mover não é sua.");
 
 		// Se a jogada for uma promoção de peão, na origem do movimento deve
-		// estar um peão e o destino deve ser o a linha do lado oposto ao de
-		// início das peças.
+		// estar um peão e o destino deve ser na linha do lado oposto ao de
+		// início das peças do jogador.
 		// Faz as verificações relevantes a promoção dos peões.
 		if (jogada.ehPromocao()) {
 			// Sendo uma promoção, na origem deve estar um peão.
@@ -71,7 +97,7 @@ public class Jogador {
 		}
 
 		// Faz as verificações para o ataque ou um simples andar da peça.
-		if (jogada.getTipoJogada()==TipoJogada.ATACAR) {
+		if (jogada.getTipoJogada() == TipoJogada.ATACAR) {
 			// Se não houver peça no destino e for um ataque, a jogada é
 			// inválida.
 			if (pecaDestino == null)
@@ -83,6 +109,10 @@ public class Jogador {
 				throw new JogadaInvalidaException(
 						"A peça que você está tentando atacar é sua!");
 
+			// Além disso verifica se a peça pode atacar ali.
+			if (!pecaOrigem.podeAtacar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
+				throw new JogadaInvalidaException("A peça não consegue atacar a casa indicada.");
+			
 			// Remove a peça do destino e acrescenta a lista de peças
 			// capturadas, já que se trata de um ataque.
 			this.pecasCapturadas
@@ -92,6 +122,10 @@ public class Jogador {
 			if (pecaDestino != null)
 				throw new JogadaInvalidaException(
 						"A casa, para a qual você está tentando mover, está ocupada por outra peça.");
+			
+			// E a peça deve ser capaz de andar para ali.
+			if (!pecaOrigem.podeAndar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
+				throw new JogadaInvalidaException("A peça não consegue andar até a casa indicada.");
 		}
 
 		// Move a peça para o destino.
@@ -106,6 +140,60 @@ public class Jogador {
 			throw new JogadaInvalidaException(
 					"Erro gravíssimo. Entre em contato com os administradores do sistema! :)");
 		}
+	}
+
+	/**
+	 * Aplica a jogada de Roque Maior.
+	 * 
+	 * @throws JogadaInvalidaException
+	 */
+	private void aplicarRoqueMaior() throws JogadaInvalidaException {
+		// Pega a linha em que o roque deve ser feito.
+		int linha = getMinhaLinhaDeRoque();
+
+		// Executa o roque.
+		Peca torre = tabuleiro.retirarPeca(new Posicao(1, linha));
+		Peca rei = tabuleiro.retirarPeca(new Posicao(5, linha));
+		try {
+			tabuleiro.colocarPeca(new Posicao(3, linha), rei);
+			tabuleiro.colocarPeca(new Posicao(4, linha), torre);
+		} catch (CasaOcupadaException e) {
+			throw new JogadaInvalidaException(
+					"O caminho para fazer o Roque Maior não está livre.");
+		}
+	}
+
+	/**
+	 * Aplica a jogada de Roque Menor.
+	 * 
+	 * @throws JogadaInvalidaException
+	 */
+	public void aplicarRoqueMenor() throws JogadaInvalidaException {
+		// Pega a linha em que o roque deve ser feito.
+		int linha = getMinhaLinhaDeRoque();
+
+		// Executa o roque.
+		Peca torre = tabuleiro.retirarPeca(new Posicao(8, linha));
+		Peca rei = tabuleiro.retirarPeca(new Posicao(5, linha));
+		try {
+			tabuleiro.colocarPeca(new Posicao(7, linha), rei);
+			tabuleiro.colocarPeca(new Posicao(6, linha), torre);
+		} catch (CasaOcupadaException e) {
+			throw new JogadaInvalidaException(
+					"O caminho para fazer o Roque Menor não está livre.");
+		}
+	}
+
+	/**
+	 * Devolve a linha em que o jogador faz as jogadas de roque.
+	 * 
+	 * @return Linha onde é executada o roque do jogador.
+	 */
+	private int getMinhaLinhaDeRoque() {
+		if (cor == CorJogador.BRANCO)
+			return 1;
+		else
+			return 8;
 	}
 
 	/**

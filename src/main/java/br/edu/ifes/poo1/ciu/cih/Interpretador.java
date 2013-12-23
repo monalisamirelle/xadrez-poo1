@@ -25,13 +25,13 @@ public class Interpretador {
 			throws JogadaInvalidaException {
 		// Coloca tudo em maíusculo para evitar que algumas jogadas não sejam
 		// interpretadas por essa questão.
-		jogada.toUpperCase();
+		jogada = jogada.toUpperCase();
 
 		// Se for uma jogada do tipo Roque, já podemos retornar a jogada
 		// construída.
-		if (jogada == "O-O")
+		if (jogada.contentEquals("O-O"))
 			return new Jogada(TipoJogada.ROQUE_MENOR);
-		if (jogada == "O-O-O")
+		if (jogada.contentEquals("O-O-O"))
 			return new Jogada(TipoJogada.ROQUE_MAIOR);
 
 		// Inicia as variáveis necessárias para criação das jogadas restantes.
@@ -57,7 +57,7 @@ public class Interpretador {
 		// Se for uma jogada simples do tipo ataque, como: 24x53
 		case 5:
 			// Verifica o 'x' no meio.
-			if (jogada.charAt(2) != 'x')
+			if (jogada.charAt(2) != 'X')
 				throw new JogadaInvalidaException(
 						"O comando dado não pode ser interpretado.");
 
@@ -86,7 +86,7 @@ public class Interpretador {
 		// Jogada de ataque e promoção de peão, como: 57x48=T
 		case 7:
 			// Verifica o 'x' do ataque e o '=' da promoção.
-			if (jogada.charAt(2) != 'x' || jogada.charAt(4) != '=')
+			if (jogada.charAt(2) != 'X' || jogada.charAt(4) != '=')
 				throw new JogadaInvalidaException(
 						"O comando dado não pode ser interpretado.");
 
