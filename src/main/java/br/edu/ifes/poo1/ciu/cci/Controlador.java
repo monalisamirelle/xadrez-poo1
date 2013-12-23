@@ -103,7 +103,7 @@ public class Controlador {
 		// o jogo.
 	}
 
-	public void controlarSinglePlayer() {
+	private void controlarSinglePlayer() {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = "ZEUS";
@@ -156,7 +156,7 @@ public class Controlador {
 	 * Controla tudo o que é necessário para uma partida multiplayer. Ao final
 	 * do método, a partida terá encerrado.
 	 */
-	public void controlarMultiplayer() {
+	private void controlarMultiplayer() {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = cli.lerNomeJogadorPreto();
