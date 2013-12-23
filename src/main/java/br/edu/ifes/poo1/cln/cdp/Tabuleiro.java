@@ -60,8 +60,8 @@ public class Tabuleiro {
 			this.colocarPeca(new Posicao(1, 8), new Torre(pretas));
 			this.colocarPeca(new Posicao(2, 8), new Cavalo(pretas));
 			this.colocarPeca(new Posicao(3, 8), new Bispo(pretas));
-			this.colocarPeca(new Posicao(4, 8), new Rei(pretas));
-			this.colocarPeca(new Posicao(5, 8), new Rainha(pretas));
+			this.colocarPeca(new Posicao(4, 8), new Rainha(pretas));
+			this.colocarPeca(new Posicao(5, 8), new Rei(pretas));
 			this.colocarPeca(new Posicao(6, 8), new Bispo(pretas));
 			this.colocarPeca(new Posicao(7, 8), new Cavalo(pretas));
 			this.colocarPeca(new Posicao(8, 8), new Torre(pretas));
