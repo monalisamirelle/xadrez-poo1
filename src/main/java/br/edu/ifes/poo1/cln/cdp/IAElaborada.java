@@ -35,8 +35,11 @@ public class IAElaborada extends Maquina {
 			// Se estamos em um nível MIN, devemos pegar todas as jogadas da
 			// pessoa
 		}
-		// TODO preciso dizer que essa operação deve ser realizada passando por
-		// parâmetro o objeto da class pessoa, ou seja, o jogador que está jogando contra a máquina
+		// FIXME preciso dizer que essa operação deve ser realizada passando por
+		// parâmetro o objeto da class pessoa, ou seja, o jogador que está
+		// jogando contra a máquina, quando era pra passar a máquina eu usei ali
+		// em cima ...proximosEstadosPossiveis(this), mas... agora, ao invés de
+		// 'this' eu preciso passar a pessoa
 		// else {
 		// listaTabuleiros = noPai.getTabuleiroNo().proximosEstadosPossiveis(
 		// );
