@@ -110,9 +110,11 @@ public class Jogador {
 						"A peça que você está tentando atacar é sua!");
 
 			// Além disso verifica se a peça pode atacar ali.
-			if (!pecaOrigem.podeAtacar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
-				throw new JogadaInvalidaException("A peça não consegue atacar a casa indicada.");
-			
+			if (!pecaOrigem.podeAtacar(jogada.getOrigem(), jogada.getDestino(),
+					tabuleiro))
+				throw new JogadaInvalidaException(
+						"A peça não consegue atacar a casa indicada.");
+
 			// Remove a peça do destino e acrescenta a lista de peças
 			// capturadas, já que se trata de um ataque.
 			this.pecasCapturadas
@@ -122,10 +124,12 @@ public class Jogador {
 			if (pecaDestino != null)
 				throw new JogadaInvalidaException(
 						"A casa, para a qual você está tentando mover, está ocupada por outra peça.");
-			
+
 			// E a peça deve ser capaz de andar para ali.
-			if (!pecaOrigem.podeAndar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
-				throw new JogadaInvalidaException("A peça não consegue andar até a casa indicada.");
+			if (!pecaOrigem.podeAndar(jogada.getOrigem(), jogada.getDestino(),
+					tabuleiro))
+				throw new JogadaInvalidaException(
+						"A peça não consegue andar até a casa indicada.");
 		}
 
 		// Move a peça para o destino.

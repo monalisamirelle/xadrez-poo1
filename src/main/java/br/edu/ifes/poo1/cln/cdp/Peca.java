@@ -1,5 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.util.ArrayList;
+
 /**
  * Representa uma peça qualquer do tabuleiro. Cada peça específica, como cavalo,
  * peão, rei, herdam desta classe e implementão as características específicas
@@ -31,6 +33,13 @@ public abstract class Peca {
 		this.jogador = jogador;
 		this.tipoPeca = tipoPeca;
 		this.jaMoveu = false;
+	}
+
+	/**
+	 * Classe construtora que só serve para instanciar futuras peças
+	 */
+	public Peca(Jogador jogador) {
+		this.jogador = jogador;
 	}
 
 	/**
@@ -98,8 +107,8 @@ public abstract class Peca {
 	}
 
 	/**
-	 * Vê o valor absoluto de um movimento horizontal ou vertical (utiliza o valor desejado menos o
-	 * valor atual)
+	 * Vê o valor absoluto de um movimento horizontal ou vertical (utiliza o
+	 * valor desejado menos o valor atual)
 	 * 
 	 * @param posicaoOcupada
 	 * @param posicaoDesejada
@@ -107,6 +116,34 @@ public abstract class Peca {
 	 */
 	protected int tamanhoMovimento(int posicaoOcupada, int posicaoDesejada) {
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
+	}
+
+	/**
+	 * Gera uma lista com todas as jogadas que uma peça pode realizar
+	 * 
+	 * @param posicaoOrigem
+	 * @param tabuleiro
+	 * @return
+	 */
+	// TODO ROQUE'S EN PASSANT PROMOÇÃO
+	public ArrayList<Jogada> jogadasPeca(Posicao posicaoOrigem,
+			Tabuleiro tabuleiro) {
+		ArrayList<Jogada> listaJogadas = new ArrayList<Jogada>();
+		// Caminhando pelo tabuleiro
+		for (int coluna = 1; coluna <= 8; coluna++)
+			for (int linha = 1; linha <= 8; linha++) {
+				// Se a peça puder se movimentar para uma posição
+				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
+						tabuleiro) == true)
+					listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+							coluna, linha), TipoJogada.ANDAR));
+				// Se a peça puder atacar uma posição
+				if (this.podeAtacar(posicaoOrigem, new Posicao(coluna, linha),
+						tabuleiro) == true)
+					listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+							coluna, linha), TipoJogada.ATACAR));
+			}
+		return listaJogadas;
 	}
 
 	public int getValor() {

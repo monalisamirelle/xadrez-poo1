@@ -255,4 +255,26 @@ public class TesteTabuleiro {
 		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
 
 	}
+
+	@Test
+	public void valorTabuleiro() throws CasaOcupadaException {
+		// Testa valor tabuleiro conforme insere peças
+
+		// Uma peça
+		tabuleiro.colocarPeca(new Posicao(1, 1), cavaloPreto);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(), 3);
+
+		// Peça de mesmo valor
+		tabuleiro.colocarPeca(new Posicao(2, 4), cavaloPreto);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(), 6);
+
+		// Peça inimiga
+		tabuleiro.colocarPeca(new Posicao(2, 8), cavaloBranco);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(), 3);
+
+		// Peça de valor diferente (negativo)
+		tabuleiro.colocarPeca(new Posicao(2, 1), torreBranca);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(), -2);
+	}
+
 }

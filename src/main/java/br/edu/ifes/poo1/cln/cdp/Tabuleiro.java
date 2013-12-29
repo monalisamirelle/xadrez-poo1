@@ -138,6 +138,23 @@ public class Tabuleiro {
 	}
 
 	/**
+	 * Indica se uma determinada posição do tabuleiro está ocupada por um aliado
+	 * ou não.
+	 * 
+	 * @param posicao
+	 *            Posição no tabuleiro.
+	 * @return Se está vazio.
+	 */
+	public boolean estaAliado(Jogador jogador, Posicao destino) {
+		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false
+				&& this.espiarPeca(
+						new Posicao(destino.getColuna(), destino.getLinha()))
+						.getJogador().getCor() == jogador.getCor())
+			return true;
+		return false;
+	}
+
+	/**
 	 * Indica se uma determinada posição do tabuleiro está ocupada por um
 	 * inimigo ou não.
 	 * 
@@ -146,7 +163,7 @@ public class Tabuleiro {
 	 * @return Se está vazio.
 	 */
 	public boolean estaInimigo(Jogador jogador, Posicao destino) {
-		if (this.espiarPeca(new Posicao(destino.getColuna(), destino.getLinha())) != null
+		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false
 				&& this.espiarPeca(
 						new Posicao(destino.getColuna(), destino.getLinha()))
 						.getJogador().getCor() != jogador.getCor())
@@ -181,7 +198,7 @@ public class Tabuleiro {
 				// Se for um rei, pula.
 				if (peca.getTipoPeca() == TipoPeca.REI)
 					continue;
-				
+
 				// Pula as peças que não forem da cor indicada.
 				if (peca.getJogador().getCor() != cor)
 					continue;
@@ -220,7 +237,6 @@ public class Tabuleiro {
 	 *            Onde a peça deseja chegar
 	 * @return se a peça pode realizar movimento ou não
 	 */
-	// FIXME: Conferir se o método está sendo usado adequadamente.
 	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
 		int linha = origem.getLinha();
 		int coluna = origem.getColuna();
@@ -440,4 +456,89 @@ public class Tabuleiro {
 		// conseguir ajudar o rei. Mas isto está fora do escopo do trabalho.
 		return verificarXeque(cor) && !podeSeMover;
 	}
+
+	/**
+	 * Método que armazena, dado um tabuleiro, os próximos estados possíveis
+	 * para o tabuleiro
+	 * 
+	 * @param jogador
+	 * @return
+	 * @throws CasaOcupadaException
+	 */
+	// FIXME Jogadas especiais
+	public ArrayList<Tabuleiro> proximosEstadosPossiveis(Jogador jogador)
+			throws CasaOcupadaException {
+		ArrayList<Tabuleiro> proximosEstados = new ArrayList<Tabuleiro>();
+		ArrayList<Jogada> possiveisJogadas = geraJogadasPossiveis(jogador);
+		// Para cada jogada realizada pela peça, gere um novo
+		// tabuleiro e or armazene na lista de tabuleiros
+		for (Jogada jogada : possiveisJogadas) {
+			Tabuleiro tabuleiroNovo = this;
+			Peca peca = this.espiarPeca(jogada.getOrigem());
+			tabuleiroNovo.retirarPeca(jogada.getOrigem());
+			tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
+			proximosEstados.add(tabuleiroNovo);
+		}
+		return proximosEstados;
+	}
+
+	/**
+	 * Método que gera todas as possiveis jogadas de serem realizadas por um
+	 * jogador no tabuleiro
+	 * 
+	 * @param jogador
+	 * @return
+	 * @throws CasaOcupadaException
+	 */
+	// FIXME Não sei como agir com jogadas especiais
+	public ArrayList<Jogada> geraJogadasPossiveis(Jogador jogador) {
+		// Contém todas as jogadas que podem ser realizadas por um jogador
+		ArrayList<Jogada> possiveisJogadas = new ArrayList<Jogada>();
+		// Contém todas as jogadas que podem ser realizadas por uma peça
+		ArrayList<Jogada> jogadasPeca = new ArrayList<Jogada>();
+		for (int coluna = 1; coluna <= 8; coluna++)
+			for (int linha = 1; linha <= 8; linha++)
+				// Se a peça encontrada for do jogador
+				if (this.estaAliado(jogador, new Posicao(coluna, linha)) == true) {
+					Peca peca = this.espiarPeca(new Posicao(coluna, linha));
+					// Encontro todas as jogadas que podem ser realizadas por
+					// uma peça
+					jogadasPeca = peca.jogadasPeca(new Posicao(coluna, linha),
+							this);
+					// Para todas as jogadas que podem ser realizadas por uma
+					// peça
+					for (Jogada jogada : jogadasPeca)
+						// Insira a jogada nas possíveis jogadas
+						possiveisJogadas.add(jogada);
+				}
+		return possiveisJogadas;
+	}
+
+	/**
+	 * Verifica o valor do tabuleiro com base nas peças que um jogador possui e
+	 * nas peças que o jogador inimigo possui (trabalhar com Max min)
+	 * 
+	 * @return
+	 */
+	public int valorTabuleiro() {
+		int valor = 0;
+		// Percorrendo o tabuleiro
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			for (int linha = 1; linha <= 8; linha++) {
+				Posicao posicao = new Posicao(coluna, linha);
+				// Se houver uma peça na posição
+				if (this.estaVazio(posicao) == false) {
+					// Se for uma peça inimiga
+					if (this.estaInimigo(new Jogador("", CorJogador.BRANCO),
+							posicao) == true)
+						valor = valor + this.espiarPeca(posicao).getValor();
+					// Se for uma peça diferente
+					else
+						valor = valor - this.espiarPeca(posicao).getValor();
+				}
+			}
+		}
+		return valor;
+	}
+
 }
