@@ -2,7 +2,7 @@ package br.edu.ifes.poo1.cln.cdp;
 
 import java.util.ArrayList;
 
-public class GLaDOS extends Maquina {
+public class IAElaborada extends Maquina {
 
 	// Informa com quantas camadas estamos lidando no problema (5 é o oficial,
 	// mas valor pode ser adequado na interface conforme dificuldade escolhida
@@ -11,7 +11,7 @@ public class GLaDOS extends Maquina {
 
 	RealizaBusca busca = new RealizaBusca();
 
-	public GLaDOS(String nome, CorJogador cor) {
+	public IAElaborada(String nome, CorJogador cor) {
 		super(nome, cor);
 	}
 

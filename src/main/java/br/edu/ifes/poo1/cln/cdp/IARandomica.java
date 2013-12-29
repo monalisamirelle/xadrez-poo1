@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.cln.cdp;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Zeus extends Maquina{
+public class IARandomica extends Maquina{
 
 	/**
 	 * Lista contendo as posições que são possíveis de ter uma peça controlada
@@ -11,7 +11,7 @@ public class Zeus extends Maquina{
 	 */
 	private ArrayList<Integer> posicoesPossiveis = new ArrayList<Integer>(64);
 
-	public Zeus(String nome, CorJogador cor) {
+	public IARandomica(String nome, CorJogador cor) {
 		super(nome, cor);
 	}
 
