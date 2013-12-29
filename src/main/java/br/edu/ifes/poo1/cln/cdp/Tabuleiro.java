@@ -491,6 +491,7 @@ public class Tabuleiro {
 	 * @throws CasaOcupadaException
 	 */
 	// FIXME Não sei como agir com jogadas especiais
+	// OK
 	public ArrayList<Jogada> geraJogadasPossiveis(Jogador jogador) {
 		// Contém todas as jogadas que podem ser realizadas por um jogador
 		ArrayList<Jogada> possiveisJogadas = new ArrayList<Jogada>();
@@ -507,9 +508,13 @@ public class Tabuleiro {
 							this);
 					// Para todas as jogadas que podem ser realizadas por uma
 					// peça
-					for (Jogada jogada : jogadasPeca)
+					for (Jogada jogada : jogadasPeca) {
+						System.out.println(jogada.getDestino().getColuna()
+								+ " " + jogada.getDestino().getLinha() + " "
+								+ jogada.getTipoJogada());
 						// Insira a jogada nas possíveis jogadas
 						possiveisJogadas.add(jogada);
+					}
 				}
 		return possiveisJogadas;
 	}
@@ -520,6 +525,7 @@ public class Tabuleiro {
 	 * 
 	 * @return
 	 */
+	// OK
 	public int valorTabuleiro() {
 		int valor = 0;
 		// Percorrendo o tabuleiro

@@ -58,7 +58,9 @@ public abstract class Peca {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
-		return podeSeMover(origem, destino, tabuleiro);
+		if (tabuleiro.estaVazio(destino))
+			return podeSeMover(origem, destino, tabuleiro);
+		return false;
 	}
 
 	/**
@@ -77,7 +79,9 @@ public abstract class Peca {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
-		return podeSeMover(origem, destino, tabuleiro);
+		if (tabuleiro.estaInimigo(this.getJogador(), destino))
+			return podeSeMover(origem, destino, tabuleiro);
+		return false;
 	}
 
 	/**
@@ -126,6 +130,7 @@ public abstract class Peca {
 	 * @return
 	 */
 	// TODO ROQUE'S EN PASSANT PROMOÇÃO
+	// OK
 	public ArrayList<Jogada> jogadasPeca(Posicao posicaoOrigem,
 			Tabuleiro tabuleiro) {
 		ArrayList<Jogada> listaJogadas = new ArrayList<Jogada>();

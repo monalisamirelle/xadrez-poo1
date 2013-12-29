@@ -276,5 +276,27 @@ public class TesteTabuleiro {
 		tabuleiro.colocarPeca(new Posicao(2, 1), torreBranca);
 		Assert.assertEquals(tabuleiro.valorTabuleiro(), -2);
 	}
-
+	
+	/**
+	@Test
+	public void geraJogadasPossiveis() throws CasaOcupadaException {
+		tabuleiro.colocarPeca(new Posicao(4,4), torreBranca);
+		tabuleiro.colocarPeca(new Posicao(4,3), cavaloPreto);
+		ArrayList<Jogada> jogadas = new ArrayList<Jogada>();
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(1,4),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(2,4),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(3,4),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(4,3),TipoJogada.ATACAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(4,5),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(4,6),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(4,7),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(4,8),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(5,4),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(6,4),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(7,4),TipoJogada.ANDAR));
+		jogadas.add(new Jogada(new Posicao(4,4),new Posicao(8,4),TipoJogada.ANDAR));
+		Assert.assertEquals(jogadas,tabuleiro.geraJogadasPossiveis(new Jogador("",CorJogador.BRANCO)));
+	}	
+	*/
+	
 }

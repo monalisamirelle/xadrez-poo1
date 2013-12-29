@@ -25,10 +25,22 @@ public class IAElaborada extends Maquina {
 	 */
 	public ArrayList<NoArvore> geraFilhos(NoArvore noPai,
 			ArrayList<NoArvore> novaListaNos) throws CasaOcupadaException {
+		ArrayList<Tabuleiro> listaTabuleiros = new ArrayList<Tabuleiro>();
 		// Cria uma lista de tabuleiros que contém todos os estados possíveis a
 		// serem gerados dado o nó pai
-		ArrayList<Tabuleiro> listaTabuleiros = noPai.getTabuleiroNo()
-				.proximosEstadosPossiveis(this);
+		// Se estamos em um nível MAX, devemos pegar todas as jogadas da máquina
+		if (noPai.getNivel() == TipoNivel.MIN) {
+			listaTabuleiros = noPai.getTabuleiroNo().proximosEstadosPossiveis(
+					this);
+			// Se estamos em um nível MIN, devemos pegar todas as jogadas da
+			// pessoa
+		}
+		// TODO preciso dizer que essa operação deve ser realizada passando por
+		// parâmetro o objeto da class pessoa, ou seja, o jogador que está jogando contra a máquina
+		// else {
+		// listaTabuleiros = noPai.getTabuleiroNo().proximosEstadosPossiveis(
+		// );
+		// }
 		// Para cada tabuleiro da lista de tabuleiros
 		for (Tabuleiro tabuleiroEstado : listaTabuleiros) {
 			// Crie um nó que reconheça seu pai
@@ -69,16 +81,17 @@ public class IAElaborada extends Maquina {
 	}
 
 	/**
-	 * Cria a lista de jogadas que podem ser realizadas pelo nó raiz
+	 * Cria a lista de jogadas que podem ser realizadas por um nó (no caso,
+	 * estamos interessados na lista de jogadas que podem ser realizadas pelo nó
+	 * raiz)
 	 * 
-	 * @param noRaiz
+	 * @param no
 	 * @return
 	 * @throws CasaOcupadaException
 	 */
-	public ArrayList<Jogada> criaJogadas(NoArvore noRaiz) {
-		// Cria uma lista de jogadas que podem ser feitas pelo tabuleiro do nó
-		// inicial
-		ArrayList<Jogada> listaJogadas = noRaiz.getTabuleiroNo()
+	// OK
+	public ArrayList<Jogada> jogadasPossiveis(NoArvore no) {
+		ArrayList<Jogada> listaJogadas = no.getTabuleiroNo()
 				.geraJogadasPossiveis(this);
 		return listaJogadas;
 	}
@@ -100,7 +113,6 @@ public class IAElaborada extends Maquina {
 		listaNos.add(raiz);
 
 		// Crio a árvore de possibilidades
-		// TODO deve alternar entre jogadas da máquina e jogadas da pessoa!!
 		for (int camada = 1; camada <= ALCANCEMAQUINA; camada++)
 			listaNos = criaCamada(listaNos);
 
@@ -111,7 +123,7 @@ public class IAElaborada extends Maquina {
 		busca.buscaEmProfundidade(raiz);
 
 		// Crio a lista de jogadas
-		ArrayList<Jogada> listaJogadas = criaJogadas(raiz);
+		ArrayList<Jogada> listaJogadas = jogadasPossiveis(raiz);
 
 		// Para cada nó na lista de adjacência do pai
 		for (int indice = 1; indice < raiz.getListaAdjacencia().size(); indice++)
