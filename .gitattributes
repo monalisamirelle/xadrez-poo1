@@ -1,0 +1,30 @@
+## Este é um arquivo de atributos do git. Aqui são enumerados 
+## comportamentos que o git deve ter com certos arquivos. O 
+## principal motivo da criação deste arquivo é a normalização dos 
+## caracteres de fim de linha, para facilitar a colaboração de 
+## pessoas usando diferentes sistemas operacionais.
+##
+## Para entender melhor a respeito, recomendo a seguinte leitura:
+## http://adaptivepatchwork.com/2012/03/01/mind-the-end-of-your-line/
+
+# Define que o git deverá reconhecer se cada arquivo é do tipo 
+# textual automaticamente. (Nas linhas seguintes alguns arquivos 
+# teram essa propriedade substituida)
+*			text=auto
+
+# Arquivos necessariamente de texto. Assim o git deve normalizar os
+# caracteres de fim de linha de cada arquivo que se encaixe aqui.
+src/		text
+*.java		text
+*.xml		text
+*.md		text
+LICENSE		text
+.gitignore	text
+.project	text
+.classpath	text
+.settings/	text
+
+# Arquivos que o git não deve mexer.
+target/		binary
+*.class		binary
+*.jar		binary
