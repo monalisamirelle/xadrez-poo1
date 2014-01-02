@@ -13,7 +13,7 @@ public abstract class Maquina extends Jogador{
 	 * @return
 	 * @throws CasaOcupadaException 
 	 */
-	public abstract Jogada escolherJogada() throws CasaOcupadaException;
+	// public abstract Jogada escolherJogada() throws CasaOcupadaException;
 
 
 }

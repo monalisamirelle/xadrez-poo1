@@ -8,6 +8,14 @@ public class Cavalo extends Peca {
 	public Cavalo(Jogador jogador) {
 		super(3, TipoPeca.CAVALO, jogador);
 	}
+	
+	/**
+	 * Criar um clone de uma torre para IAElaborada
+	 * @param peca
+	 */
+	public Cavalo(Peca peca) {
+		super(peca);
+	}
 
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,

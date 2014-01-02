@@ -12,6 +12,14 @@ public class Peao extends Peca {
 		super(1, TipoPeca.PEAO, jogador);
 	}
 
+	/**
+	 * Criar um clone de uma torre para IAElaborada
+	 * @param peca
+	 */
+	public Peao(Peca peca) {
+		super(peca);
+	}
+	
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {

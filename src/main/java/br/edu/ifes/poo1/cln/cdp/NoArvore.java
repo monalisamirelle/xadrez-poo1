@@ -33,7 +33,13 @@ public class NoArvore {
 
 	// Cada nó terá um um tabuleiro
 	private Tabuleiro tabuleiroNo = new Tabuleiro();
+	
+	// Verifica se o tabuleiro do nó se encontra um xeque
+	private boolean xeque;
 
+	// Verifica se o tabuleiro do nó se encontra um xeque-mate
+	private boolean xequeMate;
+	
 	/**
 	 * Classe construtora de n� raiz
 	 * 
@@ -49,6 +55,9 @@ public class NoArvore {
 		this.nivel = TipoNivel.MAX;
 		this.podou = false;
 		this.tabuleiroNo = tabuleiro;
+		// TODO talvez o tabuleiro atual possa já estar em xeque ou xequeMate
+		this.xeque = false;
+		this.xequeMate = false;
 	}
 
 	/**
@@ -68,6 +77,8 @@ public class NoArvore {
 		this.nivel = coloqueNivel();
 		this.podou = false;
 		this.tabuleiroNo = tabuleiro;
+		this.xeque = false;
+		this.xequeMate = false;
 	}
 
 	/**
@@ -77,6 +88,7 @@ public class NoArvore {
 	 * @param valor
 	 */
 	// TODO talvez essa classe construtora suma
+	/**
 	public NoArvore(NoArvore noPai, int valor, Tabuleiro tabuleiro) {
 		this.noPai = noPai;
 		noPai.addFilho(this);
@@ -90,6 +102,7 @@ public class NoArvore {
 		this.podou = false;
 		this.tabuleiroNo = tabuleiro;
 	}
+	*/
 
 	/**
 	 * Pegar o valor de um n�
@@ -281,6 +294,22 @@ public class NoArvore {
 	 */
 	public Tabuleiro getTabuleiroNo() {
 		return this.tabuleiroNo;
+	}
+
+	public boolean isXeque() {
+		return xeque;
+	}
+
+	public void setXeque() {
+		this.xeque = true;
+	}
+
+	public boolean isXequeMate() {
+		return xequeMate;
+	}
+
+	public void setXequeMate() {
+		this.xequeMate = true;
 	}
 
 }

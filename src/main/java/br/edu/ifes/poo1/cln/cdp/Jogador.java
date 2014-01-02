@@ -39,7 +39,7 @@ public class Jogador {
 		switch (jogada.getTipoJogada()) {
 		case ROQUE_MENOR:
 			// Verifica se pode fazer o Roque Menor.
-			if (tabuleiro.roqueMenor(this))
+			if (tabuleiro.ehRoqueMenor(this.getCor()))
 				// ... e o faz.
 				aplicarRoqueMenor();
 			else
@@ -49,7 +49,7 @@ public class Jogador {
 
 		case ROQUE_MAIOR:
 			// Verifica se pode fazer o Roque Maior.
-			if (tabuleiro.roqueMaior(this))
+			if (tabuleiro.ehRoqueMaior(this.getCor()))
 				// ... e o faz.
 				aplicarRoqueMaior();
 			else

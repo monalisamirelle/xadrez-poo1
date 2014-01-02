@@ -54,14 +54,14 @@ public class IARandomica extends Maquina{
 					((casaSelecionada - 1) / 8) + 1);
 			// Se a posição selecionada pelo tabuleiro for diferente de uma peça
 			// da máquina
-			if (tabuleiro.estaInimigo(this, posicao) == true
+			if (tabuleiro.estaInimigo(this.getCor(), posicao) == true
 					|| tabuleiro.estaVazio(posicao) == true) {
 				// Removemos a posição do escopo de posições possiveis
 				posicoesPossiveis.remove(indiceAleatorio);
 			}
 			// Faça isso enquanto...
 		} while (posicoesPossiveis.size() != 0
-				&& (tabuleiro.estaInimigo(this, posicao) == true || tabuleiro
+				&& (tabuleiro.estaInimigo(this.getCor(), posicao) == true || tabuleiro
 						.estaVazio(posicao)));
 		// Se todas as posições (peças) já foram analisadas. Retorne nulo
 		if (posicoesPossiveis.size() == 0) {
