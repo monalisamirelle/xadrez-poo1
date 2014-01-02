@@ -1,5 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.util.ArrayList;
+
 /**
  * Representa uma peça qualquer do tabuleiro. Cada peça específica, como cavalo,
  * peão, rei, herdam desta classe e implementão as características específicas
@@ -31,6 +33,21 @@ public abstract class Peca {
 		this.jogador = jogador;
 		this.tipoPeca = tipoPeca;
 		this.jaMoveu = false;
+	}
+
+	/**
+	 * Teste
+	 * 
+	 * @param valor
+	 * @param tipoPeca
+	 * @param jogador
+	 * @param jaMoveu
+	 */
+	public Peca(Peca peca) {
+		this.valor = peca.valor;
+		this.jogador = peca.jogador;
+		this.tipoPeca = peca.tipoPeca;
+		this.jaMoveu = true;
 	}
 
 	/**
@@ -98,8 +115,8 @@ public abstract class Peca {
 	}
 
 	/**
-	 * Vê o valor absoluto de um movimento horizontal ou vertical (utiliza o valor desejado menos o
-	 * valor atual)
+	 * Vê o valor absoluto de um movimento horizontal ou vertical (utiliza o
+	 * valor desejado menos o valor atual)
 	 * 
 	 * @param posicaoOcupada
 	 * @param posicaoDesejada
@@ -107,6 +124,67 @@ public abstract class Peca {
 	 */
 	protected int tamanhoMovimento(int posicaoOcupada, int posicaoDesejada) {
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
+	}
+
+	/**
+	 * Gera uma lista com todas as jogadas que uma peça pode realizar
+	 * 
+	 * @param posicaoOrigem
+	 * @param tabuleiro
+	 * @return
+	 */
+	public ArrayList<Jogada> jogadasPeca(Posicao posicaoOrigem,
+			Tabuleiro tabuleiro) {
+		ArrayList<Jogada> listaJogadas = new ArrayList<Jogada>();
+		// Caminhando pelo tabuleiro
+		for (int coluna = 1; coluna <= 8; coluna++)
+			for (int linha = 1; linha <= 8; linha++) {
+				// Se a peça puder se movimentar para uma posição
+				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
+						tabuleiro) == true
+						&& tabuleiro.estaVazio(new Posicao(coluna, linha)))
+					listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+							coluna, linha), TipoJogada.ANDAR));
+				// Se a peça puder atacar uma posição
+				if (this.podeAtacar(posicaoOrigem, new Posicao(coluna, linha),
+						tabuleiro) == true
+						&& tabuleiro.estaInimigo(this.getJogador().getCor(),
+								new Posicao(coluna, linha)))
+					listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+							coluna, linha), TipoJogada.ATACAR));
+
+			}
+		// TODO Promoção
+		/**
+		 * if(this.getTipoPeca()==tipoPeca.PEAO)
+		 * if(this.getJogador().getCor()==CorJogador.BRANCO)
+		 * if(posicaoOrigem.getLinha())
+		 */
+		return listaJogadas;
+	}
+
+	/**
+	 * Cria uma nova instancia de uma peça, conforme o seu tipo (clona)
+	 * 
+	 * @return
+	 */
+	public Peca novaInstancia() {
+		switch (this.getTipoPeca()) {
+		case BISPO:
+			return new Bispo(this);
+		case CAVALO:
+			return new Cavalo(this);
+		case PEAO:
+			return new Peao(this);
+		case RAINHA:
+			return new Rainha(this);
+		case REI:
+			return new Rei(this);
+		case TORRE:
+			return new Torre(this);
+		default:
+			return null;
+		}
 	}
 
 	public int getValor() {
@@ -129,4 +207,5 @@ public abstract class Peca {
 	public void setJaMoveu() {
 		this.jaMoveu = true;
 	}
+
 }

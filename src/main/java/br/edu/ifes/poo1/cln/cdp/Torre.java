@@ -8,7 +8,15 @@ public class Torre extends Peca {
 	public Torre(Jogador jogador) {
 		super(5, TipoPeca.TORRE, jogador);
 	}
-
+	
+	/**
+	 * Criar um clone de uma torre para IAElaborada
+	 * @param peca
+	 */
+	public Torre(Peca peca) {
+		super(peca);
+	}
+	
 	@Override
 	public boolean podeSeMover(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {

@@ -26,7 +26,7 @@ public class Jogada {
 	 * @param tipoRoque
 	 *            Tipo da jogada que será feita. Deve ser estritamente um Roque
 	 *            Menor ou um Roque Maior.
-	 * @throws JogadaInvalidaException 
+	 * @throws JogadaInvalidaException
 	 */
 	public Jogada(TipoJogada tipoRoque) throws JogadaInvalidaException {
 		switch (tipoRoque) {

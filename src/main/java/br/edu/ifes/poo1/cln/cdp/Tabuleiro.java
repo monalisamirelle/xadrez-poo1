@@ -7,7 +7,7 @@ import java.util.List;
  * Um tabuleiro é composto por 64 casas, estas podem estar ocupadas por uma peça
  * ou vazias.
  */
-public class Tabuleiro {
+public class Tabuleiro implements Cloneable {
 
 	/**
 	 * Casas do tabuleiro. Com colunas e linhas variando de 0 a 7. Mas deve
@@ -23,6 +23,15 @@ public class Tabuleiro {
 	 */
 	public Tabuleiro() {
 		pecas = new Peca[8][8];
+	}
+
+	/**
+	 * Método construtor de um clone de tabuleiro
+	 * 
+	 * @param clone
+	 */
+	public Tabuleiro(Peca[][] clone) {
+		this.pecas = clone;
 	}
 
 	/**
@@ -138,6 +147,23 @@ public class Tabuleiro {
 	}
 
 	/**
+	 * Indica se uma determinada posição do tabuleiro está ocupada por um aliado
+	 * ou não.
+	 * 
+	 * @param posicao
+	 *            Posição no tabuleiro.
+	 * @return Se está vazio.
+	 */
+	public boolean estaAliado(CorJogador corJogador, Posicao destino) {
+		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false
+				&& this.espiarPeca(
+						new Posicao(destino.getColuna(), destino.getLinha()))
+						.getJogador().getCor() == corJogador)
+			return true;
+		return false;
+	}
+
+	/**
 	 * Indica se uma determinada posição do tabuleiro está ocupada por um
 	 * inimigo ou não.
 	 * 
@@ -145,11 +171,11 @@ public class Tabuleiro {
 	 *            Posição no tabuleiro.
 	 * @return Se está vazio.
 	 */
-	public boolean estaInimigo(Jogador jogador, Posicao destino) {
-		if (this.espiarPeca(new Posicao(destino.getColuna(), destino.getLinha())) != null
+	public boolean estaInimigo(CorJogador corJogador, Posicao destino) {
+		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false
 				&& this.espiarPeca(
 						new Posicao(destino.getColuna(), destino.getLinha()))
-						.getJogador().getCor() != jogador.getCor())
+						.getJogador().getCor() != corJogador)
 			return true;
 		return false;
 	}
@@ -181,7 +207,7 @@ public class Tabuleiro {
 				// Se for um rei, pula.
 				if (peca.getTipoPeca() == TipoPeca.REI)
 					continue;
-				
+
 				// Pula as peças que não forem da cor indicada.
 				if (peca.getJogador().getCor() != cor)
 					continue;
@@ -220,7 +246,6 @@ public class Tabuleiro {
 	 *            Onde a peça deseja chegar
 	 * @return se a peça pode realizar movimento ou não
 	 */
-	// FIXME: Conferir se o método está sendo usado adequadamente.
 	public boolean podeRealizarMovimentacao(Posicao origem, Posicao destino) {
 		int linha = origem.getLinha();
 		int coluna = origem.getColuna();
@@ -262,14 +287,19 @@ public class Tabuleiro {
 	 */
 	private boolean verificaRoque(Posicao posicaoRei, Posicao posicaoTorre,
 			Posicao posicaoDesejadaRei, Posicao posicaoDesejadaTorre) {
-		// Se o rei e a torre ainda não se moveram
-		if (this.espiarPeca(posicaoRei).getJaMoveu() == false
-				& this.espiarPeca(posicaoTorre).getJaMoveu() == false) {
-			// Se as casas que serão ocupadas pelo rei e a torre estão vazias
-			if (this.estaVazio(posicaoDesejadaRei) == true
-					&& this.estaVazio(posicaoDesejadaTorre) == true)
-				return true;
-		}
+		// Se o rei se encontra onde realmente deveria e a torre se encontra
+		// onde realmente deveria
+		if (this.espiarPeca(posicaoRei) != null
+				&& this.espiarPeca(posicaoTorre) != null)
+			// Se o rei e a torre ainda não se moveram
+			if (this.espiarPeca(posicaoRei).getJaMoveu() == false
+					&& this.espiarPeca(posicaoTorre).getJaMoveu() == false)
+				// Se as casas que serão ocupadas pelo rei e a torre estão
+				// vazias
+				if (this.estaVazio(posicaoDesejadaRei) == true
+						&& this.estaVazio(posicaoDesejadaTorre) == true)
+					return true;
+
 		return false;
 	}
 
@@ -280,15 +310,16 @@ public class Tabuleiro {
 	 *            Jogador que quer realizar o roque menor
 	 * @return Se o roque foi possivel ou não
 	 */
-	public boolean roqueMenor(Jogador jogador) {
+	public boolean ehRoqueMenor(CorJogador corJogador) {
 		// Se for um roque menor do jogador de peças brancas
-		if (jogador.getCor() == CorJogador.BRANCO)
+		if (corJogador == CorJogador.BRANCO)
 			return verificaRoque(new Posicao(5, 1), new Posicao(8, 1),
 					new Posicao(7, 1), new Posicao(6, 1));
 		// Se for um roque menor do jogador de peças pretas
-		else
+		else {
 			return verificaRoque(new Posicao(5, 8), new Posicao(8, 8),
 					new Posicao(7, 8), new Posicao(6, 8));
+		}
 	}
 
 	/**
@@ -298,9 +329,9 @@ public class Tabuleiro {
 	 *            Jogador que quer realizar o roque maior
 	 * @return se o roque foi possivel ou não
 	 */
-	public boolean roqueMaior(Jogador jogador) {
+	public boolean ehRoqueMaior(CorJogador corJogador) {
 		// Se for um roque maior do jogador de peças brancas
-		if (jogador.getCor() == CorJogador.BRANCO)
+		if (corJogador == CorJogador.BRANCO)
 			return verificaRoque(new Posicao(5, 1), new Posicao(1, 1),
 					new Posicao(3, 1), new Posicao(4, 1));
 		// Se for um roque maior do jogador de peças pretas
@@ -319,7 +350,6 @@ public class Tabuleiro {
 	public boolean verificarXeque(CorJogador cor) {
 		// Encontra a posição do rei.
 		Posicao posicaoRei = encontrarRei(cor);
-
 		// Retorna se a posição do rei está ameaçada.
 		if (cor == CorJogador.BRANCO)
 			return estaAmeacadoPor(posicaoRei, CorJogador.PRETO);
@@ -439,5 +469,211 @@ public class Tabuleiro {
 		// FIXME: Na verdade, para que o Xeque Mate ocorra, nenhuma peça pode
 		// conseguir ajudar o rei. Mas isto está fora do escopo do trabalho.
 		return verificarXeque(cor) && !podeSeMover;
+	}
+
+	/**
+	 * Método que armazena, dado um tabuleiro, os próximos estados possíveis
+	 * para o tabuleiro
+	 * 
+	 * @param corJogador
+	 * @return
+	 * @throws CasaOcupadaException
+	 * @throws CloneNotSupportedException
+	 * @throws JogadaInvalidaException
+	 */
+	public ArrayList<Tabuleiro> proximosEstadosPossiveis(CorJogador corJogador)
+			throws CasaOcupadaException, CloneNotSupportedException,
+			JogadaInvalidaException {
+		ArrayList<Tabuleiro> proximosEstados = new ArrayList<Tabuleiro>();
+		ArrayList<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
+
+		Peca peca = null;
+		Peca rei = null;
+		Peca torre = null;
+
+		// Para cada jogada realizada pela peça, gere um novo
+		// tabuleiro e or armazene na lista de tabuleiros
+		for (Jogada jogada : possiveisJogadas) {
+			Peca[][] pecasAtuais = this.copiaPecas();
+			Tabuleiro tabuleiroNovo = new Tabuleiro(pecasAtuais);
+
+			// System.out.println("\nTabuleiro antigo");
+			// this.digaTabuleiro();
+
+			// Verifica o tipo de jogada e gera o tabuleiro correto
+			switch (jogada.getTipoJogada()) {
+			case ANDAR:
+				peca = this.espiarPeca(jogada.getOrigem());
+				tabuleiroNovo.retirarPeca(jogada.getOrigem());
+				if (peca.getJaMoveu() == true)
+					tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
+				else
+					tabuleiroNovo.colocarPeca(jogada.getDestino(),
+							peca.novaInstancia());
+				break;
+			case ATACAR:
+				peca = this.espiarPeca(jogada.getOrigem());
+				tabuleiroNovo.retirarPeca(jogada.getOrigem());
+				tabuleiroNovo.retirarPeca(jogada.getDestino());
+				if (peca.getJaMoveu() == true)
+					tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
+				else
+					tabuleiroNovo.colocarPeca(jogada.getDestino(),
+							peca.novaInstancia());
+				break;
+			case ROQUE_MENOR:
+				if (corJogador == CorJogador.BRANCO) {
+					rei = this.espiarPeca(new Posicao(5, 1));
+					torre = this.espiarPeca(new Posicao(8, 1));
+					tabuleiroNovo.retirarPeca(new Posicao(5, 1));
+					tabuleiroNovo.retirarPeca(new Posicao(8, 1));
+					tabuleiroNovo.colocarPeca(new Posicao(7, 1),
+							rei.novaInstancia());
+					tabuleiroNovo.colocarPeca(new Posicao(6, 1),
+							torre.novaInstancia());
+				} else {
+					rei = this.espiarPeca(new Posicao(5, 8));
+					torre = this.espiarPeca(new Posicao(8, 8));
+					tabuleiroNovo.retirarPeca(new Posicao(5, 8));
+					tabuleiroNovo.retirarPeca(new Posicao(8, 8));
+					tabuleiroNovo.colocarPeca(new Posicao(7, 8),
+							rei.novaInstancia());
+					tabuleiroNovo.colocarPeca(new Posicao(6, 8),
+							torre.novaInstancia());
+				}
+				break;
+			case ROQUE_MAIOR:
+				if (corJogador == CorJogador.BRANCO) {
+					rei = this.espiarPeca(new Posicao(5, 1));
+					torre = this.espiarPeca(new Posicao(1, 1));
+					tabuleiroNovo.retirarPeca(new Posicao(5, 1));
+					tabuleiroNovo.retirarPeca(new Posicao(1, 1));
+					tabuleiroNovo.colocarPeca(new Posicao(3, 1),
+							rei.novaInstancia());
+					tabuleiroNovo.colocarPeca(new Posicao(4, 1),
+							torre.novaInstancia());
+				} else {
+					rei = this.espiarPeca(new Posicao(5, 8));
+					torre = this.espiarPeca(new Posicao(1, 8));
+					tabuleiroNovo.retirarPeca(new Posicao(5, 8));
+					tabuleiroNovo.retirarPeca(new Posicao(1, 8));
+					tabuleiroNovo.colocarPeca(new Posicao(3, 8),
+							rei.novaInstancia());
+					tabuleiroNovo.colocarPeca(new Posicao(4, 8),
+							torre.novaInstancia());
+				}
+				break;
+			}
+			// System.out.println(jogada.getDestino().getColuna()+" "+jogada.getDestino().getLinha());
+
+			// System.out.println("\nTabuleiro novo");
+			// tabuleiroNovo.digaTabuleiro();
+
+			// Armazena o tabuleiro na lista de próximos estados
+			proximosEstados.add(tabuleiroNovo);
+		}
+		return proximosEstados;
+	}
+
+	/**
+	 * Método que gera todas as possiveis jogadas de serem realizadas por um
+	 * jogador no tabuleiro
+	 * 
+	 * @param jogador
+	 * @return
+	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException
+	 */
+	public ArrayList<Jogada> geraJogadasPossiveis(CorJogador corJogador)
+			throws JogadaInvalidaException {
+		// Contém todas as jogadas que podem ser realizadas por um jogador
+		ArrayList<Jogada> possiveisJogadas = new ArrayList<Jogada>();
+		// Contém todas as jogadas que podem ser realizadas por uma peça
+		ArrayList<Jogada> jogadasPeca = new ArrayList<Jogada>();
+		// Jogadas relacionadas a andar e atacar
+		for (int coluna = 1; coluna <= 8; coluna++)
+			for (int linha = 1; linha <= 8; linha++)
+				// Se a peça encontrada for do jogador
+				if (this.estaAliado(corJogador, new Posicao(coluna, linha)) == true) {
+					Peca peca = this.espiarPeca(new Posicao(coluna, linha));
+					// Encontro todas as jogadas que podem ser realizadas por
+					// uma peça
+					jogadasPeca = peca.jogadasPeca(new Posicao(coluna, linha),
+							this);
+					// Para todas as jogadas que podem ser realizadas por uma
+					// peça
+					for (Jogada jogada : jogadasPeca)
+						// Insira a jogada nas possíveis jogadas
+						possiveisJogadas.add(jogada);
+
+				}
+		// Analise de roque menor e roque maior (verifica se é possível)
+		if (this.ehRoqueMenor(corJogador) == true)
+			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MENOR));
+		if (this.ehRoqueMaior(corJogador) == true)
+			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MAIOR));
+		// System.out.println(possiveisJogadas.size());
+		return possiveisJogadas;
+	}
+
+	/**
+	 * Verifica o valor do tabuleiro com base nas peças que um jogador possui e
+	 * nas peças que o jogador inimigo possui (trabalhar com Max min)
+	 * 
+	 * @return
+	 */
+	public int valorTabuleiro() {
+		int valor = 0;
+		// Percorrendo o tabuleiro
+		for (int coluna = 1; coluna <= 8; coluna++) {
+			for (int linha = 1; linha <= 8; linha++) {
+				Posicao posicao = new Posicao(coluna, linha);
+				// Se houver uma peça na posição
+				if (this.estaVazio(posicao) == false) {
+					// Se for uma peça inimiga
+					if (this.estaInimigo(CorJogador.BRANCO,
+							posicao) == true)
+						valor = valor + this.espiarPeca(posicao).getValor();
+					// Se for uma peça diferente
+					else
+						valor = valor - this.espiarPeca(posicao).getValor();
+				}
+			}
+		}
+		return valor;
+	}
+
+	/**
+	 * Método que copia as peças para um novo tabuleiro
+	 * 
+	 * @return
+	 */
+	private Peca[][] copiaPecas() {
+		Peca[][] copiaPeca = new Peca[8][8];
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				copiaPeca[i][j] = this.pecas[i][j];
+		return copiaPeca;
+	}
+
+	/**
+	 * Método de apoio que descreve o que há no tabuleiro
+	 */
+	public void digaTabuleiro() {
+		for (int coluna = 1; coluna <= 8; coluna++)
+			for (int linha = 1; linha <= 8; linha++)
+				if (this.espiarPeca(new Posicao(coluna, linha)) != null)
+					System.out.println(this.espiarPeca(
+							new Posicao(coluna, linha)).getTipoPeca()
+							+ " "
+							+ this.espiarPeca(new Posicao(coluna, linha))
+									.getJogador().getCor()
+							+ " na coluna "
+							+ coluna
+							+ " e linha "
+							+ linha
+							+ " e já moveu: "
+							+ this.espiarPeca(new Posicao(coluna, linha))
+									.getJaMoveu());
 	}
 }

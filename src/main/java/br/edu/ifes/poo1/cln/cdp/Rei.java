@@ -10,6 +10,14 @@ public class Rei extends Peca {
 		super(8000, TipoPeca.REI, jogador);
 	}
 
+	/**
+	 * Criar um clone de uma torre para IAElaborada
+	 * @param peca
+	 */
+	public Rei(Peca peca) {
+		super(peca);
+	}
+	
 	@Override
 	public boolean podeSeMover(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {

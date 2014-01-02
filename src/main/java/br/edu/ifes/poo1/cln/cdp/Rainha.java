@@ -8,6 +8,14 @@ public class Rainha extends Peca {
 	public Rainha(Jogador jogador) {
 		super(9, TipoPeca.RAINHA, jogador);
 	}
+	
+	/**
+	 * Criar um clone de uma torre para IAElaborada
+	 * @param peca
+	 */
+	public Rainha(Peca peca) {
+		super(peca);
+	}
 
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,

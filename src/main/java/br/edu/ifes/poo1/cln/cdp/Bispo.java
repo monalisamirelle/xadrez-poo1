@@ -8,7 +8,15 @@ public class Bispo extends Peca {
 	public Bispo(Jogador jogador) {
 		super(3, TipoPeca.BISPO, jogador);
 	}
-
+	
+	/**
+	 * Criar um clone de uma torre para IAElaborada
+	 * @param peca
+	 */
+	public Bispo(Peca peca) {
+		super(peca);
+	}
+	
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) {
