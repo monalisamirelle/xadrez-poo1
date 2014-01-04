@@ -69,7 +69,7 @@ public class Controlador {
 
 		// Só termina o laço quando o jogador selecionar a opção de sair no menu
 		// principal.
-		while (itemEscolhido.getNome() != "SAIR") {
+		while (!itemEscolhido.getNome().contentEquals("SAIR")) {
 			// Busca qual foi a escolha do jogador.
 			switch (itemEscolhido.getNome()) {
 
