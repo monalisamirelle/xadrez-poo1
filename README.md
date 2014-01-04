@@ -8,6 +8,7 @@ Para este trabalho, desenvolvemos um jogo de xadrez com interface de linha de co
 
 ## Possíveis melhorias
 Algumas coisas deixaram de ser feitas, pois estavam fora do escopo do trabalho, e podem ser melhoradas no futuro. Como:
+
  - Melhorar o método de verificação de Xeque Mate. Que atualmente não verifica se alguma peça pode ajudar o rei a se livrar do xeque.
  - Persistir os dados das partidas que já ocorreram.
  - Salvar jogos em andamento, para continua-los mais tarde.
@@ -15,5 +16,5 @@ Algumas coisas deixaram de ser feitas, pois estavam fora do escopo do trabalho, 
  - Criar um jogo com interface gráfica. Pode ser para web, android, desktop, ou qualquer outro.
 
 ## Autores
- - Lucas Caetano Possatti
- - Thanner Soares Silva
+ - Lucas Caetano Possatti (@possatti)
+ - Thanner Soares Silva (@thanner_soares)
