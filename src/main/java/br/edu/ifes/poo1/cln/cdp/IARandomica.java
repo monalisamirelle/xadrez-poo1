@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class IARandomica extends Maquina{
@@ -9,7 +10,7 @@ public class IARandomica extends Maquina{
 	 * Lista contendo as posições que são possíveis de ter uma peça controlada
 	 * pela máquina
 	 */
-	private ArrayList<Integer> posicoesPossiveis = new ArrayList<Integer>(64);
+	private List<Integer> posicoesPossiveis = new ArrayList<Integer>(64);
 
 	public IARandomica(String nome, CorJogador cor) {
 		super(nome, cor);
@@ -19,7 +20,7 @@ public class IARandomica extends Maquina{
 	 * Inicializa uma lista que deve ser capaz de guardar todas as posições
 	 * ainda não foram escolhidas pelo modo aleatório de escolhas
 	 */
-	private ArrayList<Integer> inicializaLista(ArrayList<Integer> lista) {
+	private List<Integer> inicializaLista(List<Integer> lista) {
 		int contadorIndice;
 		for (contadorIndice = 1; contadorIndice <= 64; contadorIndice++)
 			lista.add(contadorIndice);
@@ -32,7 +33,7 @@ public class IARandomica extends Maquina{
 	 * @param lista
 	 * @return
 	 */
-	private int geraIndiceAleatorio(ArrayList<Integer> lista) {
+	private int geraIndiceAleatorio(List<Integer> lista) {
 		Random aleatorio = new Random();
 		return aleatorio.nextInt(lista.size());
 	}
@@ -81,7 +82,7 @@ public class IARandomica extends Maquina{
 	 */
 	private Posicao ataqueEscolhido(Posicao origem) {
 		Peca peca = tabuleiro.espiarPeca(origem);
-		ArrayList<Integer> ataquesPossiveis = new ArrayList<Integer>(64);
+		List<Integer> ataquesPossiveis = new ArrayList<Integer>(64);
 		ataquesPossiveis = inicializaLista(ataquesPossiveis);
 		int indiceAleatorio;
 		int casaSelecionada;
@@ -109,7 +110,7 @@ public class IARandomica extends Maquina{
 	 */
 	private Posicao movimentoEscolhido(Posicao origem) {
 		Peca peca = tabuleiro.espiarPeca(origem);
-		ArrayList<Integer> movimentosPossiveis = new ArrayList<Integer>(64);
+		List<Integer> movimentosPossiveis = new ArrayList<Integer>(64);
 		movimentosPossiveis = inicializaLista(movimentosPossiveis);
 		int indiceAleatorio;
 		int casaSelecionada;

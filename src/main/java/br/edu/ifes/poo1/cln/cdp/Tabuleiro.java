@@ -9,6 +9,11 @@ import java.util.List;
  */
 public class Tabuleiro implements Cloneable {
 
+	public final int LINHAINFERIOR = 1;
+	public final int LINHASUPERIOR = 8;
+	public final int COLUNAINFERIOR = 1;
+	public final int COLUNASUPERIOR = 8;
+
 	/**
 	 * Casas do tabuleiro. Com colunas e linhas variando de 0 a 7. Mas deve
 	 * haver um controle interno para que quando as outras classes forem se
@@ -155,11 +160,11 @@ public class Tabuleiro implements Cloneable {
 	 * @return Se está vazio.
 	 */
 	public boolean estaAliado(CorJogador corJogador, Posicao destino) {
-		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false
-				&& this.espiarPeca(
-						new Posicao(destino.getColuna(), destino.getLinha()))
-						.getJogador().getCor() == corJogador)
-			return true;
+		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false)
+			if (this.espiarPeca(
+					new Posicao(destino.getColuna(), destino.getLinha()))
+					.getJogador().getCor() == corJogador)
+				return true;
 		return false;
 	}
 
@@ -172,11 +177,11 @@ public class Tabuleiro implements Cloneable {
 	 * @return Se está vazio.
 	 */
 	public boolean estaInimigo(CorJogador corJogador, Posicao destino) {
-		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false
-				&& this.espiarPeca(
-						new Posicao(destino.getColuna(), destino.getLinha()))
-						.getJogador().getCor() != corJogador)
-			return true;
+		if (this.estaVazio(new Posicao(destino.getColuna(), destino.getLinha())) == false)
+			if (this.espiarPeca(
+					new Posicao(destino.getColuna(), destino.getLinha()))
+					.getJogador().getCor() != corJogador)
+				return true;
 		return false;
 	}
 
@@ -341,6 +346,66 @@ public class Tabuleiro implements Cloneable {
 	}
 
 	/**
+	 * Verifica se o enPassant é válido
+	 * 
+	 * @param cor
+	 *            Cor do rei
+	 * @return Posições ao redor do rei.
+	 */
+	// TODO testar
+	private boolean ehEnPassant(Posicao posicaoPeca) {
+		if (this.espiarPeca(posicaoPeca).getTipoPeca() == TipoPeca.PEAO) {
+			Posicao esquerda = new Posicao(posicaoPeca.getColuna() - 1,
+					posicaoPeca.getLinha());
+			// Se a posição não se encontra fora do tabuleiro
+			if (!estaForaDoTabuleiro(esquerda))
+				// Se a posicao tem uma peça inimiga
+				if (this.estaInimigo(this.espiarPeca(posicaoPeca).getJogador()
+						.getCor(), esquerda))
+					// Se a peça inimiga é um peão
+					if (this.espiarPeca(esquerda).getTipoPeca() == TipoPeca.PEAO) {
+						Peao peaoInimigo = (Peao) this.espiarPeca(esquerda);
+						// Se o peão em questão pode sofre um en passant
+						if (peaoInimigo.isPodeEnPassant() == true)
+							return true;
+					}
+			Posicao direita = new Posicao(posicaoPeca.getColuna() - 1,
+					posicaoPeca.getLinha());
+			// Se a posição não se encontra fora do tabuleiro
+			if (!estaForaDoTabuleiro(direita))
+				// Se a posicao tem uma peça inimiga
+				if (this.estaInimigo(this.espiarPeca(posicaoPeca).getJogador()
+						.getCor(), direita))
+					// Se a peça inimiga é um peão
+					if (this.espiarPeca(direita).getTipoPeca() == TipoPeca.PEAO) {
+						Peao peaoInimigo = (Peao) this.espiarPeca(direita);
+						// Se o peão em questão pode sofre um en passant
+						if (peaoInimigo.isPodeEnPassant() == true)
+							return true;
+					}
+		}
+		return false;
+	}
+
+	/**
+	 * Reseta o atributo "podeEnPassant"
+	 * 
+	 * @param corJogador
+	 */
+	// TODO testar
+	public void resetaPodeEnPassant(CorJogador corJogador) {
+		for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++)
+			for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++)
+				if (this.estaAliado(corJogador, new Posicao(coluna, linha)))
+					if (this.espiarPeca(new Posicao(coluna, linha))
+							.getTipoPeca() == TipoPeca.PEAO) {
+						Peao peao = (Peao) this.espiarPeca(new Posicao(coluna,
+								linha));
+						peao.setPodeEnPassant(false);
+					}
+	}
+
+	/**
 	 * Verifica se o rei da cor indicada está em Xeque.
 	 * 
 	 * @param cor
@@ -419,12 +484,12 @@ public class Tabuleiro implements Cloneable {
 		}
 
 		// Adiciona a posição a esquerda do rei.
-		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna(), posicaoRei
-				.getLinha() - 1));
+		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna() - 1, posicaoRei
+				.getLinha()));
 
 		// Adiciona a posição a direita do rei.
-		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna(), posicaoRei
-				.getLinha() + 1));
+		posicoesAoRedor.add(new Posicao(posicaoRei.getColuna() + 1, posicaoRei
+				.getLinha()));
 
 		List<Posicao> posicoesAoRedorValidas = new ArrayList<Posicao>();
 		// Filtra as posições, verificando quais estão dentro dos limites do
@@ -481,11 +546,11 @@ public class Tabuleiro implements Cloneable {
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 */
-	public ArrayList<Tabuleiro> proximosEstadosPossiveis(CorJogador corJogador)
+	public List<Tabuleiro> proximosEstadosPossiveis(CorJogador corJogador)
 			throws CasaOcupadaException, CloneNotSupportedException,
 			JogadaInvalidaException {
-		ArrayList<Tabuleiro> proximosEstados = new ArrayList<Tabuleiro>();
-		ArrayList<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
+		List<Tabuleiro> proximosEstados = new ArrayList<Tabuleiro>();
+		List<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
 
 		Peca peca = null;
 		Peca rei = null;
@@ -584,12 +649,12 @@ public class Tabuleiro implements Cloneable {
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	public ArrayList<Jogada> geraJogadasPossiveis(CorJogador corJogador)
+	public List<Jogada> geraJogadasPossiveis(CorJogador corJogador)
 			throws JogadaInvalidaException {
 		// Contém todas as jogadas que podem ser realizadas por um jogador
-		ArrayList<Jogada> possiveisJogadas = new ArrayList<Jogada>();
+		List<Jogada> possiveisJogadas = new ArrayList<Jogada>();
 		// Contém todas as jogadas que podem ser realizadas por uma peça
-		ArrayList<Jogada> jogadasPeca = new ArrayList<Jogada>();
+		List<Jogada> jogadasPeca = new ArrayList<Jogada>();
 		// Jogadas relacionadas a andar e atacar
 		for (int coluna = 1; coluna <= 8; coluna++)
 			for (int linha = 1; linha <= 8; linha++)
@@ -631,8 +696,7 @@ public class Tabuleiro implements Cloneable {
 				// Se houver uma peça na posição
 				if (this.estaVazio(posicao) == false) {
 					// Se for uma peça inimiga
-					if (this.estaInimigo(CorJogador.BRANCO,
-							posicao) == true)
+					if (this.estaInimigo(CorJogador.BRANCO, posicao) == true)
 						valor = valor + this.espiarPeca(posicao).getValor();
 					// Se for uma peça diferente
 					else

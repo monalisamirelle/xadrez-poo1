@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO Melhorar classes construtoras
 // PODOU É O ÚNICO ATRIBUTOS QUE AGEM DE MANEIRA IDÊNTICA NAS CLASSES CONSTRUTORAS
@@ -17,7 +18,7 @@ public class NoArvore {
 	private boolean temValor;
 
 	// Cada n� ter� uma lista de adjac�ncia indicando seus n�s de liga��o direta
-	private ArrayList<NoArvore> listaAdjacencia = new ArrayList<NoArvore>();
+	private List<NoArvore> listaAdjacencia = new ArrayList<NoArvore>();
 
 	// Irá servir para indicar a posição na lista de adjacencia de um no
 	private int posicaoListaAdjacencia;
@@ -33,13 +34,13 @@ public class NoArvore {
 
 	// Cada nó terá um um tabuleiro
 	private Tabuleiro tabuleiroNo = new Tabuleiro();
-	
+
 	// Verifica se o tabuleiro do nó se encontra um xeque
 	private boolean xeque;
 
 	// Verifica se o tabuleiro do nó se encontra um xeque-mate
 	private boolean xequeMate;
-	
+
 	/**
 	 * Classe construtora de n� raiz
 	 * 
@@ -55,9 +56,10 @@ public class NoArvore {
 		this.nivel = TipoNivel.MAX;
 		this.podou = false;
 		this.tabuleiroNo = tabuleiro;
-		// TODO talvez o tabuleiro atual possa já estar em xeque ou xequeMate
-		this.xeque = false;
-		this.xequeMate = false;
+		this.xeque = tabuleiro.verificarXeque(CorJogador.BRANCO)
+				|| tabuleiro.verificarXeque(CorJogador.PRETO);
+		this.xequeMate = tabuleiro.verificarXequeMate(CorJogador.BRANCO)
+				|| tabuleiro.verificarXequeMate(CorJogador.PRETO);
 	}
 
 	/**
@@ -77,32 +79,9 @@ public class NoArvore {
 		this.nivel = coloqueNivel();
 		this.podou = false;
 		this.tabuleiroNo = tabuleiro;
-		this.xeque = false;
-		this.xequeMate = false;
+		this.xeque = tabuleiro.verificarXeque(noPai.getCorNo());
+		this.xequeMate = tabuleiro.verificarXequeMate(noPai.getCorNo());
 	}
-
-	/**
-	 * Classe construtora de n� folha
-	 * 
-	 * @param indice
-	 * @param valor
-	 */
-	// TODO talvez essa classe construtora suma
-	/**
-	public NoArvore(NoArvore noPai, int valor, Tabuleiro tabuleiro) {
-		this.noPai = noPai;
-		noPai.addFilho(this);
-		this.valor = valor;
-		this.temValor = true;
-		this.insereListaAdjacencia(noPai);
-		this.posicaoListaAdjacencia = this.getNoPai().getListaAdjacencia()
-				.size();
-		this.marcado = false;
-		this.nivel = coloqueNivel();
-		this.podou = false;
-		this.tabuleiroNo = tabuleiro;
-	}
-	*/
 
 	/**
 	 * Pegar o valor de um n�
@@ -219,7 +198,7 @@ public class NoArvore {
 	 * 
 	 * @return
 	 */
-	public ArrayList<NoArvore> getListaAdjacencia() {
+	public List<NoArvore> getListaAdjacencia() {
 		return this.listaAdjacencia;
 	}
 
@@ -300,16 +279,15 @@ public class NoArvore {
 		return xeque;
 	}
 
-	public void setXeque() {
-		this.xeque = true;
-	}
-
 	public boolean isXequeMate() {
 		return xequeMate;
 	}
 
-	public void setXequeMate() {
-		this.xequeMate = true;
+	public CorJogador getCorNo() {
+		if (this.getNivel() == TipoNivel.MAX)
+			return CorJogador.PRETO;
+		else
+			return CorJogador.BRANCO;
 	}
 
 }

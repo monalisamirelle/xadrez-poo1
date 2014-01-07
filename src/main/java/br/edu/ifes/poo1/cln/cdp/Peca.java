@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Representa uma peça qualquer do tabuleiro. Cada peça específica, como cavalo,
@@ -133,12 +134,12 @@ public abstract class Peca {
 	 * @param tabuleiro
 	 * @return
 	 */
-	public ArrayList<Jogada> jogadasPeca(Posicao posicaoOrigem,
-			Tabuleiro tabuleiro) {
-		ArrayList<Jogada> listaJogadas = new ArrayList<Jogada>();
+	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, Tabuleiro tabuleiro) {
+		List<Jogada> listaJogadas = new ArrayList<Jogada>();
 		// Caminhando pelo tabuleiro
 		for (int coluna = 1; coluna <= 8; coluna++)
 			for (int linha = 1; linha <= 8; linha++) {
+				
 				// Se a peça puder se movimentar para uma posição
 				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
 						tabuleiro) == true

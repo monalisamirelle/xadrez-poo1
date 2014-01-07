@@ -22,7 +22,7 @@ public class TesteIAElaborada {
 
 	@Before
 	public void before() {
-		ia = new IAElaborada("", CorJogador.PRETO, 7, 45);
+		ia = new IAElaborada("", CorJogador.PRETO, 6, 45);
 		tabuleiro = new Tabuleiro();
 
 		reiBranco = new Rei(new Jogador("TesteB", CorJogador.BRANCO));
@@ -40,11 +40,10 @@ public class TesteIAElaborada {
 			CloneNotSupportedException, JogadaInvalidaException {
 
 		// Coloca a peça no tabuleiro.
+		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
 		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
-		tabuleiro.colocarPeca(new Posicao(1, 4), torrePreta);
-		tabuleiro.colocarPeca(new Posicao(5, 8), reiPreto);
-		tabuleiro.colocarPeca(new Posicao(5, 2), cavaloPreto);
-		tabuleiro.colocarPeca(new Posicao(6, 4), cavaloPreto);
+		tabuleiro.colocarPeca(new Posicao(7, 1), torrePreta);
+		tabuleiro.colocarPeca(new Posicao(6, 5), cavaloPreto);
 		tabuleiro.colocarPeca(new Posicao(8, 8), reiBranco);
 
 		Assert.assertNotNull(ia.escolherJogada(tabuleiro));
