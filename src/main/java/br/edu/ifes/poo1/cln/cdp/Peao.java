@@ -13,9 +13,9 @@ public class Peao extends Peca {
 	/**
 	 * Instancia um peão.
 	 */
-	public Peao(Jogador jogador) {
-		super(1, TipoPeca.PEAO, jogador);
-		podeEnPassant = false;
+	public Peao(CorJogador corJogador) {
+		super(1, TipoPeca.PEAO, corJogador);
+		this.podeEnPassant = false;
 	}
 
 	/**
@@ -29,9 +29,9 @@ public class Peao extends Peca {
 
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		int avanca;
-		if (this.getJogador().getCor() == CorJogador.BRANCO)
+		if (this.getCorJogador() == CorJogador.BRANCO)
 			avanca = 1;
 		else
 			avanca = -1;
@@ -41,11 +41,11 @@ public class Peao extends Peca {
 			if (origem.getColuna() - destino.getColuna() == 0) {
 				// Se a peça nunca se moveu
 				if (this.getJaMoveu() == false) {
-					if (destino.getLinha() - origem.getLinha() == 2 * avanca) {
-						this.setPodeEnPassant(true);
+					// Se quer andar duas casas para frente
+					if (destino.getLinha() - origem.getLinha() == 2 * avanca)
 						return true;
-					}
 				}
+				// Se a peça que andar uma casa para frente
 				if ((destino.getLinha() - origem.getLinha()) == avanca)
 					return true;
 			}
@@ -54,19 +54,33 @@ public class Peao extends Peca {
 
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		int avanca;
-		if (this.getJogador().getCor() == CorJogador.BRANCO)
+		if (this.getCorJogador() == CorJogador.BRANCO)
 			avanca = 1;
 		else
 			avanca = -1;
 		if (super.podeAtacar(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			// Se quer avançar na coluna 1
-			if (this.tamanhoMovimento(origem.getColuna(), destino.getColuna()) == 1)
+			if (this.deslocamentoPeca(origem.getColuna(), destino.getColuna()) == 1)
 				if (destino.getLinha() - origem.getLinha() == avanca)
 					return true;
 		return false;
+	}
+
+	/**
+	 * Método que verifica se o peão andou duas casas para a frente
+	 * 
+	 * @param origem
+	 * @param destino
+	 * @param tabuleiro
+	 * @return
+	 */
+	// TODO não está sendo utilizado, mas pode ser útil para encontrar peças com en passant
+	public boolean andouDuasCasas(Posicao origem, Posicao destino,
+			Tabuleiro tabuleiro) {
+		return this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 2;
 	}
 
 	public boolean isPodeEnPassant() {

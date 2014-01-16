@@ -5,8 +5,8 @@ public class Torre extends Peca {
 	/**
 	 * Instancia uma torre.
 	 */
-	public Torre(Jogador jogador) {
-		super(5, TipoPeca.TORRE, jogador);
+	public Torre(CorJogador corJogador) {
+		super(5, TipoPeca.TORRE, corJogador);
 	}
 	
 	/**
@@ -19,15 +19,15 @@ public class Torre extends Peca {
 	
 	@Override
 	public boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
-			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) == 0)
-					&& (this.tamanhoMovimento(origem.getColuna(),
+			if ((this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 0)
+					&& (this.deslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) > 0)
-					|| (this.tamanhoMovimento(origem.getLinha(),
+					|| (this.deslocamentoPeca(origem.getLinha(),
 							destino.getLinha()) > 0)
-					&& (this.tamanhoMovimento(origem.getColuna(),
+					&& (this.deslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) == 0))
 				return true;
 		return false;

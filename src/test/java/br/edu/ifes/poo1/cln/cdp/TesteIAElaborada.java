@@ -9,30 +9,34 @@ public class TesteIAElaborada {
 
 	Tabuleiro tabuleiro;
 	IAElaborada ia;
-	// Pessoa pessoa;
 
 	Peca reiBranco;
-	Peca torreBranca;
 	Peca reiPreto;
+	Peca torreBranca;
 	Peca torrePreta;
 	Peca cavaloBranco;
 	Peca cavaloPreto;
 	Peca bispoPreto;
 	Peca rainhaPreta;
-
+	Peca peaoBranco;
+	Peca peaoPreto;
+	
 	@Before
 	public void before() {
-		ia = new IAElaborada("", CorJogador.PRETO, 6, 45);
+		ia = new IAElaborada("", CorJogador.PRETO, 3, 45);
 		tabuleiro = new Tabuleiro();
 
-		reiBranco = new Rei(new Jogador("TesteB", CorJogador.BRANCO));
-		torreBranca = new Torre(new Jogador("TesteB", CorJogador.BRANCO));
-		reiPreto = new Rei(new Jogador("TesteP", CorJogador.PRETO));
-		torrePreta = new Torre(new Jogador("TesteP", CorJogador.PRETO));
-		cavaloBranco = new Cavalo(new Jogador("TesteB", CorJogador.BRANCO));
-		cavaloPreto = new Cavalo(new Jogador("TesteP", CorJogador.PRETO));
-		bispoPreto = new Bispo(new Jogador("TesteP", CorJogador.PRETO));
-		rainhaPreta = new Rainha(new Jogador("TesteP", CorJogador.PRETO));
+		reiBranco = new Rei(CorJogador.BRANCO);
+		torreBranca = new Torre(CorJogador.BRANCO);
+		reiPreto = new Rei(CorJogador.PRETO);
+		torrePreta = new Torre(CorJogador.PRETO);
+		cavaloBranco = new Cavalo(CorJogador.BRANCO);
+		cavaloPreto = new Cavalo(CorJogador.PRETO);
+		bispoPreto = new Bispo(CorJogador.PRETO);
+		rainhaPreta = new Rainha(CorJogador.PRETO);
+		peaoBranco = new Peao(CorJogador.BRANCO);
+		peaoPreto = new Peao(CorJogador.PRETO);
+		
 	}
 
 	@Test
@@ -40,12 +44,16 @@ public class TesteIAElaborada {
 			CloneNotSupportedException, JogadaInvalidaException {
 
 		// Coloca a peça no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
-		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
-		tabuleiro.colocarPeca(new Posicao(7, 1), torrePreta);
-		tabuleiro.colocarPeca(new Posicao(6, 5), cavaloPreto);
+		tabuleiro.colocarPeca(new Posicao(2, 1), reiPreto);
+		//tabuleiro.colocarPeca(new Posicao(7, 5), torrePreta);
+		//tabuleiro.colocarPeca(new Posicao(6, 5), cavaloPreto);
 		tabuleiro.colocarPeca(new Posicao(8, 8), reiBranco);
-
+		tabuleiro.colocarPeca(new Posicao(3, 7), torreBranca);
+		tabuleiro.colocarPeca(new Posicao(2, 8), torreBranca);
+		//tabuleiro.colocarPeca(new Posicao(3,5), peaoBranco);
+		//tabuleiro.colocarPeca(new Posicao(2,7), peaoPreto);
+		
+		// FIXME onde está o rei Branco?
 		Assert.assertNotNull(ia.escolherJogada(tabuleiro));
 	}
 

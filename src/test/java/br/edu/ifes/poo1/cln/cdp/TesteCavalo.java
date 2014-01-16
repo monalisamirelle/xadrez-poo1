@@ -14,28 +14,29 @@ public class TesteCavalo {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		cavaloBranco = new Cavalo(new Jogador("Teste", CorJogador.BRANCO));
-		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
-		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
+		cavaloBranco = new Cavalo(CorJogador.BRANCO);
+		peaoPreto = new Peao(CorJogador.PRETO);
+		peaoBranco = new Peao(CorJogador.BRANCO);
+
+		/** Colocar cavalo no tabuleiro */
+		tabuleiro.colocarPeca(new Posicao(4, 4), cavaloBranco);
 
 		/** Coloca peças inimigas no tabuleiro */
-		tabuleiro.colocarPeca(new Posicao(6, 4), peaoPreto);
+		tabuleiro.colocarPeca(new Posicao(6, 5), peaoPreto);
 		tabuleiro.colocarPeca(new Posicao(8, 8), peaoPreto);
 		tabuleiro.colocarPeca(new Posicao(5, 3), peaoPreto);
 
 		/** Coloca peça aliada no tabuleiro */
-		tabuleiro.colocarPeca(new Posicao(2, 2), peaoBranco);
+		tabuleiro.colocarPeca(new Posicao(2, 3), peaoBranco);
 	}
 
 	@Test
-	public void podeAndar() {
+	public void podeAndar() throws CasaOcupadaException {
 		// Verifica se o cavalo pode realizar determinado movimento.
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
 				new Posicao(5, 6), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
 				new Posicao(5, 2), tabuleiro));
-		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
-				new Posicao(6, 5), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
 				new Posicao(6, 3), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
@@ -43,36 +44,22 @@ public class TesteCavalo {
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
 				new Posicao(3, 2), tabuleiro));
 		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
-				new Posicao(2, 3), tabuleiro));
-		Assert.assertTrue(cavaloBranco.podeAndar(new Posicao(4, 4),
 				new Posicao(2, 5), tabuleiro));
 	}
 
 	@Test
-	public void podeAtacar() {
+	public void podeAtacar() throws CasaOcupadaException {
 
 		// Verifica se o cavalo pode realizar determinado ataque.
-		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(4, 3),
-				new Posicao(6, 4), tabuleiro));
-		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(7, 6),
-				new Posicao(8, 8), tabuleiro));
-		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(6, 5),
-				new Posicao(5, 3), tabuleiro));
-
-		// Verifica se o cavalo pode atacar uma posição vazia. Deve ser
-		// possível, pois podeAndar(..) não deve verificar a o que há no
-		// destino.
 		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(4, 4),
 				new Posicao(6, 5), tabuleiro));
-		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(8, 3),
-				new Posicao(6, 2), tabuleiro));
-		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(4, 4),
-				new Posicao(3, 6), tabuleiro));
 
-		// Verifica se o cavalo pode atacar uma posição com peça aliada. Deve
-		// ser possível, pois podeAndar(..) não deve verificar a o que há no
-		// destino.
-		Assert.assertTrue(cavaloBranco.podeAtacar(new Posicao(3, 4),
-				new Posicao(2, 2), tabuleiro));
+		// Verifica se o cavalo pode atacar uma posição vazia.
+		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(4, 4),
+				new Posicao(2, 5), tabuleiro));
+
+		// Verifica se o cavalo pode atacar uma posição com peça aliada.
+		Assert.assertFalse(cavaloBranco.podeAtacar(new Posicao(4, 4),
+				new Posicao(2, 3), tabuleiro));
 	}
 }

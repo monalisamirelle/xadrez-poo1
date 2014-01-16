@@ -33,8 +33,9 @@ public class Jogador {
 	 * @param jogada
 	 *            Jogada que deve ser aplicada.
 	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException 
 	 */
-	public void executarJogada(Jogada jogada) throws JogadaInvalidaException {
+	public void executarJogada(Jogada jogada) throws JogadaInvalidaException, CasaOcupadaException {
 		// Se for um roque menor, o executa.
 		switch (jogada.getTipoJogada()) {
 		case ROQUE_MENOR:
@@ -71,7 +72,8 @@ public class Jogador {
 					"Não há uma peça na origem do movimento.");
 
 		// E verifica se a peça em origem é do jogador
-		if (pecaOrigem.getJogador() != this)
+		// TODO Lucas, favor verificar se está correto
+		if (pecaOrigem.getCorJogador() != this.getCor())
 			throw new JogadaInvalidaException(
 					"A peça que você está tentando mover não é sua.");
 
@@ -105,7 +107,8 @@ public class Jogador {
 						"Não há peça para ser atacada, na casa indicada.");
 
 			// E a peça sendo atacada não pode pertencer ao jogador.
-			if (pecaDestino.getJogador() == this)
+			// TODO Lucas, favor verificar se está correto
+			if (pecaDestino.getCorJogador() == this.getCor())
 				throw new JogadaInvalidaException(
 						"A peça que você está tentando atacar é sua!");
 

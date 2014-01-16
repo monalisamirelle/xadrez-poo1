@@ -79,8 +79,9 @@ public class IARandomica extends Maquina{
 	 * 
 	 * @param origem
 	 * @return
+	 * @throws CasaOcupadaException 
 	 */
-	private Posicao ataqueEscolhido(Posicao origem) {
+	private Posicao ataqueEscolhido(Posicao origem) throws CasaOcupadaException {
 		Peca peca = tabuleiro.espiarPeca(origem);
 		List<Integer> ataquesPossiveis = new ArrayList<Integer>(64);
 		ataquesPossiveis = inicializaLista(ataquesPossiveis);
@@ -107,8 +108,9 @@ public class IARandomica extends Maquina{
 	 * 
 	 * @param origem
 	 * @return
+	 * @throws CasaOcupadaException 
 	 */
-	private Posicao movimentoEscolhido(Posicao origem) {
+	private Posicao movimentoEscolhido(Posicao origem) throws CasaOcupadaException {
 		Peca peca = tabuleiro.espiarPeca(origem);
 		List<Integer> movimentosPossiveis = new ArrayList<Integer>(64);
 		movimentosPossiveis = inicializaLista(movimentosPossiveis);
@@ -134,8 +136,9 @@ public class IARandomica extends Maquina{
 	 * Método que irá definir uma jogada para ser realizada pela máquina
 	 * 
 	 * @return
+	 * @throws CasaOcupadaException 
 	 */
-	public Jogada escolherJogada() {
+	public Jogada escolherJogada() throws CasaOcupadaException {
 		posicoesPossiveis = inicializaLista(posicoesPossiveis);
 		PosicaoEscolhidaMaquina posicaoEscolhida;
 		Posicao realizaAtaque = null;

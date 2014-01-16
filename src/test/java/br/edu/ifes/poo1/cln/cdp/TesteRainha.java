@@ -14,9 +14,9 @@ public class TesteRainha {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		rainhaBranca = new Rainha(new Jogador("Teste", CorJogador.BRANCO));
-		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
-		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
+		rainhaBranca = new Rainha(CorJogador.BRANCO);
+		peaoPreto = new Peao(CorJogador.PRETO);
+		peaoBranco = new Peao(CorJogador.BRANCO);
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 4), peaoPreto);
@@ -29,7 +29,7 @@ public class TesteRainha {
 	}
 
 	@Test
-	public void podeAndar() {
+	public void podeAndar() throws CasaOcupadaException {
 		/** Verifica se a rainha pode realizar determinado movimento */
 		Assert.assertTrue(rainhaBranca.podeAndar(new Posicao(4, 4),
 				new Posicao(5, 5), tabuleiro));
@@ -42,7 +42,7 @@ public class TesteRainha {
 	}
 
 	@Test
-	public void podeAtacar() {
+	public void podeAtacar() throws CasaOcupadaException {
 
 		/** Verifica se a rainha pode realizar determinado ataque */
 		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(6, 3),
@@ -58,9 +58,9 @@ public class TesteRainha {
 		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
 		 * no destino.
 		 */
-		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(6, 3),
+		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(6, 3),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(6, 3),
+		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(6, 3),
 				new Posicao(3, 6), tabuleiro));
 
 		/**
@@ -76,7 +76,7 @@ public class TesteRainha {
 		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
 		 * no destino.
 		 */
-		Assert.assertTrue(rainhaBranca.podeAtacar(new Posicao(4, 4),
+		Assert.assertFalse(rainhaBranca.podeAtacar(new Posicao(4, 4),
 				new Posicao(2, 2), tabuleiro));
 	}
 }

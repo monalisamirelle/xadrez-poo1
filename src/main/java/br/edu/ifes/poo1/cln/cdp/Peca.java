@@ -13,7 +13,7 @@ public abstract class Peca {
 	private int valor;
 
 	/** Jogador que controla a peça. */
-	private Jogador jogador;
+	private CorJogador corJogador;
 
 	/** Tipo da peça */
 	private TipoPeca tipoPeca;
@@ -29,15 +29,15 @@ public abstract class Peca {
 	 * @param jogador
 	 *            Jogador que detém a peça.
 	 */
-	public Peca(int valor, TipoPeca tipoPeca, Jogador jogador) {
+	public Peca(int valor, TipoPeca tipoPeca, CorJogador corJogador) {
 		this.valor = valor;
-		this.jogador = jogador;
+		this.corJogador = corJogador;
 		this.tipoPeca = tipoPeca;
 		this.jaMoveu = false;
 	}
 
 	/**
-	 * Teste
+	 * Clonar uma peça
 	 * 
 	 * @param valor
 	 * @param tipoPeca
@@ -46,7 +46,7 @@ public abstract class Peca {
 	 */
 	public Peca(Peca peca) {
 		this.valor = peca.valor;
-		this.jogador = peca.jogador;
+		this.corJogador = peca.corJogador;
 		this.tipoPeca = peca.tipoPeca;
 		this.jaMoveu = true;
 	}
@@ -61,13 +61,17 @@ public abstract class Peca {
 	 * @param destino
 	 *            Posição para onde a peça deve ser movida.
 	 * @return Se é possível andar com a peça até a casa desejada.
+	 * @throws CasaOcupadaException 
 	 */
 	public boolean podeAndar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
-		return podeSeMover(origem, destino, tabuleiro);
+		if (podeSeMover(origem, destino, tabuleiro))
+			return tabuleiro.estaVazio(destino);
+		else
+			return false;
 	}
 
 	/**
@@ -80,13 +84,17 @@ public abstract class Peca {
 	 * @param destino
 	 *            Local a ser atacado pela peça.
 	 * @return Se é possível usar esta peça para atacar a casa indicada.
+	 * @throws CasaOcupadaException 
 	 */
 	public boolean podeAtacar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
-		return podeSeMover(origem, destino, tabuleiro);
+		if (podeSeMover(origem, destino, tabuleiro))
+			return tabuleiro.estaInimigo(this.getCorJogador(), destino);
+		else
+			return false;
 	}
 
 	/**
@@ -100,9 +108,10 @@ public abstract class Peca {
 	 * @param tabuleiro
 	 *            Tabuleiro em que será feita movimentação.
 	 * @return Se a peça pode se mover.
+	 * @throws CasaOcupadaException
 	 */
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		// As posições devem ser internas ao tabuleiro.
 		if (Tabuleiro.estaForaDoTabuleiro(origem)
 				|| Tabuleiro.estaForaDoTabuleiro(destino))
@@ -123,7 +132,7 @@ public abstract class Peca {
 	 * @param posicaoDesejada
 	 * @return
 	 */
-	protected int tamanhoMovimento(int posicaoOcupada, int posicaoDesejada) {
+	protected int deslocamentoPeca(int posicaoOcupada, int posicaoDesejada) {
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
 	}
 
@@ -133,34 +142,46 @@ public abstract class Peca {
 	 * @param posicaoOrigem
 	 * @param tabuleiro
 	 * @return
+	 * @throws CasaOcupadaException 
 	 */
-	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, Tabuleiro tabuleiro) {
+	// FIXME talvez deva haver um aviso explícito para não comer o rei
+	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, Tabuleiro tabuleiro) throws CasaOcupadaException {
 		List<Jogada> listaJogadas = new ArrayList<Jogada>();
 		// Caminhando pelo tabuleiro
 		for (int coluna = 1; coluna <= 8; coluna++)
 			for (int linha = 1; linha <= 8; linha++) {
-				
 				// Se a peça puder se movimentar para uma posição
 				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
 						tabuleiro) == true
 						&& tabuleiro.estaVazio(new Posicao(coluna, linha)))
-					listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
-							coluna, linha), TipoJogada.ANDAR));
+					if (tabuleiro.ehPromocao(posicaoOrigem))
+						listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+								coluna, linha), TipoJogada.ANDAR,
+								TipoPeca.RAINHA));
+					else
+						listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+								coluna, linha), TipoJogada.ANDAR));
 				// Se a peça puder atacar uma posição
 				if (this.podeAtacar(posicaoOrigem, new Posicao(coluna, linha),
 						tabuleiro) == true
-						&& tabuleiro.estaInimigo(this.getJogador().getCor(),
+						&& tabuleiro.estaInimigo(this.getCorJogador(),
 								new Posicao(coluna, linha)))
-					listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
-							coluna, linha), TipoJogada.ATACAR));
-
+					if (tabuleiro.ehPromocao(posicaoOrigem))
+						listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+								coluna, linha), TipoJogada.ATACAR,
+								TipoPeca.RAINHA));
+					else
+						listaJogadas.add(new Jogada(posicaoOrigem, new Posicao(
+								coluna, linha), TipoJogada.ATACAR));
 			}
-		// TODO Promoção
-		/**
-		 * if(this.getTipoPeca()==tipoPeca.PEAO)
-		 * if(this.getJogador().getCor()==CorJogador.BRANCO)
-		 * if(posicaoOrigem.getLinha())
-		 */
+		// Se puder En Passant a esquerda
+		if (tabuleiro.ehEnPassantEsquerda(posicaoOrigem))
+			listaJogadas.add(new Jogada(posicaoOrigem,
+					TipoJogada.EN_PASSANT_ESQUERDA));
+		// Se puder En Passant a direita
+		if (tabuleiro.ehEnPassantDireita(posicaoOrigem))
+			listaJogadas.add(new Jogada(posicaoOrigem,
+					TipoJogada.EN_PASSANT_DIREITA));
 		return listaJogadas;
 	}
 
@@ -192,8 +213,8 @@ public abstract class Peca {
 		return valor;
 	}
 
-	public Jogador getJogador() {
-		return jogador;
+	public CorJogador getCorJogador() {
+		return corJogador;
 	}
 
 	public TipoPeca getTipoPeca() {

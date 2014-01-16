@@ -60,31 +60,34 @@ public class IAElaborada extends Maquina {
 
 		// Cria uma lista de tabuleiros que contém todos os estados possíveis a
 		// serem gerados dado o nó pai
-		List<Tabuleiro> listaTabuleiros = new ArrayList<Tabuleiro>();
+		List<Estado> listaEstados = new ArrayList<Estado>();
 		// Se o nó pai não está em xeque-mate, devemos considerar seus filhos
 		if (noPai.isXequeMate() == false) {
 			// Crie uma lista de tabuleiros com todas as jogadas possíveis de
-			// serem realizadas por aquele tabuleiro
-			listaTabuleiros = noPai.getTabuleiroNo().proximosEstadosPossiveis(
-					noPai.getCorNo());
-			// Para cada tabuleiro da lista de tabuleiros
-			for (Tabuleiro tabuleiroEstado : listaTabuleiros) {
-				// Crie um nó que reconheça seu pai
-				NoArvore no = new NoArvore(noPai, tabuleiroEstado);
-				// Se o nó não está em xeque, o movimento é válido
-				if (no.isXeque() == false)
-
-					// TODO está falando jogadas de xeque-mate que não são
-					// xeque-mate
-					// if (no.isXequeMate() == true){
-					// no.getTabuleiroNo().digaTabuleiro();
-					// System.out.println("");
-					// }
-
-					// Faça esse nó ser adicionado a nova lista de nós
+			// serem realizadas naquele tabuleiro
+			listaEstados = noPai.getEstado().getTabuleiro()
+					.proximosEstadosPossiveis(noPai.getCorNo());
+			// Para cada estado da lista de estados
+			for (Estado estado : listaEstados) {
+				noPai.getCorNo();
+				// Se o tabuleiro pertencente a esse estado não estiver em xeque
+				// ou xeque mate. Exemplo: Se a preta acabou de mover, o jogo só
+				// deve incluir os movimentos que não deixam o rei preto em
+				// xeque ou xeque-mate
+				if (!(estado.getTabuleiro().verificarXeque(noPai.getCorNo()) || estado
+						.getTabuleiro().verificarXequeMate(noPai.getCorNo()))) {
+					// Crie um nó que reconheça seu pai e armazene o estado
+					NoArvore no = new NoArvore(noPai, estado);
+					// $ Faça esse nó ser adicionado a nova lista de nós
 					novaListaNos.add(no);
+				} else
+					System.out.println("/////// JOGADAS QUE LEVAM A XEQUES ///////");
 			}
 		} else {
+			System.out.println("");
+			System.out.println("O NÓ EM QUESTÃO JÁ SE ENCONTRA EM XEQUE-MATE");
+			noPai.getEstado().getTabuleiro().digaTabuleiro();
+			System.out.println("");
 			novaListaNos.add(noPai);
 		}
 		return novaListaNos;
@@ -123,26 +126,9 @@ public class IAElaborada extends Maquina {
 	 */
 	public void inserirValorFolhas(List<NoArvore> listaNos) {
 		for (NoArvore no : listaNos) {
-			no.setValor(no.getTabuleiroNo().valorTabuleiro());
+			no.setValor(no.getEstado().getTabuleiro().valorTabuleiro());
 			no.setTemValor();
 		}
-	}
-
-	/**
-	 * Cria a lista de jogadas que podem ser realizadas por um nó (no caso,
-	 * estamos interessados na lista de jogadas que podem ser realizadas pelo nó
-	 * raiz)
-	 * 
-	 * @param no
-	 * @return
-	 * @throws JogadaInvalidaException
-	 * @throws CasaOcupadaException
-	 */
-	public List<Jogada> jogadasPossiveis(NoArvore no)
-			throws JogadaInvalidaException {
-		List<Jogada> listaJogadas = no.getTabuleiroNo().geraJogadasPossiveis(
-				this.getCor());
-		return listaJogadas;
 	}
 
 	/**
@@ -152,21 +138,18 @@ public class IAElaborada extends Maquina {
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 */
-	public Jogada escolherJogada(Tabuleiro tab) throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
+	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
+			throws CasaOcupadaException, CloneNotSupportedException,
+			JogadaInvalidaException {
 
 		// Crio nó raiz e informo a ele o tabuleiro atual
-		NoArvore raiz = new NoArvore(tab);
-
+		NoArvore raiz = new NoArvore(new Estado(null, tabuleiroAtual));
 		// Inserimos, inicialmente apenas o nó raiz
 		listaNos.add(raiz);
-
 		// Marca quando a análise foi iniciada
 		inicio = System.currentTimeMillis();
-
 		// Funciona verificando se foi atingido o tempo máximo estabelecido
 		boolean atingiuTempoMaximo = false;
-
 		// Crio a árvore de possibilidades
 		for (int camada = 1; camada <= ALCANCEMAQUINA
 				&& atingiuTempoMaximo == false; camada++) {
@@ -183,21 +166,33 @@ public class IAElaborada extends Maquina {
 
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
-			// Crio a lista de jogadas
-			List<Jogada> listaJogadas = jogadasPossiveis(raiz);
+
 			// Para cada nó na lista de adjacência do pai (começa de 1 pois o nó
+			// pai não tem primeiro valor na lista de adjacência pois não tem
 			// pai
-			// não tem primeiro valor na lista de adjacência pois não tem pai
 			for (int indice = 1; indice < raiz.getListaAdjacencia().size(); indice++)
 				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
-				// escolhido
-				// foi o desse nó
+				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
 					System.out.println("Melhor jogada alcançada");
-					return listaJogadas.get(indice - 1);
+					System.out.println("Saia da coluna "
+							+ raiz.getListaAdjacencia().get(indice).getEstado()
+									.getJogada().getOrigem().getColuna()
+							+ " e linha "
+							+ raiz.getListaAdjacencia().get(indice).getEstado()
+									.getJogada().getOrigem().getLinha()
+							+ " e vá para a coluna "
+							+ raiz.getListaAdjacencia().get(indice).getEstado()
+									.getJogada().getDestino().getColuna()
+							+ " e linha "
+							+ raiz.getListaAdjacencia().get(indice).getEstado()
+									.getJogada().getDestino().getLinha());
+					return raiz.getListaAdjacencia().get(indice).getEstado()
+							.getJogada();
 				}
 		}
+		System.out.println("Erro! Jogo já se encontra em xeque-mate");
 		// Retorno null caso não tenha jogada a ser realizada ou caso o
 		// tabuleiro já se encontre em xeque-Mate
 		return null;

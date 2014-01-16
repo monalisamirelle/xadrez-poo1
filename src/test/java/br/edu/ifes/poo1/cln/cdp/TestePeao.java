@@ -15,12 +15,12 @@ public class TestePeao {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
+		peaoBranco = new Peao(CorJogador.BRANCO);
 		peaoBrancoMovimentado = new Peao(
-				new Jogador("Teste", CorJogador.BRANCO));
+				CorJogador.BRANCO);
 		peaoBrancoMovimentado.setJaMoveu();
-		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
-		cavaloBranco = new Cavalo(new Jogador("Teste", CorJogador.BRANCO));
+		peaoPreto = new Peao(CorJogador.PRETO);
+		cavaloBranco = new Cavalo(CorJogador.BRANCO);
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 6), peaoPreto);
@@ -32,7 +32,7 @@ public class TestePeao {
 	}
 
 	@Test
-	public void podeAndar() {
+	public void podeAndar() throws CasaOcupadaException {
 
 		/** Verifica se o peão pode realizar determinado movimento */
 		Assert.assertTrue(peaoBranco.podeAndar(new Posicao(2, 2), new Posicao(
@@ -54,26 +54,20 @@ public class TestePeao {
 		/**
 		 * Verifica se o peão pode avançar se houver uma peça inimiga na sua
 		 * frente
-		 * 
-		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
-		 * no destino.
 		 */
-		Assert.assertTrue(peaoBranco.podeAndar(new Posicao(8, 6), new Posicao(
+		Assert.assertFalse(peaoBranco.podeAndar(new Posicao(8, 6), new Posicao(
 				8, 7), tabuleiro));
 
 		/**
 		 * Verifica se o peão pode avançar se houver uma peça aliada na sua
 		 * frente
-		 * 
-		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
-		 * no destino.
 		 */
-		Assert.assertTrue(peaoBranco.podeAndar(new Posicao(3, 2), new Posicao(
+		Assert.assertFalse(peaoBranco.podeAndar(new Posicao(3, 2), new Posicao(
 				3, 3), tabuleiro));
 	}
 
 	@Test
-	public void podeAtacar() {
+	public void podeAtacar() throws CasaOcupadaException {
 
 		/** Verifica se o peão pode realizar determinado ataque de frente */
 		Assert.assertFalse(peaoBranco.podeAtacar(new Posicao(6, 5),
@@ -102,11 +96,8 @@ public class TestePeao {
 
 		/**
 		 * Verifica se o peão pode atacar uma posição vazia em diagonal.
-		 * 
-		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
-		 * no destino.
 		 */
-		Assert.assertTrue(peaoBranco.podeAtacar(new Posicao(7, 3), new Posicao(
+		Assert.assertFalse(peaoBranco.podeAtacar(new Posicao(7, 3), new Posicao(
 				8, 4), tabuleiro));
 
 		/**
@@ -122,11 +113,8 @@ public class TestePeao {
 		/**
 		 * Verifica se o peao pode atacar uma posição com peça aliada em
 		 * diagonal.
-		 * 
-		 * Deve ser possível, pois podeAndar(..) não deve verificar a o que há
-		 * no destino.
 		 */
-		Assert.assertTrue(peaoBranco.podeAtacar(new Posicao(2, 2), new Posicao(
+		Assert.assertFalse(peaoBranco.podeAtacar(new Posicao(2, 2), new Posicao(
 				3, 3), tabuleiro));
 	}
 }

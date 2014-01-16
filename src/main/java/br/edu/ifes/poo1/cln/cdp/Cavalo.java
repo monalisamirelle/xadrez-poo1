@@ -5,8 +5,8 @@ public class Cavalo extends Peca {
 	/**
 	 * Instancia um cavalo.
 	 */
-	public Cavalo(Jogador jogador) {
-		super(3, TipoPeca.CAVALO, jogador);
+	public Cavalo(CorJogador corJogador) {
+		super(3, TipoPeca.CAVALO, corJogador);
 	}
 	
 	/**
@@ -19,14 +19,14 @@ public class Cavalo extends Peca {
 
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		if (super.podeSeMover(origem, destino, tabuleiro))
-			if (this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) == 1
-					& this.tamanhoMovimento(origem.getColuna(),
+			if (this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 1
+					& this.deslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) == 2
-					| this.tamanhoMovimento(origem.getLinha(),
+					| this.deslocamentoPeca(origem.getLinha(),
 							destino.getLinha()) == 2
-					& this.tamanhoMovimento(origem.getColuna(),
+					& this.deslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) == 1)
 				return true;
 		return false;

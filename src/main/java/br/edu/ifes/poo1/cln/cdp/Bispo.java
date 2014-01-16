@@ -5,8 +5,8 @@ public class Bispo extends Peca {
 	/**
 	 * Instancia um bispo.
 	 */
-	public Bispo(Jogador jogador) {
-		super(3, TipoPeca.BISPO, jogador);
+	public Bispo(CorJogador corJogador) {
+		super(3, TipoPeca.BISPO, corJogador);
 	}
 	
 	/**
@@ -19,11 +19,11 @@ public class Bispo extends Peca {
 	
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
-			if (this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) == this
-					.tamanhoMovimento(origem.getColuna(), destino.getColuna()))
+			if (this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == this
+					.deslocamentoPeca(origem.getColuna(), destino.getColuna()))
 				return true;
 		return false;
 	}

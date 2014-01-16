@@ -14,9 +14,9 @@ public class TesteTorre {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		torreBranca = new Torre(new Jogador("Teste", CorJogador.BRANCO));
-		peaoPreto = new Peao(new Jogador("Teste", CorJogador.PRETO));
-		peaoBranco = new Peao(new Jogador("Teste", CorJogador.BRANCO));
+		torreBranca = new Torre(CorJogador.BRANCO);
+		peaoPreto = new Peao(CorJogador.PRETO);
+		peaoBranco = new Peao(CorJogador.BRANCO);
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 6), peaoPreto);
@@ -28,7 +28,7 @@ public class TesteTorre {
 	}
 
 	@Test
-	public void podeAndar() {
+	public void podeAndar() throws CasaOcupadaException {
 
 		/** Verifica se a torre pode realizar determinado movimento */
 		Assert.assertTrue(torreBranca.podeAndar(new Posicao(4, 4), new Posicao(
@@ -50,7 +50,7 @@ public class TesteTorre {
 	}
 
 	@Test
-	public void podeAtacar() {
+	public void podeAtacar() throws CasaOcupadaException {
 
 		/** Verifica se a torre pode realizar determinado ataque */
 		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(8, 6),
@@ -62,20 +62,17 @@ public class TesteTorre {
 		 
 		
 		/** Verifica se a torre pode atacar uma posição vazia. */
-		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(6, 7),
+		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(6, 7),
 				new Posicao(6, 8), tabuleiro));
-		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(8, 2),
+		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(8, 2),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(3, 8),
+		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(3, 8),
 				new Posicao(3, 6), tabuleiro));
 
 		/**
 		 * Verifica se a torre pode atacar uma posição com peça aliada.
-		 * 
-		 * Pode porque o método podeAtacar(..) não deve fazer verificação do que
-		 * está na casa e destino.
 		 */
-		Assert.assertTrue(torreBranca.podeAtacar(new Posicao(2, 5),
+		Assert.assertFalse(torreBranca.podeAtacar(new Posicao(2, 5),
 				new Posicao(2, 2), tabuleiro));
 	}
 }

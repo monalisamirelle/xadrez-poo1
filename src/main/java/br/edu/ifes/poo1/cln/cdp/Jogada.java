@@ -33,7 +33,7 @@ public class Jogada {
 		case ANDAR:
 		case ATACAR:
 			throw new JogadaInvalidaException(
-					"Para realizer uma jogada que não seja um Roque, você deve especificar a origem e o destino do movimento.");
+					"Para realizar uma jogada que não seja um Roque, você deve especificar a origem e o destino do movimento.");
 
 		default:
 			this.tipoJogada = tipoRoque;
@@ -55,6 +55,17 @@ public class Jogada {
 	public Jogada(Posicao origem, Posicao destino, TipoJogada tipo) {
 		this.origem = origem;
 		this.destino = destino;
+		this.tipoJogada = tipo;
+		this.ehPromocao = false;
+	}
+	
+	/**
+	 * Inicia uma jogada En passant que não inclua promoção
+	 * @param origem
+	 * @param tipo
+	 */
+	public Jogada(Posicao origem, TipoJogada tipo){
+		this.origem = origem;
 		this.tipoJogada = tipo;
 		this.ehPromocao = false;
 	}

@@ -3,9 +3,10 @@ package br.edu.ifes.poo1.cln.cdp;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO Melhorar classes construtoras
-// PODOU É O ÚNICO ATRIBUTOS QUE AGEM DE MANEIRA IDÊNTICA NAS CLASSES CONSTRUTORAS
-
+/**
+ * @author erro
+ * 
+ */
 public class NoArvore {
 
 	// Nó que é pai do nó em questão
@@ -32,13 +33,10 @@ public class NoArvore {
 	// Ir� refletir se o n� foi podado ou n�o
 	private boolean podou;
 
-	// Cada nó terá um um tabuleiro
-	private Tabuleiro tabuleiroNo = new Tabuleiro();
+	// Cada nó terá um um estado
+	private Estado estado;
 
-	// Verifica se o tabuleiro do nó se encontra um xeque
-	private boolean xeque;
-
-	// Verifica se o tabuleiro do nó se encontra um xeque-mate
+	// Verifica se o jogador daquele nó está provocando um xeque-mate
 	private boolean xequeMate;
 
 	/**
@@ -46,8 +44,12 @@ public class NoArvore {
 	 * 
 	 * @param noPai
 	 * @param valor
+	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException
+	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(Tabuleiro tabuleiro) {
+	public NoArvore(Estado estado) throws CasaOcupadaException,
+			CloneNotSupportedException, JogadaInvalidaException {
 		this.noPai = null;
 		this.temValor = false;
 		this.insereListaAdjacencia(noPai);
@@ -55,11 +57,10 @@ public class NoArvore {
 		this.marcado = false;
 		this.nivel = TipoNivel.MAX;
 		this.podou = false;
-		this.tabuleiroNo = tabuleiro;
-		this.xeque = tabuleiro.verificarXeque(CorJogador.BRANCO)
-				|| tabuleiro.verificarXeque(CorJogador.PRETO);
-		this.xequeMate = tabuleiro.verificarXequeMate(CorJogador.BRANCO)
-				|| tabuleiro.verificarXequeMate(CorJogador.PRETO);
+		this.estado = estado;
+		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
+				CorJogador.BRANCO)
+				|| estado.getTabuleiro().verificarXequeMate(CorJogador.PRETO);
 	}
 
 	/**
@@ -67,8 +68,12 @@ public class NoArvore {
 	 * 
 	 * @param noPai
 	 * @param valor
+	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException
+	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(NoArvore noPai, Tabuleiro tabuleiro) {
+	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException,
+			CloneNotSupportedException, JogadaInvalidaException {
 		this.noPai = noPai;
 		noPai.addFilho(this);
 		this.temValor = false;
@@ -78,9 +83,9 @@ public class NoArvore {
 		this.marcado = false;
 		this.nivel = coloqueNivel();
 		this.podou = false;
-		this.tabuleiroNo = tabuleiro;
-		this.xeque = tabuleiro.verificarXeque(noPai.getCorNo());
-		this.xequeMate = tabuleiro.verificarXequeMate(noPai.getCorNo());
+		this.estado = estado;
+		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
+				CorJogador.getCorOposta(noPai.getCorNo()));
 	}
 
 	/**
@@ -268,15 +273,8 @@ public class NoArvore {
 		}
 	}
 
-	/**
-	 * Pega o tabuleiro do nó
-	 */
-	public Tabuleiro getTabuleiroNo() {
-		return this.tabuleiroNo;
-	}
-
-	public boolean isXeque() {
-		return xeque;
+	public Estado getEstado() {
+		return estado;
 	}
 
 	public boolean isXequeMate() {
