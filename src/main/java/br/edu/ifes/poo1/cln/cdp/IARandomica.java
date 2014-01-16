@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class IARandomica extends Maquina{
+public class IARandomica extends Maquina {
 
 	/**
 	 * Lista contendo as posições que são possíveis de ter uma peça controlada
@@ -79,7 +79,7 @@ public class IARandomica extends Maquina{
 	 * 
 	 * @param origem
 	 * @return
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
 	private Posicao ataqueEscolhido(Posicao origem) throws CasaOcupadaException {
 		Peca peca = tabuleiro.espiarPeca(origem);
@@ -108,9 +108,10 @@ public class IARandomica extends Maquina{
 	 * 
 	 * @param origem
 	 * @return
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
-	private Posicao movimentoEscolhido(Posicao origem) throws CasaOcupadaException {
+	private Posicao movimentoEscolhido(Posicao origem)
+			throws CasaOcupadaException {
 		Peca peca = tabuleiro.espiarPeca(origem);
 		List<Integer> movimentosPossiveis = new ArrayList<Integer>(64);
 		movimentosPossiveis = inicializaLista(movimentosPossiveis);
@@ -136,9 +137,10 @@ public class IARandomica extends Maquina{
 	 * Método que irá definir uma jogada para ser realizada pela máquina
 	 * 
 	 * @return
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
-	public Jogada escolherJogada() throws CasaOcupadaException {
+	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
+			throws CasaOcupadaException {
 		posicoesPossiveis = inicializaLista(posicoesPossiveis);
 		PosicaoEscolhidaMaquina posicaoEscolhida;
 		Posicao realizaAtaque = null;
@@ -171,6 +173,7 @@ public class IARandomica extends Maquina{
 						realizaMovimento, TipoJogada.ANDAR);
 			}
 		}
+		// Se não há jogadas para indicar
 		return null;
 	}
 

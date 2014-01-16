@@ -242,54 +242,54 @@ public class TesteTabuleiro {
 
 	@Test
 	public void ehEnPassantEsquerda() throws CasaOcupadaException {
-		tabuleiro.colocarPeca(new Posicao(4,5), peaoPreto);
-		tabuleiro.colocarPeca(new Posicao(5,5), peaoBranco);
-		
+		tabuleiro.colocarPeca(new Posicao(4, 5), peaoPreto);
+		tabuleiro.colocarPeca(new Posicao(5, 5), peaoBranco);
+
 		// O peão preto não pode sofrer En passant
-		Assert.assertFalse(tabuleiro.ehEnPassantEsquerda(new Posicao(5,5)));
-		
+		Assert.assertFalse(tabuleiro.ehEnPassantEsquerda(new Posicao(5, 5)));
+
 		peaoPreto.setPodeEnPassant(true);
 
 		// O peão preto pode sofrer En passant
-		Assert.assertTrue(tabuleiro.ehEnPassantEsquerda(new Posicao(5,5)));
+		Assert.assertTrue(tabuleiro.ehEnPassantEsquerda(new Posicao(5, 5)));
 	}
 
 	@Test
 	public void ehEnPassantDireita() throws CasaOcupadaException {
-		tabuleiro.colocarPeca(new Posicao(4,4), peaoPreto);
-		tabuleiro.colocarPeca(new Posicao(5,4), peaoBranco);
-		
+		tabuleiro.colocarPeca(new Posicao(4, 4), peaoPreto);
+		tabuleiro.colocarPeca(new Posicao(5, 4), peaoBranco);
+
 		// O peão preto não pode sofrer En passant
-		Assert.assertFalse(tabuleiro.ehEnPassantDireita(new Posicao(4,4)));
-		
+		Assert.assertFalse(tabuleiro.ehEnPassantDireita(new Posicao(4, 4)));
+
 		peaoBranco.setPodeEnPassant(true);
 
 		// O peão preto pode sofrer En passant
-		Assert.assertTrue(tabuleiro.ehEnPassantDireita(new Posicao(4,4)));
+		Assert.assertTrue(tabuleiro.ehEnPassantDireita(new Posicao(4, 4)));
 	}
-	
+
 	@Test
 	public void resetaPodeEnPassant() throws CasaOcupadaException {
 		// Colocamos uma peça que não sofreu en Passant
-		tabuleiro.colocarPeca(new Posicao(2,5), peaoPreto);
+		tabuleiro.colocarPeca(new Posicao(2, 5), peaoPreto);
 		Assert.assertFalse(peaoPreto.isPodeEnPassant());
-		
+
 		// Fazemos a peça poder ter En Passant
 		peaoPreto.setPodeEnPassant(true);
 		Assert.assertTrue(peaoPreto.isPodeEnPassant());
-		
+
 		// Criamos peça de outra cor e fazemos ter en passant
-		tabuleiro.colocarPeca(new Posicao(2,4), peaoBranco);
+		tabuleiro.colocarPeca(new Posicao(2, 4), peaoBranco);
 		peaoBranco.setPodeEnPassant(true);
-		
+
 		// Resetamos o estado de poder ocorrer um En Passant das casas pretas
 		tabuleiro.resetaPodeEnPassant(CorJogador.PRETO);
-		
+
 		// Verificamos se as peças pretas ou brancas foram "atingidas"
 		Assert.assertFalse(peaoPreto.isPodeEnPassant());
 		Assert.assertTrue(peaoBranco.isPodeEnPassant());
 	}
-	
+
 	@Test
 	public void ehPromocao() throws CasaOcupadaException {
 
@@ -319,23 +319,24 @@ public class TesteTabuleiro {
 	}
 
 	@Test
-	public void verificarXequeMate() throws CasaOcupadaException, CloneNotSupportedException, JogadaInvalidaException{
-		
+	public void verificarXequeMate() throws CasaOcupadaException,
+			CloneNotSupportedException, JogadaInvalidaException {
+
 		// Teste 1 : O rei pode fugir por uma casa
-		tabuleiro.colocarPeca(new Posicao(1,1), reiBranco);
-		tabuleiro.colocarPeca(new Posicao(1,8), torrePreta);
+		tabuleiro.colocarPeca(new Posicao(1, 1), reiBranco);
+		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
 		Assert.assertFalse(tabuleiro.verificarXequeMate(CorJogador.BRANCO));
-		
+
 		// Teste 2: O rei está em xeque-mate
-		tabuleiro.colocarPeca(new Posicao(2,8), torrePreta);
+		tabuleiro.colocarPeca(new Posicao(2, 8), torrePreta);
 		Assert.assertTrue(tabuleiro.verificarXequeMate(CorJogador.BRANCO));
-		
+
 		// Teste 3: O rei pode ser protegido por uma peça
-		tabuleiro.colocarPeca(new Posicao(3,3), cavaloBranco);
+		tabuleiro.colocarPeca(new Posicao(3, 3), cavaloBranco);
 		Assert.assertFalse(tabuleiro.verificarXequeMate(CorJogador.BRANCO));
-		
+
 	}
-	
+
 	@Test
 	public void valorTabuleiro() throws CasaOcupadaException {
 		// Testa valor tabuleiro conforme insere peças
@@ -357,29 +358,18 @@ public class TesteTabuleiro {
 		Assert.assertEquals(tabuleiro.valorTabuleiro(), -2);
 	}
 
-	/**
-	 * @Test public void geraJogadasPossiveis() throws CasaOcupadaException {
-	 *       tabuleiro.colocarPeca(new Posicao(4,4), torreBranca);
-	 *       tabuleiro.colocarPeca(new Posicao(4,3), cavaloPreto);
-	 *       ArrayList<Jogada> jogadas = new ArrayList<Jogada>();
-	 *       jogadas.add(new Jogada(new Posicao(4,4),new
-	 *       Posicao(1,4),TipoJogada.ANDAR)); jogadas.add(new Jogada(new
-	 *       Posicao(4,4),new Posicao(2,4),TipoJogada.ANDAR)); jogadas.add(new
-	 *       Jogada(new Posicao(4,4),new Posicao(3,4),TipoJogada.ANDAR));
-	 *       jogadas.add(new Jogada(new Posicao(4,4),new
-	 *       Posicao(4,3),TipoJogada.ATACAR)); jogadas.add(new Jogada(new
-	 *       Posicao(4,4),new Posicao(4,5),TipoJogada.ANDAR)); jogadas.add(new
-	 *       Jogada(new Posicao(4,4),new Posicao(4,6),TipoJogada.ANDAR));
-	 *       jogadas.add(new Jogada(new Posicao(4,4),new
-	 *       Posicao(4,7),TipoJogada.ANDAR)); jogadas.add(new Jogada(new
-	 *       Posicao(4,4),new Posicao(4,8),TipoJogada.ANDAR)); jogadas.add(new
-	 *       Jogada(new Posicao(4,4),new Posicao(5,4),TipoJogada.ANDAR));
-	 *       jogadas.add(new Jogada(new Posicao(4,4),new
-	 *       Posicao(6,4),TipoJogada.ANDAR)); jogadas.add(new Jogada(new
-	 *       Posicao(4,4),new Posicao(7,4),TipoJogada.ANDAR)); jogadas.add(new
-	 *       Jogada(new Posicao(4,4),new Posicao(8,4),TipoJogada.ANDAR));
-	 *       Assert.assertEquals(jogadas,tabuleiro.geraJogadasPossiveis(new
-	 *       Jogador("",CorJogador.BRANCO))); }
-	 */
+	@Test
+	public void recomendaJogada() throws CasaOcupadaException,
+			JogadaInvalidaException, CloneNotSupportedException {
+		// Não há jogadas a serem recomendadas
+		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
+		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
+		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
+		Assert.assertNull(tabuleiro.recomendaJogada(CorJogador.PRETO));
+		
+		// Há jogadas a serem recomendadas
+		tabuleiro.colocarPeca(new Posicao(7, 4), torrePreta);
+		Assert.assertNotNull(tabuleiro.recomendaJogada(CorJogador.PRETO));
+	}
 
 }

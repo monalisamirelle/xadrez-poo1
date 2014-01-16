@@ -78,18 +78,12 @@ public class IAElaborada extends Maquina {
 						.getTabuleiro().verificarXequeMate(noPai.getCorNo()))) {
 					// Crie um nó que reconheça seu pai e armazene o estado
 					NoArvore no = new NoArvore(noPai, estado);
-					// $ Faça esse nó ser adicionado a nova lista de nós
+					// Faça esse nó ser adicionado a nova lista de nós
 					novaListaNos.add(no);
-				} else
-					System.out.println("/////// JOGADAS QUE LEVAM A XEQUES ///////");
+				}
 			}
-		} else {
-			System.out.println("");
-			System.out.println("O NÓ EM QUESTÃO JÁ SE ENCONTRA EM XEQUE-MATE");
-			noPai.getEstado().getTabuleiro().digaTabuleiro();
-			System.out.println("");
+		} else
 			novaListaNos.add(noPai);
-		}
 		return novaListaNos;
 	}
 
@@ -153,9 +147,7 @@ public class IAElaborada extends Maquina {
 		// Crio a árvore de possibilidades
 		for (int camada = 1; camada <= ALCANCEMAQUINA
 				&& atingiuTempoMaximo == false; camada++) {
-			System.out.println("\n\nCamada: " + camada);
 			atingiuTempoMaximo = criaCamada();
-			System.out.println("tamanho da lista de nós: " + listaNos.size());
 		}
 
 		// Insiro os valores nos nós folhas
@@ -175,24 +167,10 @@ public class IAElaborada extends Maquina {
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
-					System.out.println("Melhor jogada alcançada");
-					System.out.println("Saia da coluna "
-							+ raiz.getListaAdjacencia().get(indice).getEstado()
-									.getJogada().getOrigem().getColuna()
-							+ " e linha "
-							+ raiz.getListaAdjacencia().get(indice).getEstado()
-									.getJogada().getOrigem().getLinha()
-							+ " e vá para a coluna "
-							+ raiz.getListaAdjacencia().get(indice).getEstado()
-									.getJogada().getDestino().getColuna()
-							+ " e linha "
-							+ raiz.getListaAdjacencia().get(indice).getEstado()
-									.getJogada().getDestino().getLinha());
 					return raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
 				}
 		}
-		System.out.println("Erro! Jogo já se encontra em xeque-mate");
 		// Retorno null caso não tenha jogada a ser realizada ou caso o
 		// tabuleiro já se encontre em xeque-Mate
 		return null;

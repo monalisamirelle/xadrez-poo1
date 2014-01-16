@@ -23,7 +23,7 @@ public class Rei extends Peca {
 	public boolean podeSeMover(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		// Verifica se o rei não vai entrar em Xeque com a jogada.
-		if (tabuleiro.estaAmeacadoPor(origem, destino,
+		if (tabuleiro.jogadaSuicida(origem, destino,
 				CorJogador.getCorOposta(this.getCorJogador())))
 			return false;
 

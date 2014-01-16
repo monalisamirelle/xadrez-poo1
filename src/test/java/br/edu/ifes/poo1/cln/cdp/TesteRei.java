@@ -79,5 +79,27 @@ public class TesteRei {
 		 */
 		Assert.assertFalse(reiBranco.podeAtacar(new Posicao(4, 4), new Posicao(
 				3, 3), tabuleiro));
+
+		/**
+		 * Muda rei de posição
+		 */
+		tabuleiro.retirarPeca(new Posicao(4, 4));
+		tabuleiro.colocarPeca(new Posicao(2, 2), reiBranco);
+
+		/**
+		 * Verifica se rei pode atacar uma peça que está o ameaçando
+		 */
+		tabuleiro.colocarPeca(new Posicao(1, 3), new Peao(pretas.getCor()));
+		Assert.assertTrue(reiBranco.podeAtacar(new Posicao(2, 2), new Posicao(
+				1, 3), tabuleiro));
+
+		/**
+		 * Verifica se rei pode atacar uma peça que está o ameaçando e está
+		 * protegida
+		 */
+		tabuleiro.colocarPeca(new Posicao(2, 4), new Peao(pretas.getCor()));
+		Assert.assertFalse(reiBranco.podeAtacar(new Posicao(2, 2), new Posicao(
+				1, 3), tabuleiro));
+
 	}
 }

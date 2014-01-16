@@ -432,7 +432,8 @@ public class Tabuleiro implements Cloneable {
 	}
 
 	/**
-	 * Indica se alguma peça da cor indicada ameaça a posição indicada
+	 * Indica se o rei está realizando uma jogada que cuminará em sua captura na
+	 * próxima jogada inimiga
 	 * 
 	 * @param posicaoAtual
 	 * @param posicaoDesejada
@@ -440,9 +441,8 @@ public class Tabuleiro implements Cloneable {
 	 * @return
 	 * @throws CasaOcupadaException
 	 */
-	public boolean estaAmeacadoPor(Posicao posicaoAtual,
-			Posicao posicaoDesejada, CorJogador corPecaInimiga)
-			throws CasaOcupadaException {
+	public boolean jogadaSuicida(Posicao posicaoAtual, Posicao posicaoDesejada,
+			CorJogador corPecaInimiga) throws CasaOcupadaException {
 
 		CorJogador corJogador = CorJogador.getCorOposta(corPecaInimiga);
 
@@ -473,11 +473,6 @@ public class Tabuleiro implements Cloneable {
 			// Informamos se o rei ficará ameaçado ao realizar o movimento
 			return estaAmeacado;
 		}
-		// FIXME quebra galho, obviamente retornar true indica que movimento não
-		// é válido, mas não está indicando necessariamente que a peça está
-		// sendo ameaçada, apenas que há uma posição aliada ali. Talvez o nome
-		// desse método em específico deva alterar para melhor se adequar a sua
-		// real funcionalidade
 		return true;
 	}
 
@@ -589,7 +584,7 @@ public class Tabuleiro implements Cloneable {
 	public boolean verificarXequeMate(CorJogador cor)
 			throws CasaOcupadaException, CloneNotSupportedException,
 			JogadaInvalidaException {
-		List<Estado> estadosPossiveis = this.proximosEstadosPossiveis2(cor);
+		List<Estado> estadosPossiveis = this.proximosEstadosPossiveis(cor);
 		for (Estado estado : estadosPossiveis) {
 			if (!estado.getTabuleiro().verificarXeque(cor))
 				return false;
@@ -607,7 +602,6 @@ public class Tabuleiro implements Cloneable {
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 */
-	// TODO Testar novamente
 	public List<Estado> proximosEstadosPossiveis(CorJogador corJogador)
 			throws CasaOcupadaException, CloneNotSupportedException,
 			JogadaInvalidaException {
@@ -628,173 +622,6 @@ public class Tabuleiro implements Cloneable {
 			Peca[][] pecasAtuais = this.copiaPecas();
 			Tabuleiro tabuleiroNovo = new Tabuleiro(pecasAtuais);
 
-			//System.out.println("\nTabuleiro antigo");
-			//this.digaTabuleiro();
-
-			// Verifica o tipo de jogada e gera o tabuleiro correto
-			switch (jogada.getTipoJogada()) {
-			case ANDAR:
-				peca = this.espiarPeca(jogada.getOrigem());
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				// Se for Promoção
-				if (jogada.ehPromocao()) {
-					Rainha rainha = new Rainha(corJogador);
-					rainha.setJaMoveu();
-					tabuleiroNovo.colocarPeca(jogada.getDestino(), rainha);
-				}
-				// Se a peça pode ser vítima de en passant
-				else if (peca.getTipoPeca() == TipoPeca.PEAO
-						&& peca.deslocamentoPeca(jogada.getOrigem().getLinha(),
-								jogada.getDestino().getLinha()) == 2) {
-					Peao peaoVitima = (Peao) peca.novaInstancia();
-					peaoVitima.setPodeEnPassant(true);
-					tabuleiroNovo.colocarPeca(jogada.getDestino(), peaoVitima);
-				} else {
-					// Controle Roque
-					if (peca.getJaMoveu() == true)
-						tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
-					else
-						tabuleiroNovo.colocarPeca(jogada.getDestino(),
-								peca.novaInstancia());
-				}
-				break;
-			case ATACAR:
-				peca = this.espiarPeca(jogada.getOrigem());
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				tabuleiroNovo.retirarPeca(jogada.getDestino());
-				// Se for Promoção
-				if (jogada.ehPromocao()) {
-					Rainha rainha = new Rainha(corJogador);
-					rainha.setJaMoveu();
-					tabuleiroNovo.colocarPeca(jogada.getDestino(), rainha);
-				} else {
-					// Controle roque
-					if (peca.getJaMoveu() == true)
-						tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
-					else
-						tabuleiroNovo.colocarPeca(jogada.getDestino(),
-								peca.novaInstancia());
-				}
-				break;
-			case ROQUE_MENOR:
-				if (corJogador == CorJogador.BRANCO) {
-					rei = this.espiarPeca(new Posicao(5, 1));
-					torre = this.espiarPeca(new Posicao(8, 1));
-					tabuleiroNovo.retirarPeca(new Posicao(5, 1));
-					tabuleiroNovo.retirarPeca(new Posicao(8, 1));
-					tabuleiroNovo.colocarPeca(new Posicao(7, 1),
-							rei.novaInstancia());
-					tabuleiroNovo.colocarPeca(new Posicao(6, 1),
-							torre.novaInstancia());
-				} else {
-					rei = this.espiarPeca(new Posicao(5, 8));
-					torre = this.espiarPeca(new Posicao(8, 8));
-					tabuleiroNovo.retirarPeca(new Posicao(5, 8));
-					tabuleiroNovo.retirarPeca(new Posicao(8, 8));
-					tabuleiroNovo.colocarPeca(new Posicao(7, 8),
-							rei.novaInstancia());
-					tabuleiroNovo.colocarPeca(new Posicao(6, 8),
-							torre.novaInstancia());
-				}
-				break;
-			case ROQUE_MAIOR:
-				if (corJogador == CorJogador.BRANCO) {
-					rei = this.espiarPeca(new Posicao(5, 1));
-					torre = this.espiarPeca(new Posicao(1, 1));
-					tabuleiroNovo.retirarPeca(new Posicao(5, 1));
-					tabuleiroNovo.retirarPeca(new Posicao(1, 1));
-					tabuleiroNovo.colocarPeca(new Posicao(3, 1),
-							rei.novaInstancia());
-					tabuleiroNovo.colocarPeca(new Posicao(4, 1),
-							torre.novaInstancia());
-				} else {
-					rei = this.espiarPeca(new Posicao(5, 8));
-					torre = this.espiarPeca(new Posicao(1, 8));
-					tabuleiroNovo.retirarPeca(new Posicao(5, 8));
-					tabuleiroNovo.retirarPeca(new Posicao(1, 8));
-					tabuleiroNovo.colocarPeca(new Posicao(3, 8),
-							rei.novaInstancia());
-					tabuleiroNovo.colocarPeca(new Posicao(4, 8),
-							torre.novaInstancia());
-				}
-				break;
-			case EN_PASSANT_ESQUERDA:
-				peca = this.espiarPeca(jogada.getOrigem());
-				// Retirar a peça de sua posição
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				// Retirar peça inimiga à esquerda
-				tabuleiroNovo.retirarPeca(new Posicao(jogada.getOrigem()
-						.getColuna() - 1, jogada.getOrigem().getLinha()));
-				// Se o en passant for favorável as peças brancas
-				if (corJogador == CorJogador.BRANCO)
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() - 1,
-									jogada.getOrigem().getLinha() + 1), peca);
-				// Se en passant for favorável as peças pretas
-				else
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() - 1,
-									jogada.getOrigem().getLinha() - 1), peca);
-				break;
-			case EN_PASSANT_DIREITA:
-				peca = this.espiarPeca(jogada.getOrigem());
-				// Retirar a peça de sua posição
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				// Retirar peça inimiga à direita
-				tabuleiroNovo.retirarPeca(new Posicao(jogada.getOrigem()
-						.getColuna() + 1, jogada.getOrigem().getLinha()));
-				// Se o en passant for favorável as peças brancas
-				if (corJogador == CorJogador.BRANCO)
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() + 1,
-									jogada.getOrigem().getLinha() + 1), peca);
-				// Se en passant for favorável as peças pretas
-				else
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() + 1,
-									jogada.getOrigem().getLinha() - 1), peca);
-				break;
-			}
-
-			//System.out.println("\nTabuleiro novo");
-			//tabuleiroNovo.digaTabuleiro();
-
-			// Armazena o tabuleiro na lista de próximos estados
-			proximosEstados.add(new Estado(jogada, tabuleiroNovo));
-		}
-		return proximosEstados;
-	}
-
-	/**
-	 * Método que armazena, dado um tabuleiro, os próximos estados possíveis
-	 * para o tabuleiro
-	 * 
-	 * @param corJogador
-	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
-	 * @throws JogadaInvalidaException
-	 */
-	public List<Estado> proximosEstadosPossiveis2(CorJogador corJogador)
-			throws CasaOcupadaException, CloneNotSupportedException,
-			JogadaInvalidaException {
-
-		// Primeiramente, reseta o estado de en passant do jogador
-		this.resetaPodeEnPassant(corJogador);
-
-		List<Estado> proximosEstados = new ArrayList<Estado>();
-		List<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
-
-		Peca peca = null;
-		Peca rei = null;
-		Peca torre = null;
-
-		// Para cada jogada realizada pela peça, gere um novo
-		// tabuleiro e or armazene na lista de tabuleiros
-		for (Jogada jogada : possiveisJogadas) {
-			Peca[][] pecasAtuais = this.copiaPecas();
-			Tabuleiro tabuleiroNovo = new Tabuleiro(pecasAtuais);
-
 			// Verifica o tipo de jogada e gera o tabuleiro correto
 			switch (jogada.getTipoJogada()) {
 			case ANDAR:
@@ -925,18 +752,18 @@ public class Tabuleiro implements Cloneable {
 		}
 		return proximosEstados;
 	}
-	
+
 	/**
 	 * Método que gera todas as possiveis jogadas de serem realizadas por um
 	 * jogador no tabuleiro. Nesse momento, ainda não foi verificado se a jogada
 	 * deixa o jogador em xeque ou xeque-mate.
 	 * 
-	 * @param jogador
+	 * @param corJogador
+	 *            cor do jogador que se deseja ver as jogadas possíveis
 	 * @return
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	// TODO sumir com esse método temporário
 	public List<Jogada> geraJogadasPossiveis(CorJogador corJogador)
 			throws JogadaInvalidaException, CasaOcupadaException {
 		// Contém todas as jogadas que podem ser realizadas por um jogador
@@ -965,7 +792,6 @@ public class Tabuleiro implements Cloneable {
 			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MENOR));
 		if (this.ehRoqueMaior(corJogador) == true)
 			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MAIOR));
-		// System.out.println(possiveisJogadas.size());
 		return possiveisJogadas;
 	}
 
@@ -973,7 +799,7 @@ public class Tabuleiro implements Cloneable {
 	 * Verifica o valor do tabuleiro com base nas peças que um jogador possui e
 	 * nas peças que o jogador inimigo possui (trabalhar com Max min)
 	 * 
-	 * @return
+	 * @return valor daquele tabuleiro
 	 */
 	public int valorTabuleiro() {
 		int valor = 0;
@@ -998,7 +824,7 @@ public class Tabuleiro implements Cloneable {
 	/**
 	 * Método que copia as peças para um novo tabuleiro
 	 * 
-	 * @return
+	 * @return uma cópia da peça
 	 */
 	private Peca[][] copiaPecas() {
 		Peca[][] copiaPeca = new Peca[8][8];
@@ -1012,12 +838,12 @@ public class Tabuleiro implements Cloneable {
 	 * Método que recomenda uma jogada ao jogador
 	 * 
 	 * @param corJogador
-	 * @return
+	 *            Cor do jogador que deseja uma recomendação
+	 * @return recomendação (jogada)
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 * @throws CloneNotSupportedException
 	 */
-	// TODO testar
 	public Jogada recomendaJogada(CorJogador corJogador)
 			throws JogadaInvalidaException, CasaOcupadaException,
 			CloneNotSupportedException {
@@ -1038,7 +864,7 @@ public class Tabuleiro implements Cloneable {
 					.getJogada();
 		} else
 			// Não há recomendação
-			return new Jogada(null);
+			return null;
 	}
 
 	/**
