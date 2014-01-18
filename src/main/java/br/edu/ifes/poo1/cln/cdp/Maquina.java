@@ -16,6 +16,6 @@ public abstract class Maquina extends Jogador {
 	 */
 	public abstract Jogada escolherJogada(Tabuleiro tabuleiroAtual)
 			throws CasaOcupadaException, CloneNotSupportedException,
-			JogadaInvalidaException;
-
+			JogadaInvalidaException, InterruptedException;
+	
 }

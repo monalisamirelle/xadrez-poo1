@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,49 +46,6 @@ public class IAElaborada extends Maquina {
 	}
 
 	/**
-	 * Método que gera, dado um nó, os filhos desse nó
-	 * 
-	 * @param listaNos
-	 * @param novaListaNos
-	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
-	 * @throws JogadaInvalidaException
-	 */
-	public List<NoArvore> geraFilhos(NoArvore noPai, List<NoArvore> novaListaNos)
-			throws CasaOcupadaException, CloneNotSupportedException,
-			JogadaInvalidaException {
-
-		// Cria uma lista de tabuleiros que contém todos os estados possíveis a
-		// serem gerados dado o nó pai
-		List<Estado> listaEstados = new ArrayList<Estado>();
-		// Se o nó pai não está em xeque-mate, devemos considerar seus filhos
-		if (noPai.isXequeMate() == false) {
-			// Crie uma lista de tabuleiros com todas as jogadas possíveis de
-			// serem realizadas naquele tabuleiro
-			listaEstados = noPai.getEstado().getTabuleiro()
-					.proximosEstadosPossiveis(noPai.getCorNo());
-			// Para cada estado da lista de estados
-			for (Estado estado : listaEstados) {
-				noPai.getCorNo();
-				// Se o tabuleiro pertencente a esse estado não estiver em xeque
-				// ou xeque mate. Exemplo: Se a preta acabou de mover, o jogo só
-				// deve incluir os movimentos que não deixam o rei preto em
-				// xeque ou xeque-mate
-				if (!(estado.getTabuleiro().verificarXeque(noPai.getCorNo()) || estado
-						.getTabuleiro().verificarXequeMate(noPai.getCorNo()))) {
-					// Crie um nó que reconheça seu pai e armazene o estado
-					NoArvore no = new NoArvore(noPai, estado);
-					// Faça esse nó ser adicionado a nova lista de nós
-					novaListaNos.add(no);
-				}
-			}
-		} else
-			novaListaNos.add(noPai);
-		return novaListaNos;
-	}
-
-	/**
 	 * Método que gera todos os nós de uma camada
 	 * 
 	 * @param listaNos
@@ -95,21 +53,51 @@ public class IAElaborada extends Maquina {
 	 * @throws CasaOcupadaException
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
+	 * @throws InterruptedException
 	 */
 	public boolean criaCamada() throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
-		List<NoArvore> novaListaNos = new ArrayList<NoArvore>();
-		// Para cada nó da atual lista de nós
-		for (NoArvore noPai : listaNos) {
+			CloneNotSupportedException, JogadaInvalidaException,
+			InterruptedException {
+
+		// Construa as partes
+		LeituraCamada parte1 = new LeituraCamada(0,
+				(int) listaNos.size() * 1 / 3, listaNos);
+		LeituraCamada parte2 = new LeituraCamada((int) listaNos.size() * 1 / 3,
+				(int) listaNos.size() * 2 / 3, listaNos);
+		LeituraCamada parte3 = new LeituraCamada((int) listaNos.size() * 2 / 3,
+				listaNos.size(), listaNos);
+
+		// Construa as threads
+		Thread t1 = new Thread(parte1);
+		Thread t2 = new Thread(parte2);
+		Thread t3 = new Thread(parte3);
+
+		// Inicia as threads
+		t1.start();
+		t2.start();
+		t3.start();
+
+		// Enquanto as threads estão rodando
+		while (t1.getState() == State.RUNNABLE
+				|| t2.getState() == State.RUNNABLE
+				|| t3.getState() == State.RUNNABLE) {
 			long fim = System.currentTimeMillis();
-			// Se o tempo não tiver acabad
-			if ((fim - inicio) / 1000 < this.TEMPOMAXIMO)
-				// Faça a nova lista de nós receber os filhos
-				novaListaNos = geraFilhos(noPai, novaListaNos);
-			else
+			// Se o tempo máximo for alcançado
+			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
+				// Interrompa as threads e retorne true
+				t1.interrupt();
+				t2.interrupt();
+				t3.interrupt();
 				return true;
+				// TODO poderia haver um else que só permitisse esse loop a cada
+				// um segundo
+			}
 		}
-		listaNos = novaListaNos;
+
+		// Crie a lista de nós
+		listaNos = parte1.getNovaListaNos();
+		listaNos.addAll(parte2.getNovaListaNos());
+		listaNos.addAll(parte3.getNovaListaNos());
 		return false;
 	}
 
@@ -131,10 +119,11 @@ public class IAElaborada extends Maquina {
 	 * @throws CasaOcupadaException
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
+	 * @throws InterruptedException
 	 */
 	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
 			throws CasaOcupadaException, CloneNotSupportedException,
-			JogadaInvalidaException {
+			JogadaInvalidaException, InterruptedException {
 
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(new Estado(null, tabuleiroAtual));
