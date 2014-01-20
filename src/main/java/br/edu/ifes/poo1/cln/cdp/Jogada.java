@@ -58,13 +58,14 @@ public class Jogada {
 		this.tipoJogada = tipo;
 		this.ehPromocao = false;
 	}
-	
+
 	/**
 	 * Inicia uma jogada En passant que não inclua promoção
+	 * 
 	 * @param origem
 	 * @param tipo
 	 */
-	public Jogada(Posicao origem, TipoJogada tipo){
+	public Jogada(Posicao origem, TipoJogada tipo) {
 		this.origem = origem;
 		this.tipoJogada = tipo;
 		this.ehPromocao = false;
@@ -108,5 +109,15 @@ public class Jogada {
 
 	public TipoPeca getPromocao() {
 		return tipoPromocao;
+	}
+
+	/**
+	 * Método de apoio ao programador que descreve uma jogada
+	 */
+	public void digaJogada() {
+		System.out.println("Saia da coluna " + this.getOrigem().getColuna()
+				+ " e linha " + this.getOrigem().getLinha()
+				+ " e vá para a coluna " + this.getDestino().getColuna()
+				+ " e linha " + this.getDestino().getLinha());
 	}
 }

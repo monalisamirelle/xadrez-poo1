@@ -585,10 +585,8 @@ public class Tabuleiro implements Cloneable {
 			throws CasaOcupadaException, CloneNotSupportedException,
 			JogadaInvalidaException {
 		List<Estado> estadosPossiveis = this.proximosEstadosPossiveis(cor);
-		for (Estado estado : estadosPossiveis) {
-			if (!estado.getTabuleiro().verificarXeque(cor))
-				return false;
-		}
+		if (!estadosPossiveis.isEmpty())
+			return false;
 		return true;
 	}
 
@@ -609,12 +607,13 @@ public class Tabuleiro implements Cloneable {
 		// Primeiramente, reseta o estado de en passant do jogador
 		this.resetaPodeEnPassant(corJogador);
 
-		List<Estado> proximosEstados = new ArrayList<Estado>();
 		List<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
 
 		Peca peca = null;
 		Peca rei = null;
 		Peca torre = null;
+
+		List<Estado> proximosEstados = new ArrayList<Estado>();
 
 		// Para cada jogada realizada pela peça, gere um novo
 		// tabuleiro e or armazene na lista de tabuleiros
@@ -746,9 +745,10 @@ public class Tabuleiro implements Cloneable {
 									jogada.getOrigem().getLinha() - 1), peca);
 				break;
 			}
-
-			// Armazena o tabuleiro na lista de próximos estados
-			proximosEstados.add(new Estado(jogada, tabuleiroNovo));
+			// Se a jogada a ser realizada não leva um jogador a um estado de
+			// xeque
+			if (!tabuleiroNovo.verificarXeque(corJogador))
+				proximosEstados.add(new Estado(jogada, tabuleiroNovo));
 		}
 		return proximosEstados;
 	}
@@ -801,23 +801,29 @@ public class Tabuleiro implements Cloneable {
 	 * 
 	 * @return valor daquele tabuleiro
 	 */
-	public int valorTabuleiro() {
+	public int valorTabuleiro(CorJogador corJogador, int xequeMate) {
 		int valor = 0;
 		// Percorrendo o tabuleiro
 		for (int coluna = 1; coluna <= 8; coluna++) {
 			for (int linha = 1; linha <= 8; linha++) {
 				Posicao posicao = new Posicao(coluna, linha);
 				// Se houver uma peça na posição
-				if (this.estaVazio(posicao) == false) {
-					// Se for uma peça inimiga
-					if (this.estaInimigo(CorJogador.BRANCO, posicao) == true)
+				if (!this.estaVazio(posicao)) {
+					// Se for uma peça aliada
+					if (this.estaAliado(corJogador, posicao))
 						valor = valor + this.espiarPeca(posicao).getValor();
-					// Se for uma peça diferente
+					// Se for uma peça inimiga
 					else
 						valor = valor - this.espiarPeca(posicao).getValor();
 				}
 			}
 		}
+		// Se o jogador em questão realizou xeque-mate
+		if(xequeMate == 1)
+			valor = valor + 100;
+		// Se o jogador em questão recebeu xeque-mate
+		if(xequeMate == -1)
+			valor = valor - 100;
 		return valor;
 	}
 
@@ -850,25 +856,17 @@ public class Tabuleiro implements Cloneable {
 		// Criamos uma lista de estados possíveis
 		List<Estado> estadosPossiveis = this
 				.proximosEstadosPossiveis(corJogador);
-		// Criamos uma lista de estados possíveis que não incluem o jogador
-		// entrar em xeque ou xeque-mate
-		List<Estado> estadosPossiveisSemRisco = new ArrayList<Estado>();
+		Random random = new Random();
 		if (!estadosPossiveis.isEmpty()) {
-			for (Estado estado : estadosPossiveis)
-				if (!(estado.getTabuleiro().verificarXeque(corJogador) || estado
-						.getTabuleiro().verificarXequeMate(corJogador)))
-					estadosPossiveisSemRisco.add(estado);
-			Random aleatorio = new Random();
-			return estadosPossiveisSemRisco.get(
-					aleatorio.nextInt(estadosPossiveisSemRisco.size()))
-					.getJogada();
-		} else
-			// Não há recomendação
-			return null;
+			return estadosPossiveis
+					.get(random.nextInt(estadosPossiveis.size())).getJogada();
+		}
+		// Não há recomendação
+		return null;
 	}
 
 	/**
-	 * Método de apoio que descreve o que há no tabuleiro
+	 * Método de apoio ao programador que descreve o que há no tabuleiro
 	 */
 	public void digaTabuleiro() {
 		for (int coluna = 1; coluna <= 8; coluna++)

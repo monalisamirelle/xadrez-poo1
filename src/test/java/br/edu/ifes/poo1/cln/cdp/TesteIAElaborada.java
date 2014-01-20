@@ -24,7 +24,7 @@ public class TesteIAElaborada {
 
 	@Before
 	public void before() {
-		ia = new IAElaborada("", CorJogador.PRETO, 6, 45);
+		ia = new IAElaborada("", CorJogador.PRETO, 10, 45, true);
 		tabuleiro = new Tabuleiro();
 
 		reiBranco = new Rei(CorJogador.BRANCO);
@@ -57,16 +57,16 @@ public class TesteIAElaborada {
 
 		// Coloca a peça no tabuleiro.
 		tabuleiro.colocarPeca(new Posicao(1, 1), reiBranco);
-		tabuleiro.colocarPeca(new Posicao(8, 1), torreBranca);
-		//tabuleiro.colocarPeca(new Posicao(7, 3), torrePreta);
+		//tabuleiro.colocarPeca(new Posicao(7, 1), torreBranca);
+		tabuleiro.colocarPeca(new Posicao(2, 3), torrePreta);
 		//tabuleiro.colocarPeca(new Posicao(6, 5), cavaloPreto);
 		//tabuleiro.colocarPeca(new Posicao(8, 5), cavaloPreto);
 		tabuleiro.colocarPeca(new Posicao(8, 8), reiPreto);
 		//tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
 		//tabuleiro.colocarPeca(new Posicao(2, 6), torreBranca);
-		tabuleiro.colocarPeca(new Posicao(3, 5), peaoPreto);
+		//tabuleiro.colocarPeca(new Posicao(3, 5), peaoPreto);
 		//tabuleiro.colocarPeca(new Posicao(2,7), peaoPreto);
-		//tabuleiro.colocarPeca(new Posicao(4,7), rainhaPreta);
+		tabuleiro.colocarPeca(new Posicao(4,7), rainhaPreta);
 		//tabuleiro.colocarPeca(new Posicao(2,3), rainhaBranca);
 		//tabuleiro.colocarPeca(new Posicao(4,3), bispoPreto);
 

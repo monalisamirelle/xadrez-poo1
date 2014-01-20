@@ -26,11 +26,14 @@ public class NoArvore {
 
 	// Marca o nó como visitado
 	private boolean marcado;
-
-	// Se o nó se encontra no n�vel max ou min
+	
+	// Cor do nó
+	private CorJogador cor; 
+	
+	// Se o nó se encontra no nível max ou min
 	private TipoNivel nivel;
 
-	// Ir� refletir se o n� foi podado ou n�o
+	// Ir� refletir se o nó foi podado ou não
 	private boolean podou;
 
 	// Cada nó terá um um estado
@@ -40,7 +43,7 @@ public class NoArvore {
 	private boolean xequeMate;
 
 	/**
-	 * Classe construtora de n� raiz
+	 * Classe construtora de nó raiz
 	 * 
 	 * @param noPai
 	 * @param valor
@@ -48,14 +51,16 @@ public class NoArvore {
 	 * @throws JogadaInvalidaException
 	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(Estado estado) throws CasaOcupadaException,
+	public NoArvore(CorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException,
 			CloneNotSupportedException, JogadaInvalidaException {
 		this.noPai = null;
 		this.temValor = false;
 		this.insereListaAdjacencia(noPai);
 		this.posicaoListaAdjacencia = 0;
 		this.marcado = false;
-		this.nivel = TipoNivel.MAX;
+		this.cor = cor;
+		// TODO podemos criar um if nesse nivel para gerar máquinas burras
+		this.nivel = nivel;
 		this.podou = false;
 		this.estado = estado;
 		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
@@ -81,6 +86,7 @@ public class NoArvore {
 		this.posicaoListaAdjacencia = this.getNoPai().getListaAdjacencia()
 				.size();
 		this.marcado = false;
+		this.cor = CorJogador.getCorOposta(noPai.getCorNo());
 		this.nivel = coloqueNivel();
 		this.podou = false;
 		this.estado = estado;
@@ -282,10 +288,7 @@ public class NoArvore {
 	}
 
 	public CorJogador getCorNo() {
-		if (this.getNivel() == TipoNivel.MAX)
-			return CorJogador.PRETO;
-		else
-			return CorJogador.BRANCO;
+		return this.cor;
 	}
 
 }

@@ -7,6 +7,14 @@ import java.util.List;
 public class IAElaborada extends Maquina {
 
 	/**
+	 * Se você deseja uma IA inteligente informe para o método construtor
+	 * maquinaInteligente -> true; Se você deseja uma IA burra informe para o
+	 * método construtor maquinaInteligente -> false; Se você deseja uma IA
+	 * agressiva (buscando sempre realizar xeques e comer peças) informe para o
+	 * método construtor alcance -> 1
+	 */
+
+	/**
 	 * Informa com quantas camadas estamos lidando no problema (O valor pode ser
 	 * adequado na interface conforme dificuldade escolhida pelo jogador)
 	 */
@@ -16,6 +24,11 @@ public class IAElaborada extends Maquina {
 	 * Informa o tempo máximo que levará em buscar camadas
 	 */
 	private final int TEMPOMAXIMO;
+
+	/**
+	 * Informa o nível que o nó raiz deve responder (MAX ou MIN)
+	 */
+	TipoNivel nivel;
 
 	/**
 	 * Informa o início desse tempo máximo
@@ -39,10 +52,15 @@ public class IAElaborada extends Maquina {
 	 * @param cor
 	 * @param alcance
 	 */
-	public IAElaborada(String nome, CorJogador cor, int alcance, int tempoMaximo) {
+	public IAElaborada(String nome, CorJogador cor, int alcance,
+			int tempoMaximo, boolean maquinaInteligente) {
 		super(nome, cor);
 		this.ALCANCEMAQUINA = alcance;
 		this.TEMPOMAXIMO = tempoMaximo;
+		if (maquinaInteligente)
+			this.nivel = TipoNivel.MAX;
+		else
+			this.nivel = TipoNivel.MIN;
 	}
 
 	/**
@@ -60,11 +78,11 @@ public class IAElaborada extends Maquina {
 			InterruptedException {
 
 		// Construa as partes
-		LeituraCamada parte1 = new LeituraCamada(0,
-				(int) listaNos.size() * 1 / 3, listaNos);
-		LeituraCamada parte2 = new LeituraCamada((int) listaNos.size() * 1 / 3,
+		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 3,
+				listaNos);
+		GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 3,
 				(int) listaNos.size() * 2 / 3, listaNos);
-		LeituraCamada parte3 = new LeituraCamada((int) listaNos.size() * 2 / 3,
+		GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 3,
 				listaNos.size(), listaNos);
 
 		// Construa as threads
@@ -108,7 +126,15 @@ public class IAElaborada extends Maquina {
 	 */
 	public void inserirValorFolhas(List<NoArvore> listaNos) {
 		for (NoArvore no : listaNos) {
-			no.setValor(no.getEstado().getTabuleiro().valorTabuleiro());
+			int xequeMate = 0;
+			// Verifica se o nó está em xeque. Influencia no valor do tabuleiro
+			if (no.isXequeMate())
+				if (no.getCorNo() == this.cor)
+					xequeMate = -1;
+				else
+					xequeMate = 1;
+			no.setValor(no.getEstado().getTabuleiro()
+					.valorTabuleiro(this.cor, xequeMate));
 			no.setTemValor();
 		}
 	}
@@ -126,7 +152,8 @@ public class IAElaborada extends Maquina {
 			JogadaInvalidaException, InterruptedException {
 
 		// Crio nó raiz e informo a ele o tabuleiro atual
-		NoArvore raiz = new NoArvore(new Estado(null, tabuleiroAtual));
+		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
+				tabuleiroAtual));
 		// Inserimos, inicialmente apenas o nó raiz
 		listaNos.add(raiz);
 		// Marca quando a análise foi iniciada
@@ -155,10 +182,9 @@ public class IAElaborada extends Maquina {
 				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
-						.getValor()) {
+						.getValor())
 					return raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
-				}
 		}
 		// Retorno null caso não tenha jogada a ser realizada ou caso o
 		// tabuleiro já se encontre em xeque-Mate
