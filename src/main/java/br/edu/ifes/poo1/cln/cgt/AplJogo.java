@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.cln.cgt;
 
+import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
@@ -56,10 +57,12 @@ public abstract class AplJogo {
 	 *            Entrada do jogador que codifica a jogada que deverá ser
 	 *            realizada.
 	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException 
+	 * @throws CloneNotSupportedException 
 	 * @throws FimDeJogoException
 	 */
 	public abstract void executarjogada(Jogada jogada)
-			throws JogadaInvalidaException;
+			throws JogadaInvalidaException, CasaOcupadaException, CloneNotSupportedException;
 
 	/**
 	 * Retorna o vencedor da partida, ou 'null' caso a partida não tenha

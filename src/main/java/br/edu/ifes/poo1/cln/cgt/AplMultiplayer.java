@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.cln.cgt;
 
+import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
@@ -24,7 +25,7 @@ public class AplMultiplayer extends AplJogo {
 	}
 
 	@Override
-	public void executarjogada(Jogada jogada) throws JogadaInvalidaException {
+	public void executarjogada(Jogada jogada) throws JogadaInvalidaException, CasaOcupadaException, CloneNotSupportedException {
 		// Pega o jogador do turno atual.
 		Pessoa atualJogador = (Pessoa) getJogadorTurnoAtual();
 

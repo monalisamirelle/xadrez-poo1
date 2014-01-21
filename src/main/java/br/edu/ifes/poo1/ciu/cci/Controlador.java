@@ -9,6 +9,7 @@ import br.edu.ifes.poo1.ciu.cih.MenuAmbiente;
 import br.edu.ifes.poo1.ciu.cih.MenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
+import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
@@ -58,8 +59,10 @@ public class Controlador {
 	/**
 	 * Inicia o jogo. Serão exibidos os menus necessários e faz todo o controle
 	 * necessário do jogo.
+	 * @throws CasaOcupadaException 
+	 * @throws CloneNotSupportedException 
 	 */
-	public void iniciar() {
+	public void iniciar() throws CasaOcupadaException, CloneNotSupportedException {
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuPrincipal = new MenuPrincipal();
 
@@ -103,7 +106,7 @@ public class Controlador {
 		// o jogo.
 	}
 
-	private void controlarSinglePlayer() {
+	private void controlarSinglePlayer() throws CasaOcupadaException, CloneNotSupportedException {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = "ZEUS";
@@ -155,8 +158,10 @@ public class Controlador {
 	/**
 	 * Controla tudo o que é necessário para uma partida multiplayer. Ao final
 	 * do método, a partida terá encerrado.
+	 * @throws CasaOcupadaException 
+	 * @throws CloneNotSupportedException 
 	 */
-	private void controlarMultiplayer() {
+	private void controlarMultiplayer() throws CasaOcupadaException, CloneNotSupportedException {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = cli.lerNomeJogadorPreto();
