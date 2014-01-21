@@ -819,10 +819,10 @@ public class Tabuleiro implements Cloneable {
 			}
 		}
 		// Se o jogador em questão realizou xeque-mate
-		if(xequeMate == 1)
+		if (xequeMate == 1)
 			valor = valor + 100;
 		// Se o jogador em questão recebeu xeque-mate
-		if(xequeMate == -1)
+		if (xequeMate == -1)
 			valor = valor - 100;
 		return valor;
 	}
@@ -866,8 +866,43 @@ public class Tabuleiro implements Cloneable {
 	}
 
 	/**
+	 * Método que captura todos os dados de um tabuleiro e colocam em uma lista
+	 * de strings
+	 * 
+	 * @return
+	 */
+	// TODO teste
+	public List<String> estadoTabuleiro() {
+		List<String> dadoPartida = new ArrayList<String>();
+		for (int coluna = 1; coluna <= 8; coluna++)
+			for (int linha = 1; linha <= 8; linha++) {
+				if (this.espiarPeca(new Posicao(coluna, linha)) != null) {
+					String texto = (coluna
+							+ " "
+							+ linha
+							+ " "
+							+ this.espiarPeca(new Posicao(coluna, linha))
+									.getTipoPeca()
+							+ " "
+							+ this.espiarPeca(new Posicao(coluna, linha))
+									.getCorJogador() + " " + this.espiarPeca(
+							new Posicao(coluna, linha)).getJaMoveu());
+					if (this.espiarPeca(new Posicao(coluna, linha))
+							.getTipoPeca() == TipoPeca.PEAO) {
+						Peao peao = (Peao) this.espiarPeca(new Posicao(coluna,
+								linha));
+						texto = (texto + " " + peao.isPodeEnPassant());
+					}
+					dadoPartida.add(texto);
+				}
+			}
+		return dadoPartida;
+	}
+
+	/**
 	 * Método de apoio ao programador que descreve o que há no tabuleiro
 	 */
+	// TODO (começou a apresentar comportamento estranho, mas como é temporário...)
 	public void digaTabuleiro() {
 		for (int coluna = 1; coluna <= 8; coluna++)
 			for (int linha = 1; linha <= 8; linha++) {

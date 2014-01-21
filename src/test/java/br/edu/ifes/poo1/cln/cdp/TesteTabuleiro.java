@@ -343,19 +343,23 @@ public class TesteTabuleiro {
 
 		// Uma peça
 		tabuleiro.colocarPeca(new Posicao(1, 1), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(), 3);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.PRETO, 0),
+				3);
 
 		// Peça de mesmo valor
 		tabuleiro.colocarPeca(new Posicao(2, 4), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(), 6);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 0),
+				-6);
 
 		// Peça inimiga
 		tabuleiro.colocarPeca(new Posicao(2, 8), cavaloBranco);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(), 3);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 1),
+				97);
 
 		// Peça de valor diferente (negativo)
 		tabuleiro.colocarPeca(new Posicao(2, 1), torreBranca);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(), -2);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.PRETO, -1),
+				-102);
 	}
 
 	@Test
@@ -366,7 +370,7 @@ public class TesteTabuleiro {
 		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
 		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
 		Assert.assertNull(tabuleiro.recomendaJogada(CorJogador.PRETO));
-		
+
 		// Há jogadas a serem recomendadas
 		tabuleiro.colocarPeca(new Posicao(7, 4), torrePreta);
 		Assert.assertNotNull(tabuleiro.recomendaJogada(CorJogador.PRETO));

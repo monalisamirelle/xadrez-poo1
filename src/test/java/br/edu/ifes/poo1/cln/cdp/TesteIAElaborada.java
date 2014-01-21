@@ -24,7 +24,7 @@ public class TesteIAElaborada {
 
 	@Before
 	public void before() {
-		ia = new IAElaborada("", CorJogador.PRETO, 10, 45, true);
+		ia = new IAElaborada("", CorJogador.PRETO, 3, 45, true);
 		tabuleiro = new Tabuleiro();
 
 		reiBranco = new Rei(CorJogador.BRANCO);
