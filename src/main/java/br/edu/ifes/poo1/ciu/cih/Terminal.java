@@ -76,7 +76,7 @@ public class Terminal extends Cli {
 			return corBrancas;
 
 		// Confere a cor da peça para retornar a cor adequada.
-		if (peca.getJogador().getCor() == CorJogador.BRANCO)
+		if (peca.getCorJogador() == CorJogador.BRANCO)
 			return corBrancas;
 		else
 			return corPretas;

@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.cln.cgt;
 
+import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
@@ -29,6 +30,12 @@ public abstract class AplJogo {
 	/** Indica o motivo pelo qual a partida terminou. */
 	private MotivoFimDaPartida motivoDeFinalizacao;
 
+	/**
+	 * Método construtor destinado a partidas que estão iniciando
+	 * 
+	 * @param brancas
+	 * @param pretas
+	 */
 	public AplJogo(Jogador brancas, Jogador pretas) {
 		// Pega os jogadores.
 		this.brancas = brancas;
@@ -50,16 +57,49 @@ public abstract class AplJogo {
 	}
 
 	/**
+	 * Método construtor destinado a jogos que foram salvos mas se encontravam
+	 * em andamento
+	 * 
+	 * @param brancas
+	 * @param pretas
+	 * @param tabuleiro
+	 * @param turno
+	 */
+	public AplJogo(Jogador brancas, Jogador pretas, Tabuleiro tabuleiro,
+			CorJogador turno) {
+		// Pega os jogadores.
+		this.brancas = brancas;
+		this.pretas = pretas;
+
+		// Turno em que a partida parou
+		this.turno = turno;
+
+		// Só está continuando. ;)
+		this.acabouJogo = false;
+
+		// Inicia o tabuleiro, com as peças já posicionadas.
+		this.tabuleiro = tabuleiro;
+
+		// Informa os jogadores sobre qual o tabuleiro que está em uso na
+		// partida.
+		brancas.setTabuleiro(tabuleiro);
+		pretas.setTabuleiro(tabuleiro);
+	}
+
+	/**
 	 * Processa a jogada recebida, executando-a no modelo.
 	 * 
 	 * @param jogada
 	 *            Entrada do jogador que codifica a jogada que deverá ser
 	 *            realizada.
 	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException
+	 * @throws CloneNotSupportedException
 	 * @throws FimDeJogoException
 	 */
 	public abstract void executarjogada(Jogada jogada)
-			throws JogadaInvalidaException;
+			throws JogadaInvalidaException, CasaOcupadaException,
+			CloneNotSupportedException;
 
 	/**
 	 * Retorna o vencedor da partida, ou 'null' caso a partida não tenha
@@ -141,7 +181,7 @@ public abstract class AplJogo {
 	 * @param ganhador
 	 *            ganhador da partida.
 	 */
-	protected void finalizarPartida(Jogador ganhador, boolean houveDesistencia) {
+	public void finalizarPartida(Jogador ganhador, boolean houveDesistencia) {
 		this.vencedor = ganhador;
 		this.acabouJogo = true;
 		if (houveDesistencia)
@@ -152,11 +192,15 @@ public abstract class AplJogo {
 	}
 
 	/**
-	 * Faz o término da partida, tendo havido um empate.
+	 * Faz o término da partida, tendo havido um empate ou uma pausa.
 	 */
-	protected void finalizarPartida() {
+	public void finalizarPartida(boolean jogoPausado) {
+		if(jogoPausado)
+			this.motivoDeFinalizacao = MotivoFimDaPartida.PAUSA;
+		else{
 		this.acabouJogo = true;
 		this.motivoDeFinalizacao = MotivoFimDaPartida.EMPATE;
+		}
 		// TODO: Salvar o histórico da partida.
 	}
 

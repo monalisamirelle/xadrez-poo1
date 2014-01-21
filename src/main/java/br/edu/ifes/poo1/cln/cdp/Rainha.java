@@ -5,8 +5,8 @@ public class Rainha extends Peca {
 	/**
 	 * Instancia uma rainha.
 	 */
-	public Rainha(Jogador jogador) {
-		super(9, TipoPeca.RAINHA, jogador);
+	public Rainha(CorJogador corJogador) {
+		super(9, TipoPeca.RAINHA, corJogador);
 	}
 	
 	/**
@@ -19,11 +19,11 @@ public class Rainha extends Peca {
 
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino)) {
-			if ((this.tamanhoMovimento(origem.getLinha(), destino.getLinha()) > 0)
-					|| (this.tamanhoMovimento(origem.getColuna(),
+			if ((this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) > 0)
+					|| (this.deslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) > 0)) {
 				return true;
 			}

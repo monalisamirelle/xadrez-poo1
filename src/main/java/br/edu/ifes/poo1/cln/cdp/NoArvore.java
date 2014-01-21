@@ -1,10 +1,12 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 import java.util.ArrayList;
+import java.util.List;
 
-// TODO Melhorar classes construtoras
-// PODOU É O ÚNICO ATRIBUTOS QUE AGEM DE MANEIRA IDÊNTICA NAS CLASSES CONSTRUTORAS
-
+/**
+ * @author erro
+ * 
+ */
 public class NoArvore {
 
 	// Nó que é pai do nó em questão
@@ -17,47 +19,53 @@ public class NoArvore {
 	private boolean temValor;
 
 	// Cada n� ter� uma lista de adjac�ncia indicando seus n�s de liga��o direta
-	private ArrayList<NoArvore> listaAdjacencia = new ArrayList<NoArvore>();
+	private List<NoArvore> listaAdjacencia = new ArrayList<NoArvore>();
 
 	// Irá servir para indicar a posição na lista de adjacencia de um no
 	private int posicaoListaAdjacencia;
 
 	// Marca o nó como visitado
 	private boolean marcado;
-
-	// Se o nó se encontra no n�vel max ou min
+	
+	// Cor do nó
+	private CorJogador cor; 
+	
+	// Se o nó se encontra no nível max ou min
 	private TipoNivel nivel;
 
-	// Ir� refletir se o n� foi podado ou n�o
+	// Ir� refletir se o nó foi podado ou não
 	private boolean podou;
 
-	// Cada nó terá um um tabuleiro
-	private Tabuleiro tabuleiroNo = new Tabuleiro();
-	
-	// Verifica se o tabuleiro do nó se encontra um xeque
-	private boolean xeque;
+	// Cada nó terá um um estado
+	private Estado estado;
 
-	// Verifica se o tabuleiro do nó se encontra um xeque-mate
+	// Verifica se o jogador daquele nó está provocando um xeque-mate
 	private boolean xequeMate;
-	
+
 	/**
-	 * Classe construtora de n� raiz
+	 * Classe construtora de nó raiz
 	 * 
 	 * @param noPai
 	 * @param valor
+	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException
+	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(Tabuleiro tabuleiro) {
+	public NoArvore(CorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException,
+			CloneNotSupportedException, JogadaInvalidaException {
 		this.noPai = null;
 		this.temValor = false;
 		this.insereListaAdjacencia(noPai);
 		this.posicaoListaAdjacencia = 0;
 		this.marcado = false;
-		this.nivel = TipoNivel.MAX;
+		this.cor = cor;
+		// TODO podemos criar um if nesse nivel para gerar máquinas burras
+		this.nivel = nivel;
 		this.podou = false;
-		this.tabuleiroNo = tabuleiro;
-		// TODO talvez o tabuleiro atual possa já estar em xeque ou xequeMate
-		this.xeque = false;
-		this.xequeMate = false;
+		this.estado = estado;
+		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
+				CorJogador.BRANCO)
+				|| estado.getTabuleiro().verificarXequeMate(CorJogador.PRETO);
 	}
 
 	/**
@@ -65,8 +73,12 @@ public class NoArvore {
 	 * 
 	 * @param noPai
 	 * @param valor
+	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException
+	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(NoArvore noPai, Tabuleiro tabuleiro) {
+	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException,
+			CloneNotSupportedException, JogadaInvalidaException {
 		this.noPai = noPai;
 		noPai.addFilho(this);
 		this.temValor = false;
@@ -74,35 +86,13 @@ public class NoArvore {
 		this.posicaoListaAdjacencia = this.getNoPai().getListaAdjacencia()
 				.size();
 		this.marcado = false;
+		this.cor = CorJogador.getCorOposta(noPai.getCorNo());
 		this.nivel = coloqueNivel();
 		this.podou = false;
-		this.tabuleiroNo = tabuleiro;
-		this.xeque = false;
-		this.xequeMate = false;
+		this.estado = estado;
+		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
+				CorJogador.getCorOposta(noPai.getCorNo()));
 	}
-
-	/**
-	 * Classe construtora de n� folha
-	 * 
-	 * @param indice
-	 * @param valor
-	 */
-	// TODO talvez essa classe construtora suma
-	/**
-	public NoArvore(NoArvore noPai, int valor, Tabuleiro tabuleiro) {
-		this.noPai = noPai;
-		noPai.addFilho(this);
-		this.valor = valor;
-		this.temValor = true;
-		this.insereListaAdjacencia(noPai);
-		this.posicaoListaAdjacencia = this.getNoPai().getListaAdjacencia()
-				.size();
-		this.marcado = false;
-		this.nivel = coloqueNivel();
-		this.podou = false;
-		this.tabuleiroNo = tabuleiro;
-	}
-	*/
 
 	/**
 	 * Pegar o valor de um n�
@@ -219,7 +209,7 @@ public class NoArvore {
 	 * 
 	 * @return
 	 */
-	public ArrayList<NoArvore> getListaAdjacencia() {
+	public List<NoArvore> getListaAdjacencia() {
 		return this.listaAdjacencia;
 	}
 
@@ -289,27 +279,16 @@ public class NoArvore {
 		}
 	}
 
-	/**
-	 * Pega o tabuleiro do nó
-	 */
-	public Tabuleiro getTabuleiroNo() {
-		return this.tabuleiroNo;
-	}
-
-	public boolean isXeque() {
-		return xeque;
-	}
-
-	public void setXeque() {
-		this.xeque = true;
+	public Estado getEstado() {
+		return estado;
 	}
 
 	public boolean isXequeMate() {
 		return xequeMate;
 	}
 
-	public void setXequeMate() {
-		this.xequeMate = true;
+	public CorJogador getCorNo() {
+		return this.cor;
 	}
 
 }

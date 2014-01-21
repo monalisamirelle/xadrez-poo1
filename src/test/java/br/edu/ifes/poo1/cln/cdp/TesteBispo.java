@@ -21,19 +21,19 @@ public class TesteBispo {
 		pretas = new Jogador("TestePreto", CorJogador.PRETO);
 
 		// Inicia o bispo.
-		bispoBranco = new Bispo(brancas);
+		bispoBranco = new Bispo(brancas.getCor());
 
 		// Coloca peças inimigas no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(6, 4), new Peao(pretas));
-		tabuleiro.colocarPeca(new Posicao(8, 8), new Peao(pretas));
-		tabuleiro.colocarPeca(new Posicao(5, 3), new Peao(pretas));
+		tabuleiro.colocarPeca(new Posicao(6, 4), new Peao(pretas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(8, 8), new Peao(pretas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(5, 3), new Peao(pretas.getCor()));
 
 		// Coloca peça aliada no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(2, 2), new Peao(brancas));
+		tabuleiro.colocarPeca(new Posicao(2, 2), new Peao(brancas.getCor()));
 	}
 
 	@Test
-	public void podeAndar() {
+	public void podeAndar() throws CasaOcupadaException {
 		// Verifica se o bispo pode realizar determinados movimentos (não se
 		// importando em diferenciar bispos de casas pretas e brancas).
 
@@ -56,7 +56,7 @@ public class TesteBispo {
 	}
 
 	@Test
-	public void podeAtacar() {
+	public void podeAtacar() throws CasaOcupadaException {
 		// Verifica se o bispo pode realizar determinado ataque.
 		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(7, 3),
 				new Posicao(6, 4), tabuleiro));

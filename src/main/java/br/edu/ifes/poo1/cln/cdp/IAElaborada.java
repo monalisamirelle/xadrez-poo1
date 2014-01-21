@@ -1,11 +1,18 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
+import java.util.List;
 
 public class IAElaborada extends Maquina {
 
-	// FIXME EsTa para exemplo
-	Pessoa pes = new Pessoa("", CorJogador.BRANCO);
+	/**
+	 * Se você deseja uma IA inteligente informe para o método construtor
+	 * maquinaInteligente -> true; Se você deseja uma IA burra informe para o
+	 * método construtor maquinaInteligente -> false; Se você deseja uma IA
+	 * agressiva (buscando sempre realizar xeques e comer peças) informe para o
+	 * método construtor alcance -> 1
+	 */
 
 	/**
 	 * Informa com quantas camadas estamos lidando no problema (O valor pode ser
@@ -17,6 +24,11 @@ public class IAElaborada extends Maquina {
 	 * Informa o tempo máximo que levará em buscar camadas
 	 */
 	private final int TEMPOMAXIMO;
+
+	/**
+	 * Informa o nível que o nó raiz deve responder (MAX ou MIN)
+	 */
+	TipoNivel nivel;
 
 	/**
 	 * Informa o início desse tempo máximo
@@ -31,7 +43,7 @@ public class IAElaborada extends Maquina {
 	/**
 	 * Lista que irá conter todos os nós da camada mais inferior trabalhada
 	 */
-	private ArrayList<NoArvore> listaNos = new ArrayList<NoArvore>();
+	private List<NoArvore> listaNos = new ArrayList<NoArvore>();
 
 	/**
 	 * Classe construtora de IAElaborada
@@ -40,61 +52,15 @@ public class IAElaborada extends Maquina {
 	 * @param cor
 	 * @param alcance
 	 */
-	public IAElaborada(String nome, CorJogador cor, int alcance, int tempoMaximo) {
+	public IAElaborada(String nome, CorJogador cor, int alcance,
+			int tempoMaximo, boolean maquinaInteligente) {
 		super(nome, cor);
 		this.ALCANCEMAQUINA = alcance;
 		this.TEMPOMAXIMO = tempoMaximo;
-	}
-
-	/**
-	 * Método que gera, dado um nó, os filhos desse nó
-	 * 
-	 * @param listaNos
-	 * @param novaListaNos
-	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
-	 * @throws JogadaInvalidaException
-	 */
-	public ArrayList<NoArvore> geraFilhos(NoArvore noPai,
-			ArrayList<NoArvore> novaListaNos) throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
-
-		// Cria uma lista de tabuleiros que contém todos os estados possíveis a
-		// serem gerados dado o nó pai
-		ArrayList<Tabuleiro> listaTabuleiros = new ArrayList<Tabuleiro>();
-
-		// Cria um jogador
-		CorJogador corJogador = null;
-
-		// Se estamos em um nível MIN, devemos pegar todas as jogadas da máquina
-		if (noPai.getNivel() == TipoNivel.MAX)
-			corJogador = this.getCor();
-		// Se estamos em um nível MAX, devemos pegar todas as jogadas da
-		// pessoa
+		if (maquinaInteligente)
+			this.nivel = TipoNivel.MAX;
 		else
-			corJogador = pes.getCor();
-		listaTabuleiros = noPai.getTabuleiroNo().proximosEstadosPossiveis(
-				corJogador);
-
-		// Para cada tabuleiro da lista de tabuleiros
-		for (Tabuleiro tabuleiroEstado : listaTabuleiros) {
-			// Crie um nó que reconheça seu pai
-			NoArvore no = new NoArvore(noPai, tabuleiroEstado);
-			// Verifica se determinada jogada deixa o tabuleiro em xeque ou xeque-mate
-			
-			if (tabuleiroEstado.verificarXeque(corJogador)) {
-			//	System.out.println("\n");
-			//	tabuleiroEstado.digaTabuleiro();
-				no.setXeque();
-				if (tabuleiroEstado.verificarXequeMate(corJogador))
-					no.setXequeMate();
-			}
-
-			// Faça esse nó ser adicionado a nova lista de nós
-			novaListaNos.add(no);
-		}
-		return novaListaNos;
+			this.nivel = TipoNivel.MIN;
 	}
 
 	/**
@@ -105,20 +71,51 @@ public class IAElaborada extends Maquina {
 	 * @throws CasaOcupadaException
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
+	 * @throws InterruptedException
 	 */
 	public boolean criaCamada() throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
-		ArrayList<NoArvore> novaListaNos = new ArrayList<NoArvore>();
-		// Para cada nó da atual lista de nós
-		for (NoArvore noPai : listaNos) {
+			CloneNotSupportedException, JogadaInvalidaException,
+			InterruptedException {
+
+		// Construa as partes
+		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 3,
+				listaNos);
+		GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 3,
+				(int) listaNos.size() * 2 / 3, listaNos);
+		GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 3,
+				listaNos.size(), listaNos);
+
+		// Construa as threads
+		Thread t1 = new Thread(parte1);
+		Thread t2 = new Thread(parte2);
+		Thread t3 = new Thread(parte3);
+
+		// Inicia as threads
+		t1.start();
+		t2.start();
+		t3.start();
+
+		// Enquanto as threads estão rodando
+		while (t1.getState() == State.RUNNABLE
+				|| t2.getState() == State.RUNNABLE
+				|| t3.getState() == State.RUNNABLE) {
 			long fim = System.currentTimeMillis();
-			if ((fim - inicio) / 1000 < this.TEMPOMAXIMO)
-				// Faça a nova lista de nós receber os filhos
-				novaListaNos = geraFilhos(noPai, novaListaNos);
-			else
+			// Se o tempo máximo for alcançado
+			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
+				// Interrompa as threads e retorne true
+				t1.interrupt();
+				t2.interrupt();
+				t3.interrupt();
 				return true;
+				// TODO poderia haver um else que só permitisse esse loop a cada
+				// um segundo
+			}
 		}
-		listaNos = novaListaNos;
+
+		// Crie a lista de nós
+		listaNos = parte1.getNovaListaNos();
+		listaNos.addAll(parte2.getNovaListaNos());
+		listaNos.addAll(parte3.getNovaListaNos());
 		return false;
 	}
 
@@ -127,28 +124,19 @@ public class IAElaborada extends Maquina {
 	 * 
 	 * @param listaNos
 	 */
-	public void inserirValorFolhas(ArrayList<NoArvore> listaNos) {
+	public void inserirValorFolhas(List<NoArvore> listaNos) {
 		for (NoArvore no : listaNos) {
-			no.setValor(no.getTabuleiroNo().valorTabuleiro());
+			int xequeMate = 0;
+			// Verifica se o nó está em xeque. Influencia no valor do tabuleiro
+			if (no.isXequeMate())
+				if (no.getCorNo() == this.cor)
+					xequeMate = -1;
+				else
+					xequeMate = 1;
+			no.setValor(no.getEstado().getTabuleiro()
+					.valorTabuleiro(this.cor, xequeMate));
 			no.setTemValor();
 		}
-	}
-
-	/**
-	 * Cria a lista de jogadas que podem ser realizadas por um nó (no caso,
-	 * estamos interessados na lista de jogadas que podem ser realizadas pelo nó
-	 * raiz)
-	 * 
-	 * @param no
-	 * @return
-	 * @throws JogadaInvalidaException
-	 * @throws CasaOcupadaException
-	 */
-	public ArrayList<Jogada> jogadasPossiveis(NoArvore no)
-			throws JogadaInvalidaException {
-		ArrayList<Jogada> listaJogadas = no.getTabuleiroNo()
-				.geraJogadasPossiveis(this.getCor());
-		return listaJogadas;
 	}
 
 	/**
@@ -157,27 +145,24 @@ public class IAElaborada extends Maquina {
 	 * @throws CasaOcupadaException
 	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
+	 * @throws InterruptedException
 	 */
-	public Jogada escolherJogada(Tabuleiro tab) throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
+	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
+			throws CasaOcupadaException, CloneNotSupportedException,
+			JogadaInvalidaException, InterruptedException {
 
 		// Crio nó raiz e informo a ele o tabuleiro atual
-		NoArvore raiz = new NoArvore(tab);
-
+		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
+				tabuleiroAtual));
 		// Inserimos, inicialmente apenas o nó raiz
 		listaNos.add(raiz);
-
 		// Marca quando a análise foi iniciada
 		inicio = System.currentTimeMillis();
-
 		// Funciona verificando se foi atingido o tempo máximo estabelecido
 		boolean atingiuTempoMaximo = false;
-
 		// Crio a árvore de possibilidades
 		for (int camada = 1; camada <= ALCANCEMAQUINA
 				&& atingiuTempoMaximo == false; camada++) {
-			System.out.println("\n\nCamada: " + camada);
-			System.out.println("tamanho da lista de nós: " + listaNos.size());
 			atingiuTempoMaximo = criaCamada();
 		}
 
@@ -187,19 +172,22 @@ public class IAElaborada extends Maquina {
 		// Realizo a busca em profundidade (aplicando minimax e poda alfa beta)
 		busca.buscaEmProfundidade(raiz);
 
-		// Crio a lista de jogadas
-		ArrayList<Jogada> listaJogadas = jogadasPossiveis(raiz);
-		// Para cada nó na lista de adjacência do pai (começa de 1 pois o nó pai
-		// não tem primeiro valor na lista de adjacência pois não tem pai
-		for (int indice = 1; indice < raiz.getListaAdjacencia().size(); indice++)
-			// Se o nó possuir o mesmo valor do pai, então o tabuleiro escolhido
-			// foi o desse nó
-			if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
-					.getValor()) {
-				System.out.println("Melhor jogada alcançada");
-				return listaJogadas.get(indice - 1);
-			}
-		// Retorno null caso não tenha jogada a ser realizada
+		// Se o tabuleiro não já se encontra em xeque-mate
+		if (raiz.isXequeMate() == false) {
+
+			// Para cada nó na lista de adjacência do pai (começa de 1 pois o nó
+			// pai não tem primeiro valor na lista de adjacência pois não tem
+			// pai
+			for (int indice = 1; indice < raiz.getListaAdjacencia().size(); indice++)
+				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
+				// escolhido foi o desse nó
+				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
+						.getValor())
+					return raiz.getListaAdjacencia().get(indice).getEstado()
+							.getJogada();
+		}
+		// Retorno null caso não tenha jogada a ser realizada ou caso o
+		// tabuleiro já se encontre em xeque-Mate
 		return null;
 
 	}

@@ -27,7 +27,7 @@ public class Prompt extends Cli {
 					// Quantidade de espaços equivalente ao texto da cor do
 					// jogador nos casos logo abaixo.
 					imprimir("       ");
-				else if (peca.getJogador().getCor() == CorJogador.BRANCO)
+				else if (peca.getCorJogador() == CorJogador.BRANCO)
 					imprimir(" branco");
 				else
 					imprimir(" preto ");
