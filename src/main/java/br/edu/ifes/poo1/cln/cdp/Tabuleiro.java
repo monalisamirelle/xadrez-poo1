@@ -953,9 +953,9 @@ public class Tabuleiro implements Cloneable {
 		int indice = 0;
 		File arquivo;
 
-		// Tente criar um novo arquivo para armazenar o novo estado
 		// TODO provavelmente salvaremos todos jogos em um único arquivo
 		// (mudaria writes por appends)
+		// Tente criar um novo arquivo para armazenar o novo estado
 		do {
 			indice++;
 			arquivo = new File("partida" + indice + ".txt");
@@ -976,16 +976,19 @@ public class Tabuleiro implements Cloneable {
 		// Grave a data e hora da partida
 		bw.write(Calendar.getInstance().getTime().toString());
 		bw.newLine();
+		
 		// Grave o motivo da finalização da partida (Se a partida tiver apenas
 		// pausada,
 		// grave o próximo turno. Se estiver em outra situação, grave o
 		// vencedor)
 		bw.write(jogo.getMotivoDeFinalizacao().toString());
+		bw.newLine();
 		if (jogo.getMotivoDeFinalizacao() == MotivoFimDaPartida.PAUSA)
 			bw.write(jogo.getTurno().toString());
 		else
 			bw.write(jogo.getVencedor().getNome());
 		bw.newLine();
+		
 		// Crie uma lista de strings em que cada elemento da lista contenha
 		// todos os dados de uma peça
 		List<String> estadoTabuleiro = jogo.getTabuleiro().estadoTabuleiro();
@@ -995,7 +998,7 @@ public class Tabuleiro implements Cloneable {
 			bw.newLine();
 		}
 		// Grave um sinal indicando que todos os dados daquela partida foram
-		// lidos
+		// finalizados ali
 		bw.write("...");
 
 		// Feche os arquivos
@@ -1004,5 +1007,4 @@ public class Tabuleiro implements Cloneable {
 
 		return true;
 	}
-
 }

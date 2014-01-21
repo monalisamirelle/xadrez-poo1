@@ -108,11 +108,16 @@ public class Controlador {
 
 	private void controlarSinglePlayer() throws CasaOcupadaException, CloneNotSupportedException {
 		// Pega o nome dos jogadores.
-		String nomeBrancas = cli.lerNomeJogadorBranco();
-		String nomePretas = "ZEUS";
-
+		//String nomeBrancas = cli.lerNomeJogadorBranco();
+		//String nomePretas = "ZEUS";
+		
+		// TODO agora não deverá ter distinção pois a máquina pode ser tanto branca quanto preta
+		// TODO deverá ser algo assim...
+		//Jogador jogadorBranco = new Jogador();
+		//Jogador jogadorPreto = new Jogador();
+		
 		// Contrói a aplicação do jogo
-		AplJogo apl = new AplSingleplayer(nomeBrancas, nomePretas);
+		AplJogo apl = new AplSingleplayer(jogadorBranco,jogadorPreto);
 
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// do jogador e exibindo o estado do tabuleiro.

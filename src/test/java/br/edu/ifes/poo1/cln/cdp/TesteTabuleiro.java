@@ -7,6 +7,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
+
 public class TesteTabuleiro {
 
 	Tabuleiro tabuleiro;
@@ -345,18 +347,15 @@ public class TesteTabuleiro {
 
 		// Uma peça
 		tabuleiro.colocarPeca(new Posicao(1, 1), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.PRETO, 0),
-				3);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.PRETO, 0), 3);
 
 		// Peça de mesmo valor
 		tabuleiro.colocarPeca(new Posicao(2, 4), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 0),
-				-6);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 0), -6);
 
 		// Peça inimiga
 		tabuleiro.colocarPeca(new Posicao(2, 8), cavaloBranco);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 1),
-				97);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 1), 97);
 
 		// Peça de valor diferente (negativo)
 		tabuleiro.colocarPeca(new Posicao(2, 1), torreBranca);
@@ -379,14 +378,17 @@ public class TesteTabuleiro {
 	}
 
 	@Test
+	// TODO Está aqui de maneira temporária pois não estava conseguindo gravar partidas no cgt
 	public void gravarEstadoPartida() throws CasaOcupadaException,
 			JogadaInvalidaException, CloneNotSupportedException, IOException {
-		Jogador jogadorBranco = new Jogador("Branco",CorJogador.BRANCO);
-		Jogador jogadorPreto = new Jogador("Preto",CorJogador.PRETO);
+		Jogador jogadorBranco = new Jogador("Branco", CorJogador.BRANCO);
+		Jogador jogadorPreto = new Jogador("Preto", CorJogador.PRETO);
 		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
 		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
 		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
-		// TODO fazer após classe construtora ser feita
-		//Assert.assertTrue(tabuleiro.gravarEstadoPartida());
+		AplMultiplayer jogo = new AplMultiplayer(jogadorBranco, jogadorPreto,
+				tabuleiro, CorJogador.BRANCO);
+		jogo.finalizarPartida(true);
+		Assert.assertTrue(tabuleiro.gravarEstadoPartida(jogo));
 	}
 }

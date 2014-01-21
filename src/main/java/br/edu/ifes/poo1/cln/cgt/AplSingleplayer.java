@@ -3,8 +3,10 @@ package br.edu.ifes.poo1.cln.cgt;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
+import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Maquina;
 import br.edu.ifes.poo1.cln.cdp.Pessoa;
+import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 public class AplSingleplayer extends AplJogo {
 
@@ -14,9 +16,22 @@ public class AplSingleplayer extends AplJogo {
 	 * @param nomeJogador
 	 *            Nome do jogador humano.
 	 */
-	public AplSingleplayer(String nomeJogador, String nomeMaquina) {
-		super(new Pessoa(nomeJogador, CorJogador.BRANCO), new Maquina(
-				nomeMaquina, CorJogador.PRETO));
+	public AplSingleplayer(Jogador jogadorBranco, Jogador jogadorPreto) {
+		super(new Jogador(jogadorBranco.getNome(), CorJogador.BRANCO), new Jogador(
+				jogadorPreto.getNome(), CorJogador.PRETO));
+	}
+
+	/**
+	 * Continua um jogo singleplayer
+	 * 
+	 * @param jogadorBranco
+	 * @param jogadorPreto
+	 * @param tabuleiro
+	 * @param branco
+	 */
+	public AplSingleplayer(Jogador jogadorBranco, Jogador jogadorPreto,
+			Tabuleiro tabuleiro, CorJogador turno) {
+		super(jogadorBranco, jogadorPreto, tabuleiro, turno);
 	}
 
 	@Override
@@ -35,6 +50,7 @@ public class AplSingleplayer extends AplJogo {
 		super.trocarTurno();
 
 		// Pede a jogada da máquina.
+		// TODO agora a máquina pode ser preta ou branca (mude isso)
 		Jogada jogadaMaquina = ((Maquina) pretas).escolherJogada();
 
 		// Executa a jogada da máquina.

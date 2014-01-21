@@ -5,4 +5,19 @@ package br.edu.ifes.poo1.cln.cdp;
  */
 public enum MotivoFimDaPartida {
 	VITORIA, EMPATE, DESISTENCIA, PAUSA;
+
+	public String toString() {
+		switch (this) {
+		case VITORIA:
+			return "VITORIA";
+		case EMPATE:
+			return "EMPATE";
+		case DESISTENCIA:
+			return "DESISTENCIA";
+		case PAUSA:
+			return "PAUSA";
+		}
+		return null;
+	}
+
 }

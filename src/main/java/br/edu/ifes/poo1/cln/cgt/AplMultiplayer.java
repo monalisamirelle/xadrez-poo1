@@ -4,7 +4,9 @@ import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
+import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Pessoa;
+import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 
 /**
  * Aplicação para o controle do modo multiplayer.
@@ -24,8 +26,22 @@ public class AplMultiplayer extends AplJogo {
 				nomePretas, CorJogador.PRETO));
 	}
 
+	/**
+	 * Continua um jogo multiplayer
+	 * 
+	 * @param jogadorBranco
+	 * @param jogadorPreto
+	 * @param tabuleiro
+	 * @param branco
+	 */
+	public AplMultiplayer(Jogador jogadorBranco, Jogador jogadorPreto,
+			Tabuleiro tabuleiro, CorJogador turno) {
+		super(jogadorBranco, jogadorPreto, tabuleiro, turno);
+	}
+
 	@Override
-	public void executarjogada(Jogada jogada) throws JogadaInvalidaException, CasaOcupadaException, CloneNotSupportedException {
+	public void executarjogada(Jogada jogada) throws JogadaInvalidaException,
+			CasaOcupadaException, CloneNotSupportedException {
 		// Pega o jogador do turno atual.
 		Pessoa atualJogador = (Pessoa) getJogadorTurnoAtual();
 
