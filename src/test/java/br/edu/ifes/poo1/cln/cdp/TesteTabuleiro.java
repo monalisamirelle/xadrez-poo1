@@ -1,5 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.IOException;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -376,4 +378,15 @@ public class TesteTabuleiro {
 		Assert.assertNotNull(tabuleiro.recomendaJogada(CorJogador.PRETO));
 	}
 
+	@Test
+	public void gravarEstadoPartida() throws CasaOcupadaException,
+			JogadaInvalidaException, CloneNotSupportedException, IOException {
+		Jogador jogadorBranco = new Jogador("Branco",CorJogador.BRANCO);
+		Jogador jogadorPreto = new Jogador("Preto",CorJogador.PRETO);
+		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
+		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
+		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
+		// TODO fazer após classe construtora ser feita
+		//Assert.assertTrue(tabuleiro.gravarEstadoPartida());
+	}
 }

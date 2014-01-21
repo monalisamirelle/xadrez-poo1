@@ -16,4 +16,10 @@ public enum CorJogador {
 		else
 			return CorJogador.BRANCO;
 	}
+	
+	public String toString(){
+		if(this == CorJogador.BRANCO)
+			return "BRANCO";
+		return "PRETO";
+	}
 }

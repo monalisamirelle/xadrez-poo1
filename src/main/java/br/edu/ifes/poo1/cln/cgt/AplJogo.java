@@ -50,6 +50,10 @@ public abstract class AplJogo {
 		pretas.setTabuleiro(tabuleiro);
 	}
 
+	// TODO criar uma classe construtora que receba o jogador branco, o jogador
+	// preto, e um tabuleiro como parâmentro (para jogos que foram salvos mas
+	// estavam em andamento)
+
 	/**
 	 * Processa a jogada recebida, executando-a no modelo.
 	 * 
@@ -57,12 +61,13 @@ public abstract class AplJogo {
 	 *            Entrada do jogador que codifica a jogada que deverá ser
 	 *            realizada.
 	 * @throws JogadaInvalidaException
-	 * @throws CasaOcupadaException 
-	 * @throws CloneNotSupportedException 
+	 * @throws CasaOcupadaException
+	 * @throws CloneNotSupportedException
 	 * @throws FimDeJogoException
 	 */
 	public abstract void executarjogada(Jogada jogada)
-			throws JogadaInvalidaException, CasaOcupadaException, CloneNotSupportedException;
+			throws JogadaInvalidaException, CasaOcupadaException,
+			CloneNotSupportedException;
 
 	/**
 	 * Retorna o vencedor da partida, ou 'null' caso a partida não tenha

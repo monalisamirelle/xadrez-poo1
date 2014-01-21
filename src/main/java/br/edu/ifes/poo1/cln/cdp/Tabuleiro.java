@@ -1,8 +1,15 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+
+import br.edu.ifes.poo1.cln.cgt.AplJogo;
 
 /**
  * Um tabuleiro é composto por 64 casas, estas podem estar ocupadas por uma peça
@@ -871,7 +878,6 @@ public class Tabuleiro implements Cloneable {
 	 * 
 	 * @return
 	 */
-	// TODO teste
 	public List<String> estadoTabuleiro() {
 		List<String> dadoPartida = new ArrayList<String>();
 		for (int coluna = 1; coluna <= 8; coluna++)
@@ -893,6 +899,7 @@ public class Tabuleiro implements Cloneable {
 								linha));
 						texto = (texto + " " + peao.isPodeEnPassant());
 					}
+					texto = (texto + ";");
 					dadoPartida.add(texto);
 				}
 			}
@@ -902,7 +909,8 @@ public class Tabuleiro implements Cloneable {
 	/**
 	 * Método de apoio ao programador que descreve o que há no tabuleiro
 	 */
-	// TODO (começou a apresentar comportamento estranho, mas como é temporário...)
+	// TODO (começou a apresentar comportamento estranho, mas como é
+	// temporário...)
 	public void digaTabuleiro() {
 		for (int coluna = 1; coluna <= 8; coluna++)
 			for (int linha = 1; linha <= 8; linha++) {
@@ -931,4 +939,70 @@ public class Tabuleiro implements Cloneable {
 						System.out.println("");
 			}
 	}
+
+	/**
+	 * Método que grava o estado de uma partida em arquivo
+	 * 
+	 * @param jogo
+	 * @return
+	 * @throws IOException
+	 */
+	// TODO não deveria estar aqui, apenas para questão de testes pois estava
+	// com dificuldades no CGT
+	public boolean gravarEstadoPartida(AplJogo jogo) throws IOException {
+		int indice = 0;
+		File arquivo;
+
+		// Tente criar um novo arquivo para armazenar o novo estado
+		// TODO provavelmente salvaremos todos jogos em um único arquivo
+		// (mudaria writes por appends)
+		do {
+			indice++;
+			arquivo = new File("partida" + indice + ".txt");
+		} while (arquivo.exists());
+
+		// Crie os objetos para escrever em um arquivo
+		FileWriter fw = new FileWriter(arquivo);
+		BufferedWriter bw = new BufferedWriter(fw);
+
+		// Grave os dados do jogador branco
+		bw.write("'" + jogo.getBrancas().getNome() + "'"
+				+ jogo.getBrancas().getCor());
+		bw.newLine();
+		// Grave os dados do jogador preto
+		bw.write("'" + jogo.getPretas().getNome() + "'"
+				+ jogo.getPretas().getCor());
+		bw.newLine();
+		// Grave a data e hora da partida
+		bw.write(Calendar.getInstance().getTime().toString());
+		bw.newLine();
+		// Grave o motivo da finalização da partida (Se a partida tiver apenas
+		// pausada,
+		// grave o próximo turno. Se estiver em outra situação, grave o
+		// vencedor)
+		bw.write(jogo.getMotivoDeFinalizacao().toString());
+		if (jogo.getMotivoDeFinalizacao() == MotivoFimDaPartida.PAUSA)
+			bw.write(jogo.getTurno().toString());
+		else
+			bw.write(jogo.getVencedor().getNome());
+		bw.newLine();
+		// Crie uma lista de strings em que cada elemento da lista contenha
+		// todos os dados de uma peça
+		List<String> estadoTabuleiro = jogo.getTabuleiro().estadoTabuleiro();
+		// Para cada peça na lista de peças
+		for (String dadosPeca : estadoTabuleiro) {
+			bw.write(dadosPeca);
+			bw.newLine();
+		}
+		// Grave um sinal indicando que todos os dados daquela partida foram
+		// lidos
+		bw.write("...");
+
+		// Feche os arquivos
+		bw.close();
+		fw.close();
+
+		return true;
+	}
+
 }
