@@ -27,7 +27,7 @@ public class AplMultiplayer extends AplJogo {
 	}
 
 	/**
-	 * Continua um jogo multiplayer
+	 * Continua uma partida multiplayer que havia sido pausada
 	 * 
 	 * @param jogadorBranco
 	 * @param jogadorPreto

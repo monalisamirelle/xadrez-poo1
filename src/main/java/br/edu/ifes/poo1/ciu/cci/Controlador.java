@@ -10,10 +10,12 @@ import br.edu.ifes.poo1.ciu.cih.MenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
+import br.edu.ifes.poo1.cln.cdp.CorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.MotivoFimDaPartida;
+import br.edu.ifes.poo1.cln.cdp.Pessoa;
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
 import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 import br.edu.ifes.poo1.cln.cgt.AplSingleplayer;
@@ -107,17 +109,35 @@ public class Controlador {
 	}
 
 	private void controlarSinglePlayer() throws CasaOcupadaException, CloneNotSupportedException {
-		// Pega o nome dos jogadores.
-		//String nomeBrancas = cli.lerNomeJogadorBranco();
-		//String nomePretas = "ZEUS";
 		
-		// TODO agora não deverá ter distinção pois a máquina pode ser tanto branca quanto preta
-		// TODO deverá ser algo assim...
-		//Jogador jogadorBranco = new Jogador();
-		//Jogador jogadorPreto = new Jogador();
+		// TODO Agora não deverá ter distinção pois a máquina pode ser tanto branca quanto preta
+		// Fazer algo do tipo:
+		// se a pessoa optar por ser branco...
+		// Pessoa pessoa = new Pessoa(cli.lerNomeJogadorBranco(),CorJogador.BRANCO);
+		// senão
+		// Pessoa pessoa = new Pessoa(cli.lerNomeJogadorPreto(),CorJogador.PRETO);
+		
+		// NÃO DELETE ISSO! (ESSA EXPLICAÇÃO PODERÁ SER USADA NO RELATÓRIO)
+		// Será oferecido a pessoa 6 opções de IA (em grau de inteligência):
+		// 1 IAElaborada 10;45;false      -> Pensa muito pra ser burra
+		// 2 IAElaborada 10;15;false      -> Pensa pra ser burra
+		// 3 IARandomica                  -> Ao acaso
+		// 4 IAElaborada 1;45;true		-> Joga de maneira agressiva (só analisando o próximo movimento)        
+		// 5 IAElaborada 10;15;true		-> Realiza movimentos inteligentes
+		// 6 IAElaborada 10;45;true		-> Realiza os melhores movimentos possíveis
+		
+		// Os valores em questão dizem respeito a o que deve ir na classe construtora da "maquina"
+
+		// Então... se por exemplo a pessoa escolher 6, você deverá criar:
+		// Maquina maquina = new IAElaborada("nomeMaquina",CorJogador.getCorOposta(pessoa.getCor()),10,45,true);
+		// Se a pessoa escolher 2:
+		// Maquina maquina = new IAElaborada("nomeMaquina",CorJogador.getCorOposta(pessoa.getCor()),10,15,false);
+		// Se escolher 3:
+		// Maquina maquina = new IARandomica("nomeMaquina",CorJogador.getCorOposta(pessoa.getCor());
+		// ;)
 		
 		// Contrói a aplicação do jogo
-		AplJogo apl = new AplSingleplayer(jogadorBranco,jogadorPreto);
+		AplJogo apl = new AplSingleplayer(pessoa,maquina);
 
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// do jogador e exibindo o estado do tabuleiro.

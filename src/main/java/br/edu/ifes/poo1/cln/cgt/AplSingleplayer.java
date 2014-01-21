@@ -16,13 +16,12 @@ public class AplSingleplayer extends AplJogo {
 	 * @param nomeJogador
 	 *            Nome do jogador humano.
 	 */
-	public AplSingleplayer(Jogador jogadorBranco, Jogador jogadorPreto) {
-		super(new Jogador(jogadorBranco.getNome(), CorJogador.BRANCO), new Jogador(
-				jogadorPreto.getNome(), CorJogador.PRETO));
+	public AplSingleplayer(Pessoa pessoa, Maquina maquina) {
+		super(pessoa, maquina);
 	}
 
 	/**
-	 * Continua um jogo singleplayer
+	 * Continua uma partida singleplayer que havia sido pausada
 	 * 
 	 * @param jogadorBranco
 	 * @param jogadorPreto
