@@ -66,19 +66,12 @@ public class TesteBispo {
 				new Posicao(5, 3), tabuleiro));
 
 		// Verifica se o bispo pode atacar uma posição vazia.
-		// Deve ser possível, pois podeAndar(..) não deve verificar a o que há
-		// no destino.
-		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(3, 7),
-				new Posicao(6, 4), tabuleiro));
-		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(8, 4),
+		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(3, 7),
+				new Posicao(4, 5), tabuleiro));
+		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(8, 4),
 				new Posicao(6, 2), tabuleiro));
-		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(1, 8),
+		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(1, 8),
 				new Posicao(3, 6), tabuleiro));
 
-		// Verifica se o bispo pode atacar uma posição com peça aliada.
-		// Deve ser possível, pois podeAndar(..) não deve verificar a o que há
-		// no destino.
-		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(5, 5),
-				new Posicao(2, 2), tabuleiro));
 	}
 }

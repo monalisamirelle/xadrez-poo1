@@ -950,61 +950,69 @@ public class Tabuleiro implements Cloneable {
 	// TODO não deveria estar aqui, apenas para questão de testes pois estava
 	// com dificuldades no CGT
 	public boolean gravarEstadoPartida(AplJogo jogo) throws IOException {
-		int indice = 0;
-		File arquivo;
 
-		// TODO provavelmente salvaremos todos jogos em um único arquivo
-		// (mudaria writes por appends)
-		// Tente criar um novo arquivo para armazenar o novo estado
-		do {
-			indice++;
-			arquivo = new File("partida" + indice + ".txt");
-		} while (arquivo.exists());
+		File arquivo = new File("salvaPartidas.txt");
 
 		// Crie os objetos para escrever em um arquivo
-		FileWriter fw = new FileWriter(arquivo);
+		FileWriter fw = new FileWriter(arquivo, true);
 		BufferedWriter bw = new BufferedWriter(fw);
 
 		// Grave os dados do jogador branco
-		bw.write("'" + jogo.getBrancas().getNome() + "'"
+		bw.append("'" + jogo.getBrancas().getNome() + "'"
 				+ jogo.getBrancas().getCor());
 		bw.newLine();
 		// Grave os dados do jogador preto
-		bw.write("'" + jogo.getPretas().getNome() + "'"
+		bw.append("'" + jogo.getPretas().getNome() + "'"
 				+ jogo.getPretas().getCor());
 		bw.newLine();
 		// Grave a data e hora da partida
-		bw.write(Calendar.getInstance().getTime().toString());
+		bw.append(Calendar.getInstance().getTime().toString());
 		bw.newLine();
-		
+
 		// Grave o motivo da finalização da partida (Se a partida tiver apenas
 		// pausada,
 		// grave o próximo turno. Se estiver em outra situação, grave o
 		// vencedor)
-		bw.write(jogo.getMotivoDeFinalizacao().toString());
+		bw.append(jogo.getMotivoDeFinalizacao().toString());
 		bw.newLine();
 		if (jogo.getMotivoDeFinalizacao() == MotivoFimDaPartida.PAUSA)
-			bw.write(jogo.getTurno().toString());
+			bw.append(jogo.getTurno().toString());
 		else
-			bw.write(jogo.getVencedor().getNome());
+			bw.append(jogo.getVencedor().getNome());
 		bw.newLine();
-		
+
 		// Crie uma lista de strings em que cada elemento da lista contenha
 		// todos os dados de uma peça
 		List<String> estadoTabuleiro = jogo.getTabuleiro().estadoTabuleiro();
 		// Para cada peça na lista de peças
 		for (String dadosPeca : estadoTabuleiro) {
-			bw.write(dadosPeca);
+			bw.append(dadosPeca);
 			bw.newLine();
 		}
 		// Grave um sinal indicando que todos os dados daquela partida foram
 		// finalizados ali
-		bw.write("...");
+		bw.append("...");
+		bw.newLine();
 
 		// Feche os arquivos
 		bw.close();
 		fw.close();
 
+		return true;
+	}
+	
+	// TODO informa uma string contendo dados de uma partida (jogador/hora)
+	public boolean informePartida(){
+		return true;
+	}
+	
+	// TODO carrega partida de um arquivo para a memória (ser jogada) void
+	public boolean carreguePartida(){
+		return true;
+	}
+	
+	// TODO informa o menu de todas as partidas (void)
+	public boolean imprimaMenuPartida(){
 		return true;
 	}
 }
