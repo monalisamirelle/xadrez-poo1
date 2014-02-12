@@ -24,20 +24,20 @@ public class TesteIAElaborada {
 
 	@Before
 	public void before() {
-		ia = new IAElaborada("", CorJogador.PRETO, 3, 45, true);
+		ia = new IAElaborada("", TipoCorJogador.PRETO, 3, 45, true);
 		tabuleiro = new Tabuleiro();
 
-		reiBranco = new Rei(CorJogador.BRANCO);
-		torreBranca = new Torre(CorJogador.BRANCO);
-		reiPreto = new Rei(CorJogador.PRETO);
-		torrePreta = new Torre(CorJogador.PRETO);
-		cavaloBranco = new Cavalo(CorJogador.BRANCO);
-		cavaloPreto = new Cavalo(CorJogador.PRETO);
-		bispoPreto = new Bispo(CorJogador.PRETO);
-		rainhaPreta = new Rainha(CorJogador.PRETO);
-		rainhaBranca = new Rainha(CorJogador.BRANCO);
-		peaoBranco = new Peao(CorJogador.BRANCO);
-		peaoPreto = new Peao(CorJogador.PRETO);
+		reiBranco = new Rei(TipoCorJogador.BRANCO);
+		torreBranca = new Torre(TipoCorJogador.BRANCO);
+		reiPreto = new Rei(TipoCorJogador.PRETO);
+		torrePreta = new Torre(TipoCorJogador.PRETO);
+		cavaloBranco = new Cavalo(TipoCorJogador.BRANCO);
+		cavaloPreto = new Cavalo(TipoCorJogador.PRETO);
+		bispoPreto = new Bispo(TipoCorJogador.PRETO);
+		rainhaPreta = new Rainha(TipoCorJogador.PRETO);
+		rainhaBranca = new Rainha(TipoCorJogador.BRANCO);
+		peaoBranco = new Peao(TipoCorJogador.BRANCO);
+		peaoPreto = new Peao(TipoCorJogador.PRETO);
 
 	}
 
@@ -56,20 +56,16 @@ public class TesteIAElaborada {
 		 */
 
 		// Coloca a peça no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(1, 1), reiBranco);
-		//tabuleiro.colocarPeca(new Posicao(7, 1), torreBranca);
-		tabuleiro.colocarPeca(new Posicao(2, 3), torrePreta);
-		//tabuleiro.colocarPeca(new Posicao(6, 5), cavaloPreto);
-		//tabuleiro.colocarPeca(new Posicao(8, 5), cavaloPreto);
-		tabuleiro.colocarPeca(new Posicao(8, 8), reiPreto);
-		//tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
-		//tabuleiro.colocarPeca(new Posicao(2, 6), torreBranca);
-		//tabuleiro.colocarPeca(new Posicao(3, 5), peaoPreto);
-		//tabuleiro.colocarPeca(new Posicao(2,7), peaoPreto);
-		tabuleiro.colocarPeca(new Posicao(4,7), rainhaPreta);
-		//tabuleiro.colocarPeca(new Posicao(2,3), rainhaBranca);
-		//tabuleiro.colocarPeca(new Posicao(4,3), bispoPreto);
-
+		tabuleiro.colocarPeca(new Posicao(5, 1), reiBranco);
+		tabuleiro.colocarPeca(new Posicao(1, 1), torreBranca);
+		tabuleiro.colocarPeca(new Posicao(8, 2), torrePreta);
+		tabuleiro.colocarPeca(new Posicao(7, 5), reiPreto);
+		//tabuleiro.colocarPeca(new Posicao(7, 2), peaoPreto);
+		tabuleiro.colocarPeca(new Posicao(2,7), peaoPreto);
+		//tabuleiro.colocarPeca(new Posicao(1,4), peaoPreto);
+		//tabuleiro.colocarPeca(new Posicao(3,3), peaoBranco);
+		//tabuleiro.colocarPeca(new Posicao(6,7), peaoPreto);
+		
 		Assert.assertNotNull(ia.escolherJogada(tabuleiro));
 	}
 

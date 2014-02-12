@@ -1,6 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
-import br.edu.ifes.poo1.cln.cdp.CorJogador;
+import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
@@ -27,7 +27,7 @@ public class Prompt extends Cli {
 					// Quantidade de espaços equivalente ao texto da cor do
 					// jogador nos casos logo abaixo.
 					imprimir("       ");
-				else if (peca.getCorJogador() == CorJogador.BRANCO)
+				else if (peca.getCorJogador() == TipoCorJogador.BRANCO)
 					imprimir(" branco");
 				else
 					imprimir(" preto ");

@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.cln.cdp;
 /**
  * Enumera os motivos pelos quais uma partida pode acabar.
  */
-public enum MotivoFimDaPartida {
+public enum TipoSituacaoPartida {
 	VITORIA, EMPATE, DESISTENCIA, PAUSA;
 
 	public String toString() {
@@ -18,6 +18,6 @@ public enum MotivoFimDaPartida {
 			return "PAUSA";
 		}
 		return null;
-	}
+	}	
 
 }

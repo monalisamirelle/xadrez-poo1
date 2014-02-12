@@ -3,18 +3,15 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Cavalo extends Peca {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Instancia um cavalo.
 	 */
-	public Cavalo(CorJogador corJogador) {
-		super(3, TipoPeca.CAVALO, corJogador);
-	}
-	
-	/**
-	 * Criar um clone de uma torre para IAElaborada
-	 * @param peca
-	 */
-	public Cavalo(Peca peca) {
-		super(peca);
+	public Cavalo(TipoCorJogador corJogador) {
+		super(TipoPeca.CAVALO, corJogador);
 	}
 
 	@Override

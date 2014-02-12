@@ -15,12 +15,12 @@ public class TestePeao {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		peaoBranco = new Peao(CorJogador.BRANCO);
+		peaoBranco = new Peao(TipoCorJogador.BRANCO);
 		peaoBrancoMovimentado = new Peao(
-				CorJogador.BRANCO);
+				TipoCorJogador.BRANCO);
 		peaoBrancoMovimentado.setJaMoveu();
-		peaoPreto = new Peao(CorJogador.PRETO);
-		cavaloBranco = new Cavalo(CorJogador.BRANCO);
+		peaoPreto = new Peao(TipoCorJogador.PRETO);
+		cavaloBranco = new Cavalo(TipoCorJogador.BRANCO);
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 6), peaoPreto);

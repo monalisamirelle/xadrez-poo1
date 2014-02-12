@@ -6,17 +6,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TesteCavalo {
-	Tabuleiro tabuleiro;
-	Cavalo cavaloBranco;
-	Peao peaoPreto;
-	Peao peaoBranco;
+	private Tabuleiro tabuleiro;
+	private Cavalo cavaloBranco;
+	private Peao peaoPreto;
+	private Peao peaoBranco;
 
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		cavaloBranco = new Cavalo(CorJogador.BRANCO);
-		peaoPreto = new Peao(CorJogador.PRETO);
-		peaoBranco = new Peao(CorJogador.BRANCO);
+		cavaloBranco = new Cavalo(TipoCorJogador.BRANCO);
+		peaoPreto = new Peao(TipoCorJogador.PRETO);
+		peaoBranco = new Peao(TipoCorJogador.BRANCO);
 
 		/** Colocar cavalo no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(4, 4), cavaloBranco);

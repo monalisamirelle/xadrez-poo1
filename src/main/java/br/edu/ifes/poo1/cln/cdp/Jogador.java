@@ -1,14 +1,20 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Jogador {
+public abstract class Jogador implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Nome do jogador. */
 	protected String nome;
 
 	/** Cor do jogador. */
-	protected CorJogador cor;
+	protected TipoCorJogador cor;
 
 	/** Peças que o jogador já capturou. */
 	List<Peca> pecasCapturadas = new ArrayList<Peca>();
@@ -16,15 +22,19 @@ public class Jogador {
 	/** Tabuleiro no qual está jogando. */
 	protected Tabuleiro tabuleiro;
 
+	/** Tipo de jogador */
+	protected TipoJogador tipoJogador;
+
 	/**
 	 * Constrói um jogador.
 	 * 
 	 * @param nome
 	 *            Nome do jogador.
 	 */
-	public Jogador(String nome, CorJogador cor) {
+	public Jogador(String nome, TipoCorJogador cor, TipoJogador tipoJogador) {
 		this.nome = nome;
 		this.cor = cor;
+		this.tipoJogador = tipoJogador;
 	}
 
 	/**
@@ -33,9 +43,11 @@ public class Jogador {
 	 * @param jogada
 	 *            Jogada que deve ser aplicada.
 	 * @throws JogadaInvalidaException
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
-	public void executarJogada(Jogada jogada) throws JogadaInvalidaException, CasaOcupadaException {
+	// TODO aplicar promoção e en passant
+	public void executarJogada(Jogada jogada) throws JogadaInvalidaException,
+			CasaOcupadaException {
 		// Se for um roque menor, o executa.
 		switch (jogada.getTipoJogada()) {
 		case ROQUE_MENOR:
@@ -91,8 +103,8 @@ public class Jogador {
 			// E este peão deve estar se movimentando para a última linha do
 			// tabuleiro.
 			Posicao destino = jogada.getDestino();
-			if ((cor == CorJogador.BRANCO && destino.getLinha() != 8)
-					|| (cor == CorJogador.PRETO && destino.getLinha() != 1)) {
+			if ((cor == TipoCorJogador.BRANCO && destino.getLinha() != 8)
+					|| (cor == TipoCorJogador.PRETO && destino.getLinha() != 1)) {
 				throw new JogadaInvalidaException(
 						"Para haver uma promoção, o peão deve estar se movimentando para a última linha do lado oposto do tabuleiro.");
 			}
@@ -197,7 +209,7 @@ public class Jogador {
 	 * @return Linha onde é executada o roque do jogador.
 	 */
 	private int getMinhaLinhaDeRoque() {
-		if (cor == CorJogador.BRANCO)
+		if (cor == TipoCorJogador.BRANCO)
 			return 1;
 		else
 			return 8;
@@ -221,7 +233,7 @@ public class Jogador {
 		return pecasCapturadas;
 	}
 
-	public CorJogador getCor() {
+	public TipoCorJogador getCor() {
 		return cor;
 	}
 
@@ -230,4 +242,31 @@ public class Jogador {
 		this.tabuleiro = tabuleiro;
 	}
 
+	public TipoJogador getTipoJogador() {
+		return this.tipoJogador;
+	}
+
+	/**
+	 * Método que recebe dados de um jogador em forma de string (e a cor do
+	 * jogador) e cria o jogador. Método sendo utilizado para a criação de um
+	 * jogador com base em um arquivo
+	 * 
+	 * @param nome
+	 * @param dados
+	 * @param corJogador
+	 * @return
+	 */
+	public static Jogador manipulaDadosJogador(String nome, String dados,
+			TipoCorJogador corJogador) {
+		String[] s = dados.split(" ");
+		Jogador jogador;
+		if (s[0].equals("PESSOA"))
+			jogador = new Pessoa(nome, corJogador);
+		else if (s[0].equals("IARANDOMICA"))
+			jogador = new IARandomica(nome, corJogador);
+		else
+			jogador = new IAElaborada(nome, corJogador, Integer.parseInt(s[1]),
+					Integer.parseInt(s[2]), Boolean.parseBoolean(s[3]));
+		return jogador;
+	}
 }

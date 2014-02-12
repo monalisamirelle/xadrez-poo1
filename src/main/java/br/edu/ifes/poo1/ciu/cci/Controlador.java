@@ -1,24 +1,32 @@
 package br.edu.ifes.poo1.ciu.cci;
 
+import java.util.List;
+
 import br.edu.ifes.poo1.ciu.cih.Cli;
 import br.edu.ifes.poo1.ciu.cih.EntradaSaida;
 import br.edu.ifes.poo1.ciu.cih.Interpretador;
 import br.edu.ifes.poo1.ciu.cih.ItemMenu;
 import br.edu.ifes.poo1.ciu.cih.Menu;
 import br.edu.ifes.poo1.ciu.cih.MenuAmbiente;
+import br.edu.ifes.poo1.ciu.cih.MenuCorJogador;
+import br.edu.ifes.poo1.ciu.cih.MenuDadosPartidas;
+import br.edu.ifes.poo1.ciu.cih.MenuNivelMaquina;
 import br.edu.ifes.poo1.ciu.cih.MenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
-import br.edu.ifes.poo1.cln.cdp.CorJogador;
+import br.edu.ifes.poo1.cln.cdp.DadosPartida;
+import br.edu.ifes.poo1.cln.cdp.IAElaborada;
+import br.edu.ifes.poo1.cln.cdp.IARandomica;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.MotivoFimDaPartida;
+import br.edu.ifes.poo1.cln.cdp.Maquina;
 import br.edu.ifes.poo1.cln.cdp.Pessoa;
+import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
-import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
-import br.edu.ifes.poo1.cln.cgt.AplSingleplayer;
+import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
 
 /**
  * Faz o intermédio entre a camada do modelo de dados e a parte da visão. Para
@@ -26,6 +34,7 @@ import br.edu.ifes.poo1.cln.cgt.AplSingleplayer;
  * modelo. Também atualiza as informações que estão disponíveis na tela do
  * jogador.
  */
+// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS
 public class Controlador {
 	private Cli cli;
 
@@ -61,10 +70,12 @@ public class Controlador {
 	/**
 	 * Inicia o jogo. Serão exibidos os menus necessários e faz todo o controle
 	 * necessário do jogo.
-	 * @throws CasaOcupadaException 
-	 * @throws CloneNotSupportedException 
+	 * 
+	 * @throws CasaOcupadaException
+	 * @throws CloneNotSupportedException
 	 */
-	public void iniciar() throws CasaOcupadaException, CloneNotSupportedException {
+	public void iniciar() throws CasaOcupadaException,
+			CloneNotSupportedException {
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuPrincipal = new MenuPrincipal();
 
@@ -90,9 +101,7 @@ public class Controlador {
 
 			// Se o jogador tiver escolhido ver os dados das partidas.
 			case "DADOS":
-				System.out
-						.println("A visualização dos dados não foi implementado ainda. :S");
-				// TODO: Implementar a visualização dos dados.
+				controlarExibicaoPartidas();
 				break;
 
 			default:
@@ -108,37 +117,57 @@ public class Controlador {
 		// o jogo.
 	}
 
-	private void controlarSinglePlayer() throws CasaOcupadaException, CloneNotSupportedException {
-		
-		// TODO Agora não deverá ter distinção pois a máquina pode ser tanto branca quanto preta
-		// Fazer algo do tipo:
-		// se a pessoa optar por ser branco...
-		// Pessoa pessoa = new Pessoa(cli.lerNomeJogadorBranco(),CorJogador.BRANCO);
-		// senão
-		// Pessoa pessoa = new Pessoa(cli.lerNomeJogadorPreto(),CorJogador.PRETO);
-		
-		// NÃO DELETE ISSO! (ESSA EXPLICAÇÃO PODERÁ SER USADA NO RELATÓRIO)
-		// Será oferecido a pessoa 6 opções de IA (em grau de inteligência):
-		// 1 IAElaborada 10;45;false      -> Pensa muito pra ser burra
-		// 2 IAElaborada 10;15;false      -> Pensa pra ser burra
-		// 3 IARandomica                  -> Ao acaso
-		// 4 IAElaborada 1;45;true		-> Joga de maneira agressiva (só analisando o próximo movimento)        
-		// 5 IAElaborada 10;15;true		-> Realiza movimentos inteligentes
-		// 6 IAElaborada 10;45;true		-> Realiza os melhores movimentos possíveis
-		
-		// Os valores em questão dizem respeito a o que deve ir na classe construtora da "maquina"
+	private void controlarSinglePlayer() throws CasaOcupadaException,
+			CloneNotSupportedException {
+		// Cria a pessoa
+		Pessoa pessoa;
 
-		// Então... se por exemplo a pessoa escolher 6, você deverá criar:
-		// Maquina maquina = new IAElaborada("nomeMaquina",CorJogador.getCorOposta(pessoa.getCor()),10,45,true);
-		// Se a pessoa escolher 2:
-		// Maquina maquina = new IAElaborada("nomeMaquina",CorJogador.getCorOposta(pessoa.getCor()),10,15,false);
-		// Se escolher 3:
-		// Maquina maquina = new IARandomica("nomeMaquina",CorJogador.getCorOposta(pessoa.getCor());
-		// ;)
-		
+		// Cor que a pessoa deseja ser
+		Menu menuCorJogador = new MenuCorJogador();
+		ItemMenu corEscolhida = menuCorJogador
+				.insistirPorEntradaValida(new EntradaSaida());
+
+		// Descobre a cor do jogador
+		if (corEscolhida.getNome().contentEquals("BRANCO"))
+			pessoa = new Pessoa(cli.lerNomeJogadorBranco(),
+					TipoCorJogador.BRANCO);
+		else
+			pessoa = new Pessoa(cli.lerNomeJogadorPreto(), TipoCorJogador.PRETO);
+
+		// Nível do inimigo
+		Menu menuNivelMaquina = new MenuNivelMaquina();
+		ItemMenu nivelEscolhido = menuNivelMaquina
+				.insistirPorEntradaValida(new EntradaSaida());
+
+		// Cria a máquina
+		Maquina maquina = null;
+		switch (nivelEscolhido.getNome()) {
+		case "CERBERO":
+			maquina = new IAElaborada("Cerbero",
+					TipoCorJogador.getCorOposta(pessoa.getCor()), 10, 15, false);
+			break;
+		case "DIONISIO":
+			maquina = new IARandomica("Dionisio",
+					TipoCorJogador.getCorOposta(pessoa.getCor()));
+			break;
+		case "ARES":
+			maquina = new IAElaborada("Ares",
+					TipoCorJogador.getCorOposta(pessoa.getCor()), 1, 45, true);
+			break;
+		case "ZEUS":
+			maquina = new IAElaborada("Zeus",
+					TipoCorJogador.getCorOposta(pessoa.getCor()), 10, 15, true);
+			break;
+		case "PROMETEU":
+			maquina = new IAElaborada("Prometeu",
+					TipoCorJogador.getCorOposta(pessoa.getCor()), 10, 45, true);
+			break;
+		}
+
 		// Contrói a aplicação do jogo
-		AplJogo apl = new AplSingleplayer(pessoa,maquina);
+		AplJogo apl = new AplJogo(pessoa, maquina);
 
+		// FIXME ERRO AQUI!
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// do jogador e exibindo o estado do tabuleiro.
 		String jogadaCrua;
@@ -165,7 +194,7 @@ public class Controlador {
 			try {
 				jogadaInterpretada = Interpretador
 						.interpretarJogada(jogadaCrua);
-				apl.executarjogada(jogadaInterpretada);
+				apl.executarJogadaTurno(jogadaInterpretada);
 			} catch (JogadaInvalidaException e) {
 				// Prepara um aviso para ser exibido na tela quando ela
 				// atualizar.
@@ -183,43 +212,47 @@ public class Controlador {
 	/**
 	 * Controla tudo o que é necessário para uma partida multiplayer. Ao final
 	 * do método, a partida terá encerrado.
-	 * @throws CasaOcupadaException 
-	 * @throws CloneNotSupportedException 
+	 * 
+	 * @throws CasaOcupadaException
+	 * @throws CloneNotSupportedException
 	 */
-	private void controlarMultiplayer() throws CasaOcupadaException, CloneNotSupportedException {
+	private void controlarMultiplayer() throws CasaOcupadaException,
+			CloneNotSupportedException {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = cli.lerNomeJogadorPreto();
 
 		// Constrói a aplicação do jogo.
-		AplMultiplayer aplmulti = new AplMultiplayer(nomeBrancas, nomePretas);
+		AplJogo apl = new AplJogo(
+				new Pessoa(nomeBrancas, TipoCorJogador.BRANCO), new Pessoa(
+						nomePretas, TipoCorJogador.PRETO));
 
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
 		String jogadaCrua;
 		String aviso = "";
-		while (!aplmulti.getAcabouJogo()) {
+		while (!apl.getAcabouJogo()) {
 			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
 			// necessário.
 			if (aviso == "")
-				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
-						aplmulti.getPretas());
+				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
+						apl.getPretas());
 			else
-				cli.atualizar(aplmulti.getTabuleiro(), aplmulti.getBrancas(),
-						aplmulti.getPretas(), aviso);
+				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
+						apl.getPretas(), aviso);
 
 			// Retira a mensagem de aviso.
 			aviso = "";
 
 			// Pede o movimento do jogador.
-			jogadaCrua = cli.lerJogada(aplmulti.getJogadorTurnoAtual());
+			jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
 
 			// Executa o movimento do jogador.
 			Jogada jogadaInterpretada;
 			try {
 				jogadaInterpretada = Interpretador
 						.interpretarJogada(jogadaCrua);
-				aplmulti.executarjogada(jogadaInterpretada);
+				apl.executarJogadaTurno(jogadaInterpretada);
 			} catch (JogadaInvalidaException e) {
 				// Prepara um aviso para ser exibido na tela quando ela
 				// atualizar.
@@ -231,7 +264,34 @@ public class Controlador {
 		}
 
 		// Encerra a partida.
-		encerrarPartida(aplmulti);
+		encerrarPartida(apl);
+	}
+
+	/**
+	 * Método responsável por controlar a exibição dos dados de partidas
+	 */
+	private void controlarExibicaoPartidas() {
+		ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
+		List<DadosPartida> listaPartidas = manipuladorArquivo.lerDadosJogo();
+		if (!listaPartidas.isEmpty()) {
+			// TODO deixar menu certinho em formatação
+			cli.exibirTituloDados("Data" + "..." + "Jogador Branco" + "..."
+					+ "Jogador Preto" + "..." + "Situação da Partida");
+			for (DadosPartida dadosPartida : listaPartidas)
+				cli.exibirDadosPartidas(dadosPartida);
+			Menu menuDadosPartidas = new MenuDadosPartidas();
+			ItemMenu opcao = menuDadosPartidas
+					.insistirPorEntradaValida(new EntradaSaida());
+			// TODO implementar
+			switch (opcao.getNome()) {
+			case "CARREGAR":
+				break;
+			case "APAGAR":
+				break;
+			case "VOLTAR":
+				break;
+			}
+		}
 	}
 
 	/**
@@ -245,8 +305,7 @@ public class Controlador {
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
 		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(),
 				apljogo.getPretas());
-		MotivoFimDaPartida motivoFim = apljogo.getMotivoDeFinalizacao();
-
+		TipoSituacaoPartida motivoFim = apljogo.getMotivoDeFinalizacao();
 		// Vê o fim da partida para fazer o encerramento de forma adequada.
 		switch (motivoFim) {
 		// Se houve desistência, ou vitória, houve um ganhador.
@@ -256,10 +315,15 @@ public class Controlador {
 			cli.fechamentoDaPartida("Vitória para o jogador: "
 					+ vencedor.getNome());
 			break;
-
 		// A partida terminou em um empate.
 		case EMPATE:
 			cli.fechamentoDaPartida("A partida terminou em um empate.");
+			break;
+		// A partida foi pausada
+		case PAUSA:
+			cli.fechamentoDaPartida("Jogo foi pausado.");
+			break;
+		default:
 			break;
 		}
 	}

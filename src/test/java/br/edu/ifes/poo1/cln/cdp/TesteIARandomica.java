@@ -24,17 +24,17 @@ public class TesteIARandomica {
 
 	@Before
 	public void before() {
-		ia = new IARandomica("", CorJogador.PRETO);
+		ia = new IARandomica("", TipoCorJogador.PRETO);
 		tabuleiro = new Tabuleiro();
 
-		reiBranco = new Rei(CorJogador.BRANCO);
-		torreBranca = new Torre(CorJogador.BRANCO);
-		reiPreto = new Rei(CorJogador.PRETO);
-		bispoPreto = new Bispo(CorJogador.PRETO);
-		rainhaPreta = new Rainha(CorJogador.PRETO);
-		rainhaBranca = new Rainha(CorJogador.BRANCO);
-		peaoBranco = new Peao(CorJogador.BRANCO);
-		peaoPreto = new Peao(CorJogador.PRETO);
+		reiBranco = new Rei(TipoCorJogador.BRANCO);
+		torreBranca = new Torre(TipoCorJogador.BRANCO);
+		reiPreto = new Rei(TipoCorJogador.PRETO);
+		bispoPreto = new Bispo(TipoCorJogador.PRETO);
+		rainhaPreta = new Rainha(TipoCorJogador.PRETO);
+		rainhaBranca = new Rainha(TipoCorJogador.BRANCO);
+		peaoBranco = new Peao(TipoCorJogador.BRANCO);
+		peaoPreto = new Peao(TipoCorJogador.PRETO);
 
 	}
 

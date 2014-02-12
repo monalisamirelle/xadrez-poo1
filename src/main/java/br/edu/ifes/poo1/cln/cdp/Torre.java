@@ -3,18 +3,15 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Torre extends Peca {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Instancia uma torre.
 	 */
-	public Torre(CorJogador corJogador) {
-		super(5, TipoPeca.TORRE, corJogador);
-	}
-	
-	/**
-	 * Criar um clone de uma torre para IAElaborada
-	 * @param peca
-	 */
-	public Torre(Peca peca) {
-		super(peca);
+	public Torre(TipoCorJogador corJogador) {
+		super(TipoPeca.TORRE, corJogador);
 	}
 	
 	@Override

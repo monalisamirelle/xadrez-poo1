@@ -1,6 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
-import br.edu.ifes.poo1.cln.cdp.CorJogador;
+import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
@@ -76,7 +76,7 @@ public class Terminal extends Cli {
 			return corBrancas;
 
 		// Confere a cor da peça para retornar a cor adequada.
-		if (peca.getCorJogador() == CorJogador.BRANCO)
+		if (peca.getCorJogador() == TipoCorJogador.BRANCO)
 			return corBrancas;
 		else
 			return corPretas;

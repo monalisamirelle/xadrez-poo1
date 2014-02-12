@@ -8,31 +8,25 @@ import org.junit.Test;
 public class TesteRei {
 	private Tabuleiro tabuleiro;
 	private Rei reiBranco;
-	private Jogador brancas;
-	private Jogador pretas;
 
 	@Before
 	public void before() throws CasaOcupadaException {
 		// Inicia um tabuleiro vazio.
 		tabuleiro = new Tabuleiro();
-
-		// Inicia os jogadores.
-		brancas = new Jogador("TesteBranco", CorJogador.BRANCO);
-		pretas = new Jogador("TestePreto", CorJogador.PRETO);
-
+		
 		// Inicia o rei.
-		reiBranco = new Rei(CorJogador.BRANCO);
+		reiBranco = new Rei(TipoCorJogador.BRANCO);
 
 		// Colocar rei no tabuleiro
-		tabuleiro.colocarPeca(new Posicao(4, 4), new Rei(brancas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(4, 4), new Rei(TipoCorJogador.BRANCO));
 
 		// Coloca peças inimigas no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(6, 6), new Peao(pretas.getCor()));
-		tabuleiro.colocarPeca(new Posicao(4, 3), new Peao(pretas.getCor()));
-		tabuleiro.colocarPeca(new Posicao(4, 5), new Peao(pretas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(6, 6), new Peao(TipoCorJogador.PRETO));
+		tabuleiro.colocarPeca(new Posicao(4, 3), new Peao(TipoCorJogador.PRETO));
+		tabuleiro.colocarPeca(new Posicao(4, 5), new Peao(TipoCorJogador.PRETO));
 
 		// Coloca peça aliada no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(3, 3), new Peao(brancas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(3, 3), new Peao(TipoCorJogador.BRANCO));
 	}
 
 	@Test
@@ -89,7 +83,7 @@ public class TesteRei {
 		/**
 		 * Verifica se rei pode atacar uma peça que está o ameaçando
 		 */
-		tabuleiro.colocarPeca(new Posicao(1, 3), new Peao(pretas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(1, 3), new Peao(TipoCorJogador.PRETO));
 		Assert.assertTrue(reiBranco.podeAtacar(new Posicao(2, 2), new Posicao(
 				1, 3), tabuleiro));
 
@@ -97,7 +91,7 @@ public class TesteRei {
 		 * Verifica se rei pode atacar uma peça que está o ameaçando e está
 		 * protegida
 		 */
-		tabuleiro.colocarPeca(new Posicao(2, 4), new Peao(pretas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(2, 4), new Peao(TipoCorJogador.PRETO));
 		Assert.assertFalse(reiBranco.podeAtacar(new Posicao(2, 2), new Posicao(
 				1, 3), tabuleiro));
 

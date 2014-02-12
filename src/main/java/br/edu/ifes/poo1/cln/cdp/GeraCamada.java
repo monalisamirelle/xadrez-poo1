@@ -29,7 +29,8 @@ public class GeraCamada implements Runnable {
 	public void run() {
 		for (int indiceLista = comeco; indiceLista < fim; indiceLista++)
 			try {
-				novaListaNos = geraFilhos(listaNos.get(indiceLista), novaListaNos);
+				novaListaNos = geraFilhos(listaNos.get(indiceLista),
+						novaListaNos);
 			} catch (CasaOcupadaException | CloneNotSupportedException
 					| JogadaInvalidaException e) {
 				// TODO Auto-generated catch block

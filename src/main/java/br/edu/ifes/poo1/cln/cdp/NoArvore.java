@@ -28,7 +28,7 @@ public class NoArvore {
 	private boolean marcado;
 	
 	// Cor do nó
-	private CorJogador cor; 
+	private TipoCorJogador cor; 
 	
 	// Se o nó se encontra no nível max ou min
 	private TipoNivel nivel;
@@ -51,7 +51,7 @@ public class NoArvore {
 	 * @throws JogadaInvalidaException
 	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(CorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException,
+	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException,
 			CloneNotSupportedException, JogadaInvalidaException {
 		this.noPai = null;
 		this.temValor = false;
@@ -64,8 +64,8 @@ public class NoArvore {
 		this.podou = false;
 		this.estado = estado;
 		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
-				CorJogador.BRANCO)
-				|| estado.getTabuleiro().verificarXequeMate(CorJogador.PRETO);
+				TipoCorJogador.BRANCO)
+				|| estado.getTabuleiro().verificarXequeMate(TipoCorJogador.PRETO);
 	}
 
 	/**
@@ -86,12 +86,12 @@ public class NoArvore {
 		this.posicaoListaAdjacencia = this.getNoPai().getListaAdjacencia()
 				.size();
 		this.marcado = false;
-		this.cor = CorJogador.getCorOposta(noPai.getCorNo());
+		this.cor = TipoCorJogador.getCorOposta(noPai.getCorNo());
 		this.nivel = coloqueNivel();
 		this.podou = false;
 		this.estado = estado;
 		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
-				CorJogador.getCorOposta(noPai.getCorNo()));
+				TipoCorJogador.getCorOposta(noPai.getCorNo()));
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class NoArvore {
 		return xequeMate;
 	}
 
-	public CorJogador getCorNo() {
+	public TipoCorJogador getCorNo() {
 		return this.cor;
 	}
 

@@ -3,20 +3,16 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Rei extends Peca {
 
 	/**
-	 * Instancia um rei.
+	 * 
 	 */
-	public Rei(CorJogador corJogador) {
-		// O rei nunca poderá ser capturado, então o seu valor não é relevante.
-		super(0, TipoPeca.REI, corJogador);
-	}
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Criar um clone de uma torre para IAElaborada
-	 * 
-	 * @param peca
+	 * Instancia um rei.
 	 */
-	public Rei(Peca peca) {
-		super(peca);
+	public Rei(TipoCorJogador corJogador) {
+		// O rei nunca poderá ser capturado, então o seu valor não é relevante.
+		super(TipoPeca.REI, corJogador);
 	}
 
 	@Override
@@ -24,7 +20,7 @@ public class Rei extends Peca {
 			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		// Verifica se o rei não vai entrar em Xeque com a jogada.
 		if (tabuleiro.jogadaSuicida(origem, destino,
-				CorJogador.getCorOposta(this.getCorJogador())))
+				TipoCorJogador.getCorOposta(this.getCorJogador())))
 			return false;
 
 		// Verifica o movimento natural do rei.

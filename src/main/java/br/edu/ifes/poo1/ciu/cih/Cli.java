@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import br.edu.ifes.poo1.cln.cdp.DadosPartida;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
@@ -90,8 +91,8 @@ public abstract class Cli {
 	 * @return Retorna uma String com a jogada do usuário.
 	 */
 	public String lerJogada(Jogador jogador) {
-		return pedir("Entre com a jogada (vez do jogador: "
-				+ jogador.getNome() + "):");
+		return pedir("Entre com a jogada (vez do jogador: " + jogador.getNome()
+				+ "):");
 	}
 
 	/**
@@ -205,7 +206,7 @@ public abstract class Cli {
 	public void imprimir(String texto) {
 		io.imprimir(texto);
 	}
-	
+
 	/**
 	 * Exibe o texto recebido por parâmetro. Será escrito exatamente como
 	 * recebido no parâmetro, porém com a adição de uma quebra de linha no
@@ -222,4 +223,21 @@ public abstract class Cli {
 	public EntradaSaida getIo() {
 		return io;
 	}
+
+	public void exibirTituloDados(String texto){
+		io.imprimirLinha(texto);
+	}
+	
+	/**
+	 * Informa na tela todas as
+	 * 
+	 * @param dadosPartidas
+	 */
+	public void exibirDadosPartidas(DadosPartida dadosPartida) {
+		io.imprimirLinha(dadosPartida.getJogo().getBrancas() + "..."
+				+ dadosPartida.getJogo().getPretas() + "..."
+				+ dadosPartida.getJogo().getMotivoDeFinalizacao() + "..."
+				+ dadosPartida.getDataPartida());
+	}
+
 }

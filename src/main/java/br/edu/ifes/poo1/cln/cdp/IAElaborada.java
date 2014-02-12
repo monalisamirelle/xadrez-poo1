@@ -15,6 +15,11 @@ public class IAElaborada extends Maquina {
 	 */
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Informa com quantas camadas estamos lidando no problema (O valor pode ser
 	 * adequado na interface conforme dificuldade escolhida pelo jogador)
 	 */
@@ -24,6 +29,11 @@ public class IAElaborada extends Maquina {
 	 * Informa o tempo máximo que levará em buscar camadas
 	 */
 	private final int TEMPOMAXIMO;
+
+	/**
+	 * Informa se a máquina será inteligente ou burra
+	 */
+	private final boolean MAQUINAINTELIGENTE;
 
 	/**
 	 * Informa o nível que o nó raiz deve responder (MAX ou MIN)
@@ -52,11 +62,12 @@ public class IAElaborada extends Maquina {
 	 * @param cor
 	 * @param alcance
 	 */
-	public IAElaborada(String nome, CorJogador cor, int alcance,
+	public IAElaborada(String nome, TipoCorJogador cor, int alcance,
 			int tempoMaximo, boolean maquinaInteligente) {
-		super(nome, cor);
+		super(nome, cor, TipoJogador.IAELABORADA);
 		this.ALCANCEMAQUINA = alcance;
 		this.TEMPOMAXIMO = tempoMaximo;
+		this.MAQUINAINTELIGENTE = maquinaInteligente;
 		if (maquinaInteligente)
 			this.nivel = TipoNivel.MAX;
 		else
@@ -76,7 +87,6 @@ public class IAElaborada extends Maquina {
 	public boolean criaCamada() throws CasaOcupadaException,
 			CloneNotSupportedException, JogadaInvalidaException,
 			InterruptedException {
-
 		// Construa as partes
 		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 3,
 				listaNos);
@@ -171,7 +181,7 @@ public class IAElaborada extends Maquina {
 
 		// Realizo a busca em profundidade (aplicando minimax e poda alfa beta)
 		busca.buscaEmProfundidade(raiz);
-
+				
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
 
@@ -182,13 +192,26 @@ public class IAElaborada extends Maquina {
 				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
-						.getValor())
+						.getValor()){
+					System.out.println(raiz.getListaAdjacencia().get(indice).getValor());
 					return raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
+				}
 		}
 		// Retorno null caso não tenha jogada a ser realizada ou caso o
 		// tabuleiro já se encontre em xeque-Mate
 		return null;
+	}
 
+	public int getALCANCEMAQUINA() {
+		return ALCANCEMAQUINA;
+	}
+
+	public int getTEMPOMAXIMO() {
+		return TEMPOMAXIMO;
+	}
+
+	public boolean isMAQUINAINTELIGENTE() {
+		return MAQUINAINTELIGENTE;
 	}
 }

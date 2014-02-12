@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,15 @@ import java.util.List;
  * peão, rei, herdam desta classe e implementão as características específicas
  * do movimento.
  */
-public abstract class Peca {
-	/** Pontuação a qual a peça se equivale. */
-	private int valor;
+public abstract class Peca implements Cloneable, TamanhoTabuleiro, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** Jogador que controla a peça. */
-	private CorJogador corJogador;
+	private TipoCorJogador corJogador;
 
 	/** Tipo da peça */
 	private TipoPeca tipoPeca;
@@ -22,33 +26,17 @@ public abstract class Peca {
 	private boolean jaMoveu;
 
 	/**
-	 * Instancia um peça com o devido valor e o jogador que a controla.
+	 * Instancia um peça com o jogador que a controla.
 	 * 
 	 * @param valor
 	 *            Pontuação a qual a peça se equivale.
 	 * @param jogador
 	 *            Jogador que detém a peça.
 	 */
-	public Peca(int valor, TipoPeca tipoPeca, CorJogador corJogador) {
-		this.valor = valor;
+	public Peca(TipoPeca tipoPeca, TipoCorJogador corJogador) {
 		this.corJogador = corJogador;
 		this.tipoPeca = tipoPeca;
 		this.jaMoveu = false;
-	}
-
-	/**
-	 * Clonar uma peça
-	 * 
-	 * @param valor
-	 * @param tipoPeca
-	 * @param jogador
-	 * @param jaMoveu
-	 */
-	public Peca(Peca peca) {
-		this.valor = peca.valor;
-		this.corJogador = peca.corJogador;
-		this.tipoPeca = peca.tipoPeca;
-		this.jaMoveu = true;
 	}
 
 	/**
@@ -61,7 +49,7 @@ public abstract class Peca {
 	 * @param destino
 	 *            Posição para onde a peça deve ser movida.
 	 * @return Se é possível andar com a peça até a casa desejada.
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) throws CasaOcupadaException {
@@ -84,7 +72,7 @@ public abstract class Peca {
 	 * @param destino
 	 *            Local a ser atacado pela peça.
 	 * @return Se é possível usar esta peça para atacar a casa indicada.
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
 	public boolean podeAtacar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) throws CasaOcupadaException {
@@ -142,14 +130,14 @@ public abstract class Peca {
 	 * @param posicaoOrigem
 	 * @param tabuleiro
 	 * @return
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
-	// FIXME talvez deva haver um aviso explícito para não comer o rei
-	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, Tabuleiro tabuleiro) throws CasaOcupadaException {
+	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, Tabuleiro tabuleiro)
+			throws CasaOcupadaException {
 		List<Jogada> listaJogadas = new ArrayList<Jogada>();
 		// Caminhando pelo tabuleiro
-		for (int coluna = 1; coluna <= 8; coluna++)
-			for (int linha = 1; linha <= 8; linha++) {
+		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++)
+			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
 				// Se a peça puder se movimentar para uma posição
 				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
 						tabuleiro) == true
@@ -186,34 +174,60 @@ public abstract class Peca {
 	}
 
 	/**
-	 * Cria uma nova instancia de uma peça, conforme o seu tipo (clona)
+	 * Clona uma peça
+	 */
+	public Peca clone() {
+		Peca novaPeca = null;
+		try {
+			novaPeca = (Peca) super.clone();
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Peça não foi clonada");
+			e.printStackTrace();
+		}
+		return novaPeca;
+	}
+
+	public static Peca criaPeca(String peca, TipoCorJogador corJogador) {
+		if (peca.equals("BISPO"))
+			return new Bispo(corJogador);
+		else if (peca.equals("CAVALO"))
+			return new Cavalo(corJogador);
+		else if (peca.equals("PEAO"))
+			return new Peao(corJogador);
+		else if (peca.equals("REI"))
+			return new Rei(corJogador);
+		else if (peca.equals("RAINHA"))
+			return new Rainha(corJogador);
+		else if (peca.equals("TORRE"))
+			return new Torre(corJogador);
+		else
+			return null;
+	}
+
+	/**
+	 * Captura o valor de uma peça
 	 * 
 	 * @return
 	 */
-	public Peca novaInstancia() {
+	public int getValor() {
 		switch (this.getTipoPeca()) {
 		case BISPO:
-			return new Bispo(this);
 		case CAVALO:
-			return new Cavalo(this);
+			return 3;
 		case PEAO:
-			return new Peao(this);
+			return 1;
 		case RAINHA:
-			return new Rainha(this);
+			return 9;
 		case REI:
-			return new Rei(this);
+			return 0;
 		case TORRE:
-			return new Torre(this);
+			return 5;
 		default:
-			return null;
+			return 0;
 		}
 	}
 
-	public int getValor() {
-		return valor;
-	}
-
-	public CorJogador getCorJogador() {
+	public TipoCorJogador getCorJogador() {
 		return corJogador;
 	}
 

@@ -6,6 +6,10 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Peao extends Peca {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Atributo que diz se um determinado peão pode sofrer um en passant ou não
 	 */
 	private boolean podeEnPassant;
@@ -13,25 +17,16 @@ public class Peao extends Peca {
 	/**
 	 * Instancia um peão.
 	 */
-	public Peao(CorJogador corJogador) {
-		super(1, TipoPeca.PEAO, corJogador);
+	public Peao(TipoCorJogador corJogador) {
+		super(TipoPeca.PEAO, corJogador);
 		this.podeEnPassant = false;
-	}
-
-	/**
-	 * Criar um clone de uma torre para IAElaborada
-	 * 
-	 * @param peca
-	 */
-	public Peao(Peca peca) {
-		super(peca);
 	}
 
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		int avanca;
-		if (this.getCorJogador() == CorJogador.BRANCO)
+		if (this.getCorJogador() == TipoCorJogador.BRANCO)
 			avanca = 1;
 		else
 			avanca = -1;
@@ -56,7 +51,7 @@ public class Peao extends Peca {
 	public boolean podeAtacar(Posicao origem, Posicao destino,
 			Tabuleiro tabuleiro) throws CasaOcupadaException {
 		int avanca;
-		if (this.getCorJogador() == CorJogador.BRANCO)
+		if (this.getCorJogador() == TipoCorJogador.BRANCO)
 			avanca = 1;
 		else
 			avanca = -1;

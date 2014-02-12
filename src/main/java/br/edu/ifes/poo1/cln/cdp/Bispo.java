@@ -3,18 +3,15 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Bispo extends Peca {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Instancia um bispo.
 	 */
-	public Bispo(CorJogador corJogador) {
-		super(3, TipoPeca.BISPO, corJogador);
-	}
-	
-	/**
-	 * Criar um clone de uma torre para IAElaborada
-	 * @param peca
-	 */
-	public Bispo(Peca peca) {
-		super(peca);
+	public Bispo(TipoCorJogador corJogador) {
+		super(TipoPeca.BISPO, corJogador);
 	}
 	
 	@Override

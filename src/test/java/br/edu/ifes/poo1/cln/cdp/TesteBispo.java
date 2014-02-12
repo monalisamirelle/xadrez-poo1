@@ -8,28 +8,22 @@ import org.junit.Test;
 public class TesteBispo {
 	private Tabuleiro tabuleiro;
 	private Bispo bispoBranco;
-	private Jogador brancas;
-	private Jogador pretas;
 
 	@Before
 	public void before() throws CasaOcupadaException {
 		// Inicia um tabuleiro vazio.
 		tabuleiro = new Tabuleiro();
 
-		// Inicia os jogadores.
-		brancas = new Jogador("TesteBranco", CorJogador.BRANCO);
-		pretas = new Jogador("TestePreto", CorJogador.PRETO);
-
 		// Inicia o bispo.
-		bispoBranco = new Bispo(brancas.getCor());
+		bispoBranco = new Bispo(TipoCorJogador.BRANCO);
 
 		// Coloca peças inimigas no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(6, 4), new Peao(pretas.getCor()));
-		tabuleiro.colocarPeca(new Posicao(8, 8), new Peao(pretas.getCor()));
-		tabuleiro.colocarPeca(new Posicao(5, 3), new Peao(pretas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(6, 4), new Peao(TipoCorJogador.PRETO));
+		tabuleiro.colocarPeca(new Posicao(8, 8), new Peao(TipoCorJogador.PRETO));
+		tabuleiro.colocarPeca(new Posicao(5, 3), new Peao(TipoCorJogador.PRETO));
 
 		// Coloca peça aliada no tabuleiro.
-		tabuleiro.colocarPeca(new Posicao(2, 2), new Peao(brancas.getCor()));
+		tabuleiro.colocarPeca(new Posicao(2, 2), new Peao(TipoCorJogador.BRANCO));
 	}
 
 	@Test
@@ -56,7 +50,8 @@ public class TesteBispo {
 	}
 
 	@Test
-	public void podeAtacar() throws CasaOcupadaException {
+	public void podeAtacar() throws CasaOcupadaException,
+			CloneNotSupportedException {
 		// Verifica se o bispo pode realizar determinado ataque.
 		Assert.assertTrue(bispoBranco.podeAtacar(new Posicao(7, 3),
 				new Posicao(6, 4), tabuleiro));
@@ -72,6 +67,5 @@ public class TesteBispo {
 				new Posicao(6, 2), tabuleiro));
 		Assert.assertFalse(bispoBranco.podeAtacar(new Posicao(1, 8),
 				new Posicao(3, 6), tabuleiro));
-
 	}
 }

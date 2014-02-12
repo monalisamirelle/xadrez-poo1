@@ -3,18 +3,15 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Rainha extends Peca {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Instancia uma rainha.
 	 */
-	public Rainha(CorJogador corJogador) {
-		super(9, TipoPeca.RAINHA, corJogador);
-	}
-	
-	/**
-	 * Criar um clone de uma torre para IAElaborada
-	 * @param peca
-	 */
-	public Rainha(Peca peca) {
-		super(peca);
+	public Rainha(TipoCorJogador corJogador) {
+		super(TipoPeca.RAINHA, corJogador);
 	}
 
 	@Override

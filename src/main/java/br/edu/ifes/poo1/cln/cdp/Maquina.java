@@ -2,8 +2,13 @@ package br.edu.ifes.poo1.cln.cdp;
 
 public abstract class Maquina extends Jogador {
 
-	public Maquina(String nome, CorJogador cor) {
-		super(nome, cor);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public Maquina(String nome, TipoCorJogador cor, TipoJogador tipoJogador) {
+		super(nome, cor, tipoJogador);
 	}
 
 	/**
@@ -17,5 +22,5 @@ public abstract class Maquina extends Jogador {
 	public abstract Jogada escolherJogada(Tabuleiro tabuleiroAtual)
 			throws CasaOcupadaException, CloneNotSupportedException,
 			JogadaInvalidaException, InterruptedException;
-	
+
 }

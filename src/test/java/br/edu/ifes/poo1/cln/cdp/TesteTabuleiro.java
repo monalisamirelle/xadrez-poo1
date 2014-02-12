@@ -1,13 +1,9 @@
 package br.edu.ifes.poo1.cln.cdp;
 
-import java.io.IOException;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import br.edu.ifes.poo1.cln.cgt.AplMultiplayer;
 
 public class TesteTabuleiro {
 
@@ -26,14 +22,14 @@ public class TesteTabuleiro {
 	public void before() {
 		tabuleiro = new Tabuleiro();
 
-		reiBranco = new Rei(CorJogador.BRANCO);
-		torreBranca = new Torre(CorJogador.BRANCO);
-		reiPreto = new Rei(CorJogador.PRETO);
-		torrePreta = new Torre(CorJogador.PRETO);
-		cavaloBranco = new Cavalo(CorJogador.BRANCO);
-		cavaloPreto = new Cavalo(CorJogador.PRETO);
-		peaoBranco = new Peao(CorJogador.BRANCO);
-		peaoPreto = new Peao(CorJogador.PRETO);
+		reiBranco = new Rei(TipoCorJogador.BRANCO);
+		torreBranca = new Torre(TipoCorJogador.BRANCO);
+		reiPreto = new Rei(TipoCorJogador.PRETO);
+		torrePreta = new Torre(TipoCorJogador.PRETO);
+		cavaloBranco = new Cavalo(TipoCorJogador.BRANCO);
+		cavaloPreto = new Cavalo(TipoCorJogador.PRETO);
+		peaoBranco = new Peao(TipoCorJogador.BRANCO);
+		peaoPreto = new Peao(TipoCorJogador.PRETO);
 	}
 
 	@Test
@@ -133,55 +129,55 @@ public class TesteTabuleiro {
 		// Testa Roque menor das peças brancas
 		tabuleiro.colocarPeca(new Posicao(5, 1), reiBranco);
 		tabuleiro.colocarPeca(new Posicao(8, 1), torreBranca);
-		Assert.assertTrue(tabuleiro.ehRoqueMenor(CorJogador.BRANCO));
+		Assert.assertTrue(tabuleiro.ehRoqueMenor(TipoCorJogador.BRANCO));
 
 		// Testa Roque menor das peças brancas se houver uma peça no caminho
 		tabuleiro.colocarPeca(new Posicao(6, 1), cavaloBranco);
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(6, 1));
 		tabuleiro.colocarPeca(new Posicao(7, 1), cavaloBranco);
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(7, 1));
 
 		// Testa Roque menor das peças brancas se rei já se moveu
 		tabuleiro.espiarPeca(new Posicao(5, 1)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(5, 1));
-		reiBranco = new Rei(CorJogador.BRANCO);
+		reiBranco = new Rei(TipoCorJogador.BRANCO);
 		tabuleiro.colocarPeca(new Posicao(5, 1), reiBranco);
 
 		// Testa Roque menor das peças brancas se torre já se moveu
 		tabuleiro.espiarPeca(new Posicao(8, 1)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(8, 1));
-		torreBranca = new Torre(CorJogador.BRANCO);
+		torreBranca = new Torre(TipoCorJogador.BRANCO);
 		tabuleiro.colocarPeca(new Posicao(8, 1), torreBranca);
 
 		// Testa Roque menor das peças pretas
 		tabuleiro.colocarPeca(new Posicao(5, 8), reiPreto);
 		tabuleiro.colocarPeca(new Posicao(8, 8), torrePreta);
-		Assert.assertTrue(tabuleiro.ehRoqueMenor(CorJogador.PRETO));
+		Assert.assertTrue(tabuleiro.ehRoqueMenor(TipoCorJogador.PRETO));
 
 		// Testa Roque menor das peças pretas se houver uma peça no caminho
 		tabuleiro.colocarPeca(new Posicao(6, 8), cavaloPreto);
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(6, 8));
 		tabuleiro.colocarPeca(new Posicao(7, 8), cavaloPreto);
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(7, 8));
 
 		// Testa Roque menor das peças pretas se rei já se moveu
 		tabuleiro.espiarPeca(new Posicao(5, 8)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(5, 8));
-		reiPreto = new Rei(CorJogador.BRANCO);
+		reiPreto = new Rei(TipoCorJogador.BRANCO);
 		tabuleiro.colocarPeca(new Posicao(5, 8), reiPreto);
 
 		// Testa Roque menor das peças pretas se torre já se moveu
 		tabuleiro.espiarPeca(new Posicao(8, 8)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMenor(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMenor(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(8, 8));
-		torrePreta = new Torre(CorJogador.PRETO);
+		torrePreta = new Torre(TipoCorJogador.PRETO);
 		tabuleiro.colocarPeca(new Posicao(8, 8), torrePreta);
 
 	}
@@ -191,55 +187,55 @@ public class TesteTabuleiro {
 		// Testa Roque menor das peças brancas
 		tabuleiro.colocarPeca(new Posicao(5, 1), reiBranco);
 		tabuleiro.colocarPeca(new Posicao(1, 1), torreBranca);
-		Assert.assertTrue(tabuleiro.ehRoqueMaior(CorJogador.BRANCO));
+		Assert.assertTrue(tabuleiro.ehRoqueMaior(TipoCorJogador.BRANCO));
 
 		// Testa Roque menor das peças brancas se houver uma peça no caminho
 		tabuleiro.colocarPeca(new Posicao(3, 1), cavaloBranco);
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(3, 1));
 		tabuleiro.colocarPeca(new Posicao(4, 1), cavaloBranco);
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(4, 1));
 
 		// Testa Roque menor das peças brancas se rei já se moveu
 		tabuleiro.espiarPeca(new Posicao(5, 1)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(5, 1));
-		reiBranco = new Rei(CorJogador.BRANCO);
+		reiBranco = new Rei(TipoCorJogador.BRANCO);
 		tabuleiro.colocarPeca(new Posicao(5, 1), reiBranco);
 
 		// Testa Roque menor das peças brancas se torre já se moveu
 		tabuleiro.espiarPeca(new Posicao(1, 1)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.BRANCO));
 		tabuleiro.retirarPeca(new Posicao(1, 1));
-		torreBranca = new Torre(CorJogador.BRANCO);
+		torreBranca = new Torre(TipoCorJogador.BRANCO);
 		tabuleiro.colocarPeca(new Posicao(1, 1), torreBranca);
 
 		// Testa Roque menor das peças pretas
 		tabuleiro.colocarPeca(new Posicao(5, 8), reiPreto);
 		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
-		Assert.assertTrue(tabuleiro.ehRoqueMaior(CorJogador.PRETO));
+		Assert.assertTrue(tabuleiro.ehRoqueMaior(TipoCorJogador.PRETO));
 
 		// Testa Roque menor das peças pretas se houver uma peça no caminho
 		tabuleiro.colocarPeca(new Posicao(3, 8), cavaloPreto);
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(3, 8));
 		tabuleiro.colocarPeca(new Posicao(4, 8), cavaloPreto);
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(4, 8));
 
 		// Testa Roque menor das peças pretas se rei já se moveu
 		tabuleiro.espiarPeca(new Posicao(5, 8)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(5, 8));
-		reiPreto = new Rei(CorJogador.BRANCO);
+		reiPreto = new Rei(TipoCorJogador.BRANCO);
 		tabuleiro.colocarPeca(new Posicao(5, 8), reiPreto);
 
 		// Testa Roque menor das peças pretas se torre já se moveu
 		tabuleiro.espiarPeca(new Posicao(1, 8)).setJaMoveu();
-		Assert.assertFalse(tabuleiro.ehRoqueMaior(CorJogador.PRETO));
+		Assert.assertFalse(tabuleiro.ehRoqueMaior(TipoCorJogador.PRETO));
 		tabuleiro.retirarPeca(new Posicao(1, 8));
-		torrePreta = new Torre(CorJogador.PRETO);
+		torrePreta = new Torre(TipoCorJogador.PRETO);
 		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
 
 	}
@@ -287,7 +283,7 @@ public class TesteTabuleiro {
 		peaoBranco.setPodeEnPassant(true);
 
 		// Resetamos o estado de poder ocorrer um En Passant das casas pretas
-		tabuleiro.resetaPodeEnPassant(CorJogador.PRETO);
+		tabuleiro.resetaPodeEnPassant(TipoCorJogador.PRETO);
 
 		// Verificamos se as peças pretas ou brancas foram "atingidas"
 		Assert.assertFalse(peaoPreto.isPodeEnPassant());
@@ -329,15 +325,15 @@ public class TesteTabuleiro {
 		// Teste 1 : O rei pode fugir por uma casa
 		tabuleiro.colocarPeca(new Posicao(1, 1), reiBranco);
 		tabuleiro.colocarPeca(new Posicao(1, 8), torrePreta);
-		Assert.assertFalse(tabuleiro.verificarXequeMate(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.verificarXequeMate(TipoCorJogador.BRANCO));
 
 		// Teste 2: O rei está em xeque-mate
 		tabuleiro.colocarPeca(new Posicao(2, 8), torrePreta);
-		Assert.assertTrue(tabuleiro.verificarXequeMate(CorJogador.BRANCO));
+		Assert.assertTrue(tabuleiro.verificarXequeMate(TipoCorJogador.BRANCO));
 
 		// Teste 3: O rei pode ser protegido por uma peça
 		tabuleiro.colocarPeca(new Posicao(3, 3), cavaloBranco);
-		Assert.assertFalse(tabuleiro.verificarXequeMate(CorJogador.BRANCO));
+		Assert.assertFalse(tabuleiro.verificarXequeMate(TipoCorJogador.BRANCO));
 
 	}
 
@@ -347,19 +343,19 @@ public class TesteTabuleiro {
 
 		// Uma peça
 		tabuleiro.colocarPeca(new Posicao(1, 1), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.PRETO, 0), 3);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.PRETO, 0), 3);
 
 		// Peça de mesmo valor
 		tabuleiro.colocarPeca(new Posicao(2, 4), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 0), -6);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.BRANCO, 0), -6);
 
 		// Peça inimiga
 		tabuleiro.colocarPeca(new Posicao(2, 8), cavaloBranco);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.BRANCO, 1), 97);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.BRANCO, 1), 97);
 
 		// Peça de valor diferente (negativo)
 		tabuleiro.colocarPeca(new Posicao(2, 1), torreBranca);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(CorJogador.PRETO, -1),
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.PRETO, -1),
 				-102);
 	}
 
@@ -370,25 +366,10 @@ public class TesteTabuleiro {
 		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
 		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
 		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
-		Assert.assertNull(tabuleiro.recomendaJogada(CorJogador.PRETO));
+		Assert.assertNull(tabuleiro.recomendaJogada(TipoCorJogador.PRETO));
 
 		// Há jogadas a serem recomendadas
 		tabuleiro.colocarPeca(new Posicao(7, 4), torrePreta);
-		Assert.assertNotNull(tabuleiro.recomendaJogada(CorJogador.PRETO));
-	}
-
-	@Test
-	// TODO Está aqui de maneira temporária pois não estava conseguindo gravar partidas no cgt
-	public void gravarEstadoPartida() throws CasaOcupadaException,
-			JogadaInvalidaException, CloneNotSupportedException, IOException {
-		Jogador jogadorBranco = new Jogador("Branco", CorJogador.BRANCO);
-		Jogador jogadorPreto = new Jogador("Preto", CorJogador.PRETO);
-		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
-		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
-		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
-		AplMultiplayer jogo = new AplMultiplayer(jogadorBranco, jogadorPreto,
-				tabuleiro, CorJogador.BRANCO);
-		jogo.finalizarPartida(true);
-		Assert.assertTrue(tabuleiro.gravarEstadoPartida(jogo));
+		Assert.assertNotNull(tabuleiro.recomendaJogada(TipoCorJogador.PRETO));
 	}
 }

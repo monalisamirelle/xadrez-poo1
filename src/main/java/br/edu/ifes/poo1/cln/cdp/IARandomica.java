@@ -2,8 +2,13 @@ package br.edu.ifes.poo1.cln.cdp;
 
 public class IARandomica extends Maquina {
 
-	public IARandomica(String nome, CorJogador cor) {
-		super(nome, cor);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public IARandomica(String nome, TipoCorJogador cor) {
+		super(nome, cor, TipoJogador.IARANDOMICA);
 	}
 
 	/**

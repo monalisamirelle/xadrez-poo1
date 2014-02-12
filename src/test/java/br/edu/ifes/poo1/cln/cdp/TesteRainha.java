@@ -14,9 +14,9 @@ public class TesteRainha {
 	@Before
 	public void before() throws CasaOcupadaException {
 		tabuleiro = new Tabuleiro();
-		rainhaBranca = new Rainha(CorJogador.BRANCO);
-		peaoPreto = new Peao(CorJogador.PRETO);
-		peaoBranco = new Peao(CorJogador.BRANCO);
+		rainhaBranca = new Rainha(TipoCorJogador.BRANCO);
+		peaoPreto = new Peao(TipoCorJogador.PRETO);
+		peaoBranco = new Peao(TipoCorJogador.BRANCO);
 
 		/** Coloca peças inimigas no tabuleiro */
 		tabuleiro.colocarPeca(new Posicao(6, 4), peaoPreto);
