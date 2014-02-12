@@ -16,12 +16,10 @@ public class IARandomica extends Maquina {
 	 * 
 	 * @return
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 */
 	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
-			throws CasaOcupadaException, JogadaInvalidaException,
-			CloneNotSupportedException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 		return tabuleiroAtual.recomendaJogada(this.cor);
 	}
 }

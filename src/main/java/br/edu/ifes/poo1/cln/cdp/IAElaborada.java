@@ -80,12 +80,11 @@ public class IAElaborada extends Maquina {
 	 * @param listaNos
 	 * @return
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 * @throws InterruptedException
 	 */
 	public boolean criaCamada() throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException,
+			JogadaInvalidaException,
 			InterruptedException {
 		// Construa as partes
 		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 3,
@@ -153,13 +152,12 @@ public class IAElaborada extends Maquina {
 	 * Método que escolhe a jogada da máquina
 	 * 
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 * @throws InterruptedException
 	 */
 	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
-			throws CasaOcupadaException, CloneNotSupportedException,
-			JogadaInvalidaException, InterruptedException {
+			throws CasaOcupadaException, JogadaInvalidaException,
+			InterruptedException {
 
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
@@ -181,7 +179,7 @@ public class IAElaborada extends Maquina {
 
 		// Realizo a busca em profundidade (aplicando minimax e poda alfa beta)
 		busca.buscaEmProfundidade(raiz);
-				
+
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
 
@@ -192,8 +190,9 @@ public class IAElaborada extends Maquina {
 				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
-						.getValor()){
-					System.out.println(raiz.getListaAdjacencia().get(indice).getValor());
+						.getValor()) {
+					System.out.println(raiz.getListaAdjacencia().get(indice)
+							.getValor());
 					return raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
 				}

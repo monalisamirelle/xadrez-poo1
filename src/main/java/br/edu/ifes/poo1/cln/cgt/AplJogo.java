@@ -3,11 +3,11 @@ package br.edu.ifes.poo1.cln.cgt;
 import java.io.Serializable;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
-import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 
 public class AplJogo implements Serializable {
@@ -176,11 +176,10 @@ public class AplJogo implements Serializable {
 	 *            realizada.
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
 	 * @throws FimDeJogoException
 	 */
 	public void executarJogadaTurno(Jogada jogada) throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
+			JogadaInvalidaException {
 		// Executa a jogada
 		this.getJogadorTurnoAtual().executarJogada(jogada);
 

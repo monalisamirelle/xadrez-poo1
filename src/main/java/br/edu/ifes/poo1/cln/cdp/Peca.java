@@ -182,7 +182,6 @@ public abstract class Peca implements Cloneable, TamanhoTabuleiro, Serializable 
 			novaPeca = (Peca) super.clone();
 		} catch (CloneNotSupportedException e) {
 			System.out.println("Peça não foi clonada");
-			e.printStackTrace();
 		}
 		return novaPeca;
 	}

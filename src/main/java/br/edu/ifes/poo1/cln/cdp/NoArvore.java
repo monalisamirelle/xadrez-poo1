@@ -3,10 +3,6 @@ package br.edu.ifes.poo1.cln.cdp;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author erro
- * 
- */
 public class NoArvore {
 
 	// Nó que é pai do nó em questão
@@ -26,10 +22,10 @@ public class NoArvore {
 
 	// Marca o nó como visitado
 	private boolean marcado;
-	
+
 	// Cor do nó
-	private TipoCorJogador cor; 
-	
+	private TipoCorJogador cor;
+
 	// Se o nó se encontra no nível max ou min
 	private TipoNivel nivel;
 
@@ -49,23 +45,22 @@ public class NoArvore {
 	 * @param valor
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
-	 * @throws CloneNotSupportedException
 	 */
-	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
+	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado)
+			throws CasaOcupadaException, JogadaInvalidaException {
 		this.noPai = null;
 		this.temValor = false;
 		this.insereListaAdjacencia(noPai);
 		this.posicaoListaAdjacencia = 0;
 		this.marcado = false;
 		this.cor = cor;
-		// TODO podemos criar um if nesse nivel para gerar máquinas burras
 		this.nivel = nivel;
 		this.podou = false;
 		this.estado = estado;
 		this.xequeMate = estado.getTabuleiro().verificarXequeMate(
 				TipoCorJogador.BRANCO)
-				|| estado.getTabuleiro().verificarXequeMate(TipoCorJogador.PRETO);
+				|| estado.getTabuleiro().verificarXequeMate(
+						TipoCorJogador.PRETO);
 	}
 
 	/**
@@ -75,10 +70,9 @@ public class NoArvore {
 	 * @param valor
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
-	 * @throws CloneNotSupportedException
 	 */
 	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException,
-			CloneNotSupportedException, JogadaInvalidaException {
+			JogadaInvalidaException {
 		this.noPai = noPai;
 		noPai.addFilho(this);
 		this.temValor = false;

@@ -24,6 +24,7 @@ import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Maquina;
 import br.edu.ifes.poo1.cln.cdp.Pessoa;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.TipoJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
 import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
@@ -72,10 +73,11 @@ public class Controlador {
 	 * necessário do jogo.
 	 * 
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
+	 * @throws InterruptedException
+	 * @throws JogadaInvalidaException
 	 */
-	public void iniciar() throws CasaOcupadaException,
-			CloneNotSupportedException {
+	public void iniciar() throws CasaOcupadaException, JogadaInvalidaException,
+			InterruptedException {
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuPrincipal = new MenuPrincipal();
 
@@ -91,12 +93,14 @@ public class Controlador {
 
 			// Se o jogador tiver escolhido jogar o singleplayer.
 			case "SINGLEPLAYER":
-				controlarSinglePlayer();
+				AplJogo apl = prepararSingleplayer();
+				controlarPartida(apl);
 				break;
 
 			// Se o jogador tiver escolhido o multiplayer.
 			case "MULTIPLAYER":
-				controlarMultiplayer();
+				apl = prepararMultiplayer();
+				controlarPartida(apl);
 				break;
 
 			// Se o jogador tiver escolhido ver os dados das partidas.
@@ -117,8 +121,12 @@ public class Controlador {
 		// o jogo.
 	}
 
-	private void controlarSinglePlayer() throws CasaOcupadaException,
-			CloneNotSupportedException {
+	/**
+	 * Prepara e captura todos os dados de uma partida Singleplayer
+	 * 
+	 * @return
+	 */
+	private AplJogo prepararSingleplayer() {
 		// Cria a pessoa
 		Pessoa pessoa;
 
@@ -126,8 +134,6 @@ public class Controlador {
 		Menu menuCorJogador = new MenuCorJogador();
 		ItemMenu corEscolhida = menuCorJogador
 				.insistirPorEntradaValida(new EntradaSaida());
-
-		// Descobre a cor do jogador
 		if (corEscolhida.getNome().contentEquals("BRANCO"))
 			pessoa = new Pessoa(cli.lerNomeJogadorBranco(),
 					TipoCorJogador.BRANCO);
@@ -165,68 +171,37 @@ public class Controlador {
 		}
 
 		// Contrói a aplicação do jogo
-		AplJogo apl = new AplJogo(pessoa, maquina);
-
-		// FIXME ERRO AQUI!
-		// Enquando não acabar o jogo, continuamos executando as jogadas
-		// do jogador e exibindo o estado do tabuleiro.
-		String jogadaCrua;
-		String aviso = "";
-		while (!apl.getAcabouJogo()) {
-			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
-			// necessário.
-			if (aviso == "")
-				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
-						apl.getPretas());
-			else
-				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
-						apl.getPretas(), aviso);
-
-			// Retira a mensagem de aviso.
-			aviso = "";
-
-			// Pede o movimento do humano.
-			jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
-
-			// Executa o movimento do humano. E a apl executa o movimento da IA
-			// logo em seguida.
-			Jogada jogadaInterpretada;
-			try {
-				jogadaInterpretada = Interpretador
-						.interpretarJogada(jogadaCrua);
-				apl.executarJogadaTurno(jogadaInterpretada);
-			} catch (JogadaInvalidaException e) {
-				// Prepara um aviso para ser exibido na tela quando ela
-				// atualizar.
-				aviso = e.getMessage();
-
-				// E continua o ritmo do jogo.
-				continue;
-			}
-		}
-
-		// Encerra a partida.
-		encerrarPartida(apl);
+		return new AplJogo(pessoa, maquina);
 	}
 
 	/**
-	 * Controla tudo o que é necessário para uma partida multiplayer. Ao final
-	 * do método, a partida terá encerrado.
+	 * Prepara e captura todos os dados de uma partida Multiplayer
 	 * 
-	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
+	 * @return
 	 */
-	private void controlarMultiplayer() throws CasaOcupadaException,
-			CloneNotSupportedException {
+	private AplJogo prepararMultiplayer() {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = cli.lerNomeJogadorPreto();
 
 		// Constrói a aplicação do jogo.
-		AplJogo apl = new AplJogo(
-				new Pessoa(nomeBrancas, TipoCorJogador.BRANCO), new Pessoa(
-						nomePretas, TipoCorJogador.PRETO));
+		return new AplJogo(new Pessoa(nomeBrancas, TipoCorJogador.BRANCO),
+				new Pessoa(nomePretas, TipoCorJogador.PRETO));
 
+	}
+
+	/**
+	 * Controla uma partida durante seu andamento
+	 * 
+	 * @param apl
+	 * @throws CasaOcupadaException
+	 * @throws InterruptedException
+	 * @throws JogadaInvalidaException
+	 * @throws CloneNotSupportedException
+	 */
+	// TODO acho que aqui entra "pausar/desistir/etc"
+	private void controlarPartida(AplJogo apl) throws CasaOcupadaException,
+			JogadaInvalidaException, InterruptedException {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
 		String jogadaCrua;
@@ -244,23 +219,28 @@ public class Controlador {
 			// Retira a mensagem de aviso.
 			aviso = "";
 
-			// Pede o movimento do jogador.
-			jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
+			Jogada jogada;
+			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
+				// Pede o movimento do jogador.
+				jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
+				// Executa o movimento do jogador.
+				jogada = Interpretador.interpretarJogada(jogadaCrua);
 
-			// Executa o movimento do jogador.
-			Jogada jogadaInterpretada;
+			} else {
+				Maquina maquina = (Maquina) apl.getJogadorTurnoAtual();
+				jogada = maquina.escolherJogada(apl.getTabuleiro());
+			}
+
 			try {
-				jogadaInterpretada = Interpretador
-						.interpretarJogada(jogadaCrua);
-				apl.executarJogadaTurno(jogadaInterpretada);
+				apl.executarJogadaTurno(jogada);
 			} catch (JogadaInvalidaException e) {
 				// Prepara um aviso para ser exibido na tela quando ela
 				// atualizar.
 				aviso = e.getMessage();
-
-				// E continua o ritmo do jogo.
-				continue;
 			}
+
+			// E continua o ritmo do jogo.
+			continue;
 		}
 
 		// Encerra a partida.

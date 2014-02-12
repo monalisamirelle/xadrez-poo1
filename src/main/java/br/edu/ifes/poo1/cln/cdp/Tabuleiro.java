@@ -564,7 +564,8 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @return Se a o rei está em Xeque.
 	 * @throws CasaOcupadaException
 	 */
-	public boolean verificarXeque(TipoCorJogador cor) throws CasaOcupadaException {
+	public boolean verificarXeque(TipoCorJogador cor)
+			throws CasaOcupadaException {
 		// Encontra a posição do rei.
 		Posicao posicaoRei = encontrarRei(cor);
 		// Retorna se a posição do rei está ameaçadado.
@@ -579,11 +580,9 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @return Se a cor indicada sofreu Xeque Mate.
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
-	 * @throws CloneNotSupportedException
 	 */
 	public boolean verificarXequeMate(TipoCorJogador cor)
-			throws CasaOcupadaException, CloneNotSupportedException,
-			JogadaInvalidaException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 		List<Estado> estadosPossiveis = this.proximosEstadosPossiveis(cor);
 		if (!estadosPossiveis.isEmpty())
 			return false;
@@ -597,12 +596,10 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @param corJogador
 	 * @return
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
 	 * @throws JogadaInvalidaException
 	 */
 	public List<Estado> proximosEstadosPossiveis(TipoCorJogador corJogador)
-			throws CasaOcupadaException, JogadaInvalidaException,
-			CloneNotSupportedException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 		// Primeiramente, reseta o estado de en passant do jogador
 		this.resetaPodeEnPassant(corJogador);
 
@@ -826,7 +823,6 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 		// Se o jogador em questão recebeu xeque-mate
 		if (xequeMate == -1)
 			valor = valor - 100;
-		System.out.println(valor);
 		return valor;
 	}
 
@@ -851,11 +847,9 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @return recomendação (jogada)
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
-	 * @throws CloneNotSupportedException
 	 */
 	public Jogada recomendaJogada(TipoCorJogador corJogador)
-			throws JogadaInvalidaException, CasaOcupadaException,
-			CloneNotSupportedException {
+			throws JogadaInvalidaException, CasaOcupadaException {
 		// Criamos uma lista de estados possíveis
 		List<Estado> estadosPossiveis = this
 				.proximosEstadosPossiveis(corJogador);
