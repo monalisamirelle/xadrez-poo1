@@ -20,7 +20,7 @@ public class Arquivo {
 	 * 
 	 * @param jogo
 	 */
-	public void escrevaJogo(List<DadosPartida> listaDados) {
+	public void escrevaPartidas(List<DadosPartida> listaPartidas) {
 		ObjectOutputStream oo = null;
 		try {
 			oo = new ObjectOutputStream(new FileOutputStream(ARQUIVOPARTIDAS));
@@ -30,7 +30,7 @@ public class Arquivo {
 			System.out.println("Entrada e saida com problema\n");
 		}
 		try {
-			oo.writeObject(listaDados);
+			oo.writeObject(listaPartidas);
 		} catch (IOException e) {
 			System.out.println("Incapaz de escrever no arquivo\n");
 		}
@@ -53,18 +53,18 @@ public class Arquivo {
 	public List<DadosPartida> leiaJogos() throws ClassNotFoundException,
 			IOException {
 		ObjectInputStream oi = null;
-		List<DadosPartida> listaDados;
+		List<DadosPartida> listaPartidas;
 		try {
 			oi = new ObjectInputStream(new FileInputStream(ARQUIVOPARTIDAS));
-			listaDados = (ArrayList<DadosPartida>) oi.readObject();
+			listaPartidas = (ArrayList<DadosPartida>) oi.readObject();
 		} catch (IOException e) {
 			System.out.println("Não há partidas salvas\n");
 			criaArquivo(ARQUIVOPARTIDAS);
-			listaDados = new ArrayList<DadosPartida>();
+			listaPartidas = new ArrayList<DadosPartida>();
 		}
 		if (oi != null)
 			oi.close();
-		return listaDados;
+		return listaPartidas;
 	}
 
 	private void criaArquivo(String nome) {

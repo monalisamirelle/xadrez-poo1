@@ -24,6 +24,7 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
+	// TODO pontuação só deve aparecer quando requisitada
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
 		// Imprime as peças capturadas pelos jogadores e suas pontuações.
 		imprimirPontuacoes(brancas, pretas);
@@ -47,6 +48,7 @@ public abstract class Cli {
 	 * @param aviso
 	 *            Aviso a ser exibido para o jogador.
 	 */
+	// TODO pontuação só deve aparecer quando requisitada
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas,
 			String aviso) {
 		// Atualiza a tela normalmente.
@@ -224,20 +226,25 @@ public abstract class Cli {
 		return io;
 	}
 
-	public void exibirTituloDados(String texto){
-		io.imprimirLinha(texto);
-	}
-	
 	/**
-	 * Informa na tela todas as
+	 * Informa na tela todos os dados de uma determinada partida
 	 * 
 	 * @param dadosPartidas
 	 */
-	public void exibirDadosPartidas(DadosPartida dadosPartida) {
-		io.imprimirLinha(dadosPartida.getJogo().getBrancas() + "..."
-				+ dadosPartida.getJogo().getPretas() + "..."
-				+ dadosPartida.getJogo().getMotivoDeFinalizacao() + "..."
-				+ dadosPartida.getDataPartida());
+	public void exibirDadosPartidas(int indice, DadosPartida dadosPartida) {
+		io.imprimirLinha(indice+"..."+dadosPartida.getDataPartida() + "..."
+				+ dadosPartida.getJogo().getBrancas().getNome() + "..."
+				+ dadosPartida.getJogo().getPretas().getNome() + "..."
+				+ dadosPartida.getJogo().getMotivoDeFinalizacao());
 	}
-
+	
+	/** Pega um índice para apagar uma partida */
+	public String pedeIndicePartidaApagar(){
+		return pedir("Diga o índice da partida que deseja apagar (-1 Se desistir): ");
+	}
+	
+	/** Pega um índice para carregar uma partida */
+	public String pedeIndicePartidaCarregar(){
+		return pedir("Diga o índice da partida que deseja carregar (-1 Se desistir): ");
+	}
 }

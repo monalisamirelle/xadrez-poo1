@@ -38,6 +38,7 @@ import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
 // FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS
 public class Controlador {
 	private Cli cli;
+	private ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
 
 	/**
 	 * Pede ao usuário para selecionar a interface a ser usada.
@@ -122,53 +123,71 @@ public class Controlador {
 	}
 
 	/**
-	 * Prepara e captura todos os dados de uma partida Singleplayer
+	 * Método que prepara uma pessoa para ser jogada no Singleplayer
 	 * 
 	 * @return
 	 */
-	private AplJogo prepararSingleplayer() {
-		// Cria a pessoa
-		Pessoa pessoa;
-
-		// Cor que a pessoa deseja ser
+	private Pessoa prepararPessoaSingleplayer() {
 		Menu menuCorJogador = new MenuCorJogador();
 		ItemMenu corEscolhida = menuCorJogador
 				.insistirPorEntradaValida(new EntradaSaida());
-		if (corEscolhida.getNome().contentEquals("BRANCO"))
-			pessoa = new Pessoa(cli.lerNomeJogadorBranco(),
-					TipoCorJogador.BRANCO);
-		else
-			pessoa = new Pessoa(cli.lerNomeJogadorPreto(), TipoCorJogador.PRETO);
+		// Escolhe o nome e retorna uma pessoa
+		switch (corEscolhida.getNome()) {
+		case "BRANCO":
+			return new Pessoa(cli.lerNomeJogadorBranco(), TipoCorJogador.BRANCO);
+		case "PRETO":
+			return new Pessoa(cli.lerNomeJogadorPreto(), TipoCorJogador.PRETO);
+		}
+		return null;
+	}
 
+	/**
+	 * Método que prepara uma máquina para ser jogada no singleplayer
+	 * 
+	 * @param corMaquina
+	 * @return
+	 */
+	private Maquina prepararMaquinaSingleplayer(TipoCorJogador corMaquina) {
 		// Nível do inimigo
 		Menu menuNivelMaquina = new MenuNivelMaquina();
 		ItemMenu nivelEscolhido = menuNivelMaquina
 				.insistirPorEntradaValida(new EntradaSaida());
 
-		// Cria a máquina
+		// Criar máquina
 		Maquina maquina = null;
 		switch (nivelEscolhido.getNome()) {
 		case "CERBERO":
-			maquina = new IAElaborada("Cerbero",
-					TipoCorJogador.getCorOposta(pessoa.getCor()), 10, 15, false);
+			maquina = new IAElaborada("Cerbero", corMaquina, 10, 15, false);
 			break;
 		case "DIONISIO":
-			maquina = new IARandomica("Dionisio",
-					TipoCorJogador.getCorOposta(pessoa.getCor()));
+			maquina = new IARandomica("Dionisio", corMaquina);
 			break;
 		case "ARES":
-			maquina = new IAElaborada("Ares",
-					TipoCorJogador.getCorOposta(pessoa.getCor()), 1, 45, true);
+			maquina = new IAElaborada("Ares", corMaquina, 1, 45, true);
 			break;
 		case "ZEUS":
-			maquina = new IAElaborada("Zeus",
-					TipoCorJogador.getCorOposta(pessoa.getCor()), 10, 15, true);
+			maquina = new IAElaborada("Zeus", corMaquina, 10, 15, true);
 			break;
 		case "PROMETEU":
-			maquina = new IAElaborada("Prometeu",
-					TipoCorJogador.getCorOposta(pessoa.getCor()), 10, 45, true);
+			maquina = new IAElaborada("Prometeu", corMaquina, 10, 45, true);
 			break;
 		}
+		return maquina;
+	}
+
+	/**
+	 * Prepara e captura todos os dados de uma partida Singleplayer
+	 * 
+	 * @return
+	 */
+	private AplJogo prepararSingleplayer() {
+
+		// Cria a pessoa
+		Pessoa pessoa = prepararPessoaSingleplayer();
+
+		// Cria a máquina
+		Maquina maquina = prepararMaquinaSingleplayer(TipoCorJogador
+				.getCorOposta(pessoa.getCor()));
 
 		// Contrói a aplicação do jogo
 		return new AplJogo(pessoa, maquina);
@@ -261,7 +280,7 @@ public class Controlador {
 	 * @param apljogo
 	 *            Apl que em que a partida encerrou.
 	 */
-	// TODO adequar
+	// TODO ADEQUAR
 	private void encerrarPartida(AplJogo apljogo) {
 		// Após o fim do jogo, pegamos o vencedor, atualizamos o
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
@@ -291,27 +310,87 @@ public class Controlador {
 	}
 
 	/**
+	 * Método que busca carregar uma partida informada por um usuário
+	 * 
+	 * @param maiorIndice
+	 * @return
+	 */
+	private AplJogo buscarCarregarPartida(List<DadosPartida> listaPartidas) {
+		int indice = 0;
+		do {
+			try {
+				indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
+			} catch (Exception e) {
+				cli.exibirAlerta("Digite um número referente ao índice!");
+			}
+			if (indice >= 0 & indice < listaPartidas.size())
+				return manipuladorArquivo
+						.carregarPartida(indice, listaPartidas);
+			else
+				cli.exibirAlerta("O índice digitado não existe!");
+		} while (indice < -1 & indice >= listaPartidas.size());
+		return null;
+	}
+
+	/**
+	 * Método que busca apagar uma partida informada pelo usuário (é
+	 * inicialmente apagada em memória e posteriormente em arquivo)
+	 * 
+	 * @param maiorIndice
+	 */
+	private List<DadosPartida> buscarApagarPartida(
+			List<DadosPartida> listaPartidas) {
+		int indice = 0;
+		do {
+			try {
+				indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
+			} catch (Exception e) {
+				cli.exibirAlerta("Digite um número referente ao índice!");
+			}
+			if (indice >= 0 & indice < listaPartidas.size())
+				return manipuladorArquivo.apagarPartida(indice, listaPartidas);
+			else
+				cli.exibirAlerta("O índice digitado não existe!");
+		} while (indice < -1 & indice >= listaPartidas.size());
+		return null;
+	}
+
+	/**
 	 * Método responsável por controlar a exibição dos dados de partidas
 	 */
 	private void controlarExibicaoPartidas() {
-		ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
-		List<DadosPartida> listaPartidas = manipuladorArquivo.lerDadosJogo();
-		if (!listaPartidas.isEmpty()) {
+
+		List<DadosPartida> listaPartidas = manipuladorArquivo
+				.lerListaPartidas();
+
+		ItemMenu opcao = new ItemMenu("", "");
+		while (!listaPartidas.isEmpty() & opcao.getNome() != "VOLTAR") {
 			// TODO deixar menu certinho em formatação
-			cli.exibirTituloDados("Data" + "..." + "Jogador Branco" + "..."
-					+ "Jogador Preto" + "..." + "Situação da Partida");
-			for (DadosPartida dadosPartida : listaPartidas)
-				cli.exibirDadosPartidas(dadosPartida);
+			cli.imprimirLinha("Índice" + "..." + "Data" + "..."
+					+ "Jogador Branco" + "..." + "Jogador Preto" + "..."
+					+ "Situação da Partida\n");
+
+			for (int indice = 0; indice < listaPartidas.size(); indice++)
+				cli.exibirDadosPartidas(indice, listaPartidas.get(indice));
+
+			System.out.println("");
 			Menu menuDadosPartidas = new MenuDadosPartidas();
-			ItemMenu opcao = menuDadosPartidas
+			opcao = menuDadosPartidas
 					.insistirPorEntradaValida(new EntradaSaida());
-			// TODO implementar
 			switch (opcao.getNome()) {
 			case "CARREGAR":
+				AplJogo apl = buscarCarregarPartida(listaPartidas);
+				try {
+					this.controlarPartida(apl);
+				} catch (Exception e) {
+					cli.exibirAlerta("Partida não pode ser carregada");
+				}
 				break;
 			case "APAGAR":
+				listaPartidas = buscarApagarPartida(listaPartidas);
 				break;
 			case "VOLTAR":
+				manipuladorArquivo.gravarListaPartidas(listaPartidas);
 				break;
 			}
 		}

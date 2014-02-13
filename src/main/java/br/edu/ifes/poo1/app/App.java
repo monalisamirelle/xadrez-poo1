@@ -9,13 +9,14 @@ import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
  */
 public class App {
 
-	public static void main(String[] args) throws CasaOcupadaException, JogadaInvalidaException, InterruptedException {
+	public static void main(String[] args) throws CasaOcupadaException,
+			JogadaInvalidaException, InterruptedException {
 
 		// /** Dados */
 		// Tabuleiro tabuleiro = new Tabuleiro();
-		// Peca reiPreto = new Rei(CorJogador.PRETO);
-		// Peca torreBranca = new Torre(CorJogador.BRANCO);
-		// Peao peaoBranco = new Peao(CorJogador.BRANCO);
+		// Peca reiPreto = new Rei(TipoCorJogador.PRETO);
+		// Peca torreBranca = new Torre(TipoCorJogador.BRANCO);
+		// Peao peaoBranco = new Peao(TipoCorJogador.BRANCO);
 		//
 		// /** Peças */
 		// tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
@@ -24,17 +25,16 @@ public class App {
 		// tabuleiro.colocarPeca(new Posicao(4, 7), peaoBranco);
 		//
 		// /** Jogo 1 */
-		// Jogador jogadorBranco = new Pessoa("Paulos@", CorJogador.BRANCO);
-		// Jogador jogadorPreto = new Pessoa("Otavio Silva", CorJogador.PRETO);
-		// AplJogo jogo1 = new AplMultiplayer(jogadorBranco, jogadorPreto,
-		// tabuleiro, TipoMotivoFimDaPartida.VITORIA,
-		// jogadorPreto.getNome());
+		// Jogador jogadorBranco = new Pessoa("Paulos@", TipoCorJogador.BRANCO);
+		// Jogador jogadorPreto = new Pessoa("Otavio Silva",
+		// TipoCorJogador.PRETO);
+		// AplJogo jogo1 = new AplJogo(jogadorBranco, jogadorPreto, tabuleiro,
+		// TipoSituacaoPartida.VITORIA, jogadorPreto.getNome());
 		//
-		// jogadorBranco = new Pessoa("Paulos Oliveila", CorJogador.BRANCO);
-		// jogadorPreto = new Pessoa("OUHW3", CorJogador.PRETO);
-		// AplJogo jogo2 = new AplMultiplayer(jogadorBranco, jogadorPreto,
-		// tabuleiro, TipoMotivoFimDaPartida.VITORIA,
-		// jogadorPreto.getNome());
+		// jogadorBranco = new Pessoa("Paulos Oliveila", TipoCorJogador.BRANCO);
+		// jogadorPreto = new Pessoa("OUHW3", TipoCorJogador.PRETO);
+		// AplJogo jogo2 = new AplJogo(jogadorBranco, jogadorPreto, tabuleiro,
+		// TipoSituacaoPartida.VITORIA, jogadorPreto.getNome());
 		//
 		// Arquivo arquivo = new Arquivo();
 		// List<DadosPartida> listaDados = new ArrayList<DadosPartida>();
@@ -42,10 +42,7 @@ public class App {
 		// DadosPartida dp2 = new DadosPartida(jogo2);
 		// listaDados.add(dp1);
 		// listaDados.add(dp2);
-		// arquivo.escrevaJogo(listaDados);
-		// List<DadosPartida> lista = new ArrayList<DadosPartida>();
-		// lista = arquivo.leiaJogos();
-		// System.out.println(lista.get(1).getJogo().getBrancas().getNome());
+		// arquivo.escrevaPartidas(listaDados);
 
 		// Inicia o jogo.
 		Controlador ctrl = new Controlador();
