@@ -73,12 +73,8 @@ public class Controlador {
 	 * Inicia o jogo. Serão exibidos os menus necessários e faz todo o controle
 	 * necessário do jogo.
 	 * 
-	 * @throws CasaOcupadaException
-	 * @throws InterruptedException
-	 * @throws JogadaInvalidaException
 	 */
-	public void iniciar() throws CasaOcupadaException, JogadaInvalidaException,
-			InterruptedException {
+	public void iniciar() {
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuPrincipal = new MenuPrincipal();
 
@@ -212,18 +208,13 @@ public class Controlador {
 	 * Controla uma partida durante seu andamento
 	 * 
 	 * @param apl
-	 * @throws CasaOcupadaException
-	 * @throws InterruptedException
-	 * @throws JogadaInvalidaException
-	 * @throws CloneNotSupportedException
 	 */
 	// FIXME Oferecer ao jogador brancas e pretas INVERTENDO O TABULEIRO
 	// prejudica na lógica do peão, en passant e, provavelmente, promoção. Seria
 	// mesmo, considerando a falta de tempo, interessante inverter o tabuleiro
 	// ou apenas deixar como está para o jogador jogar? (não inverte e ele pode
 	// andar com pretas seguindo a lógica já criada)
-	private void controlarPartida(AplJogo apl) throws CasaOcupadaException,
-			InterruptedException {
+	private void controlarPartida(AplJogo apl) {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
 		String jogadaCrua;
@@ -266,6 +257,10 @@ public class Controlador {
 					}
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Máquina apresentou problemas ao tentar realizar jogada");
+				} catch (CasaOcupadaException e) {
+					cli.imprimirLinha("Casa se encontra ocupada");
+				} catch (InterruptedException e) {
+					cli.imprimirLinha("Jogada interrompida");
 				}
 			}
 
@@ -277,6 +272,8 @@ public class Controlador {
 							apl.getJogadorTurnoAtual().getCor());
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Comando desconhecido");
+				} catch (CasaOcupadaException e) {
+					cli.imprimirLinha("Casa se encontra ocupada");
 				}
 			}
 			// E continua o ritmo do jogo.
@@ -386,7 +383,7 @@ public class Controlador {
 	/**
 	 * Método responsável por controlar a exibição dos dados de partidas
 	 */
-	// TODO (funciona mas está feio DEMAIS)
+	// TODO (funciona mas está feio DEMAIS!!)
 	private void controlarExibicaoPartidas() {
 
 		List<DadosPartida> listaPartidas = manipuladorArquivo
