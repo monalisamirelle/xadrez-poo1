@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.cln.cdp;
 public class Escolha {
 	
 	/**
-	 * Trabalha com os princ�pios do algoritmo Minimax
+	 * Trabalha com os princípios do algoritmo Minimax
 	 * @param no
 	 */
 	public void maxMin(NoArvore no) {
@@ -22,7 +22,7 @@ public class Escolha {
 	}
 	
 	/**
-	 * Trabalha com os princ�pios da poda alfa beta
+	 * Trabalha com os princípios da poda alfa beta
 	 * @param no
 	 * @return
 	 */

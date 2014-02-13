@@ -72,10 +72,18 @@ public class Peao extends Peca {
 	 * @param tabuleiro
 	 * @return
 	 */
-	// TODO não está sendo utilizado, mas pode ser útil para encontrar peças com en passant
-	public boolean andouDuasCasas(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) {
+	private boolean andouDuasCasas(Posicao origem, Posicao destino) {
 		return this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 2;
+	}
+
+	/**
+	 * Método que verifica se o peão está en estado de receber en passant
+	 * 
+	 * @param jogada
+	 */
+	public void verificaEnPassant(Jogada jogada) {
+		if (andouDuasCasas(jogada.getOrigem(), jogada.getDestino()))
+			this.setPodeEnPassant(true);
 	}
 
 	public boolean isPodeEnPassant() {

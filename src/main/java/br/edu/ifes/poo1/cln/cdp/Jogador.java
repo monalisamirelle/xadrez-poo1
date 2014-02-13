@@ -45,7 +45,8 @@ public abstract class Jogador implements Serializable {
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	// TODO MÉTODO NÃO FAZ TUDO O QUE DEVERIA FAZER!
+	// TODO MÉTODO NÃO FAZ TUDO O QUE DEVERIA FAZER (dê uma olhada em
+	// TipoJogada)!
 	public void executarJogada(Jogada jogada) throws JogadaInvalidaException,
 			CasaOcupadaException {
 		// Se for um roque menor, o executa.
@@ -148,6 +149,12 @@ public abstract class Jogador implements Serializable {
 		// Move a peça para o destino.
 		Peca pecaRetirada = tabuleiro.retirarPeca(jogada.getOrigem());
 		pecaRetirada.setJaMoveu(); // Marca a peça como já movida.
+		// Se peça for um peão
+		if (pecaRetirada.getTipoPeca() == TipoPeca.PEAO) {
+			Peao peao = (Peao) pecaRetirada;
+			peao.verificaEnPassant(jogada);
+		}
+
 		try {
 			tabuleiro.colocarPeca(jogada.getDestino(), pecaRetirada);
 		} catch (CasaOcupadaException e) {
@@ -242,29 +249,5 @@ public abstract class Jogador implements Serializable {
 
 	public TipoJogador getTipoJogador() {
 		return this.tipoJogador;
-	}
-
-	/**
-	 * Método que recebe dados de um jogador em forma de string (e a cor do
-	 * jogador) e cria o jogador. Método sendo utilizado para a criação de um
-	 * jogador com base em um arquivo
-	 * 
-	 * @param nome
-	 * @param dados
-	 * @param corJogador
-	 * @return
-	 */
-	public static Jogador manipulaDadosJogador(String nome, String dados,
-			TipoCorJogador corJogador) {
-		String[] s = dados.split(" ");
-		Jogador jogador;
-		if (s[0].equals("PESSOA"))
-			jogador = new Pessoa(nome, corJogador);
-		else if (s[0].equals("IARANDOMICA"))
-			jogador = new IARandomica(nome, corJogador);
-		else
-			jogador = new IAElaborada(nome, corJogador, Integer.parseInt(s[1]),
-					Integer.parseInt(s[2]), Boolean.parseBoolean(s[3]));
-		return jogador;
 	}
 }

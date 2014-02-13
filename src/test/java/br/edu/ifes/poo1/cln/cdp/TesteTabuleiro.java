@@ -372,4 +372,5 @@ public class TesteTabuleiro {
 		tabuleiro.colocarPeca(new Posicao(7, 4), torrePreta);
 		Assert.assertNotNull(tabuleiro.recomendaJogada(TipoCorJogador.PRETO));
 	}
+	
 }

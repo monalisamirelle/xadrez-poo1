@@ -189,7 +189,6 @@ public class AplJogo implements Serializable {
 			finalizarPartida(getJogadorTurnoAtual(), false);
 			return;
 		}
-		this.trocarTurno();
 	}
 
 	/**

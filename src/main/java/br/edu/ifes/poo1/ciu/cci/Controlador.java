@@ -200,6 +200,11 @@ public class Controlador {
 	 * @throws CloneNotSupportedException
 	 */
 	// TODO acho que aqui entra "pausar/desistir/etc"
+	// FIXME Oferecer ao jogador brancas e pretas INVERTENDO O TABULEIRO
+	// prejudica na lógica do peão, en passant e, provavelmente, promoção. Seria
+	// mesmo, considerando a falta de tempo, interessante inverter o tabuleiro
+	// ou apenas deixar como está para o jogador jogar? (não inverte e ele pode
+	// andar com pretas seguindo a lógica já criada)
 	private void controlarPartida(AplJogo apl) throws CasaOcupadaException,
 			JogadaInvalidaException, InterruptedException {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
@@ -219,13 +224,13 @@ public class Controlador {
 			// Retira a mensagem de aviso.
 			aviso = "";
 
+			// Máquina executa uma jogada
 			Jogada jogada;
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
 				// Pede o movimento do jogador.
 				jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
 				// Executa o movimento do jogador.
 				jogada = Interpretador.interpretarJogada(jogadaCrua);
-
 			} else {
 				Maquina maquina = (Maquina) apl.getJogadorTurnoAtual();
 				jogada = maquina.escolherJogada(apl.getTabuleiro());
@@ -233,6 +238,9 @@ public class Controlador {
 
 			try {
 				apl.executarJogadaTurno(jogada);
+				apl.trocarTurno();
+				apl.getTabuleiro().resetaPodeEnPassant(
+						apl.getJogadorTurnoAtual().getCor());
 			} catch (JogadaInvalidaException e) {
 				// Prepara um aviso para ser exibido na tela quando ela
 				// atualizar.
@@ -245,6 +253,41 @@ public class Controlador {
 
 		// Encerra a partida.
 		encerrarPartida(apl);
+	}
+
+	/**
+	 * Términa a partida exibindo um cumprimento aos jogadores.
+	 * 
+	 * @param apljogo
+	 *            Apl que em que a partida encerrou.
+	 */
+	// TODO adequar
+	private void encerrarPartida(AplJogo apljogo) {
+		// Após o fim do jogo, pegamos o vencedor, atualizamos o
+		// tabuleiro mais uma vez e comprimentamos o ganhador.
+		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(),
+				apljogo.getPretas());
+		TipoSituacaoPartida motivoFim = apljogo.getMotivoDeFinalizacao();
+		// Vê o fim da partida para fazer o encerramento de forma adequada.
+		switch (motivoFim) {
+		// Se houve desistência, ou vitória, houve um ganhador.
+		case VITORIA:
+		case DESISTENCIA:
+			Jogador vencedor = apljogo.getVencedor();
+			cli.fechamentoDaPartida("Vitória para o jogador: "
+					+ vencedor.getNome());
+			break;
+		// A partida terminou em um empate.
+		case EMPATE:
+			cli.fechamentoDaPartida("A partida terminou em um empate.");
+			break;
+		// A partida foi pausada
+		case PAUSA:
+			cli.fechamentoDaPartida("Jogo foi pausado.");
+			break;
+		default:
+			break;
+		}
 	}
 
 	/**
@@ -271,40 +314,6 @@ public class Controlador {
 			case "VOLTAR":
 				break;
 			}
-		}
-	}
-
-	/**
-	 * Términa a partida exibindo um cumprimento aos jogadores.
-	 * 
-	 * @param apljogo
-	 *            Apl que em que a partida encerrou.
-	 */
-	private void encerrarPartida(AplJogo apljogo) {
-		// Após o fim do jogo, pegamos o vencedor, atualizamos o
-		// tabuleiro mais uma vez e comprimentamos o ganhador.
-		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(),
-				apljogo.getPretas());
-		TipoSituacaoPartida motivoFim = apljogo.getMotivoDeFinalizacao();
-		// Vê o fim da partida para fazer o encerramento de forma adequada.
-		switch (motivoFim) {
-		// Se houve desistência, ou vitória, houve um ganhador.
-		case VITORIA:
-		case DESISTENCIA:
-			Jogador vencedor = apljogo.getVencedor();
-			cli.fechamentoDaPartida("Vitória para o jogador: "
-					+ vencedor.getNome());
-			break;
-		// A partida terminou em um empate.
-		case EMPATE:
-			cli.fechamentoDaPartida("A partida terminou em um empate.");
-			break;
-		// A partida foi pausada
-		case PAUSA:
-			cli.fechamentoDaPartida("Jogo foi pausado.");
-			break;
-		default:
-			break;
 		}
 	}
 }

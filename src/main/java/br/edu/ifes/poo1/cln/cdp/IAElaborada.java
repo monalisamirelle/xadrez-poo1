@@ -83,31 +83,37 @@ public class IAElaborada extends Maquina {
 	 * @throws JogadaInvalidaException
 	 * @throws InterruptedException
 	 */
+	// FIXME concurrent Modification Exception !!!!
 	public boolean criaCamada() throws CasaOcupadaException,
-			JogadaInvalidaException,
-			InterruptedException {
+			JogadaInvalidaException, InterruptedException {
+
 		// Construa as partes
-		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 3,
+		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 4,
 				listaNos);
-		GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 3,
-				(int) listaNos.size() * 2 / 3, listaNos);
-		GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 3,
+		GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 4,
+				(int) listaNos.size() * 2 / 4, listaNos);
+		GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 4,
+				(int) listaNos.size() * 3 / 4, listaNos);
+		GeraCamada parte4 = new GeraCamada((int) listaNos.size() * 3 / 4,
 				listaNos.size(), listaNos);
 
 		// Construa as threads
 		Thread t1 = new Thread(parte1);
 		Thread t2 = new Thread(parte2);
 		Thread t3 = new Thread(parte3);
+		Thread t4 = new Thread(parte4);
 
 		// Inicia as threads
 		t1.start();
 		t2.start();
 		t3.start();
+		t4.start();
 
 		// Enquanto as threads estão rodando
 		while (t1.getState() == State.RUNNABLE
 				|| t2.getState() == State.RUNNABLE
-				|| t3.getState() == State.RUNNABLE) {
+				|| t3.getState() == State.RUNNABLE
+				|| t4.getState() == State.RUNNABLE) {
 			long fim = System.currentTimeMillis();
 			// Se o tempo máximo for alcançado
 			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
@@ -115,6 +121,7 @@ public class IAElaborada extends Maquina {
 				t1.interrupt();
 				t2.interrupt();
 				t3.interrupt();
+				t4.interrupt();
 				return true;
 				// TODO poderia haver um else que só permitisse esse loop a cada
 				// um segundo
@@ -125,6 +132,7 @@ public class IAElaborada extends Maquina {
 		listaNos = parte1.getNovaListaNos();
 		listaNos.addAll(parte2.getNovaListaNos());
 		listaNos.addAll(parte3.getNovaListaNos());
+		listaNos.addAll(parte4.getNovaListaNos());
 		return false;
 	}
 
@@ -191,8 +199,6 @@ public class IAElaborada extends Maquina {
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
-					System.out.println(raiz.getListaAdjacencia().get(indice)
-							.getValor());
 					return raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
 				}

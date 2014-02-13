@@ -36,15 +36,6 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	}
 
 	/**
-	 * Método construtor de um clone de tabuleiro
-	 * 
-	 * @param clone
-	 */
-	public Tabuleiro(Peca[][] clone) {
-		this.pecas = clone;
-	}
-
-	/**
 	 * Inicia um tabuleiro padrão de xadrez, com as peças já posicionadas e com
 	 * suas referências para os jogadores corretos.
 	 * 
@@ -598,10 +589,22 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
 	 */
+	// FIXME this.espiarPeca ou tabuleiroNovo.espiarPeca ?
 	public List<Estado> proximosEstadosPossiveis(TipoCorJogador corJogador)
 			throws CasaOcupadaException, JogadaInvalidaException {
-		// Primeiramente, reseta o estado de en passant do jogador
-		this.resetaPodeEnPassant(corJogador);
+
+		// Primeiramente, cria uma cópia do tabuleiro para não atrapalhar o
+		// tabuleiro atual
+		Tabuleiro copiaTabuleiro = this.tabuleiroClonado();
+
+		// Em seguida, reseta o estado de en passant do jogador
+		copiaTabuleiro.resetaPodeEnPassant(corJogador);
+
+//		System.out.println("Tabuleiro original");
+//		System.out.println(this.toString());
+//
+//		System.out.println("Tabuleiro copia");
+//		System.out.println(copiaTabuleiro.toString());
 
 		List<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
 
@@ -611,8 +614,8 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 		// Para cada jogada realizada pela peça, gere um novo
 		// tabuleiro e or armazene na lista de tabuleiros
 		for (Jogada jogada : possiveisJogadas) {
-			Peca[][] pecasAtuais = this.copiaPecas();
-			Tabuleiro tabuleiroNovo = new Tabuleiro(pecasAtuais);
+			Tabuleiro tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
+
 			// Verifica o tipo de jogada e gera o tabuleiro correto
 			switch (jogada.getTipoJogada()) {
 			case ANDAR:
@@ -831,12 +834,21 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * 
 	 * @return uma cópia da peça
 	 */
-	private Peca[][] copiaPecas() {
-		Peca[][] copiaPeca = new Peca[8][8];
-		for (int coluna = COLUNAINFERIOR - 1; coluna <= COLUNASUPERIOR - 1; coluna++)
-			for (int linha = LINHAINFERIOR - 1; linha <= LINHASUPERIOR - 1; linha++)
-				copiaPeca[coluna][linha] = this.pecas[coluna][linha];
-		return copiaPeca;
+	public Tabuleiro tabuleiroClonado() {
+		Tabuleiro novoTabuleiro = new Tabuleiro();
+		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++)
+			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++)
+				if (this.espiarPeca(new Posicao(coluna, linha)) != null) {
+					try {
+						novoTabuleiro.colocarPeca(
+								new Posicao(coluna, linha),
+								(Peca) this.espiarPeca(
+										new Posicao(coluna, linha)).clone());
+					} catch (CasaOcupadaException e) {
+						System.out.println("Já existe uma peça (impossível)");
+					}
+				}
+		return novoTabuleiro;
 	}
 
 	/**
