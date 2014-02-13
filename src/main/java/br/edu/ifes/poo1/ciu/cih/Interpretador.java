@@ -22,7 +22,7 @@ public class Interpretador {
 	 *             uma jogada válida.
 	 */
 	// TODO acho que aqui entra
-	// "PAUSA/DESISTE/EMPATE/SALVAR/COMANDOS INESPERADOS"
+	// Não deveria retornar apenas jogada, deveria retornar também ações "PAUSA/DESISTE/EMPATE/SALVAR"
 	public static Jogada interpretarJogada(String jogada)
 			throws JogadaInvalidaException {
 		// Coloca tudo em maíusculo para evitar que algumas jogadas não sejam
