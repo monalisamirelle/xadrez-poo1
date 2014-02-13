@@ -183,7 +183,7 @@ public abstract class Cli {
 	 *            Mensagem a ser exibida para o usuário.
 	 */
 	public void exibirAlerta(String mensagem) {
-		io.imprimirLinha("[!] " + mensagem);
+		io.imprimirLinha("[!] " + mensagem+"\n");
 	}
 
 	/**

@@ -21,6 +21,8 @@ public class Interpretador {
 	 *             Lançada se a entrada do usuário não puder ser convertida para
 	 *             uma jogada válida.
 	 */
+	// TODO acho que aqui entra
+	// "PAUSA/DESISTE/EMPATE/SALVAR/COMANDOS INESPERADOS"
 	public static Jogada interpretarJogada(String jogada)
 			throws JogadaInvalidaException {
 		// Coloca tudo em maíusculo para evitar que algumas jogadas não sejam
