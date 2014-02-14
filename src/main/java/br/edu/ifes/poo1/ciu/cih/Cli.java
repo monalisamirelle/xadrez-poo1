@@ -1,5 +1,8 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
@@ -227,11 +230,25 @@ public abstract class Cli {
 	 * @param dadosPartidas
 	 */
 	public void exibirDadosPartidas(int indice, DadosPartida dadosPartida) {
-		io.imprimirLinha(indice + "..." + dadosPartida.getDataInicioPartida()
-				+ "..." + dadosPartida.getDataTerminoPartida() + "..."
+		io.imprimirLinha(indice + "..."
+				+ manipulaData(dadosPartida.getDataInicioPartida()) + "..."
+				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
 				+ dadosPartida.getJogo().getJogadorBrancas().getNome() + "..."
 				+ dadosPartida.getJogo().getJogadorPretas().getNome() + "..."
 				+ dadosPartida.getJogo().getMotivoDeFinalizacao());
+	}
+
+	/**
+	 * Manipula uma data para transformá-la em uma String capaz de ser
+	 * compreendida
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private String manipulaData(GregorianCalendar data) {
+		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy"
+				+ " (" + "hh:mm:ss" + ")");
+		return dataFormatada.format(data.getTimeInMillis());
 	}
 
 	/** Pega um índice para apagar uma partida */

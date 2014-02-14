@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.cln.cgt;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
@@ -21,13 +21,13 @@ public class AplJogo implements Serializable {
 	private Jogador brancas;
 
 	/** Jogador que controla as peças pretas. */
-private Jogador pretas;
+	private Jogador pretas;
 
 	/** Tabuleiro do jogo. */
-private Tabuleiro tabuleiro;
+	private Tabuleiro tabuleiro;
 
 	/** Indica de quem é a vez de realizar a próxima jogada */
-private TipoCorJogador turno;
+	private TipoCorJogador turno;
 
 	/** Indica se o jogo já acabou (true). Ou se está em andamento (false). */
 	private boolean acabouJogo = false;
@@ -36,8 +36,11 @@ private TipoCorJogador turno;
 	private Jogador vencedor;
 
 	/** Captura a data de criação de uma partida */
-	private String dataCriacao;
-	
+	private GregorianCalendar dataCriacao;
+
+	/** Captura se a partida, acontecendo em determinado momento, finalizou */
+	private boolean sairPartida = false;
+
 	/** Indica o motivo pelo qual a partida terminou. */
 	private TipoSituacaoPartida motivoDeFinalizacao;
 
@@ -48,10 +51,10 @@ private TipoCorJogador turno;
 	 * @param pretas
 	 */
 	public AplJogo(Jogador brancas, Jogador pretas) {
-		
+
 		// Captura a data de criação do jogo
-		this.dataCriacao = Calendar.getInstance().getTime().toString();
-		
+		this.dataCriacao = new GregorianCalendar();
+
 		// Pega os jogadores.
 		this.brancas = brancas;
 		this.pretas = pretas;
@@ -194,7 +197,8 @@ private TipoCorJogador turno;
 		// Vê se o jogador conseguiu dar um Xeque Mate no oponente. E finaliza a
 		// partida, caso tenha conseguido.
 		if (tabuleiro.verificarXequeMate(this.getOutraCor(turno))) {
-			finalizarPartida(getJogadorTurnoAtual(), TipoSituacaoPartida.VITORIA);
+			finalizarPartida(getJogadorTurnoAtual(),
+					TipoSituacaoPartida.VITORIA);
 			return;
 		}
 	}
@@ -292,7 +296,7 @@ private TipoCorJogador turno;
 		default:
 			break;
 		}
-		// TODO: Salvar o histórico da partida.
+		this.sairPartida = true;
 	}
 
 	/**
@@ -310,7 +314,7 @@ private TipoCorJogador turno;
 		default:
 			break;
 		}
-		// TODO: Salvar o histórico da partida.
+		this.sairPartida = true;
 	}
 
 	/**
@@ -321,13 +325,22 @@ private TipoCorJogador turno;
 	public TipoSituacaoPartida getMotivoDeFinalizacao() {
 		return this.motivoDeFinalizacao;
 	}
-	
+
 	/**
 	 * Retorna a data de criação de uma partida em formato de string
+	 * 
 	 * @return
 	 */
-	public String getDataCriacao(){
+	public GregorianCalendar getDataCriacao() {
 		return this.dataCriacao;
+	}
+
+	public boolean isSairPartida() {
+		return sairPartida;
+	}
+
+	public void setSairPartida() {
+		this.sairPartida = true;
 	}
 
 }

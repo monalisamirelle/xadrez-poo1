@@ -257,11 +257,13 @@ public class Controlador {
 		}
 	}
 
+	// TODO (precisa da situação da partida se todas se encontram pausadas aqui?)
 	private void exibirPartidasAndamento(List<DadosPartida> listaPartidas) {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogos:\n");
-		cli.imprimirLinha("Índice" + "..." + "Data" + "..." + "Jogador Branco"
-				+ "..." + "Jogador Preto" + "..." + "Situação da Partida\n");
+		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
+				+ "..." + "Jogador Branco" + "..." + "Jogador Preto" + "..."
+				+ "Situação da Partida\n");
 		// Exibe a lista de jogos
 		int indice = 0;
 		for (DadosPartida partida : listaPartidas)
@@ -287,7 +289,7 @@ public class Controlador {
 		// dos jogadores e exibindo o estado do tabuleiro.
 		String acaoJogador;
 		String aviso = "";
-		while (!apl.getAcabouJogo()) {
+		while (!apl.isSairPartida()) {
 			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
 			// necessário.
 			if (aviso == "")
@@ -309,8 +311,6 @@ public class Controlador {
 				// TODO conferir
 				switch (acaoJogador) {
 				case "PONTOS":
-					// Imprime as peças capturadas pelos jogadores e suas
-					// pontuações.
 					cli.imprimirPontuacoes(apl.getJogadorBrancas(),
 							apl.getJogadorPretas());
 					cli.imprimirLinha("");
@@ -319,10 +319,14 @@ public class Controlador {
 					apl.finalizarPartida(apl.getJogadorTurnoAtual(),
 							TipoSituacaoPartida.DESISTENCIA);
 					encerrarPartida(apl);
+					manipuladorArquivo.gravarPartida(apl);
 					break;
 				case "EMPATE":
-					apl.finalizarPartida(TipoSituacaoPartida.EMPATE);
-					encerrarPartida(apl);
+					if (requisitarEmpate(apl)) {
+						apl.finalizarPartida(TipoSituacaoPartida.EMPATE);
+						encerrarPartida(apl);
+						manipuladorArquivo.gravarPartida(apl);
+					}
 					break;
 				case "SALVAR":
 					manipuladorArquivo.gravarPartida(apl);
@@ -330,6 +334,7 @@ public class Controlador {
 				case "SAIR":
 					apl.finalizarPartida(TipoSituacaoPartida.PAUSA);
 					encerrarPartida(apl);
+					manipuladorArquivo.gravarPartida(apl);
 					break;
 				default:
 					// Executa o movimento do jogador.
@@ -373,12 +378,45 @@ public class Controlador {
 					cli.imprimirLinha("Casa se encontra ocupada");
 				}
 			}
-			// E continua o ritmo do jogo.
-			continue;
 		}
 
 		// Encerra a partida.
 		encerrarPartida(apl);
+	}
+
+	/**
+	 * Realiza uma requisição de empate a outro jogador. O atributo
+	 * "númeroEscolha" foi colocado propositalmente para fazer com que qualquer
+	 * coisa não seja considerada como false
+	 * 
+	 * @param solicitador
+	 * @return
+	 */
+	private boolean requisitarEmpate(AplJogo apl) {
+		// Se for uma partida multiplayer
+		if (apl.getJogadorBrancas().getTipoJogador() == TipoJogador.PESSOA
+				&& apl.getJogadorPretas().getTipoJogador() == TipoJogador.PESSOA) {
+			int numeroEscolha = -1;
+			do {
+				cli.imprimirLinha(apl.getJogadorTurnoAtual().getNome()
+						+ " está requisitando empate. Deseja aceitar?");
+				cli.imprimirLinha("0. Não");
+				cli.imprimirLinha("1. Sim");
+				String resposta = cli.pedir("Resposta: ");
+				try {
+					numeroEscolha = Integer.valueOf(resposta);
+				} catch (Exception e) {
+					cli.exibirAlerta("Erro, escolha um número!");
+				}
+				if (numeroEscolha != 0 && numeroEscolha != 1)
+					cli.exibirAlerta("Opção inválida!");
+			} while (numeroEscolha != 0 && numeroEscolha != 1);
+			if (numeroEscolha == 0)
+				return false;
+			return true;
+			// Se algum jogador for uma máquina, aceita empate
+		} else
+			return true;
 	}
 
 	/**

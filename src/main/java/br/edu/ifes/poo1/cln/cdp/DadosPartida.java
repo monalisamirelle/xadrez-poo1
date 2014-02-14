@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
 
@@ -11,24 +11,24 @@ public class DadosPartida implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private AplJogo jogo;
-	private String dataCriacaoPartida;
-	private String dataRegistroPartida;
+	private GregorianCalendar dataCriacaoPartida;
+	private GregorianCalendar dataRegistroPartida;
 
 	public DadosPartida(AplJogo apl) {
 		this.jogo = apl;
 		this.dataCriacaoPartida = apl.getDataCriacao();
-		this.dataRegistroPartida = Calendar.getInstance().getTime().toString();
+		this.dataRegistroPartida = new GregorianCalendar();
 	}
 
 	public AplJogo getJogo() {
 		return jogo;
 	}
 
-	public String getDataInicioPartida() {
+	public GregorianCalendar getDataInicioPartida() {
 		return dataCriacaoPartida;
 	}
 
-	public String getDataTerminoPartida() {
+	public GregorianCalendar getDataTerminoPartida() {
 		return dataRegistroPartida;
 	}
 

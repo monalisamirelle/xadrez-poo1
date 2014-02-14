@@ -58,7 +58,6 @@ public class Arquivo {
 			oi = new ObjectInputStream(new FileInputStream(ARQUIVOPARTIDAS));
 			listaPartidas = (ArrayList<DadosPartida>) oi.readObject();
 		} catch (IOException e) {
-			System.out.println("Não há partidas salvas\n");
 			criaArquivo(ARQUIVOPARTIDAS);
 			listaPartidas = new ArrayList<DadosPartida>();
 		}
