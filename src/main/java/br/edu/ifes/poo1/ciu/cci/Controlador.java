@@ -38,9 +38,6 @@ import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
  * modelo. Também atualiza as informações que estão disponíveis na tela do
  * jogador.
  */
-// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS!!
-// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS!!
-// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS!!
 public class Controlador {
 	private Cli cli;
 	private ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
@@ -86,7 +83,6 @@ public class Controlador {
 		// Inicia o menu deixando a escolha para o usuário do que fazer.
 		ItemMenu itemEscolhido = menuPrincipal.insistirPorEntradaValida(cli
 				.getIo());
-
 		// Só termina o laço quando o jogador selecionar a opção de sair no menu
 		// principal.
 		while (!itemEscolhido.getNome().contentEquals("SAIR")) {
@@ -599,6 +595,7 @@ public class Controlador {
 	 * Método responsável por controlar a exibição dos dados de partidas
 	 */
 	// TODO está para ser depreciado
+	@SuppressWarnings("unused")
 	private void controlarExibicaoPartidas() {
 
 		List<DadosPartida> listaPartidas = manipuladorArquivo
