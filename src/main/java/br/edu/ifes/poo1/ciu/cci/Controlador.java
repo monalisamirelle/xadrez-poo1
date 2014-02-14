@@ -478,10 +478,12 @@ public class Controlador {
 			switch (itemEscolhido.getNome()) {
 			// Se escolher visualizar as partidas.
 			case "PARTIDAS":
+				// TODO concluir
 				System.out.println("Implementar");
 				break;
 			// Se escolher visualizar os jogadores.
 			case "JOGADORES":
+				// TODO concluir
 				System.out.println("Implementar");
 				break;
 			case "RETORNAR":
