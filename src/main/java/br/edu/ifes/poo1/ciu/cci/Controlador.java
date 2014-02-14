@@ -38,7 +38,9 @@ import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
  * modelo. Também atualiza as informações que estão disponíveis na tela do
  * jogador.
  */
-// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS
+// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS!!
+// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS!!
+// FIXME BUGA SE INSERE ALGO DIFERENTE DE NÚMERO NOS MENUS!!
 public class Controlador {
 	private Cli cli;
 	private ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
@@ -451,8 +453,7 @@ public class Controlador {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogos:\n");
 		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
-				+ "..." + "Jogador Branco" + "..." + "Jogador Preto" + "..."
-				+ "Situação da Partida\n");
+				+ "..." + "Jogador Branco" + "..." + "Jogador Preto");
 		// Exibe a lista de jogos
 		int indice = 0;
 		for (DadosPartida partida : listaPartidas)

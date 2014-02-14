@@ -234,8 +234,7 @@ public abstract class Cli {
 				+ manipulaData(dadosPartida.getDataInicioPartida()) + "..."
 				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
 				+ dadosPartida.getJogo().getJogadorBrancas().getNome() + "..."
-				+ dadosPartida.getJogo().getJogadorPretas().getNome() + "..."
-				+ dadosPartida.getJogo().getMotivoDeFinalizacao());
+				+ dadosPartida.getJogo().getJogadorPretas().getNome());
 	}
 
 	/**
