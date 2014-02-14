@@ -589,9 +589,7 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
 	 */
-	// FIXME this.espiarPeca ou tabuleiroNovo.espiarPeca ?
-	public List<Estado> proximosEstadosPossiveis(TipoCorJogador corJogador)
-			throws CasaOcupadaException, JogadaInvalidaException {
+	public List<Estado> proximosEstadosPossiveis(TipoCorJogador corJogador) throws CasaOcupadaException {
 
 		// Primeiramente, cria uma cópia do tabuleiro para não atrapalhar o
 		// tabuleiro atual
@@ -599,12 +597,6 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 
 		// Em seguida, reseta o estado de en passant do jogador
 		copiaTabuleiro.resetaPodeEnPassant(corJogador);
-
-//		System.out.println("Tabuleiro original");
-//		System.out.println(this.toString());
-//
-//		System.out.println("Tabuleiro copia");
-//		System.out.println(copiaTabuleiro.toString());
 
 		List<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
 
@@ -766,8 +758,7 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	public List<Jogada> geraJogadasPossiveis(TipoCorJogador corJogador)
-			throws JogadaInvalidaException, CasaOcupadaException {
+	public List<Jogada> geraJogadasPossiveis(TipoCorJogador corJogador) throws CasaOcupadaException {
 		// Contém todas as jogadas que podem ser realizadas por um jogador
 		List<Jogada> possiveisJogadas = new ArrayList<Jogada>();
 		// Contém todas as jogadas que podem ser realizadas por uma peça
@@ -789,11 +780,20 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 						possiveisJogadas.add(jogada);
 
 				}
+		// TODO testar
 		// Analise de roque menor e roque maior (verifica se é possível)
 		if (this.ehRoqueMenor(corJogador) == true)
-			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MENOR));
+			try {
+				possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MENOR));
+			} catch (JogadaInvalidaException e) {
+				System.out.println(e);
+			}
 		if (this.ehRoqueMaior(corJogador) == true)
-			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MAIOR));
+			try {
+				possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MAIOR));
+			} catch (JogadaInvalidaException e) {
+				System.out.println(e);
+			}
 		return possiveisJogadas;
 	}
 
@@ -860,11 +860,16 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	public Jogada recomendaJogada(TipoCorJogador corJogador)
-			throws JogadaInvalidaException, CasaOcupadaException {
+	public Jogada recomendaJogada(TipoCorJogador corJogador) {
 		// Criamos uma lista de estados possíveis
-		List<Estado> estadosPossiveis = this
-				.proximosEstadosPossiveis(corJogador);
+		List<Estado> estadosPossiveis = null;
+		// TODO testar
+		try {
+			estadosPossiveis = this
+					.proximosEstadosPossiveis(corJogador);
+		} catch (CasaOcupadaException e) {
+			System.out.println(e);
+		}
 		Random random = new Random();
 		if (!estadosPossiveis.isEmpty()) {
 			return estadosPossiveis

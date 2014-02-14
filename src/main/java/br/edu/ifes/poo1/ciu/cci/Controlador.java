@@ -230,15 +230,11 @@ public class Controlador {
 	 * 
 	 * @param apl
 	 */
-	// FIXME Oferecer ao jogador brancas e pretas INVERTENDO O TABULEIRO
-	// prejudica na lógica do peão, en passant e, provavelmente, promoção. Seria
-	// mesmo, considerando a falta de tempo, interessante inverter o tabuleiro
-	// ou apenas deixar como está para o jogador jogar? (não inverte e ele pode
-	// andar com pretas seguindo a lógica já criada)
+	// FIXME Ao jogar SinglePlayer com peças pretas o tabuleiro está invertendo.
+	// NÃO INVERTA!!!
 	private void controlarPartida(AplJogo apl) {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
-		String acaoJogador;
 		String aviso = "";
 		while (!apl.isSairPartida()) {
 			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
@@ -249,72 +245,15 @@ public class Controlador {
 			else
 				cli.atualizar(apl.getTabuleiro(), apl.getJogadorBrancas(),
 						apl.getJogadorPretas(), aviso);
-
 			// Retira a mensagem de aviso.
 			aviso = "";
-
-			// Máquina executa uma jogada
 			Jogada jogada = null;
+			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
-				// Pede o movimento do jogador.
-				acaoJogador = cli.lerAcaoJogador(apl.getJogadorTurnoAtual());
-				acaoJogador = acaoJogador.toUpperCase();
-				// TODO conferir
-				switch (acaoJogador) {
-				case "PONTOS":
-					cli.imprimirPontuacoes(apl.getJogadorBrancas(),
-							apl.getJogadorPretas());
-					cli.imprimirLinha("");
-					break;
-				case "DESISTIR":
-					apl.finalizarPartida(apl.getJogadorTurnoAtual(),
-							TipoSituacaoPartida.DESISTENCIA);
-					encerrarPartida(apl);
-					manipuladorArquivo.gravarPartida(apl);
-					break;
-				case "EMPATE":
-					if (requisitarEmpate(apl)) {
-						apl.finalizarPartida(TipoSituacaoPartida.EMPATE);
-						encerrarPartida(apl);
-						manipuladorArquivo.gravarPartida(apl);
-					}
-					break;
-				case "SALVAR":
-					manipuladorArquivo.gravarPartida(apl);
-					break;
-				case "SAIR":
-					apl.finalizarPartida(TipoSituacaoPartida.PAUSA);
-					encerrarPartida(apl);
-					manipuladorArquivo.gravarPartida(apl);
-					break;
-				default:
-					// Executa o movimento do jogador.
-					try {
-						jogada = Interpretador.interpretarJogada(acaoJogador);
-					} catch (JogadaInvalidaException e) {
-						cli.exibirAlerta("Comando desconhecido");
-					}
-					break;
-				}
+				jogada = acaoRealizadaPessoa(apl);
+				// Máquina executa uma jogada
 			} else {
-				Maquina maquina = (Maquina) apl.getJogadorTurnoAtual();
-				try {
-					jogada = maquina.escolherJogada(apl.getTabuleiro());
-					// Forma de escapar caso máquina não retorne nenhuma jogada
-					if (jogada == null) {
-						Maquina maquinaApoio = new IARandomica("",
-								maquina.getCor());
-						jogada = maquinaApoio
-								.escolherJogada(apl.getTabuleiro());
-						System.out.println("RETORNOU NULL");
-					}
-				} catch (JogadaInvalidaException e) {
-					cli.exibirAlerta("Máquina apresentou problemas ao tentar realizar jogada");
-				} catch (CasaOcupadaException e) {
-					cli.imprimirLinha("Casa se encontra ocupada");
-				} catch (InterruptedException e) {
-					cli.imprimirLinha("Jogada interrompida");
-				}
+				jogada = acaoRealizadaMaquina(apl);
 			}
 
 			if (jogada != null) {
@@ -324,15 +263,109 @@ public class Controlador {
 					apl.getTabuleiro().resetaPodeEnPassant(
 							apl.getJogadorTurnoAtual().getCor());
 				} catch (JogadaInvalidaException e) {
-					cli.exibirAlerta("Comando desconhecido");
+					cli.exibirAlerta("Jogada inválida.");
 				} catch (CasaOcupadaException e) {
-					cli.imprimirLinha("Casa se encontra ocupada");
+					cli.imprimirLinha("Casa se encontra ocupada.");
 				}
 			}
 		}
 
 		// Encerra a partida.
 		encerrarPartida(apl);
+	}
+
+	/**
+	 * Método que captura a ação realizada por um jogador
+	 * 
+	 * @param apl
+	 * @return
+	 */
+	private Jogada acaoRealizadaPessoa(AplJogo apl) {
+		Pessoa pessoa = (Pessoa) apl.getJogadorTurnoAtual();
+		String acaoJogador;
+		// Pede o movimento do jogador.
+		acaoJogador = cli.lerAcaoJogador(apl.getJogadorTurnoAtual());
+		acaoJogador = acaoJogador.toUpperCase();
+		Jogada jogada = null;
+		switch (acaoJogador) {
+		case "PONTOS":
+			cli.imprimirPontuacoes(apl.getJogadorBrancas(),
+					apl.getJogadorPretas());
+			cli.imprimirLinha("");
+			break;
+		case "RECOMENDAR":
+			boolean podeRecomendar = pessoa.verificarRecomendacoesRealizadas();
+			if (podeRecomendar) {
+				Jogada recomendacao = apl.getTabuleiro().recomendaJogada(
+						apl.getJogadorTurnoAtual().getCor());
+				pessoa.setRecomendacoes();
+				cli.imprimirRecomendacao(pessoa.getRecomendacoes(),
+						recomendacao);
+			} else
+				cli.exibirAlerta("Você já realizou suas "
+						+ pessoa.getTOTALRECOMENDACOES() + " recomendações.");
+			break;
+		case "DESISTIR":
+			apl.finalizarPartida(apl.getJogadorTurnoAtual(),
+					TipoSituacaoPartida.DESISTENCIA);
+			encerrarPartida(apl);
+			manipuladorArquivo.gravarPartida(apl);
+			break;
+		case "EMPATE":
+			if (requisitarEmpate(apl)) {
+				apl.finalizarPartida(TipoSituacaoPartida.EMPATE);
+				encerrarPartida(apl);
+				manipuladorArquivo.gravarPartida(apl);
+			}
+			break;
+		case "SALVAR":
+			manipuladorArquivo.gravarPartida(apl);
+			break;
+		case "SAIR":
+			apl.finalizarPartida(TipoSituacaoPartida.PAUSA);
+			encerrarPartida(apl);
+			manipuladorArquivo.gravarPartida(apl);
+			break;
+		case "AJUDA":
+			cli.exibirComandos();
+			break;
+		default:
+			// Executa o movimento do jogador.
+			try {
+				jogada = Interpretador.interpretarJogada(acaoJogador);
+			} catch (JogadaInvalidaException e) {
+				cli.exibirAlerta("Comando desconhecido");
+			}
+			break;
+		}
+		return jogada;
+	}
+
+	/**
+	 * Método que captura a ação realizada por uma máquina
+	 * 
+	 * @param apl
+	 * @return
+	 */
+	private Jogada acaoRealizadaMaquina(AplJogo apl) {
+		Maquina maquina = (Maquina) apl.getJogadorTurnoAtual();
+		Jogada jogada = null;
+		try {
+			jogada = maquina.escolherJogada(apl.getTabuleiro());
+			// Forma de escapar caso máquina não retorne nenhuma jogada
+			if (jogada == null) {
+				Maquina maquinaApoio = new IARandomica("", maquina.getCor());
+				jogada = maquinaApoio.escolherJogada(apl.getTabuleiro());
+				System.out.println("RETORNOU NULL");
+			}
+		} catch (JogadaInvalidaException e) {
+			cli.exibirAlerta("Máquina apresentou problemas ao tentar realizar jogada");
+		} catch (CasaOcupadaException e) {
+			cli.imprimirLinha("Casa se encontra ocupada");
+		} catch (InterruptedException e) {
+			cli.imprimirLinha("Jogada interrompida");
+		}
+		return jogada;
 	}
 
 	/**
@@ -357,10 +390,10 @@ public class Controlador {
 				try {
 					numeroEscolha = Integer.valueOf(resposta);
 				} catch (Exception e) {
-					cli.exibirAlerta("Erro, escolha um número!");
+					cli.exibirAlerta("Erro, escolha um número.");
 				}
 				if (numeroEscolha != 0 && numeroEscolha != 1)
-					cli.exibirAlerta("Opção inválida!");
+					cli.exibirAlerta("Opção inválida.");
 			} while (numeroEscolha != 0 && numeroEscolha != 1);
 			if (numeroEscolha == 0)
 				return false;
@@ -407,7 +440,8 @@ public class Controlador {
 	/**
 	 * Método responsável por iniciar uma partida singleplayer ou multiplayer
 	 */
-	// TODO apagar entra aqui?
+	// TODO apagar entra aqui? se entrar, deveremos salvar estado ao "voltar"
+	// (ver método a ser depreciado no final da classe)
 	private void retornaPartida() {
 
 		// Cria uma lista somente com as partidas que não foram concluídas
@@ -437,7 +471,7 @@ public class Controlador {
 					controlarPartida(apl);
 					retornarMenu = true;
 				} catch (Exception e) {
-					cli.exibirAlerta("Nenhuma partida foi carregada!");
+					cli.exibirAlerta("Nenhuma partida foi carregada.");
 				}
 				break;
 			case "RETORNAR":
@@ -447,8 +481,11 @@ public class Controlador {
 		} while (!retornarMenu);
 	}
 
-	// TODO (precisa da situação da partida se todas se encontram pausadas
-	// aqui?)
+	/**
+	 * Método que exibe a as partidas pausadas
+	 * 
+	 * @param listaPartidas
+	 */
 	private void exibirPartidasAndamento(List<DadosPartida> listaPartidas) {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogos:\n");
@@ -509,7 +546,7 @@ public class Controlador {
 					indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
 					// Lança uma exception se não conseguir
 				} catch (Exception e) {
-					cli.exibirAlerta("Digite um número referente ao índice!");
+					cli.exibirAlerta("Digite um número referente ao índice.");
 				}
 			} while (indice == -2);
 			// Se for um índice válido
@@ -521,7 +558,7 @@ public class Controlador {
 				return null;
 			// Se for um índice inesperado
 			else
-				cli.exibirAlerta("O índice digitado não existe!");
+				cli.exibirAlerta("O índice digitado não existe.");
 		} while (indice < 0 || indice >= listaPartidas.size());
 		cli.imprimirLinha("");
 		return null;
@@ -542,7 +579,7 @@ public class Controlador {
 				indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
 				// Lança uma exception se não conseguir
 			} catch (Exception e) {
-				cli.exibirAlerta("Digite um número referente ao índice!");
+				cli.exibirAlerta("Digite um número referente ao índice.");
 			}
 			// Se for um índice válido
 			if (indice >= 0 & indice < listaPartidas.size())
@@ -552,7 +589,7 @@ public class Controlador {
 				cli.imprimirLinha("Retornando ao menu de partidas");
 			// Se for um índice inesperado
 			else
-				cli.exibirAlerta("O índice digitado não existe!");
+				cli.exibirAlerta("O índice digitado não existe.");
 		} while (indice < -1 || indice >= listaPartidas.size());
 		cli.imprimirLinha("");
 		return listaPartidas;

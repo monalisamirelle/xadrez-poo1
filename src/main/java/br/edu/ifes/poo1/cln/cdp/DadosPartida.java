@@ -5,7 +5,6 @@ import java.util.GregorianCalendar;
 
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
 
-// FIXME está para ser depreciado
 public class DadosPartida implements Serializable {
 	/**
 	 * 

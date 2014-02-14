@@ -10,9 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.ifes.poo1.cln.cdp.DadosPartida;
-
-public class Arquivo {
+public class Arquivo<T> {
 	private final String ARQUIVOPARTIDAS = "partidas.dat";
 
 	/**
@@ -20,7 +18,7 @@ public class Arquivo {
 	 * 
 	 * @param jogo
 	 */
-	public void escrevaPartidas(List<DadosPartida> listaPartidas) {
+	public void escrevaPartidas(List<T> listaPartidas) {
 		ObjectOutputStream oo = null;
 		try {
 			oo = new ObjectOutputStream(new FileOutputStream(ARQUIVOPARTIDAS));
@@ -50,16 +48,15 @@ public class Arquivo {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<DadosPartida> leiaJogos() throws ClassNotFoundException,
-			IOException {
+	public List<T> leiaJogos() throws ClassNotFoundException, IOException {
 		ObjectInputStream oi = null;
-		List<DadosPartida> listaPartidas;
+		List<T> listaPartidas;
 		try {
 			oi = new ObjectInputStream(new FileInputStream(ARQUIVOPARTIDAS));
-			listaPartidas = (ArrayList<DadosPartida>) oi.readObject();
+			listaPartidas = (ArrayList<T>) oi.readObject();
 		} catch (IOException e) {
 			criaArquivo(ARQUIVOPARTIDAS);
-			listaPartidas = new ArrayList<DadosPartida>();
+			listaPartidas = new ArrayList<T>();
 		}
 		if (oi != null)
 			oi.close();

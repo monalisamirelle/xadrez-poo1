@@ -7,7 +7,7 @@ import java.util.List;
 import br.edu.ifes.poo1.cgd.Arquivo;
 
 public class RankingGeral {
-	Arquivo arquivo = new Arquivo();
+	Arquivo<DadosPartida> arquivo = new Arquivo<DadosPartida>();
 
 	/**
 	 * Método que cria um rank com os vencedores

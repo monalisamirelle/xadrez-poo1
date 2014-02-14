@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
+import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
@@ -225,6 +226,19 @@ public abstract class Cli {
 	}
 
 	/**
+	 * Imprime uma recomendação a um jogador
+	 * 
+	 * @param jogada
+	 */
+	public void imprimirRecomendacao(int numeroRecomendacao, Jogada jogada) {
+		io.imprimirLinha(numeroRecomendacao+" - Recomendação:");
+		io.imprimirLinha("Saia da coluna " + jogada.getOrigem().getColuna()
+				+ " e linha " + jogada.getOrigem().getLinha()
+				+ " e vá para a coluna " + jogada.getDestino().getColuna()
+				+ " e linha " + jogada.getDestino().getLinha()+"\n");
+	}
+
+	/**
 	 * Informa na tela todos os dados de uma determinada partida
 	 * 
 	 * @param dadosPartidas
@@ -235,6 +249,22 @@ public abstract class Cli {
 				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
 				+ dadosPartida.getJogo().getJogadorBrancas().getNome() + "..."
 				+ dadosPartida.getJogo().getJogadorPretas().getNome());
+	}
+	
+	/**
+	 * Método que informa os comandos que podem ser realizados por um jogador
+	 */
+	public void exibirComandos(){
+		io.imprimirLinha("Lista de comandos:");
+		io.imprimirLinha("");
+		io.imprimirLinha("pontos -> Exibe a pontuação da partida");
+		io.imprimirLinha("recomendar -> Recomenda uma jogada ao jogador (máximo de 3 jogadas)");
+		io.imprimirLinha("salvar -> Salva o estado da partida");
+		io.imprimirLinha("empate -> Sugere empate ao jogador adversário");
+		io.imprimirLinha("desistir -> Desistir de uma partida (perde a partida)");
+		io.imprimirLinha("sair -> Sair de uma partida (não termina ela)");
+		io.imprimirLinha("ajuda -> Exibe os comandos possíveis");
+		io.imprimirLinha("");
 	}
 
 	/**

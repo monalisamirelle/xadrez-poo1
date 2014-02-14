@@ -10,7 +10,7 @@ import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 
 public class ManipuladorArquivo {
 
-	Arquivo arquivo = new Arquivo();
+	Arquivo<DadosPartida> arquivo = new Arquivo<DadosPartida>();
 
 	/**
 	 * 
