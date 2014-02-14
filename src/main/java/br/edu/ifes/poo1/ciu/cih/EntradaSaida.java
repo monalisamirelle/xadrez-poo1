@@ -21,7 +21,7 @@ public class EntradaSaida {
 	public String pedir(String solicitacao) {
 		System.out.println(solicitacao);
 		System.out.print(" >> ");
-		String resposta = s.next();
+		String resposta = s.nextLine();
 		System.out.println();
 
 		return resposta;

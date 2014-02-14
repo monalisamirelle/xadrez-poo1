@@ -14,12 +14,12 @@ public class MenuPrincipal extends Menu {
 			private static final long serialVersionUID = -2202065529317389240L;
 
 			{
-				add(new ItemMenu("Singleplayer",
-						"Iniciar uma nova partida contra o computador"));
-				add(new ItemMenu("Multiplayer",
-						"Iniciar uma nova partida contra outro jogador"));
-				add(new ItemMenu("Dados", "Dados das partidas anteriores"));
-				add(new ItemMenu("Sair", "Sair"));
+				add(new ItemMenu("PARTIDA",
+						"Iniciar uma nova partida"));
+				add(new ItemMenu("RETORNO",
+						"Retornar uma partida"));
+				add(new ItemMenu("DADOS", "Dados das partidas"));
+				add(new ItemMenu("SAIR", "Sair"));
 			}
 		});
 	}

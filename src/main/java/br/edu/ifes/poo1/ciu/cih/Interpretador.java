@@ -21,13 +21,8 @@ public class Interpretador {
 	 *             Lançada se a entrada do usuário não puder ser convertida para
 	 *             uma jogada válida.
 	 */
-	// TODO acho que aqui entra
-	// Não deveria retornar apenas jogada, deveria retornar também ações "PAUSA/DESISTE/EMPATE/SALVAR"
 	public static Jogada interpretarJogada(String jogada)
 			throws JogadaInvalidaException {
-		// Coloca tudo em maíusculo para evitar que algumas jogadas não sejam
-		// interpretadas por essa questão.
-		jogada = jogada.toUpperCase();
 
 		// Se for uma jogada do tipo Roque, já podemos retornar a jogada
 		// construída.

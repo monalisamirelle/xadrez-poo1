@@ -10,8 +10,10 @@ import br.edu.ifes.poo1.ciu.cih.Menu;
 import br.edu.ifes.poo1.ciu.cih.MenuAmbiente;
 import br.edu.ifes.poo1.ciu.cih.MenuCorJogador;
 import br.edu.ifes.poo1.ciu.cih.MenuDadosPartidas;
+import br.edu.ifes.poo1.ciu.cih.MenuInicioPartida;
 import br.edu.ifes.poo1.ciu.cih.MenuNivelMaquina;
 import br.edu.ifes.poo1.ciu.cih.MenuPrincipal;
+import br.edu.ifes.poo1.ciu.cih.MenuRetornarPartida;
 import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
@@ -87,24 +89,16 @@ public class Controlador {
 		while (!itemEscolhido.getNome().contentEquals("SAIR")) {
 			// Busca qual foi a escolha do jogador.
 			switch (itemEscolhido.getNome()) {
-
-			// Se o jogador tiver escolhido jogar o singleplayer.
-			case "SINGLEPLAYER":
-				AplJogo apl = prepararSingleplayer();
-				controlarPartida(apl);
+			case "PARTIDA":
+				iniciaPartida();
 				break;
-
-			// Se o jogador tiver escolhido o multiplayer.
-			case "MULTIPLAYER":
-				apl = prepararMultiplayer();
-				controlarPartida(apl);
+			case "RETORNO":
+				retornaPartida();
 				break;
-
 			// Se o jogador tiver escolhido ver os dados das partidas.
 			case "DADOS":
 				controlarExibicaoPartidas();
 				break;
-
 			default:
 				System.out.println("Esta opção não foi implementada ainda");
 				break;
@@ -116,6 +110,30 @@ public class Controlador {
 
 		// Se a execução chegou aqui, é porque o jogador optou por sair de todo
 		// o jogo.
+	}
+
+	/**
+	 * Método responsável por iniciar uma partida singleplayer ou multiplayer
+	 */
+	private void iniciaPartida() {
+		// Este é o item do menu que o jogador escolheu (escolherá).
+		Menu menuInicioPartida = new MenuInicioPartida();
+
+		// Inicia o menu deixando a escolha para o usuário do que fazer.
+		ItemMenu itemEscolhido = menuInicioPartida.insistirPorEntradaValida(cli
+				.getIo());
+		switch (itemEscolhido.getNome()) {
+		// Se o jogador tiver escolhido jogar o singleplayer.
+		case "SINGLEPLAYER":
+			AplJogo apl = prepararSingleplayer();
+			controlarPartida(apl);
+			break;
+		// Se o jogador tiver escolhido o multiplayer.
+		case "MULTIPLAYER":
+			apl = prepararMultiplayer();
+			controlarPartida(apl);
+			break;
+		}
 	}
 
 	/**
@@ -205,6 +223,56 @@ public class Controlador {
 	}
 
 	/**
+	 * Método responsável por iniciar uma partida singleplayer ou multiplayer
+	 */
+	// TODO apagar entra aqui?
+	private void retornaPartida() {
+
+		// Cria uma lista somente com as partidas que não foram concluídas
+		List<DadosPartida> listaPartidasPausadas = manipuladorArquivo
+				.criarListaPartidasPausadas();
+
+		// Exibe as partidas atuais
+		exibirPartidasAndamento(listaPartidasPausadas);
+
+		// Este é o item do menu que o jogador escolheu (escolherá).
+		Menu menuRetornarPartida = new MenuRetornarPartida();
+
+		// Inicia o menu deixando a escolha para o usuário do que fazer.
+		ItemMenu itemEscolhido = menuRetornarPartida
+				.insistirPorEntradaValida(cli.getIo());
+
+		switch (itemEscolhido.getNome()) {
+		// Se o jogador tiver escolhido jogar o singleplayer.
+		case "REINICIAR":
+			// Tente carregar uma partida
+			AplJogo apl = buscarCarregarPartida(listaPartidasPausadas);
+			// Tente iniciar uma partida
+			try {
+				controlarPartida(apl);
+			} catch (Exception e) {
+				cli.exibirAlerta("Nenhuma partida foi carregada");
+			}
+			break;
+		}
+	}
+
+	private void exibirPartidasAndamento(List<DadosPartida> listaPartidas) {
+		// Exibe os campos da lista de jogos
+		cli.imprimirLinha("Lista de jogos:\n");
+		cli.imprimirLinha("Índice" + "..." + "Data" + "..." + "Jogador Branco"
+				+ "..." + "Jogador Preto" + "..." + "Situação da Partida\n");
+		// Exibe a lista de jogos
+		int indice = 0;
+		for (DadosPartida partida : listaPartidas)
+			if (partida.getJogo().getMotivoDeFinalizacao() == TipoSituacaoPartida.PAUSA) {
+				cli.exibirDadosPartidas(indice, partida);
+				indice++;
+			}
+		System.out.println("");
+	}
+
+	/**
 	 * Controla uma partida durante seu andamento
 	 * 
 	 * @param apl
@@ -217,17 +285,17 @@ public class Controlador {
 	private void controlarPartida(AplJogo apl) {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
-		String jogadaCrua;
+		String acaoJogador;
 		String aviso = "";
 		while (!apl.getAcabouJogo()) {
 			// Atualiza o que é visual para os jogadores. Exibe o aviso se for
 			// necessário.
 			if (aviso == "")
-				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
-						apl.getPretas());
+				cli.atualizar(apl.getTabuleiro(), apl.getJogadorBrancas(),
+						apl.getJogadorPretas());
 			else
-				cli.atualizar(apl.getTabuleiro(), apl.getBrancas(),
-						apl.getPretas(), aviso);
+				cli.atualizar(apl.getTabuleiro(), apl.getJogadorBrancas(),
+						apl.getJogadorPretas(), aviso);
 
 			// Retira a mensagem de aviso.
 			aviso = "";
@@ -236,12 +304,41 @@ public class Controlador {
 			Jogada jogada = null;
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
 				// Pede o movimento do jogador.
-				jogadaCrua = cli.lerJogada(apl.getJogadorTurnoAtual());
-				// Executa o movimento do jogador.
-				try {
-					jogada = Interpretador.interpretarJogada(jogadaCrua);
-				} catch (JogadaInvalidaException e) {
-					cli.exibirAlerta("Comando desconhecido");
+				acaoJogador = cli.lerAcaoJogador(apl.getJogadorTurnoAtual());
+				acaoJogador = acaoJogador.toUpperCase();
+				// TODO conferir
+				switch (acaoJogador) {
+				case "PONTOS":
+					// Imprime as peças capturadas pelos jogadores e suas
+					// pontuações.
+					cli.imprimirPontuacoes(apl.getJogadorBrancas(),
+							apl.getJogadorPretas());
+					cli.imprimirLinha("");
+					break;
+				case "DESISTIR":
+					apl.finalizarPartida(apl.getJogadorTurnoAtual(),
+							TipoSituacaoPartida.DESISTENCIA);
+					encerrarPartida(apl);
+					break;
+				case "EMPATE":
+					apl.finalizarPartida(TipoSituacaoPartida.EMPATE);
+					encerrarPartida(apl);
+					break;
+				case "SALVAR":
+					manipuladorArquivo.gravarPartida(apl);
+					break;
+				case "SAIR":
+					apl.finalizarPartida(TipoSituacaoPartida.PAUSA);
+					encerrarPartida(apl);
+					break;
+				default:
+					// Executa o movimento do jogador.
+					try {
+						jogada = Interpretador.interpretarJogada(acaoJogador);
+					} catch (JogadaInvalidaException e) {
+						cli.exibirAlerta("Comando desconhecido");
+					}
+					break;
 				}
 			} else {
 				Maquina maquina = (Maquina) apl.getJogadorTurnoAtual();
@@ -253,7 +350,7 @@ public class Controlador {
 								maquina.getCor());
 						jogada = maquinaApoio
 								.escolherJogada(apl.getTabuleiro());
-						System.out.println("RETORNOU NULL!!!");
+						System.out.println("RETORNOU NULL");
 					}
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Máquina apresentou problemas ao tentar realizar jogada");
@@ -285,7 +382,7 @@ public class Controlador {
 	}
 
 	/**
-	 * Términa a partida exibindo um cumprimento aos jogadores.
+	 * Termina a partida exibindo um cumprimento aos jogadores.
 	 * 
 	 * @param apljogo
 	 *            Apl que em que a partida encerrou.
@@ -293,8 +390,8 @@ public class Controlador {
 	private void encerrarPartida(AplJogo apljogo) {
 		// Após o fim do jogo, pegamos o vencedor, atualizamos o
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
-		cli.atualizar(apljogo.getTabuleiro(), apljogo.getBrancas(),
-				apljogo.getPretas());
+		cli.atualizar(apljogo.getTabuleiro(), apljogo.getJogadorBrancas(),
+				apljogo.getJogadorPretas());
 		TipoSituacaoPartida motivoFim = apljogo.getMotivoDeFinalizacao();
 		// Vê o fim da partida para fazer o encerramento de forma adequada.
 		switch (motivoFim) {
@@ -303,15 +400,15 @@ public class Controlador {
 		case DESISTENCIA:
 			Jogador vencedor = apljogo.getVencedor();
 			cli.fechamentoDaPartida("Vitória para o jogador: "
-					+ vencedor.getNome() + "\n");
+					+ vencedor.getNome());
 			break;
 		// A partida terminou em um empate.
 		case EMPATE:
-			cli.fechamentoDaPartida("A partida terminou em um empate.\n");
+			cli.fechamentoDaPartida("A partida terminou em um empate.");
 			break;
 		// A partida foi pausada
 		case PAUSA:
-			cli.fechamentoDaPartida("Jogo foi pausado.\n");
+			cli.fechamentoDaPartida("Jogo foi pausado.");
 			break;
 		default:
 			break;
@@ -325,7 +422,7 @@ public class Controlador {
 	 * @return
 	 */
 	private AplJogo buscarCarregarPartida(List<DadosPartida> listaPartidas) {
-		int indice = 0;
+		int indice = -1;
 		do {
 			// Tenta capturar uma partida
 			try {
@@ -383,7 +480,7 @@ public class Controlador {
 	/**
 	 * Método responsável por controlar a exibição dos dados de partidas
 	 */
-	// TODO (funciona mas está feio DEMAIS!!)
+	// TODO está para ser depreciado
 	private void controlarExibicaoPartidas() {
 
 		List<DadosPartida> listaPartidas = manipuladorArquivo

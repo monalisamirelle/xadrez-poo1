@@ -24,12 +24,7 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	// TODO pontuação só deve aparecer quando requisitada
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
-		// Imprime as peças capturadas pelos jogadores e suas pontuações.
-		imprimirPontuacoes(brancas, pretas);
-		imprimirLinha(""); // Dá uma folga para o próximo elemento.
-
 		// Imprime o tabuleiro.
 		imprimirTabuleiro(tabuleiro);
 		imprimirLinha(""); // Dá uma folga para o próximo elemento.
@@ -48,7 +43,6 @@ public abstract class Cli {
 	 * @param aviso
 	 *            Aviso a ser exibido para o jogador.
 	 */
-	// TODO pontuação só deve aparecer quando requisitada
 	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas,
 			String aviso) {
 		// Atualiza a tela normalmente.
@@ -76,7 +70,8 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as pretas.
 	 */
-	private void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
+	// TODO está em ordem de importância como pede o trabalho?
+	public void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
 		imprimirLinha(":: Pontuação dos jogadores");
 		imprimirLinha(":: -----------------------");
 		imprimirLinha(":: " + getDescricaoPecasCapturadas(brancas));
@@ -92,7 +87,7 @@ public abstract class Cli {
 	 * 
 	 * @return Retorna uma String com a jogada do usuário.
 	 */
-	public String lerJogada(Jogador jogador) {
+	public String lerAcaoJogador(Jogador jogador) {
 		return pedir("Entre com a jogada (vez do jogador: " + jogador.getNome()
 				+ "):");
 	}
@@ -123,7 +118,7 @@ public abstract class Cli {
 	 */
 	public void fechamentoDaPartida(String mensagemFinalizacao) {
 		imprimirLinha("");
-		imprimirLinha(mensagemFinalizacao);
+		imprimirLinha(mensagemFinalizacao + "\n");
 	}
 
 	/**
@@ -183,7 +178,7 @@ public abstract class Cli {
 	 *            Mensagem a ser exibida para o usuário.
 	 */
 	public void exibirAlerta(String mensagem) {
-		io.imprimirLinha("[!] " + mensagem+"\n");
+		io.imprimirLinha("[!] " + mensagem + "\n");
 	}
 
 	/**
@@ -232,19 +227,20 @@ public abstract class Cli {
 	 * @param dadosPartidas
 	 */
 	public void exibirDadosPartidas(int indice, DadosPartida dadosPartida) {
-		io.imprimirLinha(indice+"..."+dadosPartida.getDataPartida() + "..."
-				+ dadosPartida.getJogo().getBrancas().getNome() + "..."
-				+ dadosPartida.getJogo().getPretas().getNome() + "..."
+		io.imprimirLinha(indice + "..." + dadosPartida.getDataInicioPartida()
+				+ "..." + dadosPartida.getDataTerminoPartida() + "..."
+				+ dadosPartida.getJogo().getJogadorBrancas().getNome() + "..."
+				+ dadosPartida.getJogo().getJogadorPretas().getNome() + "..."
 				+ dadosPartida.getJogo().getMotivoDeFinalizacao());
 	}
-	
+
 	/** Pega um índice para apagar uma partida */
-	public String pedeIndicePartidaApagar(){
+	public String pedeIndicePartidaApagar() {
 		return pedir("Diga o índice da partida que deseja apagar (-1 Se desistir): ");
 	}
-	
+
 	/** Pega um índice para carregar uma partida */
-	public String pedeIndicePartidaCarregar(){
+	public String pedeIndicePartidaCarregar() {
 		return pedir("Diga o índice da partida que deseja carregar (-1 Se desistir): ");
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.edu.ifes.poo1.cgd.Arquivo;
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
+import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 
 public class ManipuladorArquivo {
 
@@ -77,4 +78,31 @@ public class ManipuladorArquivo {
 		return listaPartidas;
 	}
 
+	/**
+	 * Cria uma lista somente com as partidas que não foram concluídas
+	 * 
+	 * @return
+	 */
+	public List<DadosPartida> criarListaPartidasPausadas() {
+		List<DadosPartida> listaPartidas = lerListaPartidas();
+		List<DadosPartida> listaPartidasPausadas = new ArrayList<DadosPartida>();
+		for (DadosPartida partida : listaPartidas)
+			if (partida.getJogo().getMotivoDeFinalizacao() == TipoSituacaoPartida.PAUSA)
+				listaPartidasPausadas.add(partida);
+		return listaPartidasPausadas;
+	}
+
+	/**
+	 * Cria uma lista somente com as partidas que foram concluídas
+	 * 
+	 * @return
+	 */
+	public List<DadosPartida> criarListaPartidasConcluidas() {
+		List<DadosPartida> listaPartidas = lerListaPartidas();
+		List<DadosPartida> listaPartidasConcluidas = new ArrayList<DadosPartida>();
+		for (DadosPartida partida : listaPartidas)
+			if (partida.getJogo().getMotivoDeFinalizacao() != TipoSituacaoPartida.PAUSA)
+				listaPartidasConcluidas.add(partida);
+		return listaPartidasConcluidas;
+	}
 }

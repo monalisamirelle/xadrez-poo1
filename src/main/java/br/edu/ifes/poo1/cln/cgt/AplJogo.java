@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.cln.cgt;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
@@ -17,16 +18,16 @@ public class AplJogo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** Jogador que controla as peças brancas. */
-	protected Jogador brancas;
+	private Jogador brancas;
 
 	/** Jogador que controla as peças pretas. */
-	protected Jogador pretas;
+private Jogador pretas;
 
 	/** Tabuleiro do jogo. */
-	protected Tabuleiro tabuleiro;
+private Tabuleiro tabuleiro;
 
 	/** Indica de quem é a vez de realizar a próxima jogada */
-	protected TipoCorJogador turno;
+private TipoCorJogador turno;
 
 	/** Indica se o jogo já acabou (true). Ou se está em andamento (false). */
 	private boolean acabouJogo = false;
@@ -34,6 +35,9 @@ public class AplJogo implements Serializable {
 	/** Só é instanciado ao término da partida. */
 	private Jogador vencedor;
 
+	/** Captura a data de criação de uma partida */
+	private String dataCriacao;
+	
 	/** Indica o motivo pelo qual a partida terminou. */
 	private TipoSituacaoPartida motivoDeFinalizacao;
 
@@ -44,6 +48,10 @@ public class AplJogo implements Serializable {
 	 * @param pretas
 	 */
 	public AplJogo(Jogador brancas, Jogador pretas) {
+		
+		// Captura a data de criação do jogo
+		this.dataCriacao = Calendar.getInstance().getTime().toString();
+		
 		// Pega os jogadores.
 		this.brancas = brancas;
 		this.pretas = pretas;
@@ -186,7 +194,7 @@ public class AplJogo implements Serializable {
 		// Vê se o jogador conseguiu dar um Xeque Mate no oponente. E finaliza a
 		// partida, caso tenha conseguido.
 		if (tabuleiro.verificarXequeMate(this.getOutraCor(turno))) {
-			finalizarPartida(getJogadorTurnoAtual(), false);
+			finalizarPartida(getJogadorTurnoAtual(), TipoSituacaoPartida.VITORIA);
 			return;
 		}
 	}
@@ -220,11 +228,11 @@ public class AplJogo implements Serializable {
 		return acabouJogo;
 	}
 
-	public Jogador getBrancas() {
+	public Jogador getJogadorBrancas() {
 		return brancas;
 	}
 
-	public Jogador getPretas() {
+	public Jogador getJogadorPretas() {
 		return pretas;
 	}
 
@@ -271,25 +279,36 @@ public class AplJogo implements Serializable {
 	 * @param ganhador
 	 *            ganhador da partida.
 	 */
-	public void finalizarPartida(Jogador ganhador, boolean houveDesistencia) {
+	public void finalizarPartida(Jogador ganhador, TipoSituacaoPartida situacao) {
 		this.vencedor = ganhador;
 		this.acabouJogo = true;
-		if (houveDesistencia)
-			this.motivoDeFinalizacao = TipoSituacaoPartida.DESISTENCIA;
-		else
+		switch (situacao) {
+		case VITORIA:
 			this.motivoDeFinalizacao = TipoSituacaoPartida.VITORIA;
+			break;
+		case DESISTENCIA:
+			this.motivoDeFinalizacao = TipoSituacaoPartida.DESISTENCIA;
+			break;
+		default:
+			break;
+		}
 		// TODO: Salvar o histórico da partida.
 	}
 
 	/**
 	 * Faz o término da partida, tendo havido um empate ou uma pausa.
 	 */
-	public void finalizarPartida(boolean jogoPausado) {
-		if (jogoPausado)
+	public void finalizarPartida(TipoSituacaoPartida situacao) {
+		switch (situacao) {
+		case PAUSA:
 			this.motivoDeFinalizacao = TipoSituacaoPartida.PAUSA;
-		else {
+			break;
+		case EMPATE:
 			this.acabouJogo = true;
 			this.motivoDeFinalizacao = TipoSituacaoPartida.EMPATE;
+			break;
+		default:
+			break;
 		}
 		// TODO: Salvar o histórico da partida.
 	}
@@ -301,6 +320,14 @@ public class AplJogo implements Serializable {
 	 */
 	public TipoSituacaoPartida getMotivoDeFinalizacao() {
 		return this.motivoDeFinalizacao;
+	}
+	
+	/**
+	 * Retorna a data de criação de uma partida em formato de string
+	 * @return
+	 */
+	public String getDataCriacao(){
+		return this.dataCriacao;
 	}
 
 }
