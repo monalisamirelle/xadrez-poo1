@@ -9,7 +9,8 @@ import br.edu.ifes.poo1.ciu.cih.ItemMenu;
 import br.edu.ifes.poo1.ciu.cih.Menu;
 import br.edu.ifes.poo1.ciu.cih.MenuAmbiente;
 import br.edu.ifes.poo1.ciu.cih.MenuCorJogador;
-import br.edu.ifes.poo1.ciu.cih.MenuDadosPartidas;
+import br.edu.ifes.poo1.ciu.cih.MenuDados;
+import br.edu.ifes.poo1.ciu.cih.MenuDadosPartida;
 import br.edu.ifes.poo1.ciu.cih.MenuInicioPartida;
 import br.edu.ifes.poo1.ciu.cih.MenuNivelMaquina;
 import br.edu.ifes.poo1.ciu.cih.MenuPrincipal;
@@ -97,7 +98,7 @@ public class Controlador {
 				break;
 			// Se o jogador tiver escolhido ver os dados das partidas.
 			case "DADOS":
-				controlarExibicaoPartidas();
+				informaDadosPartida();
 				break;
 			default:
 				System.out.println("Esta opção não foi implementada ainda");
@@ -220,58 +221,6 @@ public class Controlador {
 		// Constrói a aplicação do jogo.
 		return new AplJogo(new Pessoa(nomeBrancas, TipoCorJogador.BRANCO),
 				new Pessoa(nomePretas, TipoCorJogador.PRETO));
-	}
-
-	/**
-	 * Método responsável por iniciar uma partida singleplayer ou multiplayer
-	 */
-	// TODO apagar entra aqui?
-	private void retornaPartida() {
-
-		// Cria uma lista somente com as partidas que não foram concluídas
-		List<DadosPartida> listaPartidasPausadas = manipuladorArquivo
-				.criarListaPartidasPausadas();
-
-		// Exibe as partidas atuais
-		exibirPartidasAndamento(listaPartidasPausadas);
-
-		// Este é o item do menu que o jogador escolheu (escolherá).
-		Menu menuRetornarPartida = new MenuRetornarPartida();
-
-		// Inicia o menu deixando a escolha para o usuário do que fazer.
-		ItemMenu itemEscolhido = menuRetornarPartida
-				.insistirPorEntradaValida(cli.getIo());
-
-		switch (itemEscolhido.getNome()) {
-		// Se o jogador tiver escolhido jogar o singleplayer.
-		case "REINICIAR":
-			// Tente carregar uma partida
-			AplJogo apl = buscarCarregarPartida(listaPartidasPausadas);
-			// Tente iniciar uma partida
-			try {
-				controlarPartida(apl);
-			} catch (Exception e) {
-				cli.exibirAlerta("Nenhuma partida foi carregada");
-			}
-			break;
-		}
-	}
-
-	// TODO (precisa da situação da partida se todas se encontram pausadas aqui?)
-	private void exibirPartidasAndamento(List<DadosPartida> listaPartidas) {
-		// Exibe os campos da lista de jogos
-		cli.imprimirLinha("Lista de jogos:\n");
-		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
-				+ "..." + "Jogador Branco" + "..." + "Jogador Preto" + "..."
-				+ "Situação da Partida\n");
-		// Exibe a lista de jogos
-		int indice = 0;
-		for (DadosPartida partida : listaPartidas)
-			if (partida.getJogo().getMotivoDeFinalizacao() == TipoSituacaoPartida.PAUSA) {
-				cli.exibirDadosPartidas(indice, partida);
-				indice++;
-			}
-		System.out.println("");
 	}
 
 	/**
@@ -454,21 +403,112 @@ public class Controlador {
 	}
 
 	/**
+	 * Método responsável por iniciar uma partida singleplayer ou multiplayer
+	 */
+	// TODO apagar entra aqui?
+	private void retornaPartida() {
+
+		// Cria uma lista somente com as partidas que não foram concluídas
+		List<DadosPartida> listaPartidasPausadas = manipuladorArquivo
+				.criarListaPartidasPausadas();
+
+		// Exibe as partidas atuais
+		exibirPartidasAndamento(listaPartidasPausadas);
+
+		// Este é o item do menu que o jogador escolheu (escolherá).
+		Menu menuRetornarPartida = new MenuRetornarPartida();
+
+		boolean retornarMenu = false;
+		do {
+			// Inicia o menu deixando a escolha para o usuário do que fazer.
+			ItemMenu itemEscolhido = menuRetornarPartida
+					.insistirPorEntradaValida(cli.getIo());
+
+			switch (itemEscolhido.getNome()) {
+			// Se o jogador tiver escolhido jogar o singleplayer.
+			case "REINICIAR":
+				// Tente carregar uma partida
+				AplJogo apl = buscarCarregarPartida(listaPartidasPausadas);
+				apl.setSairPartida(false);
+				// Tente iniciar uma partida
+				try {
+					controlarPartida(apl);
+					retornarMenu = true;
+				} catch (Exception e) {
+					cli.exibirAlerta("Nenhuma partida foi carregada!");
+				}
+				break;
+			case "RETORNAR":
+				retornarMenu = true;
+				break;
+			}
+		} while (!retornarMenu);
+	}
+
+	// TODO (precisa da situação da partida se todas se encontram pausadas
+	// aqui?)
+	private void exibirPartidasAndamento(List<DadosPartida> listaPartidas) {
+		// Exibe os campos da lista de jogos
+		cli.imprimirLinha("Lista de jogos:\n");
+		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
+				+ "..." + "Jogador Branco" + "..." + "Jogador Preto" + "..."
+				+ "Situação da Partida\n");
+		// Exibe a lista de jogos
+		int indice = 0;
+		for (DadosPartida partida : listaPartidas)
+			if (partida.getJogo().getMotivoDeFinalizacao() == TipoSituacaoPartida.PAUSA) {
+				cli.exibirDadosPartidas(indice, partida);
+				indice++;
+			}
+		System.out.println("");
+	}
+
+	/**
+	 * Método responsável por informar dados das partidas
+	 */
+	private void informaDadosPartida() {
+		// Este é o item do menu que o jogador escolheu (escolherá).
+		Menu menuDados = new MenuDados();
+
+		boolean retornarMenu = false;
+		do {
+			// Inicia o menu deixando a escolha para o usuário do que fazer.
+			ItemMenu itemEscolhido = menuDados.insistirPorEntradaValida(cli
+					.getIo());
+			switch (itemEscolhido.getNome()) {
+			// Se escolher visualizar as partidas.
+			case "PARTIDAS":
+				System.out.println("Implementar");
+				break;
+			// Se escolher visualizar os jogadores.
+			case "JOGADORES":
+				System.out.println("Implementar");
+				break;
+			case "RETORNAR":
+				retornarMenu = true;
+				break;
+			}
+		} while (!retornarMenu);
+	}
+
+	/**
 	 * Método que busca carregar uma partida informada por um usuário
 	 * 
 	 * @param maiorIndice
 	 * @return
 	 */
 	private AplJogo buscarCarregarPartida(List<DadosPartida> listaPartidas) {
-		int indice = -1;
+		int indice = -2;
 		do {
 			// Tenta capturar uma partida
-			try {
-				indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
-				// Lança uma exception se não conseguir
-			} catch (Exception e) {
-				cli.exibirAlerta("Digite um número referente ao índice!");
-			}
+			do {
+				try {
+					indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
+					// Lança uma exception se não conseguir
+				} catch (Exception e) {
+					cli.exibirAlerta("Digite um número referente ao índice!");
+				}
+			} while (indice == -2);
 			// Se for um índice válido
 			if (indice >= 0 & indice < listaPartidas.size())
 				return manipuladorArquivo
@@ -538,7 +578,7 @@ public class Controlador {
 				cli.exibirDadosPartidas(indice, listaPartidas.get(indice));
 
 			System.out.println("");
-			Menu menuDadosPartidas = new MenuDadosPartidas();
+			Menu menuDadosPartidas = new MenuDadosPartida();
 			opcao = menuDadosPartidas
 					.insistirPorEntradaValida(new EntradaSaida());
 			// Escolher uma opção

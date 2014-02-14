@@ -2,8 +2,8 @@ package br.edu.ifes.poo1.ciu.cih;
 
 import java.util.ArrayList;
 
-public class MenuDadosPartidas extends Menu {
-	public MenuDadosPartidas() {
+public class MenuDadosPartida extends Menu {
+	public MenuDadosPartida() {
 		super("Menu de dados de partidas: ", new ArrayList<ItemMenu>() {
 
 			/** Serial gerado automaticamente. */

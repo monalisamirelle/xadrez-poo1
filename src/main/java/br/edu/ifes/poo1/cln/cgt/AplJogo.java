@@ -339,8 +339,8 @@ public class AplJogo implements Serializable {
 		return sairPartida;
 	}
 
-	public void setSairPartida() {
-		this.sairPartida = true;
+	public void setSairPartida(boolean sairPartida) {
+		this.sairPartida = sairPartida;
 	}
 
 }
