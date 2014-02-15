@@ -59,98 +59,43 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	 */
 	public List<DadosPessoa> geraListaDadosPessoa(
 			List<DadosPartida> listaPartidas) {
-		List<DadosPessoa> listaPessoas = new ArrayList<DadosPessoa>();
-		// TODO está incluindo as IA's, mas isso pode ser modificado aqui gerando
-		// uma lista que capture apenas as pessoas
-		for(DadosPartida partida: listaPartidas){
-			// Verifica se o jogador branco está na lista (se não estiver, o
-			// insere)
-			listaPessoas = inserePessoa(listaPessoas, partida
-					.getJogo().getJogadorPretas().getNome());
-			// Verifica se o jogador preto está na lista (se não estiver, o
-			// insere)
-			listaPessoas = inserePessoa(listaPessoas, partida
-					.getJogo().getJogadorBrancas().getNome());
-		}
-		
+		// Cria uma lista de pessoas
+		List<DadosPessoa> listaPessoas = geraListaPessoa(listaPartidas);
+
 		// Para todas as partidas na lista de partidas
 		for (DadosPartida partida : listaPartidas) {
-			// Se o nome do vencedor for igual ao nome do jogador branco
-			if (partida.getJogo().getJogadorBrancas().getNome()
-					.equals(partida.getJogo().getNomeVencedor())) {
-				// Insere a vitória ao jogador branco
-				listaPessoas = insereVitoriaDadosPessoa(listaPessoas, partida
-						.getJogo().getJogadorBrancas().getNome());
-				// Insere a derrota ao jogador preto
-				listaPessoas = insereDerrotaDadosPessoa(listaPessoas, partida
-						.getJogo().getJogadorPretas().getNome());
-			}
-			// Se o nome do vencedor for igual ao nome do jogador preto
-			else if (partida.getJogo().getJogadorPretas().getNome()
-					.equals(partida.getJogo().getNomeVencedor())) {
-				// Insere a vitória ao jogador preto
-				listaPessoas = insereVitoriaDadosPessoa(listaPessoas, partida
-						.getJogo().getJogadorPretas().getNome());
-				// Insere a derrota ao jogador branco
-				listaPessoas = insereDerrotaDadosPessoa(listaPessoas, partida
-						.getJogo().getJogadorBrancas().getNome());
-			}
-			// Se for um empate
-			else {
-				
-			}
+			listaPessoas = pontuaPessoas(partida, listaPessoas);
 		}
 		return listaPessoas;
 	}
 
 	/**
-	 * Método responsável por inserir ou pontuar um jogador na lista com uma
-	 * vitória
+	 * Método que cria uma list de pessoas sem pontuações
 	 * 
-	 * @param listaJogador
+	 * @param listaPartidas
 	 * @return
 	 */
-	private List<DadosPessoa> insereVitoriaDadosPessoa(
-			List<DadosPessoa> listaPessoas, String nomeCandidato) {
-		boolean existePessoa = false;
-		for (DadosPessoa dadosPessoa : listaPessoas)
-			if (dadosPessoa.nomePessoa.equals(nomeCandidato)) {
-				dadosPessoa.setPartidasVencidas();
-				existePessoa = true;
-			}
-		if (!existePessoa) {
-			DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
-			dadosPessoa.setPartidasVencidas();
-			listaPessoas.add(dadosPessoa);
-		}
-		return listaPessoas;
-	}
-
-	/**
-	 * Método responsável por inserir ou pontuar um jogador na lista com uma
-	 * derrota
-	 * 
-	 * @param listaJogador
-	 * @return
-	 */
-	private List<DadosPessoa> insereDerrotaDadosPessoa(
-			List<DadosPessoa> listaPessoas, String nomeCandidato) {
-		boolean existePessoa = false;
-		for (DadosPessoa dadosPessoa : listaPessoas)
-			if (dadosPessoa.nomePessoa.equals(nomeCandidato)) {
-				dadosPessoa.setPartidasPerdidas();
-				existePessoa = true;
-			}
-		if (!existePessoa) {
-			DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
-			dadosPessoa.setPartidasPerdidas();
-			listaPessoas.add(dadosPessoa);
+	private List<DadosPessoa> geraListaPessoa(List<DadosPartida> listaPartidas) {
+		List<DadosPessoa> listaPessoas = new ArrayList<DadosPessoa>();
+		// TODO está incluindo as IA's, mas isso pode ser modificado aqui
+		// gerando
+		// uma lista que capture apenas as pessoas
+		for (DadosPartida partida : listaPartidas) {
+			// Verifica se o jogador branco está na lista (se não estiver, o
+			// insere)
+			listaPessoas = inserePessoa(listaPessoas, partida.getJogo()
+					.getJogadorPretas().getNome());
+			// Verifica se o jogador preto está na lista (se não estiver, o
+			// insere)
+			listaPessoas = inserePessoa(listaPessoas, partida.getJogo()
+					.getJogadorBrancas().getNome());
 		}
 		return listaPessoas;
 	}
 
 	/**
 	 * Método responsável por inserir um jogador na lista
+	 * 
 	 * @param listaPessoas
 	 * @param nomeCandidato
 	 * @return
@@ -165,6 +110,36 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 		if (!existePessoa) {
 			DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
 			listaPessoas.add(dadosPessoa);
+		}
+		return listaPessoas;
+	}
+
+	/**
+	 * Método responsável por dar pontos de derrota ou vitória a pessoas
+	 * 
+	 * @param partida
+	 * @param listaPessoas
+	 * @return
+	 */
+	private List<DadosPessoa> pontuaPessoas(DadosPartida partida,
+			List<DadosPessoa> listaPessoas) {
+		DadosPessoa jogadorBranco = null;
+		DadosPessoa jogadorPreto = null;
+		for (DadosPessoa pessoa : listaPessoas) {
+			if (pessoa.getNome().equals(partida.getJogo().getJogadorBrancas().getNome()))
+				jogadorBranco = pessoa;
+			if (pessoa.getNome().equals(partida.getJogo().getJogadorPretas().getNome()))
+				jogadorPreto = pessoa;
+		}
+		// Se o vencedor foi o jogador branco
+		if (jogadorBranco.getNome().equals(partida.getJogo().getNomeVencedor())) {
+			jogadorBranco.setPartidasVencidas();
+			jogadorPreto.setPartidasPerdidas();
+		}
+		// Se o vencedor foi o jogador preto
+		if (jogadorPreto.getNome().equals(partida.getJogo().getNomeVencedor())) {
+			jogadorPreto.setPartidasVencidas();
+			jogadorBranco.setPartidasPerdidas();
 		}
 		return listaPessoas;
 	}
