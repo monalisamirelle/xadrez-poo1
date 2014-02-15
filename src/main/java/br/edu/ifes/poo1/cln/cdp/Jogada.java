@@ -3,6 +3,7 @@ package br.edu.ifes.poo1.cln.cdp;
 /**
  * Contém as informações para uma jogada a ser realizada.
  */
+// TODO EN PASSANT
 public class Jogada {
 	/** Origem do movimento. */
 	private Posicao origem;
