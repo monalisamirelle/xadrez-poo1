@@ -130,11 +130,13 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	public void colocarPeca(Posicao posicao, Peca peca)
 			throws CasaOcupadaException {
 		// Não é possível posicionar a peça se a casa estiver ocupada.
-		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null)
+		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null) {
+			// TODO retirar depois
+			System.out.println(this.toString());
 			throw new CasaOcupadaException();
-
-		// Coloca a peça na posição indicada.
-		pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
+		} else
+			// Coloca a peça na posição indicada.
+			pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] = peca;
 	}
 
 	/**
@@ -350,16 +352,16 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 */
 	public boolean ehEnPassant(Posicao posicaoPeca, Posicao lado) {
 		if (this.espiarPeca(posicaoPeca).getTipoPeca() == TipoPeca.PEAO) {
-			// Se a posição não se encontra fora do tabuleiro
+			// Se o lado que está analisando não se encontra fora do tabuleiro
 			if (!estaForaDoTabuleiro(lado))
-				// Se a posicao tem uma peça inimiga
+				// Se a posicao ao lado tem uma peça inimiga
 				if (this.estaInimigo(this.espiarPeca(posicaoPeca)
 						.getCorJogador(), lado))
 					// Se a peça inimiga é um peão
 					if (this.espiarPeca(lado).getTipoPeca() == TipoPeca.PEAO) {
 						Peao peaoInimigo = (Peao) this.espiarPeca(lado);
-						// Se o peão em questão pode sofre um en passant
-						if (peaoInimigo.isPodeEnPassant() == true)
+						// Se o peão em questão pode sofrer um en passant
+						if (peaoInimigo.isPodeEnPassant())
 							return true;
 					}
 		}
@@ -569,11 +571,9 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @param cor
 	 *            Cor do rei que está em Xeque Mate.
 	 * @return Se a cor indicada sofreu Xeque Mate.
-	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException 
 	 */
-	public boolean verificarXequeMate(TipoCorJogador cor)
-			throws CasaOcupadaException, JogadaInvalidaException {
+	public boolean verificarXequeMate(TipoCorJogador cor) throws CasaOcupadaException {
 		List<Estado> estadosPossiveis = this.proximosEstadosPossiveis(cor);
 		if (!estadosPossiveis.isEmpty())
 			return false;
@@ -586,8 +586,7 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * 
 	 * @param corJogador
 	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException 
 	 */
 	public List<Estado> proximosEstadosPossiveis(TipoCorJogador corJogador) throws CasaOcupadaException {
 
@@ -598,8 +597,11 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 		// Em seguida, reseta o estado de en passant do jogador
 		copiaTabuleiro.resetaPodeEnPassant(corJogador);
 
-		List<Jogada> possiveisJogadas = geraJogadasPossiveis(corJogador);
+		// Gera a lista de possíveis jogadas da cópia do tabuleiro
+		List<Jogada> possiveisJogadas = copiaTabuleiro
+				.geraJogadasPossiveis(corJogador);
 
+		// Cria-se uma lista que irá receber os próximos estados
 		List<Estado> proximosEstados = new ArrayList<Estado>();
 		Peca peca = null;
 
@@ -758,7 +760,8 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	public List<Jogada> geraJogadasPossiveis(TipoCorJogador corJogador) throws CasaOcupadaException {
+	public List<Jogada> geraJogadasPossiveis(TipoCorJogador corJogador)
+			throws CasaOcupadaException {
 		// Contém todas as jogadas que podem ser realizadas por um jogador
 		List<Jogada> possiveisJogadas = new ArrayList<Jogada>();
 		// Contém todas as jogadas que podem ser realizadas por uma peça
@@ -865,8 +868,7 @@ public class Tabuleiro implements TamanhoTabuleiro, Serializable {
 		List<Estado> estadosPossiveis = null;
 		// TODO testar
 		try {
-			estadosPossiveis = this
-					.proximosEstadosPossiveis(corJogador);
+			estadosPossiveis = this.proximosEstadosPossiveis(corJogador);
 		} catch (CasaOcupadaException e) {
 			System.out.println(e);
 		}

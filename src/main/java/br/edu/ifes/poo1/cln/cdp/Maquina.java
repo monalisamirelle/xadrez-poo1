@@ -15,11 +15,8 @@ public abstract class Maquina extends Jogador {
 	 * Define qual será a jogada realizada pela máquina
 	 * 
 	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException 
 	 */
-	public abstract Jogada escolherJogada(Tabuleiro tabuleiroAtual)
-			throws CasaOcupadaException,
-			JogadaInvalidaException, InterruptedException;
+	public abstract Jogada escolherJogada(Tabuleiro tabuleiroAtual) throws CasaOcupadaException;
 
 }

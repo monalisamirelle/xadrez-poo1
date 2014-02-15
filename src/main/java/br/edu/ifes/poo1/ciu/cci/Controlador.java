@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.ciu.cci;
 
+import java.util.Collections;
 import java.util.List;
 
 import br.edu.ifes.poo1.ciu.cih.Cli;
@@ -9,7 +10,6 @@ import br.edu.ifes.poo1.ciu.cih.ItemMenu;
 import br.edu.ifes.poo1.ciu.cih.Menu;
 import br.edu.ifes.poo1.ciu.cih.MenuAmbiente;
 import br.edu.ifes.poo1.ciu.cih.MenuCorJogador;
-import br.edu.ifes.poo1.ciu.cih.MenuDados;
 import br.edu.ifes.poo1.ciu.cih.MenuDadosPartida;
 import br.edu.ifes.poo1.ciu.cih.MenuInicioPartida;
 import br.edu.ifes.poo1.ciu.cih.MenuNivelMaquina;
@@ -19,6 +19,7 @@ import br.edu.ifes.poo1.ciu.cih.Prompt;
 import br.edu.ifes.poo1.ciu.cih.Terminal;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
+import br.edu.ifes.poo1.cln.cdp.DadosPessoa;
 import br.edu.ifes.poo1.cln.cdp.IAElaborada;
 import br.edu.ifes.poo1.cln.cdp.IARandomica;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
@@ -38,6 +39,8 @@ import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
  * modelo. Também atualiza as informações que estão disponíveis na tela do
  * jogador.
  */
+// TODO seria legal um filtro que não permita jogar com o nome das IA's e nem
+// dois jogadores terem o mesmo nome
 public class Controlador {
 	private Cli cli;
 	private ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
@@ -196,10 +199,10 @@ public class Controlador {
 	private AplJogo prepararSingleplayer() {
 
 		// Cria a pessoa
-		Pessoa pessoa = prepararPessoaSingleplayer();
+		Jogador pessoa = prepararPessoaSingleplayer();
 
 		// Cria a máquina
-		Maquina maquina = prepararMaquinaSingleplayer(TipoCorJogador
+		Jogador maquina = prepararMaquinaSingleplayer(TipoCorJogador
 				.getCorOposta(pessoa.getCor()));
 
 		// Contrói a aplicação do jogo
@@ -215,10 +218,10 @@ public class Controlador {
 		// Pega o nome dos jogadores.
 		String nomeBrancas = cli.lerNomeJogadorBranco();
 		String nomePretas = cli.lerNomeJogadorPreto();
-
+		Jogador jogadorBranco = new Pessoa(nomeBrancas, TipoCorJogador.BRANCO);
+		Jogador jogadorPreto = new Pessoa(nomePretas, TipoCorJogador.PRETO);
 		// Constrói a aplicação do jogo.
-		return new AplJogo(new Pessoa(nomeBrancas, TipoCorJogador.BRANCO),
-				new Pessoa(nomePretas, TipoCorJogador.PRETO));
+		return new AplJogo(jogadorBranco, jogadorPreto);
 	}
 
 	/**
@@ -258,6 +261,8 @@ public class Controlador {
 					apl.trocarTurno();
 					apl.getTabuleiro().resetaPodeEnPassant(
 							apl.getJogadorTurnoAtual().getCor());
+					// TODO remover
+					System.out.println(apl.getTabuleiro().toString());
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Jogada inválida.");
 				} catch (CasaOcupadaException e) {
@@ -302,24 +307,18 @@ public class Controlador {
 						+ pessoa.getTOTALRECOMENDACOES() + " recomendações.");
 			break;
 		case "DESISTIR":
-			apl.finalizarPartida(apl.getJogadorTurnoAtual(),
+			apl.finalizarPartida(apl.getOponente(),
 					TipoSituacaoPartida.DESISTENCIA);
-			encerrarPartida(apl);
-			manipuladorArquivo.gravarPartida(apl);
 			break;
 		case "EMPATE":
 			if (requisitarEmpate(apl)) {
 				apl.finalizarPartida(TipoSituacaoPartida.EMPATE);
-				encerrarPartida(apl);
-				manipuladorArquivo.gravarPartida(apl);
 			}
-			break;
-		case "SALVAR":
-			manipuladorArquivo.gravarPartida(apl);
 			break;
 		case "SAIR":
 			apl.finalizarPartida(TipoSituacaoPartida.PAUSA);
-			encerrarPartida(apl);
+			break;
+		case "SALVAR":
 			manipuladorArquivo.gravarPartida(apl);
 			break;
 		case "AJUDA":
@@ -348,18 +347,15 @@ public class Controlador {
 		Jogada jogada = null;
 		try {
 			jogada = maquina.escolherJogada(apl.getTabuleiro());
-			// Forma de escapar caso máquina não retorne nenhuma jogada
-			if (jogada == null) {
-				Maquina maquinaApoio = new IARandomica("", maquina.getCor());
-				jogada = maquinaApoio.escolherJogada(apl.getTabuleiro());
-				System.out.println("RETORNOU NULL");
-			}
-		} catch (JogadaInvalidaException e) {
-			cli.exibirAlerta("Máquina apresentou problemas ao tentar realizar jogada");
 		} catch (CasaOcupadaException e) {
-			cli.imprimirLinha("Casa se encontra ocupada");
-		} catch (InterruptedException e) {
-			cli.imprimirLinha("Jogada interrompida");
+			// TODO Auto-generated catch block
+			System.out.println("Erro, casa ocupada");
+		}
+		// Se a máquina não encontrar jogadas para realizar
+		if (jogada == null) {
+			// Desiste da partida
+			apl.finalizarPartida(apl.getOponente(),
+					TipoSituacaoPartida.DESISTENCIA);
 		}
 		return jogada;
 	}
@@ -410,15 +406,14 @@ public class Controlador {
 		// tabuleiro mais uma vez e comprimentamos o ganhador.
 		cli.atualizar(apljogo.getTabuleiro(), apljogo.getJogadorBrancas(),
 				apljogo.getJogadorPretas());
-		TipoSituacaoPartida motivoFim = apljogo.getMotivoDeFinalizacao();
+		TipoSituacaoPartida motivoFim = apljogo.getSituacaoPartida();
 		// Vê o fim da partida para fazer o encerramento de forma adequada.
 		switch (motivoFim) {
 		// Se houve desistência, ou vitória, houve um ganhador.
 		case VITORIA:
 		case DESISTENCIA:
-			Jogador vencedor = apljogo.getVencedor();
-			cli.fechamentoDaPartida("Vitória para o jogador: "
-					+ vencedor.getNome());
+			String nomeVencedor = apljogo.getNomeVencedor();
+			cli.fechamentoDaPartida("Vitória para o jogador: " + nomeVencedor);
 			break;
 		// A partida terminou em um empate.
 		case EMPATE:
@@ -431,6 +426,7 @@ public class Controlador {
 		default:
 			break;
 		}
+		manipuladorArquivo.gravarPartida(apljogo);
 	}
 
 	/**
@@ -439,13 +435,12 @@ public class Controlador {
 	// TODO apagar entra aqui? se entrar, deveremos salvar estado ao "voltar"
 	// (ver método a ser depreciado no final da classe)
 	private void retornaPartida() {
-
-		// Cria uma lista somente com as partidas que não foram concluídas
-		List<DadosPartida> listaPartidasPausadas = manipuladorArquivo
-				.criarListaPartidasPausadas();
+		// Captura de um arquivo as partidas nao finalizadas
+		List<DadosPartida> listaPartidasNaoFinalizadas = manipuladorArquivo
+				.criarListaPartidasNaoFinalizadas();
 
 		// Exibe as partidas atuais
-		exibirPartidasAndamento(listaPartidasPausadas);
+		exibirPartidasNaoFinalizadas(listaPartidasNaoFinalizadas);
 
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuRetornarPartida = new MenuRetornarPartida();
@@ -460,7 +455,7 @@ public class Controlador {
 			// Se o jogador tiver escolhido jogar o singleplayer.
 			case "REINICIAR":
 				// Tente carregar uma partida
-				AplJogo apl = buscarCarregarPartida(listaPartidasPausadas);
+				AplJogo apl = buscarCarregarPartida(listaPartidasNaoFinalizadas);
 				apl.setSairPartida(false);
 				// Tente iniciar uma partida
 				try {
@@ -482,18 +477,17 @@ public class Controlador {
 	 * 
 	 * @param listaPartidas
 	 */
-	private void exibirPartidasAndamento(List<DadosPartida> listaPartidas) {
+	private void exibirPartidasNaoFinalizadas(
+			List<DadosPartida> listaPartidasNaoFinalizadas) {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogos:\n");
 		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
 				+ "..." + "Jogador Branco" + "..." + "Jogador Preto");
+
 		// Exibe a lista de jogos
-		int indice = 0;
-		for (DadosPartida partida : listaPartidas)
-			if (partida.getJogo().getMotivoDeFinalizacao() == TipoSituacaoPartida.PAUSA) {
-				cli.exibirDadosPartidas(indice, partida);
-				indice++;
-			}
+		for (int indice = 0; indice < listaPartidasNaoFinalizadas.size(); indice++)
+			cli.exibirDadosPartidasAndamento(indice,
+					listaPartidasNaoFinalizadas.get(indice));
 		System.out.println("");
 	}
 
@@ -501,8 +495,12 @@ public class Controlador {
 	 * Método responsável por informar dados das partidas
 	 */
 	private void informaDadosPartida() {
+		// Captura de um arquivo as partidas concluídas
+		List<DadosPartida> listaPartidasConcluidas = manipuladorArquivo
+				.criarListaPartidasConcluidas();
+
 		// Este é o item do menu que o jogador escolheu (escolherá).
-		Menu menuDados = new MenuDados();
+		Menu menuDados = new MenuDadosPartida();
 
 		boolean retornarMenu = false;
 		do {
@@ -512,19 +510,58 @@ public class Controlador {
 			switch (itemEscolhido.getNome()) {
 			// Se escolher visualizar as partidas.
 			case "PARTIDAS":
-				// TODO concluir
-				System.out.println("Implementar");
+				// Ordena a lista de partidas conforme o nome do vencedor
+				Collections.sort(listaPartidasConcluidas);
+				exibirPartidasConcluidas(listaPartidasConcluidas);
 				break;
 			// Se escolher visualizar os jogadores.
 			case "JOGADORES":
-				// TODO concluir
-				System.out.println("Implementar");
+				DadosPessoa dp = new DadosPessoa();
+				List<DadosPessoa> dadosPessoas = dp
+						.geraListaDadosPessoa(listaPartidasConcluidas);
+				Collections.sort(dadosPessoas);
+				exibirJogadores(dadosPessoas);
 				break;
 			case "RETORNAR":
 				retornarMenu = true;
 				break;
 			}
 		} while (!retornarMenu);
+	}
+
+	/**
+	 * Método responsável por enviar ao cih os dados de partidas concluídas
+	 * 
+	 * @param listaPartidasConcluidas
+	 */
+	private void exibirPartidasConcluidas(
+			List<DadosPartida> listaPartidasConcluidas) {
+		// Exibe os campos da lista de jogos
+		cli.imprimirLinha("Lista de jogos:\n");
+		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
+				+ "..." + "Vencedor");
+		// Exibe a lista de jogos
+		for (int indice = 0; indice < listaPartidasConcluidas.size(); indice++)
+			cli.exibirDadosPartidasConcluidas(indice,
+					listaPartidasConcluidas.get(indice));
+		System.out.println("");
+	}
+
+	/**
+	 * Método responsável por enviar ao cih os dados de jogadores
+	 * 
+	 * @param dadosPessoas
+	 */
+	private void exibirJogadores(List<DadosPessoa> dadosPessoas) {
+		// Exibe os campos da lista de jogos
+		cli.imprimirLinha("Lista de jogadores:\n");
+		cli.imprimirLinha("Índice" + "..." + "Nome" + "..." + "Vitórias"
+				+ "..." + "Derrotas");
+
+		// Exibe a lista de jogos
+		for (int indice = 0; indice < dadosPessoas.size(); indice++)
+			cli.exibirDadosJogadores(indice, dadosPessoas.get(indice));
+		System.out.println("");
 	}
 
 	/**
@@ -599,7 +636,7 @@ public class Controlador {
 	private void controlarExibicaoPartidas() {
 
 		List<DadosPartida> listaPartidas = manipuladorArquivo
-				.lerListaPartidas();
+				.criarListaPartidas();
 
 		ItemMenu opcao = new ItemMenu("", "");
 		boolean iniciouPartida = false;
@@ -612,7 +649,8 @@ public class Controlador {
 					+ "Situação da Partida\n");
 
 			for (int indice = 0; indice < listaPartidas.size(); indice++)
-				cli.exibirDadosPartidas(indice, listaPartidas.get(indice));
+				cli.exibirDadosPartidasAndamento(indice,
+						listaPartidas.get(indice));
 
 			System.out.println("");
 			Menu menuDadosPartidas = new MenuDadosPartida();

@@ -41,21 +41,6 @@ public class ManipuladorArquivo {
 	}
 
 	/**
-	 * Método que lê todos dados dos jogos
-	 * 
-	 * @return
-	 */
-	public List<DadosPartida> lerListaPartidas() {
-		List<DadosPartida> listaPartidas = new ArrayList<DadosPartida>();
-		try {
-			listaPartidas = arquivo.leiaJogos();
-		} catch (ClassNotFoundException | IOException e) {
-			listaPartidas = new ArrayList<DadosPartida>();
-		}
-		return listaPartidas;
-	}
-
-	/**
 	 * Método que retorna um jogo com base no índice informado pelo usuário
 	 * (jogo já se encontra em memória)
 	 * 
@@ -79,15 +64,31 @@ public class ManipuladorArquivo {
 	}
 
 	/**
+	 * Método que lê todos dados dos jogos
+	 * 
+	 * @return
+	 */
+	public List<DadosPartida> criarListaPartidas() {
+		List<DadosPartida> listaPartidas = new ArrayList<DadosPartida>();
+		try {
+			listaPartidas = arquivo.leiaJogos();
+		} catch (ClassNotFoundException | IOException e) {
+			listaPartidas = new ArrayList<DadosPartida>();
+		}
+		return listaPartidas;
+	}
+
+	/**
 	 * Cria uma lista somente com as partidas que não foram concluídas
 	 * 
 	 * @return
 	 */
-	public List<DadosPartida> criarListaPartidasPausadas() {
-		List<DadosPartida> listaPartidas = lerListaPartidas();
+	public List<DadosPartida> criarListaPartidasNaoFinalizadas() {
+		List<DadosPartida> listaPartidas = criarListaPartidas();
 		List<DadosPartida> listaPartidasPausadas = new ArrayList<DadosPartida>();
 		for (DadosPartida partida : listaPartidas)
-			if (partida.getJogo().getMotivoDeFinalizacao() == TipoSituacaoPartida.PAUSA)
+			if (partida.getJogo().getSituacaoPartida() == TipoSituacaoPartida.PAUSA
+					|| partida.getJogo().getSituacaoPartida() == TipoSituacaoPartida.ANDAMENTO)
 				listaPartidasPausadas.add(partida);
 		return listaPartidasPausadas;
 	}
@@ -98,11 +99,14 @@ public class ManipuladorArquivo {
 	 * @return
 	 */
 	public List<DadosPartida> criarListaPartidasConcluidas() {
-		List<DadosPartida> listaPartidas = lerListaPartidas();
+		List<DadosPartida> listaPartidas = criarListaPartidas();
 		List<DadosPartida> listaPartidasConcluidas = new ArrayList<DadosPartida>();
 		for (DadosPartida partida : listaPartidas)
-			if (partida.getJogo().getMotivoDeFinalizacao() != TipoSituacaoPartida.PAUSA)
+			if (partida.getJogo().getSituacaoPartida() == TipoSituacaoPartida.VITORIA
+					|| partida.getJogo().getSituacaoPartida() == TipoSituacaoPartida.EMPATE
+					|| partida.getJogo().getSituacaoPartida() == TipoSituacaoPartida.DESISTENCIA)
 				listaPartidasConcluidas.add(partida);
 		return listaPartidasConcluidas;
 	}
+
 }

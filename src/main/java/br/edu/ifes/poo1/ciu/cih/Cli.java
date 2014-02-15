@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
+import br.edu.ifes.poo1.cln.cdp.DadosPessoa;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Peca;
@@ -231,40 +232,49 @@ public abstract class Cli {
 	 * @param jogada
 	 */
 	public void imprimirRecomendacao(int numeroRecomendacao, Jogada jogada) {
-		io.imprimirLinha(numeroRecomendacao+" - Recomendação:");
+		io.imprimirLinha(numeroRecomendacao + " - Recomendação:");
 		io.imprimirLinha("Saia da coluna " + jogada.getOrigem().getColuna()
 				+ " e linha " + jogada.getOrigem().getLinha()
 				+ " e vá para a coluna " + jogada.getDestino().getColuna()
-				+ " e linha " + jogada.getDestino().getLinha()+"\n");
+				+ " e linha " + jogada.getDestino().getLinha() + "\n");
 	}
 
 	/**
-	 * Informa na tela todos os dados de uma determinada partida
+	 * Informa na tela todos os dados de uma determinada partida que ainda não terminou
 	 * 
 	 * @param dadosPartidas
 	 */
-	public void exibirDadosPartidas(int indice, DadosPartida dadosPartida) {
+	public void exibirDadosPartidasAndamento(int indice,
+			DadosPartida dadosPartida) {
 		io.imprimirLinha(indice + "..."
 				+ manipulaData(dadosPartida.getDataInicioPartida()) + "..."
 				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
 				+ dadosPartida.getJogo().getJogadorBrancas().getNome() + "..."
 				+ dadosPartida.getJogo().getJogadorPretas().getNome());
 	}
-	
+
 	/**
-	 * Método que informa os comandos que podem ser realizados por um jogador
+	 * Informa na tela todos os dados das partidas concluídas
+	 * @param indice
+	 * @param dadosPartida
 	 */
-	public void exibirComandos(){
-		io.imprimirLinha("Lista de comandos:");
-		io.imprimirLinha("");
-		io.imprimirLinha("pontos -> Exibe a pontuação da partida");
-		io.imprimirLinha("recomendar -> Recomenda uma jogada ao jogador (máximo de 3 jogadas)");
-		io.imprimirLinha("salvar -> Salva o estado da partida");
-		io.imprimirLinha("empate -> Sugere empate ao jogador adversário");
-		io.imprimirLinha("desistir -> Desistir de uma partida (perde a partida)");
-		io.imprimirLinha("sair -> Sair de uma partida (não termina ela)");
-		io.imprimirLinha("ajuda -> Exibe os comandos possíveis");
-		io.imprimirLinha("");
+	public void exibirDadosPartidasConcluidas(int indice,
+			DadosPartida dadosPartida) {
+		io.imprimirLinha(indice + "..."
+				+ manipulaData(dadosPartida.getDataInicioPartida()) + "..."
+				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
+				+ dadosPartida.getJogo().getNomeVencedor());
+	}
+
+	/**
+	 * Informa na tela todos os históricos de pessoas
+	 * @param indice
+	 * @param dadosPessoa
+	 */
+	public void exibirDadosJogadores(int indice, DadosPessoa dadosPessoa) {
+		io.imprimirLinha(indice + "..." + dadosPessoa.getNome() + "..."
+				+ dadosPessoa.getPartidasVencidas() + "..."
+				+ dadosPessoa.getPartidasPerdidas());
 	}
 
 	/**
@@ -276,7 +286,7 @@ public abstract class Cli {
 	 */
 	private String manipulaData(GregorianCalendar data) {
 		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy"
-				+ " (" + "hh:mm:ss" + ")");
+				+ " (" + "HH:mm:ss" + ")");
 		return dataFormatada.format(data.getTimeInMillis());
 	}
 
@@ -288,5 +298,21 @@ public abstract class Cli {
 	/** Pega um índice para carregar uma partida */
 	public String pedeIndicePartidaCarregar() {
 		return pedir("Diga o índice da partida que deseja carregar (-1 Se desistir): ");
+	}
+
+	/**
+	 * Método que informa os comandos que podem ser realizados por um jogador
+	 */
+	public void exibirComandos() {
+		io.imprimirLinha("Lista de comandos:");
+		io.imprimirLinha("");
+		io.imprimirLinha("pontos -> Exibe a pontuação da partida");
+		io.imprimirLinha("recomendar -> Recomenda uma jogada ao jogador (máximo de 3 jogadas)");
+		io.imprimirLinha("salvar -> Salva o estado da partida");
+		io.imprimirLinha("empate -> Sugere empate ao jogador adversário");
+		io.imprimirLinha("desistir -> Desistir de uma partida (perde a partida)");
+		io.imprimirLinha("sair -> Sair de uma partida (não termina ela)");
+		io.imprimirLinha("ajuda -> Exibe os comandos possíveis");
+		io.imprimirLinha("");
 	}
 }

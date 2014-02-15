@@ -11,6 +11,7 @@ import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 
+// TODO muitos métodos construtores, precisam ser melhor
 public class AplJogo implements Serializable {
 	/**
 	 * 
@@ -32,17 +33,20 @@ public class AplJogo implements Serializable {
 	/** Indica se o jogo já acabou (true). Ou se está em andamento (false). */
 	private boolean acabouJogo = false;
 
+	/**
+	 * Captura se a partida, acontecendo em determinado momento, é interrompida
+	 * (seja porque acabou o jogo ou não)
+	 */
+	private boolean sairPartida = false;
+
 	/** Só é instanciado ao término da partida. */
-	private Jogador vencedor;
+	private String nomeVencedor;
 
 	/** Captura a data de criação de uma partida */
 	private GregorianCalendar dataCriacao;
 
-	/** Captura se a partida, acontecendo em determinado momento, finalizou */
-	private boolean sairPartida = false;
-
 	/** Indica o motivo pelo qual a partida terminou. */
-	private TipoSituacaoPartida motivoDeFinalizacao;
+	private TipoSituacaoPartida situacaoPartida;
 
 	/**
 	 * Método construtor destinado a partidas que estão iniciando
@@ -68,6 +72,9 @@ public class AplJogo implements Serializable {
 		// Inicia o tabuleiro, com as peças já posicionadas.
 		this.tabuleiro = new Tabuleiro(brancas, pretas);
 
+		// Inicia a situação da partida como andamento
+		this.situacaoPartida = TipoSituacaoPartida.ANDAMENTO;
+
 		// Informa os jogadores sobre qual o tabuleiro que está em uso na
 		// partida.
 		brancas.setTabuleiro(tabuleiro);
@@ -77,7 +84,7 @@ public class AplJogo implements Serializable {
 
 	/**
 	 * Método construtor destinado a jogos que foram salvos mas se encontravam
-	 * em andamento
+	 * em andamento ou pausados
 	 * 
 	 * @param brancas
 	 * @param pretas
@@ -85,13 +92,13 @@ public class AplJogo implements Serializable {
 	 * @param turno
 	 */
 	public AplJogo(Jogador brancas, Jogador pretas, Tabuleiro tabuleiro,
-			TipoSituacaoPartida motivo, TipoCorJogador turno) {
+			TipoCorJogador turno) {
 		// Pega os jogadores.
 		this.brancas = brancas;
 		this.pretas = pretas;
 
-		// Motivo fim da partida
-		this.motivoDeFinalizacao = motivo;
+		// Modifica a situação da partida
+		this.situacaoPartida = TipoSituacaoPartida.ANDAMENTO;
 
 		// Turno em que a partida parou
 		this.turno = turno;
@@ -123,7 +130,7 @@ public class AplJogo implements Serializable {
 		this.pretas = pretas;
 
 		// Motivo fim da partida
-		this.motivoDeFinalizacao = motivo;
+		this.situacaoPartida = motivo;
 
 		// Turno em que a partida parou
 		this.turno = null;
@@ -136,11 +143,11 @@ public class AplJogo implements Serializable {
 
 		// Informa o vencedor
 		if (nomeVencedor.equals(brancas.getNome()))
-			this.vencedor = brancas;
+			this.nomeVencedor = brancas.getNome();
 		else if (nomeVencedor.equals(pretas.getNome()))
-			this.vencedor = pretas;
+			this.nomeVencedor = pretas.getNome();
 		else
-			this.vencedor = null;
+			this.nomeVencedor = brancas.getNome() + "/" + pretas.getNome();
 
 		// Informa os jogadores sobre qual o tabuleiro que está em uso na
 		// partida.
@@ -156,6 +163,7 @@ public class AplJogo implements Serializable {
 	 * @param tabuleiro
 	 * @param nome
 	 */
+	// TODO verificar necessidade
 	public AplJogo(Jogador brancas, Jogador pretas, Tabuleiro tabuleiro,
 			TipoSituacaoPartida motivo) {
 		// Pega os jogadores.
@@ -163,7 +171,7 @@ public class AplJogo implements Serializable {
 		this.pretas = pretas;
 
 		// Motivo fim da partida
-		this.motivoDeFinalizacao = motivo;
+		this.situacaoPartida = motivo;
 
 		// Turno em que a partida parou
 		this.turno = null;
@@ -196,7 +204,7 @@ public class AplJogo implements Serializable {
 
 		// Vê se o jogador conseguiu dar um Xeque Mate no oponente. E finaliza a
 		// partida, caso tenha conseguido.
-		if (tabuleiro.verificarXequeMate(this.getOutraCor(turno))) {
+		if (tabuleiro.verificarXequeMate(this.getOponente().getCor())) {
 			finalizarPartida(getJogadorTurnoAtual(),
 					TipoSituacaoPartida.VITORIA);
 			return;
@@ -209,8 +217,8 @@ public class AplJogo implements Serializable {
 	 * 
 	 * @return O vencedor da partida.
 	 */
-	public Jogador getVencedor() {
-		return this.vencedor;
+	public String getNomeVencedor() {
+		return this.nomeVencedor;
 	}
 
 	/**
@@ -245,24 +253,10 @@ public class AplJogo implements Serializable {
 	}
 
 	/**
-	 * Retorna a cor oposta a cor indicada.
-	 * 
-	 * @param cor
-	 *            Cor da qual deseja-se a oposta.
-	 * @return Cor oposta a cor indicada.
-	 */
-	public TipoCorJogador getOutraCor(TipoCorJogador cor) {
-		if (cor == TipoCorJogador.BRANCO)
-			return TipoCorJogador.PRETO;
-		else
-			return TipoCorJogador.BRANCO;
-	}
-
-	/**
 	 * Troca o jogador que está a jogar o turno atual.
 	 */
 	public void trocarTurno() {
-		turno = getOutraCor(turno);
+		turno = TipoCorJogador.getCorOposta(turno);
 	}
 
 	/**
@@ -280,18 +274,18 @@ public class AplJogo implements Serializable {
 	/**
 	 * Termina uma partida em que tenha havido um jogador vitorioso.
 	 * 
-	 * @param ganhador
+	 * @param vencedor
 	 *            ganhador da partida.
 	 */
-	public void finalizarPartida(Jogador ganhador, TipoSituacaoPartida situacao) {
-		this.vencedor = ganhador;
+	public void finalizarPartida(Jogador vencedor, TipoSituacaoPartida situacao) {
+		this.nomeVencedor = vencedor.getNome();
 		this.acabouJogo = true;
 		switch (situacao) {
 		case VITORIA:
-			this.motivoDeFinalizacao = TipoSituacaoPartida.VITORIA;
+			this.situacaoPartida = TipoSituacaoPartida.VITORIA;
 			break;
 		case DESISTENCIA:
-			this.motivoDeFinalizacao = TipoSituacaoPartida.DESISTENCIA;
+			this.situacaoPartida = TipoSituacaoPartida.DESISTENCIA;
 			break;
 		default:
 			break;
@@ -303,13 +297,14 @@ public class AplJogo implements Serializable {
 	 * Faz o término da partida, tendo havido um empate ou uma pausa.
 	 */
 	public void finalizarPartida(TipoSituacaoPartida situacao) {
+		this.nomeVencedor = brancas.getNome()+"/"+pretas.getNome();
 		switch (situacao) {
 		case PAUSA:
-			this.motivoDeFinalizacao = TipoSituacaoPartida.PAUSA;
+			this.situacaoPartida = TipoSituacaoPartida.PAUSA;
 			break;
 		case EMPATE:
 			this.acabouJogo = true;
-			this.motivoDeFinalizacao = TipoSituacaoPartida.EMPATE;
+			this.situacaoPartida = TipoSituacaoPartida.EMPATE;
 			break;
 		default:
 			break;
@@ -322,8 +317,18 @@ public class AplJogo implements Serializable {
 	 * 
 	 * @return Motivo de finalização.
 	 */
-	public TipoSituacaoPartida getMotivoDeFinalizacao() {
-		return this.motivoDeFinalizacao;
+	public TipoSituacaoPartida getSituacaoPartida() {
+		return this.situacaoPartida;
+	}
+
+	/**
+	 * Método que retornar o oponente do jogador atual
+	 */
+	public Jogador getOponente() {
+		if (this.getTurno() == TipoCorJogador.BRANCO)
+			return pretas;
+		else
+			return brancas;
 	}
 
 	/**

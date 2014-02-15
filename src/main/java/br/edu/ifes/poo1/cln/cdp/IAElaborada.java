@@ -79,61 +79,59 @@ public class IAElaborada extends Maquina {
 	 * 
 	 * @param listaNos
 	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
-	 * @throws InterruptedException
 	 */
 	// FIXME concurrent Modification Exception !!!!
-	public boolean criaCamada() throws CasaOcupadaException,
-			JogadaInvalidaException, InterruptedException {
-
-		// Construa as partes
-		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 4,
-				listaNos);
-		GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 4,
-				(int) listaNos.size() * 2 / 4, listaNos);
-		GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 4,
-				(int) listaNos.size() * 3 / 4, listaNos);
-		GeraCamada parte4 = new GeraCamada((int) listaNos.size() * 3 / 4,
-				listaNos.size(), listaNos);
-
-		// Construa as threads
+	public boolean criaCamada() {
+		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
+		// // Construa as partes
+		// GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 4,
+		// listaNos);
+		// GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 4,
+		// (int) listaNos.size() * 2 / 4, listaNos);
+		// GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 4,
+		// (int) listaNos.size() * 3 / 4, listaNos);
+		// GeraCamada parte4 = new GeraCamada((int) listaNos.size() * 3 / 4,
+		// listaNos.size(), listaNos);
+		//
+		// // Construa as threads
 		Thread t1 = new Thread(parte1);
-		Thread t2 = new Thread(parte2);
-		Thread t3 = new Thread(parte3);
-		Thread t4 = new Thread(parte4);
-
-		// Inicia as threads
+		// Thread t2 = new Thread(parte2);
+		// Thread t3 = new Thread(parte3);
+		// Thread t4 = new Thread(parte4);
+		//
+		// // Inicia as threads
 		t1.start();
-		t2.start();
-		t3.start();
-		t4.start();
-
-		// Enquanto as threads estão rodando
-		while (t1.getState() == State.RUNNABLE
-				|| t2.getState() == State.RUNNABLE
-				|| t3.getState() == State.RUNNABLE
-				|| t4.getState() == State.RUNNABLE) {
+		// t2.start();
+		// t3.start();
+		// t4.start();
+		//
+		// // Enquanto as threads estão rodando
+		while (t1.getState() == State.RUNNABLE) {
+			// || t2.getState() == State.RUNNABLE
+			// || t3.getState() == State.RUNNABLE
+			// || t4.getState() == State.RUNNABLE) {
 			long fim = System.currentTimeMillis();
 			// Se o tempo máximo for alcançado
 			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
 				// Interrompa as threads e retorne true
 				t1.interrupt();
-				t2.interrupt();
-				t3.interrupt();
-				t4.interrupt();
-				return true;
-				// TODO poderia haver um else que só permitisse esse loop a cada
-				// um segundo
+				// t2.interrupt();
+				// t3.interrupt();
+				// t4.interrupt();
+				// return true;
+				// // TODO poderia haver um else que só permitisse esse loop a
+				// cada
+				// // um segundo
 			}
 		}
-
-		// Crie a lista de nós
+		//
+		// // Crie a lista de nós
 		listaNos = parte1.getNovaListaNos();
-		listaNos.addAll(parte2.getNovaListaNos());
-		listaNos.addAll(parte3.getNovaListaNos());
-		listaNos.addAll(parte4.getNovaListaNos());
+		// listaNos.addAll(parte2.getNovaListaNos());
+		// listaNos.addAll(parte3.getNovaListaNos());
+		// listaNos.addAll(parte4.getNovaListaNos());
 		return false;
+
 	}
 
 	/**
@@ -160,13 +158,10 @@ public class IAElaborada extends Maquina {
 	 * Método que escolhe a jogada da máquina
 	 * 
 	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
-	 * @throws InterruptedException
+	 * 
 	 */
 	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
-			throws CasaOcupadaException, JogadaInvalidaException,
-			InterruptedException {
-
+			throws CasaOcupadaException {
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
 				tabuleiroAtual));
@@ -185,27 +180,35 @@ public class IAElaborada extends Maquina {
 		// Insiro os valores nos nós folhas
 		inserirValorFolhas(listaNos);
 
-		// Realizo a busca em profundidade (aplicando minimax e poda alfa beta)
+		// Realizo a busca em profundidade (aplicando minimax e poda alfa
+		// beta)
 		busca.buscaEmProfundidade(raiz);
 
+		Jogada jogada = null;
+		
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
-
-			// Para cada nó na lista de adjacência do pai (começa de 1 pois o nó
-			// pai não tem primeiro valor na lista de adjacência pois não tem
+			// Para cada nó na lista de adjacência do pai (começa de 1 pois
+			// o nó
+			// pai não tem primeiro valor na lista de adjacência pois não
+			// tem
 			// pai
 			for (int indice = 1; indice < raiz.getListaAdjacencia().size(); indice++)
 				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
-					return raiz.getListaAdjacencia().get(indice).getEstado()
+					jogada = raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
 				}
 		}
-		// Retorno null caso não tenha jogada a ser realizada ou caso o
-		// tabuleiro já se encontre em xeque-Mate
-		return null;
+		// Controle caso IA não seja capaz de encontrar jogada alguma
+		if (jogada != null)
+			return jogada;
+		else {
+			Maquina maquinaAuxilio = new IARandomica("", this.cor);
+			return maquinaAuxilio.escolherJogada(tabuleiroAtual);
+		}
 	}
 
 	public int getALCANCEMAQUINA() {

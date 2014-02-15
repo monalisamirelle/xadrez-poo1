@@ -15,11 +15,8 @@ public class IARandomica extends Maquina {
 	 * Método que irá definir uma jogada para ser realizada pela máquina
 	 * 
 	 * @return
-	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
 	 */
-	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
-			throws CasaOcupadaException, JogadaInvalidaException {
+	public Jogada escolherJogada(Tabuleiro tabuleiroAtual) {
 		return tabuleiroAtual.recomendaJogada(this.cor);
 	}
 }

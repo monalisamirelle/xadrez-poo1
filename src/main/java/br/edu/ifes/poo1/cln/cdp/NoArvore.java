@@ -46,8 +46,7 @@ public class NoArvore {
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
 	 */
-	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado)
-			throws CasaOcupadaException, JogadaInvalidaException {
+	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException {
 		this.noPai = null;
 		this.temValor = false;
 		this.insereListaAdjacencia(noPai);
@@ -68,11 +67,9 @@ public class NoArvore {
 	 * 
 	 * @param noPai
 	 * @param valor
-	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException 
 	 */
-	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException,
-			JogadaInvalidaException {
+	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException {
 		this.noPai = noPai;
 		noPai.addFilho(this);
 		this.temValor = false;

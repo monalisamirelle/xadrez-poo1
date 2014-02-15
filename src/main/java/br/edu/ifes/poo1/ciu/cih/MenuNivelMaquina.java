@@ -19,7 +19,7 @@ public class MenuNivelMaquina extends Menu {
 				add(new ItemMenu("ZEUS",
 						"Zeus: Oh, Pai, eterno e inefável. deus infalível, Criador do universo"));
 				add(new ItemMenu("PROMETEU",
-						"Promoteu: Aquele que sabe antes..."));
+						"Prometeu: Aquele que sabe antes..."));
 			}
 		});
 	}
