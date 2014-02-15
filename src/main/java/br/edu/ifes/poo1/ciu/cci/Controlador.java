@@ -300,7 +300,7 @@ public class Controlador {
 				Jogada recomendacao = apl.getTabuleiro().recomendaJogada(
 						apl.getJogadorTurnoAtual().getCor());
 				pessoa.setRecomendacoes();
-				cli.imprimirRecomendacao(pessoa.getRecomendacoes(),
+				cli.imprimirRecomendacao(pessoa.getRecomendacoes(),apl.getTabuleiro().espiarPeca(recomendacao.getOrigem()),
 						recomendacao);
 			} else
 				cli.exibirAlerta("Você já realizou suas "

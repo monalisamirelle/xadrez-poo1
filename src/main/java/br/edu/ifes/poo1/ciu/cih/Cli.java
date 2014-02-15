@@ -231,11 +231,11 @@ public abstract class Cli {
 	 * 
 	 * @param jogada
 	 */
-	public void imprimirRecomendacao(int numeroRecomendacao, Jogada jogada) {
+	public void imprimirRecomendacao(int numeroRecomendacao,Peca peca ,Jogada jogada) {
 		io.imprimirLinha(numeroRecomendacao + " - Recomendação:");
-		io.imprimirLinha("Saia da coluna " + jogada.getOrigem().getColuna()
+		io.imprimirLinha("Mova a peça "+peca.getTipoPeca()+" da coluna " + jogada.getOrigem().getColuna()
 				+ " e linha " + jogada.getOrigem().getLinha()
-				+ " e vá para a coluna " + jogada.getDestino().getColuna()
+				+ " para a coluna " + jogada.getDestino().getColuna()
 				+ " e linha " + jogada.getDestino().getLinha() + "\n");
 	}
 
