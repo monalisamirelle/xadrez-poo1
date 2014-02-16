@@ -1,1 +1,5 @@
+# Ignora os dados de partida salvos.
+*.dat
+
+# Ignora arquivos da build do maven.
 target/
