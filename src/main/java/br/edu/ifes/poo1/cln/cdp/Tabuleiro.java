@@ -22,7 +22,13 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
  * @author T
  * 
  */
-public class Tabuleiro implements TamanhoTabuleiro, Serializable {
+public class Tabuleiro implements Serializable {
+	
+	/* Constantes do tamanho do tabuleiro. */
+	private static final int LINHAINFERIOR = 1;
+	private static final int LINHASUPERIOR = 8;
+	private static final int COLUNAINFERIOR = 1;
+	private static final int COLUNASUPERIOR = 8;
 
 	/**
 	 * 
