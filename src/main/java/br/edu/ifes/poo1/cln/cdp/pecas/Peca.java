@@ -8,7 +8,6 @@ import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
-import br.edu.ifes.poo1.cln.cdp.TamanhoTabuleiro;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoJogada;
 import br.edu.ifes.poo1.cln.cdp.TipoPeca;
@@ -18,7 +17,7 @@ import br.edu.ifes.poo1.cln.cdp.TipoPeca;
  * peão, rei, herdam desta classe e implementão as características específicas
  * do movimento.
  */
-public abstract class Peca implements Cloneable, TamanhoTabuleiro, Serializable {
+public abstract class Peca implements Cloneable, Serializable {
 
 	/**
 	 * 
@@ -145,8 +144,8 @@ public abstract class Peca implements Cloneable, TamanhoTabuleiro, Serializable 
 			throws CasaOcupadaException {
 		List<Jogada> listaJogadas = new ArrayList<Jogada>();
 		// Caminhando pelo tabuleiro
-		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++)
-			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
+		for (int coluna = Tabuleiro.COLUNAINFERIOR; coluna <= Tabuleiro.COLUNASUPERIOR; coluna++)
+			for (int linha = Tabuleiro.LINHAINFERIOR; linha <= Tabuleiro.LINHASUPERIOR; linha++) {
 				// Se a peça puder se movimentar para uma posição
 				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
 						tabuleiro) == true
