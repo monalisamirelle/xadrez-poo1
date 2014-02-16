@@ -2,7 +2,7 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoPeca;
 
@@ -23,7 +23,7 @@ public class Rei extends Peca {
 
 	@Override
 	public boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		// Verifica se o rei não vai entrar em Xeque com a jogada.
 		if (tabuleiro.jogadaSuicida(origem, destino,
 				TipoCorJogador.getCorOposta(this.getCorJogador())))
@@ -32,8 +32,8 @@ public class Rei extends Peca {
 		// Verifica o movimento natural do rei.
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
-			if ((this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) > 1)
-					|| (this.deslocamentoPeca(origem.getColuna(),
+			if ((this.medeDeslocamentoPeca(origem.getLinha(), destino.getLinha()) > 1)
+					|| (this.medeDeslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) > 1))
 				return false;
 			else

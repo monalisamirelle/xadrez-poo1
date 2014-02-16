@@ -7,7 +7,7 @@ import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 
@@ -25,7 +25,7 @@ public class AplJogo implements Serializable {
 	private Jogador pretas;
 
 	/** Tabuleiro do jogo. */
-	private Tabuleiro tabuleiro;
+	private TabuleiroXadrez tabuleiro;
 
 	/** Indica de quem é a vez de realizar a próxima jogada */
 	private TipoCorJogador turno;
@@ -70,7 +70,7 @@ public class AplJogo implements Serializable {
 		this.acabouJogo = false;
 
 		// Inicia o tabuleiro, com as peças já posicionadas.
-		this.tabuleiro = new Tabuleiro(brancas, pretas);
+		this.tabuleiro = new TabuleiroXadrez(brancas, pretas);
 
 		// Inicia a situação da partida como andamento
 		this.situacaoPartida = TipoSituacaoPartida.ANDAMENTO;
@@ -91,7 +91,7 @@ public class AplJogo implements Serializable {
 	 * @param tabuleiro
 	 * @param turno
 	 */
-	public AplJogo(Jogador brancas, Jogador pretas, Tabuleiro tabuleiro,
+	public AplJogo(Jogador brancas, Jogador pretas, TabuleiroXadrez tabuleiro,
 			TipoCorJogador turno) {
 		// Pega os jogadores.
 		this.brancas = brancas;
@@ -123,7 +123,7 @@ public class AplJogo implements Serializable {
 	 * @param tabuleiro
 	 * @param nome
 	 */
-	public AplJogo(Jogador brancas, Jogador pretas, Tabuleiro tabuleiro,
+	public AplJogo(Jogador brancas, Jogador pretas, TabuleiroXadrez tabuleiro,
 			TipoSituacaoPartida motivo, String nomeVencedor) {
 		// Pega os jogadores.
 		this.brancas = brancas;
@@ -164,7 +164,7 @@ public class AplJogo implements Serializable {
 	 * @param nome
 	 */
 	// TODO verificar necessidade
-	public AplJogo(Jogador brancas, Jogador pretas, Tabuleiro tabuleiro,
+	public AplJogo(Jogador brancas, Jogador pretas, TabuleiroXadrez tabuleiro,
 			TipoSituacaoPartida motivo) {
 		// Pega os jogadores.
 		this.brancas = brancas;
@@ -248,7 +248,7 @@ public class AplJogo implements Serializable {
 		return pretas;
 	}
 
-	public Tabuleiro getTabuleiro() {
+	public TabuleiroXadrez getTabuleiro() {
 		return tabuleiro;
 	}
 

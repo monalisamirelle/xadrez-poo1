@@ -23,7 +23,7 @@ public abstract class Jogador implements Serializable {
 	List<Peca> pecasCapturadas = new ArrayList<Peca>();
 
 	/** Tabuleiro no qual está jogando. */
-	protected Tabuleiro tabuleiro;
+	protected TabuleiroXadrez tabuleiro;
 
 	/** Tipo de jogador */
 	protected TipoJogador tipoJogador;
@@ -246,7 +246,7 @@ public abstract class Jogador implements Serializable {
 	}
 
 	/** O tabuleiro só deve ser alterado, antes do início da partida. */
-	public void setTabuleiro(Tabuleiro tabuleiro) {
+	public void setTabuleiro(TabuleiroXadrez tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
 

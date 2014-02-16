@@ -9,13 +9,13 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
 
 public class TesteRei {
-	private Tabuleiro tabuleiro;
+	private TabuleiroXadrez tabuleiro;
 	private Rei reiBranco;
 
 	@Before
 	public void before() throws CasaOcupadaException {
 		// Inicia um tabuleiro vazio.
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 		
 		// Inicia o rei.
 		reiBranco = new Rei(TipoCorJogador.BRANCO);

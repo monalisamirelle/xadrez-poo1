@@ -16,7 +16,7 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
 
 public class TesteIAElaborada {
 
-	Tabuleiro tabuleiro;
+	TabuleiroXadrez tabuleiro;
 	IAElaborada ia;
 
 	Peca reiBranco;
@@ -34,7 +34,7 @@ public class TesteIAElaborada {
 	@Before
 	public void before() {
 		ia = new IAElaborada("", TipoCorJogador.PRETO, 1, 45, true);
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 
 		reiBranco = new Rei(TipoCorJogador.BRANCO);
 		torreBranca = new Torre(TipoCorJogador.BRANCO);

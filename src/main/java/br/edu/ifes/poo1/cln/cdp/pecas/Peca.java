@@ -7,7 +7,7 @@ import java.util.List;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoJogada;
 import br.edu.ifes.poo1.cln.cdp.TipoPeca;
@@ -60,7 +60,7 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	public boolean podeAndar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
@@ -83,7 +83,7 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	public boolean podeAtacar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
@@ -107,10 +107,10 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		// As posições devem ser internas ao tabuleiro.
-		if (Tabuleiro.estaForaDoTabuleiro(origem)
-				|| Tabuleiro.estaForaDoTabuleiro(destino))
+		if (TabuleiroXadrez.estaForaDoTabuleiro(origem)
+				|| TabuleiroXadrez.estaForaDoTabuleiro(destino))
 			return false;
 
 		// Não é um movimento se as posições forem as mesmas.
@@ -128,7 +128,7 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @param posicaoDesejada
 	 * @return
 	 */
-	protected int deslocamentoPeca(int posicaoOcupada, int posicaoDesejada) {
+	public int medeDeslocamentoPeca(int posicaoOcupada, int posicaoDesejada) {
 		return (Math.abs(posicaoOcupada - posicaoDesejada));
 	}
 
@@ -140,12 +140,12 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @return
 	 * @throws CasaOcupadaException
 	 */
-	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, Tabuleiro tabuleiro)
+	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, TabuleiroXadrez tabuleiro)
 			throws CasaOcupadaException {
 		List<Jogada> listaJogadas = new ArrayList<Jogada>();
 		// Caminhando pelo tabuleiro
-		for (int coluna = Tabuleiro.COLUNAINFERIOR; coluna <= Tabuleiro.COLUNASUPERIOR; coluna++)
-			for (int linha = Tabuleiro.LINHAINFERIOR; linha <= Tabuleiro.LINHASUPERIOR; linha++) {
+		for (int coluna = TabuleiroXadrez.COLUNAINFERIOR; coluna <= TabuleiroXadrez.COLUNASUPERIOR; coluna++)
+			for (int linha = TabuleiroXadrez.LINHAINFERIOR; linha <= TabuleiroXadrez.LINHASUPERIOR; linha++) {
 				// Se a peça puder se movimentar para uma posição
 				if (this.podeAndar(posicaoOrigem, new Posicao(coluna, linha),
 						tabuleiro) == true

@@ -2,7 +2,7 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoPeca;
 
@@ -22,15 +22,15 @@ public class Torre extends Peca {
 	
 	@Override
 	public boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
-			if ((this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 0)
-					&& (this.deslocamentoPeca(origem.getColuna(),
+			if ((this.medeDeslocamentoPeca(origem.getLinha(), destino.getLinha()) == 0)
+					&& (this.medeDeslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) > 0)
-					|| (this.deslocamentoPeca(origem.getLinha(),
+					|| (this.medeDeslocamentoPeca(origem.getLinha(),
 							destino.getLinha()) > 0)
-					&& (this.deslocamentoPeca(origem.getColuna(),
+					&& (this.medeDeslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) == 0))
 				return true;
 		return false;

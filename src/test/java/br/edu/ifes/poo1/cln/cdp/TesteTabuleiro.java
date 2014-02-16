@@ -13,7 +13,7 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
 
 public class TesteTabuleiro {
 
-	Tabuleiro tabuleiro;
+	TabuleiroXadrez tabuleiro;
 
 	Peca reiBranco;
 	Peca torreBranca;
@@ -26,7 +26,7 @@ public class TesteTabuleiro {
 
 	@Before
 	public void before() {
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 
 		reiBranco = new Rei(TipoCorJogador.BRANCO);
 		torreBranca = new Torre(TipoCorJogador.BRANCO);
@@ -98,14 +98,14 @@ public class TesteTabuleiro {
 	@Test
 	public void atravessouTabuleiro() {
 		// Testa os limites do tabuleiro
-		Assert.assertFalse(Tabuleiro.estaForaDoTabuleiro(new Posicao(1, 1)));
-		Assert.assertFalse(Tabuleiro.estaForaDoTabuleiro(new Posicao(8, 8)));
+		Assert.assertFalse(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(1, 1)));
+		Assert.assertFalse(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(8, 8)));
 
 		// Testa quando atravessa o tabuleiro
-		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(4, 9)));
-		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(4, 0)));
-		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(9, 5)));
-		Assert.assertTrue(Tabuleiro.estaForaDoTabuleiro(new Posicao(0, 5)));
+		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(4, 9)));
+		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(4, 0)));
+		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(9, 5)));
+		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(0, 5)));
 	}
 
 	@Test

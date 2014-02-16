@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoPeca;
 
@@ -31,7 +31,7 @@ public class Peao extends Peca {
 
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		int avanca;
 		if (this.getCorJogador() == TipoCorJogador.BRANCO)
 			avanca = 1;
@@ -56,7 +56,7 @@ public class Peao extends Peca {
 
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		int avanca;
 		if (this.getCorJogador() == TipoCorJogador.BRANCO)
 			avanca = 1;
@@ -65,7 +65,7 @@ public class Peao extends Peca {
 		if (super.podeAtacar(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			// Se quer avançar na coluna 1
-			if (this.deslocamentoPeca(origem.getColuna(), destino.getColuna()) == 1)
+			if (this.medeDeslocamentoPeca(origem.getColuna(), destino.getColuna()) == 1)
 				if (destino.getLinha() - origem.getLinha() == avanca)
 					return true;
 		return false;
@@ -80,7 +80,7 @@ public class Peao extends Peca {
 	 * @return
 	 */
 	private boolean andouDuasCasas(Posicao origem, Posicao destino) {
-		return this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 2;
+		return this.medeDeslocamentoPeca(origem.getLinha(), destino.getLinha()) == 2;
 	}
 
 	/**

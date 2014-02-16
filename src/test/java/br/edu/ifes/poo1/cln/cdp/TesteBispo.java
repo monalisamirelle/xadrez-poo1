@@ -9,13 +9,13 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Bispo;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 
 public class TesteBispo {
-	private Tabuleiro tabuleiro;
+	private TabuleiroXadrez tabuleiro;
 	private Bispo bispoBranco;
 
 	@Before
 	public void before() throws CasaOcupadaException {
 		// Inicia um tabuleiro vazio.
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 
 		// Inicia o bispo.
 		bispoBranco = new Bispo(TipoCorJogador.BRANCO);

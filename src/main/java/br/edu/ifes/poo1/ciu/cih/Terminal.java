@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.ciu.cih;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 
 /**
@@ -24,7 +24,7 @@ public class Terminal extends Cli {
 	private final BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
 
 	@Override
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas, Jogador pretas) {
 		// Limpa a tela, antes de qualquer coisa.
 		limparTela();
 
@@ -33,7 +33,7 @@ public class Terminal extends Cli {
 	}
 
 	@Override
-	public void imprimirTabuleiro(Tabuleiro tabuleiro) {
+	public void imprimirTabuleiro(TabuleiroXadrez tabuleiro) {
 		// Imprime um cabeçalho com o número das colunas.
 		imprimirLinha("  1 2 3 4 5 6 7 8");
 

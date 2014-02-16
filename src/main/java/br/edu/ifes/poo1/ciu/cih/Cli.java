@@ -7,7 +7,7 @@ import br.edu.ifes.poo1.cln.cdp.DadosPartida;
 import br.edu.ifes.poo1.cln.cdp.DadosPessoa;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 
 /**
@@ -29,7 +29,7 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas, Jogador pretas) {
 		// Imprime o tabuleiro.
 		imprimirTabuleiro(tabuleiro);
 		imprimirLinha(""); // Dá uma folga para o próximo elemento.
@@ -48,7 +48,7 @@ public abstract class Cli {
 	 * @param aviso
 	 *            Aviso a ser exibido para o jogador.
 	 */
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas,
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas, Jogador pretas,
 			String aviso) {
 		// Atualiza a tela normalmente.
 		atualizar(tabuleiro, brancas, pretas);
@@ -65,7 +65,7 @@ public abstract class Cli {
 	 * @param tabuleiro
 	 *            Tabuleiro a ser impresso.
 	 */
-	protected abstract void imprimirTabuleiro(Tabuleiro tabuleiro);
+	protected abstract void imprimirTabuleiro(TabuleiroXadrez tabuleiro);
 
 	/**
 	 * Imprime as peças capturadas pelos jogadores e a pontuação de cada um.

@@ -9,14 +9,14 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
 
 public class TesteTorre {
-	Tabuleiro tabuleiro;
+	TabuleiroXadrez tabuleiro;
 	Torre torreBranca;
 	Peao peaoPreto;
 	Peao peaoBranco;
 
 	@Before
 	public void before() throws CasaOcupadaException {
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 		torreBranca = new Torre(TipoCorJogador.BRANCO);
 		peaoPreto = new Peao(TipoCorJogador.PRETO);
 		peaoBranco = new Peao(TipoCorJogador.BRANCO);

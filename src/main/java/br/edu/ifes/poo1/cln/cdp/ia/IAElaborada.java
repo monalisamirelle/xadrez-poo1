@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoJogador;
 
@@ -166,7 +166,7 @@ public class IAElaborada extends Maquina {
 	 * @throws CasaOcupadaException
 	 * 
 	 */
-	public Jogada escolherJogada(Tabuleiro tabuleiroAtual)
+	public Jogada escolherJogada(TabuleiroXadrez tabuleiroAtual)
 			throws CasaOcupadaException {
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,

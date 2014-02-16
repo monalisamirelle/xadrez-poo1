@@ -3,7 +3,7 @@ package br.edu.ifes.poo1.cln.cdp.ia;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoJogador;
 
@@ -24,6 +24,6 @@ public abstract class Maquina extends Jogador {
 	 * @return
 	 * @throws CasaOcupadaException 
 	 */
-	public abstract Jogada escolherJogada(Tabuleiro tabuleiroAtual) throws CasaOcupadaException;
+	public abstract Jogada escolherJogada(TabuleiroXadrez tabuleiroAtual) throws CasaOcupadaException;
 
 }

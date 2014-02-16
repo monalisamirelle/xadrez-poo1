@@ -1,14 +1,14 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
 import br.edu.ifes.poo1.cln.cdp.Jogada;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 
 public class Estado {
 
 	private Jogada jogada;
-	private Tabuleiro tabuleiro;
+	private TabuleiroXadrez tabuleiro;
 	
-	public Estado(Jogada jogada, Tabuleiro tabuleiro){
+	public Estado(Jogada jogada, TabuleiroXadrez tabuleiro){
 		this.jogada = jogada;
 		this.tabuleiro = tabuleiro;
 	}
@@ -21,11 +21,11 @@ public class Estado {
 		this.jogada = jogada;
 	}
 
-	public Tabuleiro getTabuleiro() {
+	public TabuleiroXadrez getTabuleiro() {
 		return tabuleiro;
 	}
 
-	public void setTabuleiro(Tabuleiro tabuleiro) {
+	public void setTabuleiro(TabuleiroXadrez tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
 

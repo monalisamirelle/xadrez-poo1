@@ -2,7 +2,7 @@ package br.edu.ifes.poo1.ciu.cih;
 
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 
 /**
@@ -11,7 +11,7 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 public class Prompt extends Cli {
 
 	@Override
-	protected void imprimirTabuleiro(Tabuleiro tabuleiro) {
+	protected void imprimirTabuleiro(TabuleiroXadrez tabuleiro) {
 		for (int linha = 8; linha >= 1; linha--) {
 			// Imprime o sepador de linhas.
 			imprimirLinha("-------------------------------------------------------------------------");

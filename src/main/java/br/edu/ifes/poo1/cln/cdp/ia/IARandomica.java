@@ -1,7 +1,7 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
 import br.edu.ifes.poo1.cln.cdp.Jogada;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoJogador;
 
@@ -21,7 +21,7 @@ public class IARandomica extends Maquina {
 	 * 
 	 * @return
 	 */
-	public Jogada escolherJogada(Tabuleiro tabuleiroAtual) {
+	public Jogada escolherJogada(TabuleiroXadrez tabuleiroAtual) {
 		return tabuleiroAtual.recomendaJogada(this.cor);
 	}
 }

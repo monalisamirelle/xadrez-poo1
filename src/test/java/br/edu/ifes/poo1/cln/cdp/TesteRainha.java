@@ -9,14 +9,14 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
 
 public class TesteRainha {
-	Tabuleiro tabuleiro;
+	TabuleiroXadrez tabuleiro;
 	Rainha rainhaBranca;
 	Peao peaoPreto;
 	Peao peaoBranco;
 
 	@Before
 	public void before() throws CasaOcupadaException {
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 		rainhaBranca = new Rainha(TipoCorJogador.BRANCO);
 		peaoPreto = new Peao(TipoCorJogador.PRETO);
 		peaoBranco = new Peao(TipoCorJogador.BRANCO);

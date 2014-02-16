@@ -2,7 +2,7 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoPeca;
 
@@ -22,14 +22,14 @@ public class Cavalo extends Peca {
 
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			Tabuleiro tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		if (super.podeSeMover(origem, destino, tabuleiro))
-			if (this.deslocamentoPeca(origem.getLinha(), destino.getLinha()) == 1
-					& this.deslocamentoPeca(origem.getColuna(),
+			if (this.medeDeslocamentoPeca(origem.getLinha(), destino.getLinha()) == 1
+					& this.medeDeslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) == 2
-					| this.deslocamentoPeca(origem.getLinha(),
+					| this.medeDeslocamentoPeca(origem.getLinha(),
 							destino.getLinha()) == 2
-					& this.deslocamentoPeca(origem.getColuna(),
+					& this.medeDeslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) == 1)
 				return true;
 		return false;

@@ -15,7 +15,7 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
 
 public class TesteIARandomica {
 
-	Tabuleiro tabuleiro;
+	TabuleiroXadrez tabuleiro;
 	IARandomica ia;
 
 	Peca reiBranco;
@@ -33,7 +33,7 @@ public class TesteIARandomica {
 	@Before
 	public void before() {
 		ia = new IARandomica("", TipoCorJogador.PRETO);
-		tabuleiro = new Tabuleiro();
+		tabuleiro = new TabuleiroXadrez();
 
 		reiBranco = new Rei(TipoCorJogador.BRANCO);
 		torreBranca = new Torre(TipoCorJogador.BRANCO);
