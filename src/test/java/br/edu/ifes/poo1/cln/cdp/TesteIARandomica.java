@@ -5,6 +5,14 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.ifes.poo1.cln.cdp.ia.IARandomica;
+import br.edu.ifes.poo1.cln.cdp.pecas.Bispo;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
+import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
+
 public class TesteIARandomica {
 
 	Tabuleiro tabuleiro;

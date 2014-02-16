@@ -15,7 +15,6 @@ public class DadosPartida implements Serializable, Comparable<DadosPartida> {
 	private GregorianCalendar dataCriacaoPartida;
 	private GregorianCalendar dataRegistroPartida;
 
-	// TODO posso fazer isso?
 	public DadosPartida(){};
 	
 	public DadosPartida(AplJogo apl) {

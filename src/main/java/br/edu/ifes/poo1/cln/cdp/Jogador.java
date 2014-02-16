@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+
 public abstract class Jogador implements Serializable {
 	/**
 	 * 

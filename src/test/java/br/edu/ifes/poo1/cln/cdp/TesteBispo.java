@@ -5,6 +5,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.ifes.poo1.cln.cdp.pecas.Bispo;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+
 public class TesteBispo {
 	private Tabuleiro tabuleiro;
 	private Bispo bispoBranco;

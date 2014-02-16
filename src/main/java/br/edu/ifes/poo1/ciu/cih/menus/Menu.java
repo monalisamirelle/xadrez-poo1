@@ -1,7 +1,10 @@
-package br.edu.ifes.poo1.ciu.cih;
+package br.edu.ifes.poo1.ciu.cih.menus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.edu.ifes.poo1.ciu.cih.EntradaInvalidaException;
+import br.edu.ifes.poo1.ciu.cih.EntradaSaida;
 
 /**
  * Responsável pela exibição e controle de um menu do jogo.

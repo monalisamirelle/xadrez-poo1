@@ -5,6 +5,12 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.ifes.poo1.cln.cdp.pecas.Cavalo;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
+import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
+
 public class TesteTabuleiro {
 
 	Tabuleiro tabuleiro;

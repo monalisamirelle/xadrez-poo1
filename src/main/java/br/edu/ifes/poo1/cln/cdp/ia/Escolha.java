@@ -1,4 +1,5 @@
-package br.edu.ifes.poo1.cln.cdp;
+package br.edu.ifes.poo1.cln.cdp.ia;
+
 
 public class Escolha {
 	

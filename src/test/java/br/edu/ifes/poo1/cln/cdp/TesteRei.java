@@ -5,6 +5,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
+
 public class TesteRei {
 	private Tabuleiro tabuleiro;
 	private Rei reiBranco;

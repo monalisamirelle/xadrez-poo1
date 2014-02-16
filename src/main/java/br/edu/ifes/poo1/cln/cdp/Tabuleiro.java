@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import br.edu.ifes.poo1.cln.cdp.ia.Estado;
+import br.edu.ifes.poo1.cln.cdp.pecas.Bispo;
+import br.edu.ifes.poo1.cln.cdp.pecas.Cavalo;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
+import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
+
 /**
  * Um tabuleiro é composto por 64 casas, estas podem estar ocupadas por uma peça
  * ou vazias.

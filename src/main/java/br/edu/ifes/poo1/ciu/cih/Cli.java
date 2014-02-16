@@ -7,8 +7,8 @@ import br.edu.ifes.poo1.cln.cdp.DadosPartida;
 import br.edu.ifes.poo1.cln.cdp.DadosPessoa;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Peca;
 import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 
 /**
  * Interface de Linha de Comando (CLI da sigla em inglês). É responsável pela

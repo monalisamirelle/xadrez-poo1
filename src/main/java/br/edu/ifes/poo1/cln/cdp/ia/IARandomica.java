@@ -1,4 +1,9 @@
-package br.edu.ifes.poo1.cln.cdp;
+package br.edu.ifes.poo1.cln.cdp.ia;
+
+import br.edu.ifes.poo1.cln.cdp.Jogada;
+import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.TipoJogador;
 
 public class IARandomica extends Maquina {
 

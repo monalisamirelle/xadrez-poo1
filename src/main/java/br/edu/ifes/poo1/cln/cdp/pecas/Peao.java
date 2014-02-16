@@ -1,4 +1,11 @@
-package br.edu.ifes.poo1.cln.cdp;
+package br.edu.ifes.poo1.cln.cdp.pecas;
+
+import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
+import br.edu.ifes.poo1.cln.cdp.Jogada;
+import br.edu.ifes.poo1.cln.cdp.Posicao;
+import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.TipoPeca;
 
 /**
  * Representa um peão do jogo de xadrez.
