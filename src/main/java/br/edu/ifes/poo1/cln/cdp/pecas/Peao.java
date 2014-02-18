@@ -57,6 +57,7 @@ public class Peao extends Peca {
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino,
 			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+		// Verifica como o peão irá avançar
 		int avanca;
 		if (this.getCorJogador() == TipoCorJogador.BRANCO)
 			avanca = 1;
@@ -65,7 +66,8 @@ public class Peao extends Peca {
 		if (super.podeAtacar(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))
 			// Se quer avançar na coluna 1
-			if (this.medeDeslocamentoPeca(origem.getColuna(), destino.getColuna()) == 1)
+			if (this.medeDeslocamentoPeca(origem.getColuna(),
+					destino.getColuna()) == 1)
 				if (destino.getLinha() - origem.getLinha() == avanca)
 					return true;
 		return false;

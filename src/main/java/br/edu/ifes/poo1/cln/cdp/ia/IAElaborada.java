@@ -87,6 +87,7 @@ public class IAElaborada extends Maquina {
 	 * @return
 	 */
 	// FIXME concurrent Modification Exception !!!!
+	@SuppressWarnings("deprecation")
 	public boolean criaCamada() {
 		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
 		// // Construa as partes
@@ -120,7 +121,7 @@ public class IAElaborada extends Maquina {
 			// Se o tempo máximo for alcançado
 			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
 				// Interrompa as threads e retorne true
-				t1.interrupt();
+				t1.stop();
 				// t2.interrupt();
 				// t3.interrupt();
 				// t4.interrupt();
@@ -191,7 +192,7 @@ public class IAElaborada extends Maquina {
 		busca.buscaEmProfundidade(raiz);
 
 		Jogada jogada = null;
-		
+
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
 			// Para cada nó na lista de adjacência do pai (começa de 1 pois

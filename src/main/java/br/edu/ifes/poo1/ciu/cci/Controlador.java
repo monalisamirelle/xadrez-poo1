@@ -250,6 +250,7 @@ public class Controlador {
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
 				jogada = acaoRealizadaPessoa(apl);
+				System.out.println("Jogada aqui 2");
 				// Máquina executa uma jogada
 			} else {
 				jogada = acaoRealizadaMaquina(apl);

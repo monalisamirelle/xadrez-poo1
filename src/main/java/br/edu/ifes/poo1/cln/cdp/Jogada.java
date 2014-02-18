@@ -111,4 +111,8 @@ public class Jogada {
 	public TipoPeca getPromocao() {
 		return tipoPromocao;
 	}
+	
+	public void setTipoJogada(TipoJogada tipoJogada){
+		this.tipoJogada = tipoJogada;
+	}
 }

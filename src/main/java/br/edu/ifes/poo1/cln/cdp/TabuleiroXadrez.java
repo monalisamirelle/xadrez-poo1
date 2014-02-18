@@ -147,6 +147,7 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		// Não é possível posicionar a peça se a casa estiver ocupada.
 		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null) {
 			// TODO retirar depois
+			System.out.println("TABULEIRO PROBLEMA");
 			System.out.println(this.toString());
 			throw new CasaOcupadaException();
 		} else
@@ -590,7 +591,8 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 */
 	public boolean verificarXequeMate(TipoCorJogador cor)
 			throws CasaOcupadaException {
-		List<Estado> estadosPossiveis = geraEstado.proximosEstadosPossiveis(this, cor);
+		List<Estado> estadosPossiveis = geraEstado.proximosEstadosPossiveis(
+				this, cor);
 		if (!estadosPossiveis.isEmpty())
 			return false;
 		return true;
@@ -715,7 +717,8 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		List<Estado> estadosPossiveis = null;
 		// TODO testar
 		try {
-			estadosPossiveis = geraEstado.proximosEstadosPossiveis(this, corJogador);
+			estadosPossiveis = geraEstado.proximosEstadosPossiveis(this,
+					corJogador);
 		} catch (CasaOcupadaException e) {
 			System.out.println(e);
 		}

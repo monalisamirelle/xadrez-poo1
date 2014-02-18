@@ -118,6 +118,6 @@ public class TestePeao {
 		 * diagonal.
 		 */
 		Assert.assertFalse(peaoBranco.podeAtacar(new Posicao(2, 2), new Posicao(
-				3, 3), tabuleiro));
+				3, 3), tabuleiro));		
 	}
 }
