@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import br.edu.ifes.poo1.cln.cdp.ia.Estado;
+import br.edu.ifes.poo1.cln.cdp.ia.GeraEstado;
 import br.edu.ifes.poo1.cln.cdp.pecas.Bispo;
 import br.edu.ifes.poo1.cln.cdp.pecas.Cavalo;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
@@ -19,7 +20,10 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
  * ou vazias.
  */
 public class TabuleiroXadrez implements Tabuleiro, Serializable {
-	
+
+	/** Cria um objeto da classe GeraEstado */
+	private GeraEstado geraEstado = new GeraEstado();
+
 	/* Constantes do tamanho do tabuleiro. */
 	public static final int LINHAINFERIOR = 1;
 	public static final int LINHASUPERIOR = 8;
@@ -582,182 +586,14 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * @param cor
 	 *            Cor do rei que está em Xeque Mate.
 	 * @return Se a cor indicada sofreu Xeque Mate.
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
-	public boolean verificarXequeMate(TipoCorJogador cor) throws CasaOcupadaException {
-		List<Estado> estadosPossiveis = this.proximosEstadosPossiveis(cor);
+	public boolean verificarXequeMate(TipoCorJogador cor)
+			throws CasaOcupadaException {
+		List<Estado> estadosPossiveis = geraEstado.proximosEstadosPossiveis(this, cor);
 		if (!estadosPossiveis.isEmpty())
 			return false;
 		return true;
-	}
-
-	/**
-	 * Método que armazena, dado um tabuleiro, os próximos estados possíveis
-	 * para o tabuleiro
-	 * 
-	 * @param corJogador
-	 * @return
-	 * @throws CasaOcupadaException 
-	 */
-	public List<Estado> proximosEstadosPossiveis(TipoCorJogador corJogador) throws CasaOcupadaException {
-
-		// Primeiramente, cria uma cópia do tabuleiro para não atrapalhar o
-		// tabuleiro atual
-		TabuleiroXadrez copiaTabuleiro = this.tabuleiroClonado();
-
-		// Em seguida, reseta o estado de en passant do jogador
-		copiaTabuleiro.resetaPodeEnPassant(corJogador);
-
-		// Gera a lista de possíveis jogadas da cópia do tabuleiro
-		List<Jogada> possiveisJogadas = copiaTabuleiro
-				.geraJogadasPossiveis(corJogador);
-
-		// Cria-se uma lista que irá receber os próximos estados
-		List<Estado> proximosEstados = new ArrayList<Estado>();
-		Peca peca = null;
-
-		// Para cada jogada realizada pela peça, gere um novo
-		// tabuleiro e or armazene na lista de tabuleiros
-		for (Jogada jogada : possiveisJogadas) {
-			TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
-
-			// Verifica o tipo de jogada e gera o tabuleiro correto
-			switch (jogada.getTipoJogada()) {
-			case ANDAR:
-				peca = this.espiarPeca(jogada.getOrigem());
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				// Se for Promoção
-				if (jogada.ehPromocao()) {
-					Peca rainha = new Rainha(corJogador);
-					rainha.setJaMoveu();
-					tabuleiroNovo.colocarPeca(jogada.getDestino(), rainha);
-				}
-				// Se a peça pode ser vítima de en passant
-				else if (peca.getTipoPeca() == TipoPeca.PEAO
-						&& peca.medeDeslocamentoPeca(jogada.getOrigem().getLinha(),
-								jogada.getDestino().getLinha()) == 2) {
-					Peao peaoVitima = (Peao) peca.clone();
-					peaoVitima.setPodeEnPassant(true);
-					peaoVitima.setJaMoveu();
-					tabuleiroNovo.colocarPeca(jogada.getDestino(), peaoVitima);
-				} else {
-					// Controle Roque
-					if (peca.getJaMoveu() == true)
-						tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
-					else {
-						Peca novaPeca = peca.clone();
-						novaPeca.setJaMoveu();
-						tabuleiroNovo
-								.colocarPeca(jogada.getDestino(), novaPeca);
-					}
-				}
-				break;
-			case ATACAR:
-				peca = this.espiarPeca(jogada.getOrigem());
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				tabuleiroNovo.retirarPeca(jogada.getDestino());
-				// Se for Promoção
-				if (jogada.ehPromocao()) {
-					Rainha rainha = new Rainha(corJogador);
-					rainha.setJaMoveu();
-					tabuleiroNovo.colocarPeca(jogada.getDestino(), rainha);
-				} else {
-					// Controle roque
-					if (peca.getJaMoveu() == true)
-						tabuleiroNovo.colocarPeca(jogada.getDestino(), peca);
-					else {
-						Peca novaPeca = peca.clone();
-						novaPeca.setJaMoveu();
-						tabuleiroNovo
-								.colocarPeca(jogada.getDestino(), novaPeca);
-					}
-				}
-				break;
-			case ROQUE_MENOR:
-				if (corJogador == TipoCorJogador.BRANCO) {
-					Peca novoRei = this.espiarPeca(new Posicao(5, 1)).clone();
-					novoRei.setJaMoveu();
-					Peca novaTorre = this.espiarPeca(new Posicao(8, 1)).clone();
-					novaTorre.setJaMoveu();
-					tabuleiroNovo.retirarPeca(new Posicao(5, 1));
-					tabuleiroNovo.retirarPeca(new Posicao(8, 1));
-					tabuleiroNovo.colocarPeca(new Posicao(7, 1), novoRei);
-					tabuleiroNovo.colocarPeca(new Posicao(6, 1), novaTorre);
-				} else {
-					Peca novoRei = this.espiarPeca(new Posicao(5, 8)).clone();
-					novoRei.setJaMoveu();
-					Peca novaTorre = this.espiarPeca(new Posicao(8, 8)).clone();
-					novaTorre.setJaMoveu();
-					tabuleiroNovo.retirarPeca(new Posicao(5, 8));
-					tabuleiroNovo.retirarPeca(new Posicao(8, 8));
-					tabuleiroNovo.colocarPeca(new Posicao(7, 8), novoRei);
-					tabuleiroNovo.colocarPeca(new Posicao(6, 8), novaTorre);
-				}
-				break;
-			case ROQUE_MAIOR:
-				if (corJogador == TipoCorJogador.BRANCO) {
-					Peca novoRei = this.espiarPeca(new Posicao(5, 1)).clone();
-					novoRei.setJaMoveu();
-					Peca novaTorre = this.espiarPeca(new Posicao(1, 1)).clone();
-					novaTorre.setJaMoveu();
-					tabuleiroNovo.retirarPeca(new Posicao(5, 1));
-					tabuleiroNovo.retirarPeca(new Posicao(1, 1));
-					tabuleiroNovo.colocarPeca(new Posicao(3, 1), novoRei);
-					tabuleiroNovo.colocarPeca(new Posicao(4, 1), novaTorre);
-				} else {
-					Peca novoRei = this.espiarPeca(new Posicao(5, 8)).clone();
-					novoRei.setJaMoveu();
-					Peca novaTorre = this.espiarPeca(new Posicao(1, 8)).clone();
-					novaTorre.setJaMoveu();
-					tabuleiroNovo.retirarPeca(new Posicao(5, 8));
-					tabuleiroNovo.retirarPeca(new Posicao(1, 8));
-					tabuleiroNovo.colocarPeca(new Posicao(3, 8), novoRei);
-					tabuleiroNovo.colocarPeca(new Posicao(4, 8), novaTorre);
-				}
-				break;
-			case EN_PASSANT_ESQUERDA:
-				peca = this.espiarPeca(jogada.getOrigem());
-				// Retirar a peça de sua posição
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				// Retirar peça inimiga à esquerda
-				tabuleiroNovo.retirarPeca(new Posicao(jogada.getOrigem()
-						.getColuna() - 1, jogada.getOrigem().getLinha()));
-				// Se o en passant for favorável as peças brancas
-				if (corJogador == TipoCorJogador.BRANCO)
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() - 1,
-									jogada.getOrigem().getLinha() + 1), peca);
-				// Se en passant for favorável as peças pretas
-				else
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() - 1,
-									jogada.getOrigem().getLinha() - 1), peca);
-				break;
-			case EN_PASSANT_DIREITA:
-				peca = this.espiarPeca(jogada.getOrigem());
-				// Retirar a peça de sua posição
-				tabuleiroNovo.retirarPeca(jogada.getOrigem());
-				// Retirar peça inimiga à direita
-				tabuleiroNovo.retirarPeca(new Posicao(jogada.getOrigem()
-						.getColuna() + 1, jogada.getOrigem().getLinha()));
-				// Se o en passant for favorável as peças brancas
-				if (corJogador == TipoCorJogador.BRANCO)
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() + 1,
-									jogada.getOrigem().getLinha() + 1), peca);
-				// Se en passant for favorável as peças pretas
-				else
-					tabuleiroNovo.colocarPeca(
-							new Posicao(jogada.getOrigem().getColuna() + 1,
-									jogada.getOrigem().getLinha() - 1), peca);
-				break;
-			}
-			// Se a jogada a ser realizada não leva um jogador a um estado de
-			// xeque
-			if (!tabuleiroNovo.verificarXeque(corJogador))
-				proximosEstados.add(new Estado(jogada, tabuleiroNovo));
-		}
-		return proximosEstados;
 	}
 
 	/**
@@ -879,7 +715,7 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		List<Estado> estadosPossiveis = null;
 		// TODO testar
 		try {
-			estadosPossiveis = this.proximosEstadosPossiveis(corJogador);
+			estadosPossiveis = geraEstado.proximosEstadosPossiveis(this, corJogador);
 		} catch (CasaOcupadaException e) {
 			System.out.println(e);
 		}

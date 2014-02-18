@@ -8,11 +8,13 @@ import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 
 public class GeraCamada implements Runnable {
 
+	
 	private List<NoArvore> novaListaNos = new ArrayList<NoArvore>();
 	private int comeco;
 	private int fim;
 	private List<NoArvore> listaNos;
-
+	private GeraEstado geraEstado = new GeraEstado();
+	
 	/**
 	 * Método construtor
 	 * 
@@ -65,8 +67,8 @@ public class GeraCamada implements Runnable {
 		if (noPai.isXequeMate() == false) {
 			// Crie uma lista de tabuleiros com todas as jogadas possíveis de
 			// serem realizadas naquele tabuleiro
-			listaEstados = noPai.getEstado().getTabuleiro()
-					.proximosEstadosPossiveis(noPai.getCorNo());
+			listaEstados = geraEstado
+					.proximosEstadosPossiveis(noPai.getEstado().getTabuleiro(),noPai.getCorNo());
 			// Para cada estado da lista de estados
 			for (Estado estado : listaEstados) {
 				// Crie um nó que reconheça seu pai e armazene o estado
