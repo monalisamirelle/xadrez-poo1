@@ -486,14 +486,14 @@ public class Controlador {
 		List<DadosPartida> listaPartidasNaoFinalizadas = manipuladorArquivo
 				.criarListaPartidasNaoFinalizadas();
 
-		// Exibe as partidas atuais
-		exibirPartidasNaoFinalizadas(listaPartidasNaoFinalizadas);
-
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuRetornarPartida = new MenuRetornarPartida();
 
 		boolean retornarMenu = false;
 		do {
+			// Exibe as partidas atuais
+			exibirPartidasNaoFinalizadas(listaPartidasNaoFinalizadas);
+			
 			// Inicia o menu deixando a escolha para o usuário do que fazer.
 			ItemMenu itemEscolhido = menuRetornarPartida
 					.insistirPorEntradaValida(cli.getIo());
@@ -503,14 +503,15 @@ public class Controlador {
 			case "REINICIAR":
 				// Tente carregar uma partida
 				AplJogo apl = buscarCarregarPartida(listaPartidasNaoFinalizadas);
-				apl.setSairPartida(false);
-				// Tente iniciar uma partida
-				try {
-					controlarPartida(apl);
-					retornarMenu = true;
-				} catch (Exception e) {
-					cli.exibirAlerta("Nenhuma partida foi carregada.");
-				}
+				if (apl != null)
+					// Tente iniciar uma partida
+					try {
+						apl.setSairPartida(false);
+						controlarPartida(apl);
+						retornarMenu = true;
+					} catch (Exception e) {
+						cli.exibirAlerta("Nenhuma partida foi carregada.");
+					}
 				break;
 			case "RETORNAR":
 				retornarMenu = true;
