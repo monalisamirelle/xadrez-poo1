@@ -109,22 +109,6 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	}
 
 	/**
-	 * Verifica se o jogador é humano ou uma IA
-	 * 
-	 * @param nomeCandidato
-	 * @return
-	 */
-//	private boolean ehHumano(String nomeCandidato) {
-//		if (nomeCandidato.toUpperCase().equals("CÉRBERO")
-//				|| nomeCandidato.toUpperCase().equals("DIONÍSIO")
-//				|| nomeCandidato.toUpperCase().equals("ARES")
-//				|| nomeCandidato.toUpperCase().equals("ZEUS")
-//				|| nomeCandidato.toUpperCase().equals("PROMETEU"))
-//			return false;
-//		return true;
-//	}
-
-	/**
 	 * Método responsável por dar pontos de derrota ou vitória a pessoas
 	 * 
 	 * @param partida

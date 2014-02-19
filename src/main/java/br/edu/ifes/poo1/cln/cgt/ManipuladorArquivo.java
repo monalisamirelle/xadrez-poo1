@@ -17,7 +17,7 @@ public class ManipuladorArquivo {
 	 * Método que manda ao arquivo gravar o jogo atual
 	 * 
 	 * @param dadosJogo
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void gravarPartida(AplJogo dadosJogo) throws IOException {
 		List<DadosPartida> listaPartidas;
@@ -36,9 +36,10 @@ public class ManipuladorArquivo {
 	 * Método que manda ao arquivo gravar a lista de partidas
 	 * 
 	 * @param listaPartidas
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public void gravarListaPartidas(List<DadosPartida> listaPartidas) throws IOException {
+	public void gravarListaPartidas(List<DadosPartida> listaPartidas)
+			throws IOException {
 		arquivo.escrevaPartidas(listaPartidas);
 	}
 
@@ -109,6 +110,24 @@ public class ManipuladorArquivo {
 					|| partida.getJogo().getSituacaoPartida() == TipoSituacaoPartida.DESISTENCIA)
 				listaPartidasConcluidas.add(partida);
 		return listaPartidasConcluidas;
+	}
+
+	/**
+	 * Verifica se o jogador é humano ou uma IA, pode ser usado se quiser apenas
+	 * jogadores nos dados
+	 * 
+	 * @param nomeCandidato
+	 * @return
+	 */
+	// TODO verificar interesse
+	private boolean ehHumano(String nomeCandidato) {
+		if (nomeCandidato.toUpperCase().equals("CÉRBERO")
+				|| nomeCandidato.toUpperCase().equals("DIONÍSIO")
+				|| nomeCandidato.toUpperCase().equals("ARES")
+				|| nomeCandidato.toUpperCase().equals("ZEUS")
+				|| nomeCandidato.toUpperCase().equals("PROMETEU"))
+			return false;
+		return true;
 	}
 
 }
