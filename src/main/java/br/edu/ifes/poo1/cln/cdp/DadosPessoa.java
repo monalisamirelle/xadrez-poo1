@@ -118,9 +118,11 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	 * @return
 	 */
 	private boolean ehHumano(String nomeCandidato) {
-		if (nomeCandidato.equals("CÉRBERO") || nomeCandidato.equals("DIONÍSIO")
-				|| nomeCandidato.equals("ARES") || nomeCandidato.equals("ZEUS")
-				|| nomeCandidato.equals("PROMETEU"))
+		if (nomeCandidato.toUpperCase().equals("CÉRBERO")
+				|| nomeCandidato.toUpperCase().equals("DIONÍSIO")
+				|| nomeCandidato.toUpperCase().equals("ARES")
+				|| nomeCandidato.toUpperCase().equals("ZEUS")
+				|| nomeCandidato.toUpperCase().equals("PROMETEU"))
 			return false;
 		return true;
 	}

@@ -1,8 +1,15 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
+import java.io.Serializable;
 
-public class Escolha {
+
+public class Escolha implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Trabalha com os princípios do algoritmo Minimax
 	 * @param no

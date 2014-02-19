@@ -173,10 +173,10 @@ public class Controlador {
 		Maquina maquina = null;
 		switch (nivelEscolhido.getNome()) {
 		case "CERBERO":
-			maquina = new IAElaborada("Cerbero", corMaquina, 10, 15, false);
+			maquina = new IAElaborada("Cérbero", corMaquina, 10, 15, false);
 			break;
 		case "DIONISIO":
-			maquina = new IARandomica("Dionisio", corMaquina);
+			maquina = new IARandomica("Dionísio", corMaquina);
 			break;
 		case "ARES":
 			maquina = new IAElaborada("Ares", corMaquina, 1, 45, true);
@@ -280,8 +280,6 @@ public class Controlador {
 	 * 
 	 * @param apl
 	 */
-	// FIXME Ao jogar SinglePlayer com peças pretas o tabuleiro está invertendo.
-	// NÃO INVERTA!!!
 	private void controlarPartida(AplJogo apl) {
 		// Enquando não acabar o jogo, continuamos executando as jogadas
 		// dos jogadores e exibindo o estado do tabuleiro.
@@ -398,7 +396,6 @@ public class Controlador {
 		try {
 			jogada = maquina.escolherJogada(apl.getTabuleiro());
 		} catch (CasaOcupadaException e) {
-			// TODO Auto-generated catch block
 			cli.exibirAlerta("Erro, casa ocupada");
 		}
 		// Se a máquina não encontrar jogadas para realizar

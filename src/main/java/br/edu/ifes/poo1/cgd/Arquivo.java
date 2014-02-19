@@ -30,6 +30,7 @@ public class Arquivo<T> {
 		try {
 			oo.writeObject(listaPartidas);
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Incapaz de escrever no arquivo\n");
 		}
 		try {

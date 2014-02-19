@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,12 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
 
-public class GeraEstado {
+public class GeraEstado implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Método que armazena, dado um tabuleiro, os próximos estados possíveis
