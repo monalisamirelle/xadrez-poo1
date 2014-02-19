@@ -87,7 +87,6 @@ public class IAElaborada extends Maquina {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	// FIXME concurrent Modification Exception !!!!
 	public boolean criaCamada() throws InterruptedException {
 		// GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(),
 		// listaNos);
@@ -146,7 +145,7 @@ public class IAElaborada extends Maquina {
 		return false;
 	}
 
-	// FIXME apagar no final
+	// FIXME apagar no final, método desnecessário
 	public boolean criaCamadaM() throws InterruptedException {
 		// Construa as partes
 		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
@@ -228,11 +227,7 @@ public class IAElaborada extends Maquina {
 
 		// Insiro os valores nos nós folhas
 		inserirValorFolhas(listaNos);
-	
-		for(NoArvore no:listaNos)
-			if(no.getValor()!=0)
-				System.out.println(no.getValor());
-		
+
 		// Realizo a busca em profundidade (aplicando minimax e poda alfa
 		// beta)
 		busca.buscaEmProfundidade(raiz);
@@ -249,10 +244,6 @@ public class IAElaborada extends Maquina {
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
-					System.out.println("Valores especiais");
-					System.out.println(raiz.getListaAdjacencia().get(indice)
-					.getValor());
-					System.out.println(raiz.getValor());
 					jogada = raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
 				}
