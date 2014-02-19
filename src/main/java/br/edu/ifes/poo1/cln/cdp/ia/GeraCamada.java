@@ -8,13 +8,16 @@ import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 
 public class GeraCamada implements Runnable {
 
-	
 	private List<NoArvore> novaListaNos = new ArrayList<NoArvore>();
-	private int comeco;
-	private int fim;
+	// Captura o primeiro nó
+	private int comecoElementos;
+	// Captura o ultimo nó
+	private int fimElementos;
+	// Continua enquanto não acabar o tempo
+	private boolean acabou = false;
 	private List<NoArvore> listaNos;
 	private GeraEstado geraEstado = new GeraEstado();
-	
+
 	/**
 	 * Método construtor
 	 * 
@@ -23,8 +26,8 @@ public class GeraCamada implements Runnable {
 	 * @param listaNos
 	 */
 	public GeraCamada(int comeco, int fim, List<NoArvore> listaNos) {
-		this.comeco = comeco;
-		this.fim = fim;
+		this.comecoElementos = comeco;
+		this.fimElementos = fim;
 		this.listaNos = listaNos;
 	}
 
@@ -32,15 +35,18 @@ public class GeraCamada implements Runnable {
 	 * Método run
 	 */
 	public void run() {
-		for (int indiceLista = comeco; indiceLista < fim; indiceLista++)
-			try {
-				novaListaNos = geraFilhos(listaNos.get(indiceLista),
-						novaListaNos);
-			} catch (CasaOcupadaException | CloneNotSupportedException
-					| JogadaInvalidaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		for (int indiceLista = comecoElementos; indiceLista < fimElementos; indiceLista++)
+			// Se não acabou o tempo
+			if (!acabou) {
+				try {
+					novaListaNos = geraFilhos(listaNos.get(indiceLista),
+							novaListaNos);
+				} catch (CasaOcupadaException | CloneNotSupportedException
+						| JogadaInvalidaException e) {
+					return;
+				}
+			} else 
+				return;
 	}
 
 	public List<NoArvore> getNovaListaNos() {
@@ -67,8 +73,8 @@ public class GeraCamada implements Runnable {
 		if (noPai.isXequeMate() == false) {
 			// Crie uma lista de tabuleiros com todas as jogadas possíveis de
 			// serem realizadas naquele tabuleiro
-			listaEstados = geraEstado
-					.proximosEstadosPossiveis(noPai.getEstado().getTabuleiro(),noPai.getCorNo());
+			listaEstados = geraEstado.proximosEstadosPossiveis(noPai
+					.getEstado().getTabuleiro(), noPai.getCorNo());
 			// Para cada estado da lista de estados
 			for (Estado estado : listaEstados) {
 				// Crie um nó que reconheça seu pai e armazene o estado
@@ -80,4 +86,9 @@ public class GeraCamada implements Runnable {
 			novaListaNos.add(noPai);
 		return novaListaNos;
 	}
+	
+	public void setAcabou(){
+		acabou = true;
+	}
+	
 }

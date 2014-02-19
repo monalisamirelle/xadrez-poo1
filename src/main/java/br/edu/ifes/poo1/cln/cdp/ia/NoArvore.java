@@ -67,7 +67,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Classe construtora de n�
+	 * Classe construtora de nó
 	 * 
 	 * @param noPai
 	 * @param valor
@@ -90,7 +90,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Pegar o valor de um n�
+	 * Pegar o valor de um nó
 	 * 
 	 * @return
 	 */
@@ -99,7 +99,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Modifica o valor de um n�
+	 * Modifica o valor de um nó
 	 * 
 	 * @param valor
 	 */
@@ -108,7 +108,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Verifica se o n� possui valor ou n�o
+	 * Verifica se o nó possui valor ou não
 	 * 
 	 * @return
 	 */
@@ -117,7 +117,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Muda o estado o n� quando ele receber um valor
+	 * Muda o estado o nó quando ele receber um valor
 	 */
 	public void setTemValor() {
 		this.temValor = true;
@@ -133,7 +133,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Retorna o n� pai de um n�
+	 * Retorna o n� pai de um nó
 	 * 
 	 * @return
 	 */
@@ -175,7 +175,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Gera um n� filho a um n�
+	 * Gera um nó filho a um nó
 	 * 
 	 * @param no
 	 */
@@ -200,7 +200,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Recupera a lista de adjac�ncia de um n�
+	 * Recupera a lista de adjacência de um nó
 	 * 
 	 * @return
 	 */
@@ -209,7 +209,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Insere um n� na lista de adjac�ncia de outro n�
+	 * Insere um nó na lista de adjacência de outro nó
 	 * 
 	 * @param no
 	 */
@@ -218,7 +218,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Verifica se o n� j� foi marcado como visitado
+	 * Verifica se o nó já foi marcado como visitado
 	 * 
 	 * @return
 	 */

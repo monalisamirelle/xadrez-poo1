@@ -85,60 +85,97 @@ public class IAElaborada extends Maquina {
 	 * 
 	 * @param listaNos
 	 * @return
+	 * @throws InterruptedException
 	 */
 	// FIXME concurrent Modification Exception !!!!
-	@SuppressWarnings("deprecation")
-	public boolean criaCamada() {
-		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
-		// // Construa as partes
-		// GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 4,
+	public boolean criaCamada() throws InterruptedException {
+		// GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(),
 		// listaNos);
-		// GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 4,
-		// (int) listaNos.size() * 2 / 4, listaNos);
-		// GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 4,
-		// (int) listaNos.size() * 3 / 4, listaNos);
-		// GeraCamada parte4 = new GeraCamada((int) listaNos.size() * 3 / 4,
-		// listaNos.size(), listaNos);
-		//
-		// // Construa as threads
+		// Construa as partes
+		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size() * 1 / 4,
+				listaNos);
+		GeraCamada parte2 = new GeraCamada((int) listaNos.size() * 1 / 4,
+				(int) listaNos.size() * 2 / 4, listaNos);
+		GeraCamada parte3 = new GeraCamada((int) listaNos.size() * 2 / 4,
+				(int) listaNos.size() * 3 / 4, listaNos);
+		GeraCamada parte4 = new GeraCamada((int) listaNos.size() * 3 / 4,
+				listaNos.size(), listaNos);
+
+		// Construa as threads
 		Thread t1 = new Thread(parte1);
-		// Thread t2 = new Thread(parte2);
-		// Thread t3 = new Thread(parte3);
-		// Thread t4 = new Thread(parte4);
-		//
-		// // Inicia as threads
+		Thread t2 = new Thread(parte2);
+		Thread t3 = new Thread(parte3);
+		Thread t4 = new Thread(parte4);
+
+		// Inicia as threads
 		t1.start();
-		// t2.start();
-		// t3.start();
-		// t4.start();
-		//
-		// // Enquanto as threads estão rodando
-		while (t1.getState() == State.RUNNABLE) {
-			// || t2.getState() == State.RUNNABLE
-			// || t3.getState() == State.RUNNABLE
-			// || t4.getState() == State.RUNNABLE) {
+		t2.start();
+		t3.start();
+		t4.start();
+
+		// Enquanto as threads estão rodando
+		while (t1.getState() == State.RUNNABLE
+				|| t2.getState() == State.RUNNABLE
+				|| t3.getState() == State.RUNNABLE
+				|| t4.getState() == State.RUNNABLE) {
 			long fim = System.currentTimeMillis();
 			// Se o tempo máximo for alcançado
 			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
+
 				// Interrompa as threads e retorne true
-				t1.stop();
-				// t2.interrupt();
-				// t3.interrupt();
-				// t4.interrupt();
-				// return true;
-				// // TODO poderia haver um else que só permitisse esse loop a
-				// cada
-				// // um segundo
+				parte1.setAcabou();
+				parte2.setAcabou();
+				parte3.setAcabou();
+				parte4.setAcabou();
+
+				// Espera as threads morrerem
+				t1.join();
+				t2.join();
+				t3.join();
+				t4.join();
+
+				return true;
 			}
 		}
-		//
-		// // Crie a lista de nós
-		listaNos = parte1.getNovaListaNos();
-		// listaNos.addAll(parte2.getNovaListaNos());
-		// listaNos.addAll(parte3.getNovaListaNos());
-		// listaNos.addAll(parte4.getNovaListaNos());
-		return false;
 
+		// Crie a lista de nós
+		listaNos = parte1.getNovaListaNos();
+		listaNos.addAll(parte2.getNovaListaNos());
+		listaNos.addAll(parte3.getNovaListaNos());
+		listaNos.addAll(parte4.getNovaListaNos());
+		return false;
+	}
+
+	// FIXME apagar no final
+	public boolean criaCamadaM() throws InterruptedException {
+		// Construa as partes
+		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
+
+		// Construa as threads
+		Thread t1 = new Thread(parte1);
+
+		// Inicia as threads
+		t1.start();
+
+		// Enquanto as threads estão rodando
+		while (t1.getState() == State.RUNNABLE) {
+			long fim = System.currentTimeMillis();
+			// Se o tempo máximo for alcançado
+			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
+
+				// Interrompa as threads e retorne true
+				parte1.setAcabou();
+
+				// Espera as threads morrerem
+				t1.join();
+
+				return true;
+			}
+		}
+
+		// Crie a lista de nós
+		listaNos = parte1.getNovaListaNos();
+		return false;
 	}
 
 	/**
@@ -181,12 +218,21 @@ public class IAElaborada extends Maquina {
 		// Crio a árvore de possibilidades
 		for (int camada = 1; camada <= ALCANCEMAQUINA
 				&& atingiuTempoMaximo == false; camada++) {
-			atingiuTempoMaximo = criaCamada();
+			try {
+				atingiuTempoMaximo = criaCamada();
+			} catch (InterruptedException e) {
+				// Se apresentar algum erro de jogada, tente a IA randomica
+				return suporte(tabuleiroAtual);
+			}
 		}
 
 		// Insiro os valores nos nós folhas
 		inserirValorFolhas(listaNos);
-
+	
+		for(NoArvore no:listaNos)
+			if(no.getValor()!=0)
+				System.out.println(no.getValor());
+		
 		// Realizo a busca em profundidade (aplicando minimax e poda alfa
 		// beta)
 		busca.buscaEmProfundidade(raiz);
@@ -196,26 +242,44 @@ public class IAElaborada extends Maquina {
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
 			// Para cada nó na lista de adjacência do pai (começa de 1 pois
-			// o nó
-			// pai não tem primeiro valor na lista de adjacência pois não
-			// tem
-			// pai
+			// o nó pai não tem primeiro valor na lista de adjacência pois não
+			// tem pai
 			for (int indice = 1; indice < raiz.getListaAdjacencia().size(); indice++)
 				// Se o nó possuir o mesmo valor do pai, então o tabuleiro
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
+					System.out.println("Valores especiais");
+					System.out.println(raiz.getListaAdjacencia().get(indice)
+					.getValor());
+					System.out.println(raiz.getValor());
 					jogada = raiz.getListaAdjacencia().get(indice).getEstado()
 							.getJogada();
 				}
 		}
-		// Controle caso IA não seja capaz de encontrar jogada alguma
+		// Se IA encontrar uma jogada
 		if (jogada != null)
 			return jogada;
+		// Controle caso IA não seja capaz de encontrar jogada alguma
 		else {
-			Maquina maquinaAuxilio = new IARandomica("", this.cor);
-			return maquinaAuxilio.escolherJogada(tabuleiroAtual);
+			return suporte(tabuleiroAtual);
 		}
+	}
+
+	/**
+	 * Método criado para auxiliar caso a IA falhe em parar as threads ou em
+	 * encontrar uma jogada
+	 * 
+	 * @param tabuleiroAtual
+	 * @return
+	 * @throws CasaOcupadaException
+	 */
+	public Jogada suporte(TabuleiroXadrez tabuleiroAtual)
+			throws CasaOcupadaException {
+		// TODO remover comentário
+		System.out.println("RECORREU AO SUPORTE!");
+		Maquina maquinaAuxilio = new IARandomica("", this.cor);
+		return maquinaAuxilio.escolherJogada(tabuleiroAtual);
 	}
 
 	public int getALCANCEMAQUINA() {
