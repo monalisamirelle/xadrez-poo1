@@ -146,9 +146,6 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 			throws CasaOcupadaException {
 		// Não é possível posicionar a peça se a casa estiver ocupada.
 		if (pecas[posicao.getColuna() - 1][posicao.getLinha() - 1] != null) {
-			// TODO retirar depois
-			System.out.println("TABULEIRO PROBLEMA");
-			System.out.println(this.toString());
 			throw new CasaOcupadaException();
 		} else
 			// Coloca a peça na posição indicada.
@@ -677,20 +674,16 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * Método que copia as peças para um novo tabuleiro
 	 * 
 	 * @return uma cópia da peça
+	 * @throws CasaOcupadaException 
 	 */
-	public TabuleiroXadrez tabuleiroClonado() {
+	public TabuleiroXadrez tabuleiroClonado() throws CasaOcupadaException {
 		TabuleiroXadrez novoTabuleiro = new TabuleiroXadrez();
 		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++)
 			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++)
 				if (this.espiarPeca(new Posicao(coluna, linha)) != null) {
-					try {
-						novoTabuleiro.colocarPeca(
-								new Posicao(coluna, linha),
-								(Peca) this.espiarPeca(
-										new Posicao(coluna, linha)).clone());
-					} catch (CasaOcupadaException e) {
-						System.out.println("Já existe uma peça (impossível)");
-					}
+					novoTabuleiro.colocarPeca(new Posicao(coluna, linha),
+							(Peca) this.espiarPeca(new Posicao(coluna, linha))
+									.clone());
 				}
 		return novoTabuleiro;
 	}
