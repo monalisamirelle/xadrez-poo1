@@ -17,27 +17,13 @@ public class Arquivo<T> {
 	 * Método que escreve um determinado jogo no arquivo
 	 * 
 	 * @param jogo
+	 * @throws IOException 
 	 */
-	public void escrevaPartidas(List<T> listaPartidas) {
+	public void escrevaPartidas(List<T> listaPartidas) throws IOException {
 		ObjectOutputStream oo = null;
-		try {
-			oo = new ObjectOutputStream(new FileOutputStream(ARQUIVOPARTIDAS));
-		} catch (FileNotFoundException e) {
-			System.out.println("Arquivo não encontrado\n");
-		} catch (IOException e) {
-			System.out.println("Entrada e saida com problema\n");
-		}
-		try {
-			oo.writeObject(listaPartidas);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Incapaz de escrever no arquivo\n");
-		}
-		try {
-			oo.close();
-		} catch (IOException e) {
-			System.out.println("Erro, não foi possível fechar o arquivo\n");
-		}
+		oo = new ObjectOutputStream(new FileOutputStream(ARQUIVOPARTIDAS));
+		oo.writeObject(listaPartidas);
+		oo.close();
 	}
 
 	/**
@@ -64,14 +50,14 @@ public class Arquivo<T> {
 		return listaPartidas;
 	}
 
-	private void criaArquivo(String nome) {
+	/**
+	 * Método responsável por criar um arquivo
+	 * @param nome
+	 * @throws IOException 
+	 */
+	private void criaArquivo(String nome) throws IOException {
 		File file = new File(nome);
-		try {
 			file.createNewFile();
-		} catch (IOException e) {
-			System.out
-					.println("Erro, arquivo não existe e não pôde ser criado");
-		}
 	}
 
 }

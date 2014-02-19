@@ -1,5 +1,6 @@
 package br.edu.ifes.poo1.ciu.cci;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -367,7 +368,11 @@ public class Controlador {
 			apl.finalizarPartida(TipoSituacaoPartida.PAUSA);
 			break;
 		case "SALVAR":
-			manipuladorArquivo.gravarPartida(apl);
+			try {
+				manipuladorArquivo.gravarPartida(apl);
+			} catch (IOException e1) {
+				cli.exibirAlerta("Não foi possível salvar a partida");
+			}
 			break;
 		case "AJUDA":
 			cli.exibirComandos();
@@ -473,7 +478,11 @@ public class Controlador {
 		default:
 			break;
 		}
-		manipuladorArquivo.gravarPartida(apljogo);
+		try {
+			manipuladorArquivo.gravarPartida(apljogo);
+		} catch (IOException e) {
+			cli.exibirAlerta("Não foi possível gravar a partida");
+		}
 	}
 
 	/**

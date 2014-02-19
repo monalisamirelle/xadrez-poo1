@@ -17,8 +17,9 @@ public class ManipuladorArquivo {
 	 * Método que manda ao arquivo gravar o jogo atual
 	 * 
 	 * @param dadosJogo
+	 * @throws IOException 
 	 */
-	public void gravarPartida(AplJogo dadosJogo) {
+	public void gravarPartida(AplJogo dadosJogo) throws IOException {
 		List<DadosPartida> listaPartidas;
 		try {
 			listaPartidas = arquivo.leiaJogos();
@@ -35,8 +36,9 @@ public class ManipuladorArquivo {
 	 * Método que manda ao arquivo gravar a lista de partidas
 	 * 
 	 * @param listaPartidas
+	 * @throws IOException 
 	 */
-	public void gravarListaPartidas(List<DadosPartida> listaPartidas) {
+	public void gravarListaPartidas(List<DadosPartida> listaPartidas) throws IOException {
 		arquivo.escrevaPartidas(listaPartidas);
 	}
 
