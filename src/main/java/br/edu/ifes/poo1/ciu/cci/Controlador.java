@@ -100,7 +100,7 @@ public class Controlador {
 				informaDadosPartida();
 				break;
 			default:
-				System.out.println("Esta opção não foi implementada ainda");
+				cli.imprimir("Esta opção não foi implementada ainda");
 				break;
 			}
 
@@ -298,7 +298,6 @@ public class Controlador {
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
 				jogada = acaoRealizadaPessoa(apl);
-				System.out.println("Jogada aqui 2");
 				// Máquina executa uma jogada
 			} else {
 				jogada = acaoRealizadaMaquina(apl);
@@ -310,8 +309,6 @@ public class Controlador {
 					apl.trocarTurno();
 					apl.getTabuleiro().resetaPodeEnPassant(
 							apl.getJogadorTurnoAtual().getCor());
-					// TODO remover
-					System.out.println(apl.getTabuleiro().toString());
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Jogada inválida.");
 				} catch (CasaOcupadaException e) {
@@ -399,7 +396,7 @@ public class Controlador {
 			jogada = maquina.escolherJogada(apl.getTabuleiro());
 		} catch (CasaOcupadaException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Erro, casa ocupada");
+			cli.exibirAlerta("Erro, casa ocupada");
 		}
 		// Se a máquina não encontrar jogadas para realizar
 		if (jogada == null) {
@@ -538,7 +535,7 @@ public class Controlador {
 		for (int indice = 0; indice < listaPartidasNaoFinalizadas.size(); indice++)
 			cli.exibirDadosPartidasAndamento(indice,
 					listaPartidasNaoFinalizadas.get(indice));
-		System.out.println("");
+		cli.imprimirLinha("");
 	}
 
 	/**
@@ -594,7 +591,7 @@ public class Controlador {
 		for (int indice = 0; indice < listaPartidasConcluidas.size(); indice++)
 			cli.exibirDadosPartidasConcluidas(indice,
 					listaPartidasConcluidas.get(indice));
-		System.out.println("");
+		cli.imprimirLinha("");
 	}
 
 	/**
@@ -611,7 +608,7 @@ public class Controlador {
 		// Exibe a lista de jogos
 		for (int indice = 0; indice < dadosPessoas.size(); indice++)
 			cli.exibirDadosJogadores(indice, dadosPessoas.get(indice));
-		System.out.println("");
+		cli.imprimirLinha("");
 	}
 
 	/**
@@ -676,60 +673,5 @@ public class Controlador {
 		} while (indice < -1 || indice >= listaPartidas.size());
 		cli.imprimirLinha("");
 		return listaPartidas;
-	}
-
-	/**
-	 * Método responsável por controlar a exibição dos dados de partidas
-	 */
-	// TODO está para ser depreciado
-	@SuppressWarnings("unused")
-	private void controlarExibicaoPartidas() {
-
-		List<DadosPartida> listaPartidas = manipuladorArquivo
-				.criarListaPartidas();
-
-		ItemMenu opcao = new ItemMenu("", "");
-		boolean iniciouPartida = false;
-		while (!listaPartidas.isEmpty() & opcao.getNome() != "VOLTAR"
-				& iniciouPartida == false) {
-			// TODO deixar menu certinho em formatação
-			cli.imprimirLinha("Lista de jogos:\n");
-			cli.imprimirLinha("Índice" + "..." + "Data" + "..."
-					+ "Jogador Branco" + "..." + "Jogador Preto" + "..."
-					+ "Situação da Partida\n");
-			for (int indice = 0; indice < listaPartidas.size(); indice++)
-				cli.exibirDadosPartidasAndamento(indice,
-						listaPartidas.get(indice));
-
-			System.out.println("");
-			Menu menuDadosPartidas = new MenuDadosPartida();
-			opcao = menuDadosPartidas
-					.insistirPorEntradaValida(new EntradaSaida());
-			// Escolher uma opção
-			switch (opcao.getNome()) {
-			// Se escolher para carregar
-			case "CARREGAR":
-				// Tente carregar uma partida
-				AplJogo apl = buscarCarregarPartida(listaPartidas);
-				// Tente iniciar uma partida
-				try {
-					controlarPartida(apl);
-					iniciouPartida = true;
-				} catch (Exception e) {
-					cli.exibirAlerta("Nenhuma partida foi carregada");
-				}
-				break;
-			// Se escolher para apagar uma partida
-			case "APAGAR":
-				// Apague a partida em memória
-				listaPartidas = buscarApagarPartida(listaPartidas);
-				break;
-			// Se escolher por voltar
-			case "VOLTAR":
-				// Salve as alterações realizadas (apagar partida, etc)
-				manipuladorArquivo.gravarListaPartidas(listaPartidas);
-				break;
-			}
-		}
 	}
 }
