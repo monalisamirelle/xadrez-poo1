@@ -49,5 +49,10 @@ public class EntradaSaida {
 	public void imprimir(String texto) {
 		System.out.print(texto);
 	}
-
+	
+	public void imprimirLinhaFormatada(String[] texto){
+		for(int elemento = 0;elemento<texto.length;elemento++)
+			System.out.printf("%s\t\t",texto[elemento]);
+		System.out.println("");
+	}
 }

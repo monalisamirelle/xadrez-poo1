@@ -29,7 +29,8 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas, Jogador pretas) {
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas,
+			Jogador pretas) {
 		// Imprime o tabuleiro.
 		imprimirTabuleiro(tabuleiro);
 		imprimirLinha(""); // Dá uma folga para o próximo elemento.
@@ -48,8 +49,8 @@ public abstract class Cli {
 	 * @param aviso
 	 *            Aviso a ser exibido para o jogador.
 	 */
-	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas, Jogador pretas,
-			String aviso) {
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas,
+			Jogador pretas, String aviso) {
 		// Atualiza a tela normalmente.
 		atualizar(tabuleiro, brancas, pretas);
 
@@ -221,6 +222,11 @@ public abstract class Cli {
 		io.imprimirLinha(texto);
 	}
 
+	// TODO verificar
+	public void imprimirLinhaFormatada(String[] texto) {
+		io.imprimirLinhaFormatada(texto);
+	}
+
 	/** Retorna o objeto usado para escrita na linha de comando. */
 	public EntradaSaida getIo() {
 		return io;
@@ -231,50 +237,58 @@ public abstract class Cli {
 	 * 
 	 * @param jogada
 	 */
-	public void imprimirRecomendacao(int numeroRecomendacao,Peca peca ,Jogada jogada) {
+	public void imprimirRecomendacao(int numeroRecomendacao, Peca peca,
+			Jogada jogada) {
 		io.imprimirLinha(numeroRecomendacao + " - Recomendação:");
-		io.imprimirLinha("Mova a peça "+peca.getTipoPeca()+" da coluna " + jogada.getOrigem().getColuna()
-				+ " e linha " + jogada.getOrigem().getLinha()
-				+ " para a coluna " + jogada.getDestino().getColuna()
-				+ " e linha " + jogada.getDestino().getLinha() + "\n");
+		io.imprimirLinha("Mova a peça " + peca.getTipoPeca() + " da coluna "
+				+ jogada.getOrigem().getColuna() + " e linha "
+				+ jogada.getOrigem().getLinha() + " para a coluna "
+				+ jogada.getDestino().getColuna() + " e linha "
+				+ jogada.getDestino().getLinha() + "\n");
 	}
 
 	/**
-	 * Informa na tela todos os dados de uma determinada partida que ainda não terminou
+	 * Informa na tela todos os dados de uma determinada partida que ainda não
+	 * terminou
 	 * 
 	 * @param dadosPartidas
 	 */
-	public void exibirDadosPartidasAndamento(int indice,
+	public void exibirDadosPartidasAndamento(String indice,
 			DadosPartida dadosPartida) {
-		io.imprimirLinha(indice + "..."
-				+ manipulaData(dadosPartida.getDataInicioPartida()) + "..."
-				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
-				+ dadosPartida.getJogo().getJogadorBrancas().getNome() + "..."
-				+ dadosPartida.getJogo().getJogadorPretas().getNome());
+		String[] s = { indice,
+				manipulaData(dadosPartida.getDataInicioPartida()),
+				manipulaData(dadosPartida.getDataTerminoPartida()),
+				dadosPartida.getJogo().getJogadorBrancas().getNome(),
+				dadosPartida.getJogo().getJogadorPretas().getNome() };
+		io.imprimirLinhaFormatada(s);
 	}
 
 	/**
 	 * Informa na tela todos os dados das partidas concluídas
+	 * 
 	 * @param indice
 	 * @param dadosPartida
 	 */
-	public void exibirDadosPartidasConcluidas(int indice,
+	public void exibirDadosPartidasConcluidas(String indice,
 			DadosPartida dadosPartida) {
-		io.imprimirLinha(indice + "..."
-				+ manipulaData(dadosPartida.getDataInicioPartida()) + "..."
-				+ manipulaData(dadosPartida.getDataTerminoPartida()) + "..."
-				+ dadosPartida.getJogo().getNomeVencedor());
+		String[] s = { indice,
+				manipulaData(dadosPartida.getDataInicioPartida()),
+				manipulaData(dadosPartida.getDataTerminoPartida()),
+				dadosPartida.getJogo().getNomeVencedor() };
+		io.imprimirLinhaFormatada(s);
 	}
 
 	/**
 	 * Informa na tela todos os históricos de pessoas
+	 * 
 	 * @param indice
 	 * @param dadosPessoa
 	 */
-	public void exibirDadosJogadores(int indice, DadosPessoa dadosPessoa) {
-		io.imprimirLinha(indice + "..." + dadosPessoa.getNome() + "..."
-				+ dadosPessoa.getPartidasVencidas() + "..."
-				+ dadosPessoa.getPartidasPerdidas());
+	public void exibirDadosJogadores(String indice, DadosPessoa dadosPessoa) {
+		String[] s = { indice, dadosPessoa.getNome(),
+				dadosPessoa.getPartidasVencidas(),
+				dadosPessoa.getPartidasPerdidas() };
+		io.imprimirLinhaFormatada(s);;
 	}
 
 	/**

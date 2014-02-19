@@ -528,12 +528,12 @@ public class Controlador {
 			List<DadosPartida> listaPartidasNaoFinalizadas) {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogos:\n");
-		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
-				+ "..." + "Jogador Branco" + "..." + "Jogador Preto");
-
+		String[] s = { "Índice", "Data Início", "Data Fim", "Jogador Branco",
+				"Jogador Preto" };
+		cli.imprimirLinhaFormatada(s);
 		// Exibe a lista de jogos
-		for (int indice = 0; indice < listaPartidasNaoFinalizadas.size(); indice++)
-			cli.exibirDadosPartidasAndamento(indice,
+		for (Integer indice = 0; indice < listaPartidasNaoFinalizadas.size(); indice++)
+			cli.exibirDadosPartidasAndamento(Integer.toString(indice),
 					listaPartidasNaoFinalizadas.get(indice));
 		cli.imprimirLinha("");
 	}
@@ -585,11 +585,11 @@ public class Controlador {
 			List<DadosPartida> listaPartidasConcluidas) {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogos:\n");
-		cli.imprimirLinha("Índice" + "..." + "Data Início" + "..." + "Data Fim"
-				+ "..." + "Vencedor");
+		String[] s = { "Índice", "Data Início", "Data Fim", "Vencedor" };
+		cli.imprimirLinhaFormatada(s);
 		// Exibe a lista de jogos
-		for (int indice = 0; indice < listaPartidasConcluidas.size(); indice++)
-			cli.exibirDadosPartidasConcluidas(indice,
+		for (Integer indice = 0; indice < listaPartidasConcluidas.size(); indice++)
+			cli.exibirDadosPartidasConcluidas(Integer.toString(indice),
 					listaPartidasConcluidas.get(indice));
 		cli.imprimirLinha("");
 	}
@@ -602,12 +602,11 @@ public class Controlador {
 	private void exibirJogadores(List<DadosPessoa> dadosPessoas) {
 		// Exibe os campos da lista de jogos
 		cli.imprimirLinha("Lista de jogadores:\n");
-		cli.imprimirLinha("Índice" + "..." + "Nome" + "..." + "Vitórias"
-				+ "..." + "Derrotas");
-
+		String[] s = { "Índice", "Nome", "Vitórias", "Derrotas" };
+		cli.imprimirLinhaFormatada(s);
 		// Exibe a lista de jogos
-		for (int indice = 0; indice < dadosPessoas.size(); indice++)
-			cli.exibirDadosJogadores(indice, dadosPessoas.get(indice));
+		for (Integer indice = 0; indice < dadosPessoas.size(); indice++)
+			cli.exibirDadosJogadores(Integer.toString(indice), dadosPessoas.get(indice));
 		cli.imprimirLinha("");
 	}
 

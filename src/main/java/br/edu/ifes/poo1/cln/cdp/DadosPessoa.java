@@ -42,12 +42,12 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 		return nomePessoa;
 	}
 
-	public int getPartidasVencidas() {
-		return partidasVencidas;
+	public String getPartidasVencidas() {
+		return Integer.toString(partidasVencidas);
 	}
 
-	public int getPartidasPerdidas() {
-		return partidasPerdidas;
+	public String getPartidasPerdidas() {
+		return Integer.toString(partidasPerdidas);
 	}
 
 	/**
