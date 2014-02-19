@@ -50,6 +50,10 @@ public class EntradaSaida {
 		System.out.print(texto);
 	}
 	
+	/**
+	 * Método que imprime uma linha com tabulações
+	 * @param texto
+	 */
 	public void imprimirLinhaFormatada(String[] texto){
 		for(int elemento = 0;elemento<texto.length;elemento++)
 			System.out.printf("%s\t\t",texto[elemento]);
