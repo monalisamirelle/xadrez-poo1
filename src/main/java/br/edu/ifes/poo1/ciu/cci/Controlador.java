@@ -400,8 +400,10 @@ public class Controlador {
 		Jogada jogada = null;
 		try {
 			jogada = maquina.escolherJogada(apl.getTabuleiro());
-		} catch (CasaOcupadaException e) {
-			cli.exibirAlerta("Erro, casa ocupada");
+		} catch (CasaOcupadaException | JogadaInvalidaException e) {
+			// Desiste da partida
+			apl.finalizarPartida(apl.getOponente(),
+					TipoSituacaoPartida.DESISTENCIA);
 		}
 		// Se a máquina não encontrar jogadas para realizar
 		if (jogada == null) {
@@ -502,7 +504,7 @@ public class Controlador {
 		do {
 			// Exibe as partidas atuais
 			exibirPartidasNaoFinalizadas(listaPartidasNaoFinalizadas);
-			
+
 			// Inicia o menu deixando a escolha para o usuário do que fazer.
 			ItemMenu itemEscolhido = menuRetornarPartida
 					.insistirPorEntradaValida(cli.getIo());
@@ -519,10 +521,17 @@ public class Controlador {
 						controlarPartida(apl);
 						retornarMenu = true;
 					} catch (Exception e) {
-						cli.exibirAlerta("Nenhuma partida foi carregada.");
+						cli.exibirAlerta("Nenhuma partida foi carregada");
 					}
+			case "APAGAR":
+				listaPartidasNaoFinalizadas = buscarApagarPartida(listaPartidasNaoFinalizadas);
 				break;
 			case "RETORNAR":
+				try {
+					manipuladorArquivo.gravarListaPartidas(listaPartidasNaoFinalizadas);
+				} catch (IOException e) {
+					cli.exibirAlerta("Não foi possível gravar a partida");
+				}
 				retornarMenu = true;
 				break;
 			}

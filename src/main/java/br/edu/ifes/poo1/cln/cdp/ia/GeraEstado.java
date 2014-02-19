@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
+import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
@@ -28,10 +29,11 @@ public class GeraEstado implements Serializable{
 	 * @param corJogador
 	 * @return
 	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException 
 	 */
 	public List<Estado> proximosEstadosPossiveis(
 			TabuleiroXadrez tabuleiroAtual, TipoCorJogador corJogador)
-			throws CasaOcupadaException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 
 		// Primeiramente, cria uma cópia do tabuleiro para não atrapalhar o
 		// tabuleiro atual

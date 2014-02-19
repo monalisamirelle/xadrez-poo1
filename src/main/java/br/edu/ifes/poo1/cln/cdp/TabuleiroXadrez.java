@@ -588,9 +588,10 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 *            Cor do rei que está em Xeque Mate.
 	 * @return Se a cor indicada sofreu Xeque Mate.
 	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException
 	 */
 	public boolean verificarXequeMate(TipoCorJogador cor)
-			throws CasaOcupadaException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 		List<Estado> estadosPossiveis = geraEstado.proximosEstadosPossiveis(
 				this, cor);
 		if (!estadosPossiveis.isEmpty())
@@ -610,7 +611,7 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	public List<Jogada> geraJogadasPossiveis(TipoCorJogador corJogador)
-			throws CasaOcupadaException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 		// Contém todas as jogadas que podem ser realizadas por um jogador
 		List<Jogada> possiveisJogadas = new ArrayList<Jogada>();
 		// Contém todas as jogadas que podem ser realizadas por uma peça
@@ -632,20 +633,11 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 						possiveisJogadas.add(jogada);
 
 				}
-		// TODO testar
 		// Analise de roque menor e roque maior (verifica se é possível)
 		if (this.ehRoqueMenor(corJogador) == true)
-			try {
-				possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MENOR));
-			} catch (JogadaInvalidaException e) {
-				System.out.println(e);
-			}
+			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MENOR));
 		if (this.ehRoqueMaior(corJogador) == true)
-			try {
-				possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MAIOR));
-			} catch (JogadaInvalidaException e) {
-				System.out.println(e);
-			}
+			possiveisJogadas.add(new Jogada(TipoJogada.ROQUE_MAIOR));
 		return possiveisJogadas;
 	}
 
@@ -714,9 +706,9 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		// Criamos uma lista de estados possíveis
 		List<Estado> estadosPossiveis = null;
 		try {
-			estadosPossiveis = geraEstado
-					.proximosEstadosPossiveis(this, corJogador);
-		} catch (CasaOcupadaException e) {
+			estadosPossiveis = geraEstado.proximosEstadosPossiveis(this,
+					corJogador);
+		} catch (CasaOcupadaException | JogadaInvalidaException e) {
 			return null;
 		}
 		Random random = new Random();

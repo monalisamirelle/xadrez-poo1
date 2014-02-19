@@ -7,6 +7,7 @@ import java.util.Random;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
+import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.TipoJogador;
@@ -202,10 +203,11 @@ public class IAElaborada extends Maquina {
 	 * Método que escolhe a jogada da máquina
 	 * 
 	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException 
 	 * 
 	 */
 	public Jogada escolherJogada(TabuleiroXadrez tabuleiroAtual)
-			throws CasaOcupadaException {
+			throws CasaOcupadaException, JogadaInvalidaException {
 		// Reinicia a lista de nós
 		listaNos = new ArrayList<NoArvore>();
 		// Crio nó raiz e informo a ele o tabuleiro atual
@@ -274,11 +276,11 @@ public class IAElaborada extends Maquina {
 	 * @param tabuleiroAtual
 	 * @return
 	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException 
 	 */
 	public Jogada suporte(TabuleiroXadrez tabuleiroAtual)
-			throws CasaOcupadaException {
-		Maquina maquinaAuxilio = new IARandomica("", this.cor);
-		return maquinaAuxilio.escolherJogada(tabuleiroAtual);
+			throws CasaOcupadaException, JogadaInvalidaException {
+		return tabuleiroAtual.recomendaJogada(this.getCor());
 	}
 
 	public int getALCANCEMAQUINA() {

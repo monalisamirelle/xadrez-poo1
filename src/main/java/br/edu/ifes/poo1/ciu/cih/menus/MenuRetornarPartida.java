@@ -16,6 +16,8 @@ public class MenuRetornarPartida extends Menu {
 			{
 				add(new ItemMenu("REINICIAR",
 						"Retorna uma partida"));
+				add(new ItemMenu("APAGAR",
+						"Apagar uma partida"));
 				add(new ItemMenu("RETORNAR",
 						"Retornar ao menu principal"));
 			}
