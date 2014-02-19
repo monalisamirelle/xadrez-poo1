@@ -709,18 +709,15 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * @param corJogador
 	 *            Cor do jogador que deseja uma recomendação
 	 * @return recomendação (jogada)
-	 * @throws JogadaInvalidaException
-	 * @throws CasaOcupadaException
 	 */
 	public Jogada recomendaJogada(TipoCorJogador corJogador) {
 		// Criamos uma lista de estados possíveis
 		List<Estado> estadosPossiveis = null;
-		// TODO testar
 		try {
-			estadosPossiveis = geraEstado.proximosEstadosPossiveis(this,
-					corJogador);
+			estadosPossiveis = geraEstado
+					.proximosEstadosPossiveis(this, corJogador);
 		} catch (CasaOcupadaException e) {
-			System.out.println(e);
+			return null;
 		}
 		Random random = new Random();
 		if (!estadosPossiveis.isEmpty()) {

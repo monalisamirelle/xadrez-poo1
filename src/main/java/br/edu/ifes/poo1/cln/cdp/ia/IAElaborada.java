@@ -3,6 +3,7 @@ package br.edu.ifes.poo1.cln.cdp.ia;
 import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
@@ -221,7 +222,6 @@ public class IAElaborada extends Maquina {
 				&& atingiuTempoMaximo == false; camada++) {
 			try {
 				atingiuTempoMaximo = criaCamada();
-				System.out.println(listaNos.size());
 			} catch (InterruptedException e) {
 				// TODO remover comentário
 				System.out.println("Erro de thread");
@@ -229,9 +229,7 @@ public class IAElaborada extends Maquina {
 				return suporte(tabuleiroAtual);
 			}
 		}
-		
-		System.out.println(atingiuTempoMaximo);
-		
+
 		// Insiro os valores nos nós folhas
 		inserirValorFolhas(listaNos);
 
@@ -239,8 +237,9 @@ public class IAElaborada extends Maquina {
 		// beta)
 		busca.buscaEmProfundidade(raiz);
 
-		Jogada jogada = null;
-		
+		// Cria lista de jogadas que possuem valor igual ao nó raiz
+		List<Jogada> possivelJogada = new ArrayList<Jogada>();
+
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
 			// Para cada nó na lista de adjacência do pai (começa de 1 pois
@@ -251,13 +250,15 @@ public class IAElaborada extends Maquina {
 				// escolhido foi o desse nó
 				if (raiz.getValor() == raiz.getListaAdjacencia().get(indice)
 						.getValor()) {
-					jogada = raiz.getListaAdjacencia().get(indice).getEstado()
-							.getJogada();
+					possivelJogada.add(raiz.getListaAdjacencia().get(indice)
+							.getEstado().getJogada());
 				}
 		}
 		// Se IA encontrar uma jogada
-		if (jogada != null)
-			return jogada;
+		if (!possivelJogada.isEmpty()) {
+			Random random = new Random();
+			return possivelJogada.get(random.nextInt(possivelJogada.size()));
+		}
 		// Controle caso IA não seja capaz de encontrar jogada alguma
 		else {
 			// TODO remover comentário
