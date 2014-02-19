@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.ciu.cci;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -528,7 +529,8 @@ public class Controlador {
 				break;
 			case "RETORNAR":
 				try {
-					manipuladorArquivo.gravarListaPartidas(listaPartidasNaoFinalizadas);
+					manipuladorArquivo
+							.gravarListaPartidas(listaPartidasNaoFinalizadas);
 				} catch (IOException e) {
 					cli.exibirAlerta("Não foi possível gravar a partida");
 				}
@@ -561,15 +563,16 @@ public class Controlador {
 	 * Método responsável por informar dados das partidas
 	 */
 	private void informaDadosPartida() {
-		// Captura de um arquivo as partidas concluídas
-		List<DadosPartida> listaPartidasConcluidas = manipuladorArquivo
-				.criarListaPartidasConcluidas();
 
 		// Este é o item do menu que o jogador escolheu (escolherá).
 		Menu menuDados = new MenuDadosPartida();
 
 		boolean retornarMenu = false;
 		do {
+			// Captura de um arquivo as partidas concluídas
+			List<DadosPartida> listaPartidasConcluidas = manipuladorArquivo
+					.criarListaPartidasConcluidas();
+
 			// Inicia o menu deixando a escolha para o usuário do que fazer.
 			ItemMenu itemEscolhido = menuDados.insistirPorEntradaValida(cli
 					.getIo());
@@ -587,6 +590,14 @@ public class Controlador {
 						.geraListaDadosPessoa(listaPartidasConcluidas);
 				Collections.sort(dadosPessoas);
 				exibirJogadores(dadosPessoas);
+				break;
+			case "APAGAR":
+				try {
+					manipuladorArquivo
+							.gravarListaPartidas(new ArrayList<DadosPartida>());
+				} catch (IOException e) {
+					cli.exibirAlerta("Arquivo não pôde ser apagado");
+				}
 				break;
 			case "RETORNAR":
 				retornarMenu = true;

@@ -13,6 +13,7 @@ public class MenuDadosPartida extends Menu {
 				add(new ItemMenu("PARTIDAS",
 						"Partidas e vencedores"));
 				add(new ItemMenu("JOGADORES", "Jogadores (Vitórias X Derrotas)"));
+				add(new ItemMenu("APAGAR", "Apaga todos os dados do histórico"));
 				add(new ItemMenu("RETORNAR", "Retornar ao menu principal"));
 			}
 		});

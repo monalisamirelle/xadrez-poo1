@@ -97,16 +97,13 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	private List<DadosPessoa> inserePessoa(List<DadosPessoa> listaPessoas,
 			String nomeCandidato) {
 		boolean existePessoa = false;
-		// Exclui, primeiramente, se o jogador for uma IA
-		if (ehHumano(nomeCandidato)) {
-			for (DadosPessoa dadosPessoa : listaPessoas)
-				if (dadosPessoa.nomePessoa.equals(nomeCandidato)) {
-					existePessoa = true;
-				}
-			if (!existePessoa) {
-				DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
-				listaPessoas.add(dadosPessoa);
+		for (DadosPessoa dadosPessoa : listaPessoas)
+			if (dadosPessoa.nomePessoa.equals(nomeCandidato)) {
+				existePessoa = true;
 			}
+		if (!existePessoa) {
+			DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
+			listaPessoas.add(dadosPessoa);
 		}
 		return listaPessoas;
 	}
@@ -117,15 +114,15 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	 * @param nomeCandidato
 	 * @return
 	 */
-	private boolean ehHumano(String nomeCandidato) {
-		if (nomeCandidato.toUpperCase().equals("CÉRBERO")
-				|| nomeCandidato.toUpperCase().equals("DIONÍSIO")
-				|| nomeCandidato.toUpperCase().equals("ARES")
-				|| nomeCandidato.toUpperCase().equals("ZEUS")
-				|| nomeCandidato.toUpperCase().equals("PROMETEU"))
-			return false;
-		return true;
-	}
+//	private boolean ehHumano(String nomeCandidato) {
+//		if (nomeCandidato.toUpperCase().equals("CÉRBERO")
+//				|| nomeCandidato.toUpperCase().equals("DIONÍSIO")
+//				|| nomeCandidato.toUpperCase().equals("ARES")
+//				|| nomeCandidato.toUpperCase().equals("ZEUS")
+//				|| nomeCandidato.toUpperCase().equals("PROMETEU"))
+//			return false;
+//		return true;
+//	}
 
 	/**
 	 * Método responsável por dar pontos de derrota ou vitória a pessoas
