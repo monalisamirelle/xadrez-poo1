@@ -206,7 +206,10 @@ public class Controlador {
 				.getCorOposta(pessoa.getCor()));
 
 		// Contrói a aplicação do jogo
-		return new AplJogo(pessoa, maquina);
+		if (pessoa.getCor() == TipoCorJogador.BRANCO)
+			return new AplJogo(pessoa, maquina);
+		else
+			return new AplJogo(maquina, pessoa);
 	}
 
 	/**
@@ -606,7 +609,8 @@ public class Controlador {
 		cli.imprimirLinhaFormatada(s);
 		// Exibe a lista de jogos
 		for (Integer indice = 0; indice < dadosPessoas.size(); indice++)
-			cli.exibirDadosJogadores(Integer.toString(indice), dadosPessoas.get(indice));
+			cli.exibirDadosJogadores(Integer.toString(indice),
+					dadosPessoas.get(indice));
 		cli.imprimirLinha("");
 	}
 
