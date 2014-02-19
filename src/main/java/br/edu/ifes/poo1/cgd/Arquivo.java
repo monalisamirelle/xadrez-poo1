@@ -2,7 +2,6 @@ package br.edu.ifes.poo1.cgd;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +16,7 @@ public class Arquivo<T> {
 	 * Método que escreve um determinado jogo no arquivo
 	 * 
 	 * @param jogo
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void escrevaPartidas(List<T> listaPartidas) throws IOException {
 		ObjectOutputStream oo = null;
@@ -30,9 +29,8 @@ public class Arquivo<T> {
 	 * Método que lê determinados jogos de certoa arquivo
 	 * 
 	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @throws ClassNotFoundException 
+	 * @throws IOException 
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> leiaJogos() throws ClassNotFoundException, IOException {
@@ -52,12 +50,13 @@ public class Arquivo<T> {
 
 	/**
 	 * Método responsável por criar um arquivo
+	 * 
 	 * @param nome
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private void criaArquivo(String nome) throws IOException {
 		File file = new File(nome);
-			file.createNewFile();
+		file.createNewFile();
 	}
 
 }

@@ -8,14 +8,15 @@ import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 
 public class GeraCamada implements Runnable {
 
-	private List<NoArvore> novaListaNos = new ArrayList<NoArvore>();
 	// Captura o primeiro nó
 	private int comecoElementos;
 	// Captura o ultimo nó
 	private int fimElementos;
 	// Continua enquanto não acabar o tempo
 	private boolean acabou = false;
+	// Lista de nós atuais
 	private List<NoArvore> listaNos;
+	private List<NoArvore> novaListaNos = new ArrayList<NoArvore>();
 	private GeraEstado geraEstado = new GeraEstado();
 
 	/**
