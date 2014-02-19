@@ -39,8 +39,6 @@ import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
  * modelo. Também atualiza as informações que estão disponíveis na tela do
  * jogador.
  */
-// TODO seria legal um filtro que não permita jogar com o nome das IA's e nem
-// dois jogadores terem o mesmo nome
 public class Controlador {
 	private Cli cli;
 	private ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
@@ -150,9 +148,11 @@ public class Controlador {
 		// Escolhe o nome e retorna uma pessoa
 		switch (corEscolhida.getNome()) {
 		case "BRANCO":
-			return new Pessoa(cli.lerNomeJogadorBranco(), TipoCorJogador.BRANCO);
+			return new Pessoa(nomeValido(TipoCorJogador.BRANCO),
+					TipoCorJogador.BRANCO);
 		case "PRETO":
-			return new Pessoa(cli.lerNomeJogadorPreto(), TipoCorJogador.PRETO);
+			return new Pessoa(nomeValido(TipoCorJogador.PRETO),
+					TipoCorJogador.PRETO);
 		}
 		return null;
 	}
@@ -215,13 +215,61 @@ public class Controlador {
 	 * @return
 	 */
 	private AplJogo prepararMultiplayer() {
-		// Pega o nome dos jogadores.
-		String nomeBrancas = cli.lerNomeJogadorBranco();
-		String nomePretas = cli.lerNomeJogadorPreto();
+		// Pega o nome do jogador branco.
+		String nomeBrancas = nomeValido(TipoCorJogador.BRANCO);
+		// Pega o nome do jogador preto.
+		String nomePretas = nomeValido(TipoCorJogador.PRETO, nomeBrancas);
+
 		Jogador jogadorBranco = new Pessoa(nomeBrancas, TipoCorJogador.BRANCO);
 		Jogador jogadorPreto = new Pessoa(nomePretas, TipoCorJogador.PRETO);
 		// Constrói a aplicação do jogo.
 		return new AplJogo(jogadorBranco, jogadorPreto);
+	}
+
+	/**
+	 * Método que força o jogador a escolher um nome diferente de uma
+	 * inteligência
+	 * 
+	 * @return
+	 */
+	private String nomeValido(TipoCorJogador cor) {
+		boolean nomeValido = false;
+		String nome = null;
+		do {
+			if (cor == TipoCorJogador.BRANCO)
+				nome = cli.lerNomeJogadorBranco();
+			else
+				nome = cli.lerNomeJogadorPreto();
+			String nomeCase = nome.toUpperCase();
+			if (nomeCase.equals("CÉRBERO") || nomeCase.equals("DIONÍSIO")
+					|| nomeCase.equals("ARES") || nomeCase.equals("ZEUS")
+					|| nomeCase.equals("PROMETEU"))
+				cli.exibirAlerta("Nome inválido, pertence a uma máquina");
+			else
+				nomeValido = true;
+		} while (!nomeValido);
+		return nome;
+	}
+
+	/**
+	 * Método que força ao jogador escolher um nome diferente do adversário
+	 * 
+	 * @param cor
+	 * @param nomeAdversario
+	 * @return
+	 */
+	private String nomeValido(TipoCorJogador cor, String nomeAdversario) {
+		boolean nomeValido = false;
+		String nome = null;
+		do {
+			nome = nomeValido(cor);
+			String nomeCase = nome.toUpperCase();
+			if (nomeCase.equals(nomeAdversario.toUpperCase()))
+				cli.exibirAlerta("Nome inválido, pertence ao adversário");
+			else
+				nomeValido = true;
+		} while (!nomeValido);
+		return nome;
 	}
 
 	/**
@@ -301,7 +349,8 @@ public class Controlador {
 				Jogada recomendacao = apl.getTabuleiro().recomendaJogada(
 						apl.getJogadorTurnoAtual().getCor());
 				pessoa.setRecomendacoes();
-				cli.imprimirRecomendacao(pessoa.getRecomendacoes(),apl.getTabuleiro().espiarPeca(recomendacao.getOrigem()),
+				cli.imprimirRecomendacao(pessoa.getRecomendacoes(), apl
+						.getTabuleiro().espiarPeca(recomendacao.getOrigem()),
 						recomendacao);
 			} else
 				cli.exibirAlerta("Você já realizou suas "
@@ -648,7 +697,6 @@ public class Controlador {
 			cli.imprimirLinha("Índice" + "..." + "Data" + "..."
 					+ "Jogador Branco" + "..." + "Jogador Preto" + "..."
 					+ "Situação da Partida\n");
-
 			for (int indice = 0; indice < listaPartidas.size(); indice++)
 				cli.exibirDadosPartidasAndamento(indice,
 						listaPartidas.get(indice));
