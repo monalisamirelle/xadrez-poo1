@@ -205,6 +205,8 @@ public class IAElaborada extends Maquina {
 	 */
 	public Jogada escolherJogada(TabuleiroXadrez tabuleiroAtual)
 			throws CasaOcupadaException {
+		// Reinicia a lista de nós
+		listaNos = new ArrayList<NoArvore>();
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
 				tabuleiroAtual));
@@ -219,12 +221,17 @@ public class IAElaborada extends Maquina {
 				&& atingiuTempoMaximo == false; camada++) {
 			try {
 				atingiuTempoMaximo = criaCamada();
+				System.out.println(listaNos.size());
 			} catch (InterruptedException e) {
+				// TODO remover comentário
+				System.out.println("Erro de thread");
 				// Se apresentar algum erro de jogada, tente a IA randomica
 				return suporte(tabuleiroAtual);
 			}
 		}
-
+		
+		System.out.println(atingiuTempoMaximo);
+		
 		// Insiro os valores nos nós folhas
 		inserirValorFolhas(listaNos);
 
@@ -233,7 +240,7 @@ public class IAElaborada extends Maquina {
 		busca.buscaEmProfundidade(raiz);
 
 		Jogada jogada = null;
-
+		
 		// Se o tabuleiro não já se encontra em xeque-mate
 		if (raiz.isXequeMate() == false) {
 			// Para cada nó na lista de adjacência do pai (começa de 1 pois
@@ -253,6 +260,8 @@ public class IAElaborada extends Maquina {
 			return jogada;
 		// Controle caso IA não seja capaz de encontrar jogada alguma
 		else {
+			// TODO remover comentário
+			System.out.println("Não retornou jogada");
 			return suporte(tabuleiroAtual);
 		}
 	}
@@ -267,8 +276,6 @@ public class IAElaborada extends Maquina {
 	 */
 	public Jogada suporte(TabuleiroXadrez tabuleiroAtual)
 			throws CasaOcupadaException {
-		// TODO remover comentário
-		System.out.println("RECORREU AO SUPORTE!");
 		Maquina maquinaAuxilio = new IARandomica("", this.cor);
 		return maquinaAuxilio.escolherJogada(tabuleiroAtual);
 	}
