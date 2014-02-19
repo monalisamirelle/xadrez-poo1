@@ -77,16 +77,9 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	 */
 	private List<DadosPessoa> geraListaPessoa(List<DadosPartida> listaPartidas) {
 		List<DadosPessoa> listaPessoas = new ArrayList<DadosPessoa>();
-		// TODO está incluindo as IA's, mas isso pode ser modificado aqui
-		// gerando
-		// uma lista que capture apenas as pessoas
 		for (DadosPartida partida : listaPartidas) {
-			// Verifica se o jogador branco está na lista (se não estiver, o
-			// insere)
 			listaPessoas = inserePessoa(listaPessoas, partida.getJogo()
 					.getJogadorPretas().getNome());
-			// Verifica se o jogador preto está na lista (se não estiver, o
-			// insere)
 			listaPessoas = inserePessoa(listaPessoas, partida.getJogo()
 					.getJogadorBrancas().getNome());
 		}
@@ -94,7 +87,8 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	}
 
 	/**
-	 * Método responsável por inserir um jogador na lista
+	 * Método responsável por inserir um jogador na lista caso ele já não se
+	 * encontre nela e nem seja uma IA
 	 * 
 	 * @param listaPessoas
 	 * @param nomeCandidato
@@ -103,15 +97,32 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	private List<DadosPessoa> inserePessoa(List<DadosPessoa> listaPessoas,
 			String nomeCandidato) {
 		boolean existePessoa = false;
-		for (DadosPessoa dadosPessoa : listaPessoas)
-			if (dadosPessoa.nomePessoa.equals(nomeCandidato)) {
-				existePessoa = true;
+		// Exclui, primeiramente, se o jogador for uma IA
+		if (ehHumano(nomeCandidato)) {
+			for (DadosPessoa dadosPessoa : listaPessoas)
+				if (dadosPessoa.nomePessoa.equals(nomeCandidato)) {
+					existePessoa = true;
+				}
+			if (!existePessoa) {
+				DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
+				listaPessoas.add(dadosPessoa);
 			}
-		if (!existePessoa) {
-			DadosPessoa dadosPessoa = new DadosPessoa(nomeCandidato);
-			listaPessoas.add(dadosPessoa);
 		}
 		return listaPessoas;
+	}
+
+	/**
+	 * Verifica se o jogador é humano ou uma IA
+	 * 
+	 * @param nomeCandidato
+	 * @return
+	 */
+	private boolean ehHumano(String nomeCandidato) {
+		if (nomeCandidato.equals("CÉRBERO") || nomeCandidato.equals("DIONÍSIO")
+				|| nomeCandidato.equals("ARES") || nomeCandidato.equals("ZEUS")
+				|| nomeCandidato.equals("PROMETEU"))
+			return false;
+		return true;
 	}
 
 	/**
@@ -126,9 +137,11 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 		DadosPessoa jogadorBranco = null;
 		DadosPessoa jogadorPreto = null;
 		for (DadosPessoa pessoa : listaPessoas) {
-			if (pessoa.getNome().equals(partida.getJogo().getJogadorBrancas().getNome()))
+			if (pessoa.getNome().equals(
+					partida.getJogo().getJogadorBrancas().getNome()))
 				jogadorBranco = pessoa;
-			if (pessoa.getNome().equals(partida.getJogo().getJogadorPretas().getNome()))
+			if (pessoa.getNome().equals(
+					partida.getJogo().getJogadorPretas().getNome()))
 				jogadorPreto = pessoa;
 		}
 		// Se o vencedor foi o jogador branco
