@@ -346,8 +346,11 @@ public class Controlador {
 		case "RECOMENDAR":
 			boolean podeRecomendar = pessoa.verificarRecomendacoesRealizadas();
 			if (podeRecomendar) {
-				Jogada recomendacao = apl.getTabuleiro().recomendaJogada(
-						apl.getJogadorTurnoAtual().getCor());
+				// Cria uma IARandomica e pede a ela uma jogada
+				IARandomica suporteIa = new IARandomica(apl
+						.getJogadorTurnoAtual().getCor());
+				Jogada recomendacao = suporteIa.escolherJogada(apl
+						.getTabuleiro());
 				pessoa.setRecomendacoes();
 				cli.imprimirRecomendacao(pessoa.getRecomendacoes(), apl
 						.getTabuleiro().espiarPeca(recomendacao.getOrigem()),

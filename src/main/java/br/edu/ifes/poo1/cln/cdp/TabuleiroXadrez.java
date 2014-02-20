@@ -3,7 +3,6 @@ package br.edu.ifes.poo1.cln.cdp;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import br.edu.ifes.poo1.cln.cdp.ia.Estado;
 import br.edu.ifes.poo1.cln.cdp.ia.GeraEstado;
@@ -674,7 +673,7 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * Método que copia as peças para um novo tabuleiro
 	 * 
 	 * @return uma cópia da peça
-	 * @throws CasaOcupadaException 
+	 * @throws CasaOcupadaException
 	 */
 	public TabuleiroXadrez tabuleiroClonado() throws CasaOcupadaException {
 		TabuleiroXadrez novoTabuleiro = new TabuleiroXadrez();
@@ -686,31 +685,6 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 									.clone());
 				}
 		return novoTabuleiro;
-	}
-
-	/**
-	 * Método que recomenda uma jogada ao jogador
-	 * 
-	 * @param corJogador
-	 *            Cor do jogador que deseja uma recomendação
-	 * @return recomendação (jogada)
-	 */
-	public Jogada recomendaJogada(TipoCorJogador corJogador) {
-		// Criamos uma lista de estados possíveis
-		List<Estado> estadosPossiveis = null;
-		try {
-			estadosPossiveis = geraEstado.proximosEstadosPossiveis(this,
-					corJogador);
-		} catch (CasaOcupadaException | JogadaInvalidaException e) {
-			return null;
-		}
-		Random random = new Random();
-		if (!estadosPossiveis.isEmpty()) {
-			return estadosPossiveis
-					.get(random.nextInt(estadosPossiveis.size())).getJogada();
-		}
-		// Não há recomendação
-		return null;
 	}
 
 	/**
@@ -778,5 +752,9 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 				}
 			}
 		return dadosTabuleiro;
+	}
+
+	public GeraEstado getGeraEstado() {
+		return geraEstado;
 	}
 }

@@ -98,14 +98,20 @@ public class TesteTabuleiro {
 	@Test
 	public void atravessouTabuleiro() {
 		// Testa os limites do tabuleiro
-		Assert.assertFalse(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(1, 1)));
-		Assert.assertFalse(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(8, 8)));
+		Assert.assertFalse(TabuleiroXadrez
+				.estaForaDoTabuleiro(new Posicao(1, 1)));
+		Assert.assertFalse(TabuleiroXadrez
+				.estaForaDoTabuleiro(new Posicao(8, 8)));
 
 		// Testa quando atravessa o tabuleiro
-		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(4, 9)));
-		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(4, 0)));
-		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(9, 5)));
-		Assert.assertTrue(TabuleiroXadrez.estaForaDoTabuleiro(new Posicao(0, 5)));
+		Assert.assertTrue(TabuleiroXadrez
+				.estaForaDoTabuleiro(new Posicao(4, 9)));
+		Assert.assertTrue(TabuleiroXadrez
+				.estaForaDoTabuleiro(new Posicao(4, 0)));
+		Assert.assertTrue(TabuleiroXadrez
+				.estaForaDoTabuleiro(new Posicao(9, 5)));
+		Assert.assertTrue(TabuleiroXadrez
+				.estaForaDoTabuleiro(new Posicao(0, 5)));
 	}
 
 	@Test
@@ -349,15 +355,18 @@ public class TesteTabuleiro {
 
 		// Uma peça
 		tabuleiro.colocarPeca(new Posicao(1, 1), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.PRETO, 0), 3);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.PRETO, 0),
+				3);
 
 		// Peça de mesmo valor
 		tabuleiro.colocarPeca(new Posicao(2, 4), cavaloPreto);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.BRANCO, 0), -6);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.BRANCO, 0),
+				-6);
 
 		// Peça inimiga
 		tabuleiro.colocarPeca(new Posicao(2, 8), cavaloBranco);
-		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.BRANCO, 1), 97);
+		Assert.assertEquals(tabuleiro.valorTabuleiro(TipoCorJogador.BRANCO, 1),
+				97);
 
 		// Peça de valor diferente (negativo)
 		tabuleiro.colocarPeca(new Posicao(2, 1), torreBranca);
@@ -365,18 +374,4 @@ public class TesteTabuleiro {
 				-102);
 	}
 
-	@Test
-	public void recomendaJogada() throws CasaOcupadaException,
-			JogadaInvalidaException, CloneNotSupportedException {
-		// Não há jogadas a serem recomendadas
-		tabuleiro.colocarPeca(new Posicao(1, 1), reiPreto);
-		tabuleiro.colocarPeca(new Posicao(1, 8), torreBranca);
-		tabuleiro.colocarPeca(new Posicao(2, 7), torreBranca);
-		Assert.assertNull(tabuleiro.recomendaJogada(TipoCorJogador.PRETO));
-
-		// Há jogadas a serem recomendadas
-		tabuleiro.colocarPeca(new Posicao(7, 4), torrePreta);
-		Assert.assertNotNull(tabuleiro.recomendaJogada(TipoCorJogador.PRETO));
-	}
-	
 }

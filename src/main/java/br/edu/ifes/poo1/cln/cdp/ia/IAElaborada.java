@@ -280,7 +280,8 @@ public class IAElaborada extends Maquina {
 	 */
 	public Jogada suporte(TabuleiroXadrez tabuleiroAtual)
 			throws CasaOcupadaException, JogadaInvalidaException {
-		return tabuleiroAtual.recomendaJogada(this.getCor());
+		IARandomica suporteIa = new IARandomica(this.getCor());
+		return suporteIa.escolherJogada(tabuleiroAtual);
 	}
 
 	public int getALCANCEMAQUINA() {
