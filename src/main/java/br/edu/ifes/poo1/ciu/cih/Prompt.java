@@ -13,7 +13,7 @@ public class Prompt extends Cli {
 	@Override
 	protected void imprimirTabuleiro(TabuleiroXadrez tabuleiro) {
 		//Imprime o número das colunas.
-		imprimirLinha("      0        0        0        0        0        0        0        0     ");
+		imprimirLinha("      1        2        3        4        5        6        7        8     ");
 		
 		for (int linha = 8; linha >= 1; linha--) {
 			// Imprime o sepador de linhas.
@@ -46,7 +46,7 @@ public class Prompt extends Cli {
 		imprimirLinha("  -------------------------------------------------------------------------");
 		
 		//Imprime o número das colunas.
-		imprimirLinha("      0        0        0        0        0        0        0        0     ");
+		imprimirLinha("      1        2        3        4        5        6        7        8     ");
 	}
 
 	@Override
