@@ -26,12 +26,12 @@ import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.Pessoa;
-import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
-import br.edu.ifes.poo1.cln.cdp.TipoJogador;
-import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
 import br.edu.ifes.poo1.cln.cdp.ia.IAElaborada;
 import br.edu.ifes.poo1.cln.cdp.ia.IARandomica;
 import br.edu.ifes.poo1.cln.cdp.ia.Maquina;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoSituacaoPartida;
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
 import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
 
@@ -486,9 +486,11 @@ public class Controlador {
 		}
 		try {
 			manipuladorArquivo.gravarPartida(apljogo);
+			System.out.println("gravou");
 		} catch (IOException e) {
 			cli.exibirAlerta("Não foi possível gravar a partida");
 		}
+		System.out.println("graado");
 	}
 
 	/**

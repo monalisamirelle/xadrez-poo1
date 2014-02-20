@@ -8,8 +8,8 @@ import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
-import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
-import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoSituacaoPartida;
 
 // TODO muitos métodos construtores, precisam ser melhor
 public class AplJogo implements Serializable {

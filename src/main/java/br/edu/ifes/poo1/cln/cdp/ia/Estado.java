@@ -1,14 +1,20 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
+import java.io.Serializable;
+
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 
-public class Estado {
+public class Estado implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Jogada jogada;
 	private TabuleiroXadrez tabuleiro;
-	
-	public Estado(Jogada jogada, TabuleiroXadrez tabuleiro){
+
+	public Estado(Jogada jogada, TabuleiroXadrez tabuleiro) {
 		this.jogada = jogada;
 		this.tabuleiro = tabuleiro;
 	}

@@ -1,13 +1,19 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
-import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 
-public class NoArvore {
+public class NoArvore implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	// Nó que é pai do nó em questão
 	private NoArvore noPai;
@@ -50,7 +56,8 @@ public class NoArvore {
 	 * @throws CasaOcupadaException
 	 * @throws JogadaInvalidaException
 	 */
-	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado) throws CasaOcupadaException, JogadaInvalidaException {
+	public NoArvore(TipoCorJogador cor, TipoNivel nivel, Estado estado)
+			throws CasaOcupadaException, JogadaInvalidaException {
 		this.noPai = null;
 		this.temValor = false;
 		this.insereListaAdjacencia(noPai);
@@ -71,10 +78,11 @@ public class NoArvore {
 	 * 
 	 * @param noPai
 	 * @param valor
-	 * @throws CasaOcupadaException 
-	 * @throws JogadaInvalidaException 
+	 * @throws CasaOcupadaException
+	 * @throws JogadaInvalidaException
 	 */
-	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException, JogadaInvalidaException {
+	public NoArvore(NoArvore noPai, Estado estado) throws CasaOcupadaException,
+			JogadaInvalidaException {
 		this.noPai = noPai;
 		noPai.addFilho(this);
 		this.temValor = false;

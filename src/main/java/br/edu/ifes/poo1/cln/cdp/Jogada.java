@@ -1,10 +1,19 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.Serializable;
+
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogada;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
+
 /**
  * Contém as informações para uma jogada a ser realizada.
  */
-// TODO EN PASSANT
-public class Jogada {
+public class Jogada implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Origem do movimento. */
 	private Posicao origem;
 
@@ -111,8 +120,8 @@ public class Jogada {
 	public TipoPeca getPromocao() {
 		return tipoPromocao;
 	}
-	
-	public void setTipoJogada(TipoJogada tipoJogada){
+
+	public void setTipoJogada(TipoJogada tipoJogada) {
 		this.tipoJogada = tipoJogada;
 	}
 }

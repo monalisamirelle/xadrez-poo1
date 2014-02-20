@@ -1,5 +1,8 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
+
 /**
  * Representação de um jogador. Há no máximo 2 jogadores para o jogo de xadrez.
  */

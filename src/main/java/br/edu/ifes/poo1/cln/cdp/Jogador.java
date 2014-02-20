@@ -6,6 +6,10 @@ import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogada;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
 
 public abstract class Jogador implements Serializable {
 	/**

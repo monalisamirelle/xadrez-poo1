@@ -1,9 +1,9 @@
 package br.edu.ifes.poo1.ciu.cih;
 
-import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 
 /**
  * Interface para o Prompt do Windows.

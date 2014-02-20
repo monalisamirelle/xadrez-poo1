@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
 import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 
 public class TesteRei {
 	private TabuleiroXadrez tabuleiro;

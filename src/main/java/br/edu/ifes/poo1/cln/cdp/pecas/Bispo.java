@@ -3,8 +3,8 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
-import br.edu.ifes.poo1.cln.cdp.TipoCorJogador;
-import br.edu.ifes.poo1.cln.cdp.TipoPeca;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
 
 public class Bispo extends Peca {
 

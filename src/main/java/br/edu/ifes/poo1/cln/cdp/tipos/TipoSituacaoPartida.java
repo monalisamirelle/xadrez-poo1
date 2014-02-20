@@ -1,4 +1,4 @@
-package br.edu.ifes.poo1.cln.cdp;
+package br.edu.ifes.poo1.cln.cdp.tipos;
 
 /**
  * Enumera os motivos pelos quais uma partida pode acabar.

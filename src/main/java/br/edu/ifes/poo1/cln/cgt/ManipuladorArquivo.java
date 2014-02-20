@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.edu.ifes.poo1.cgd.Arquivo;
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
-import br.edu.ifes.poo1.cln.cdp.TipoSituacaoPartida;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoSituacaoPartida;
 
 public class ManipuladorArquivo {
 

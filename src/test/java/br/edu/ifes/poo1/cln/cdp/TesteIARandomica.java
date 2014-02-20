@@ -12,6 +12,7 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
 import br.edu.ifes.poo1.cln.cdp.pecas.Rei;
 import br.edu.ifes.poo1.cln.cdp.pecas.Torre;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 
 public class TesteIARandomica {
 

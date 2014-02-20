@@ -1,4 +1,4 @@
-package br.edu.ifes.poo1.cln.cdp;
+package br.edu.ifes.poo1.cln.cdp.tipos;
 
 /**
  * Usado para designar o tipo de cada peça. Esta ENUM é usada para que a Camada

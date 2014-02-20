@@ -1,9 +1,15 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.Serializable;
+
 /**
  * Indica uma casa do tabuleiro.
  */
-public class Posicao {
+public class Posicao implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int coluna;
 	private int linha;
 
