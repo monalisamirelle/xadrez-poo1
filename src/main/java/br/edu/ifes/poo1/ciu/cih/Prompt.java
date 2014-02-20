@@ -12,9 +12,16 @@ public class Prompt extends Cli {
 
 	@Override
 	protected void imprimirTabuleiro(TabuleiroXadrez tabuleiro) {
+		//Imprime o número das colunas.
+		imprimirLinha("      0        0        0        0        0        0        0        0     ");
+		
 		for (int linha = 8; linha >= 1; linha--) {
 			// Imprime o sepador de linhas.
-			imprimirLinha("-------------------------------------------------------------------------");
+			imprimirLinha("  -------------------------------------------------------------------------");
+			
+			// Imprime os número a margem esquerda do tabuleiro.
+			imprimir(linha + " "); 
+			
 			for (int coluna = 1; coluna <= 8; coluna++) {
 				// Imprime separador de casas.
 				imprimir("|");
@@ -32,11 +39,14 @@ public class Prompt extends Cli {
 				else
 					imprimir(" preto ");
 			}
-			// Imprime separador de casas e pula para a próxima linha.
-			imprimirLinha("|");
+			// Imprime separador de casas, os numero a margem direita e pula para a próxima linha.
+			imprimirLinha("| " + linha);
 		}
 		// Imprime o sepador de linhas.
-		imprimirLinha("-------------------------------------------------------------------------");
+		imprimirLinha("  -------------------------------------------------------------------------");
+		
+		//Imprime o número das colunas.
+		imprimirLinha("      0        0        0        0        0        0        0        0     ");
 	}
 
 	@Override
