@@ -48,8 +48,6 @@ public abstract class Jogador implements Serializable {
 	 * @throws JogadaInvalidaException
 	 * @throws CasaOcupadaException
 	 */
-	// TODO MÉTODO NÃO FAZ TUDO O QUE DEVERIA FAZER (dê uma olhada em
-	// TipoJogada)!
 	public void executarJogada(Jogada jogada) throws JogadaInvalidaException,
 			CasaOcupadaException {
 		switch (jogada.getTipoJogada()) {
@@ -115,16 +113,15 @@ public abstract class Jogador implements Serializable {
 
 		// Faz as verificações para o ataque
 		if (jogada.getTipoJogada() == TipoJogada.ATACAR) {
-			// TODO inseri isso aqui pois como enPassant é passado "12X34" ele é
-			// considerado pelo interpretador como ATACAR
 			// Se a peça for um peão
 			if (tabuleiro.ehEnPassantEsquerda(jogada.getOrigem())) {
 				jogada.setTipoJogada(TipoJogada.EN_PASSANT_ESQUERDA);
 				aplicarEnPassantEsquerda(jogada, this.getCor());
+				return;
 			} else if (tabuleiro.ehEnPassantDireita(jogada.getOrigem())) {
 				jogada.setTipoJogada(TipoJogada.EN_PASSANT_DIREITA);
 				aplicarEnPassantDireita(jogada, this.getCor());
-
+				return;
 			} else {
 
 				// Se não houver peça no destino e for um ataque, a jogada é
@@ -241,9 +238,10 @@ public abstract class Jogador implements Serializable {
 		Peca peca = tabuleiro.espiarPeca(jogada.getOrigem());
 		// Retirar a peça de sua posição
 		tabuleiro.retirarPeca(jogada.getOrigem());
-		// Retirar peça inimiga à esquerda
-		tabuleiro.retirarPeca(new Posicao(jogada.getOrigem().getColuna() - 1,
+		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças capturadas.
+		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada.getOrigem().getColuna() - 1,
 				jogada.getOrigem().getLinha()));
+		this.pecasCapturadas.add(pecaCapturada);
 		// Se o en passant for favorável as peças brancas
 		if (corJogador == TipoCorJogador.BRANCO)
 			tabuleiro.colocarPeca(new Posicao(
@@ -270,9 +268,10 @@ public abstract class Jogador implements Serializable {
 		Peca peca = tabuleiro.espiarPeca(jogada.getOrigem());
 		// Retirar a peça de sua posição
 		tabuleiro.retirarPeca(jogada.getOrigem());
-		// Retirar peça inimiga à direita
-		tabuleiro.retirarPeca(new Posicao(jogada.getOrigem().getColuna() + 1,
+		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças capturadas.
+		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada.getOrigem().getColuna() + 1,
 				jogada.getOrigem().getLinha()));
+		this.pecasCapturadas.add(pecaCapturada);
 		// Se o en passant for favorável as peças brancas
 		if (corJogador == TipoCorJogador.BRANCO)
 			tabuleiro.colocarPeca(new Posicao(

@@ -202,6 +202,9 @@ public class AplJogo implements Serializable {
 		// Executa a jogada
 		this.getJogadorTurnoAtual().executarJogada(jogada);
 
+		// Reseta as propriedades que controlam o en passant.
+		tabuleiro.resetaPodeEnPassant(TipoCorJogador.getCorOposta(turno));
+		
 		// Vê se o jogador conseguiu dar um Xeque Mate no oponente. E finaliza a
 		// partida, caso tenha conseguido.
 		if (tabuleiro.verificarXequeMate(this.getOponente().getCor())) {
