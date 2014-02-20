@@ -54,16 +54,6 @@ public class IAElaborada extends Maquina {
 	private long inicio;
 
 	/**
-	 * Objeto que permite a maipulação do método na classe RealizaBusca
-	 */
-	private RealizaBusca busca = new RealizaBusca();
-
-	/**
-	 * Lista que irá conter todos os nós da camada mais inferior trabalhada
-	 */
-	private List<NoArvore> listaNos = new ArrayList<NoArvore>();
-
-	/**
 	 * Classe construtora de IAElaborada
 	 * 
 	 * @param nome
@@ -89,7 +79,8 @@ public class IAElaborada extends Maquina {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public boolean criaCamada() throws InterruptedException {
+	public List<NoArvore> criaCamada(List<NoArvore> listaNos)
+			throws InterruptedException {
 		// GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(),
 		// listaNos);
 		// Construa as partes
@@ -135,7 +126,7 @@ public class IAElaborada extends Maquina {
 				t3.join();
 				t4.join();
 
-				return true;
+				return listaNos;
 			}
 		}
 
@@ -144,11 +135,12 @@ public class IAElaborada extends Maquina {
 		listaNos.addAll(parte2.getNovaListaNos());
 		listaNos.addAll(parte3.getNovaListaNos());
 		listaNos.addAll(parte4.getNovaListaNos());
-		return false;
+		return listaNos;
 	}
 
 	// FIXME apagar no final, método desnecessário
-	public boolean criaCamadaM() throws InterruptedException {
+	public boolean criaCamadaM(List<NoArvore> listaNos)
+			throws InterruptedException {
 		// Construa as partes
 		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
 
@@ -203,13 +195,13 @@ public class IAElaborada extends Maquina {
 	 * Método que escolhe a jogada da máquina
 	 * 
 	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException 
+	 * @throws JogadaInvalidaException
 	 * 
 	 */
 	public Jogada escolherJogada(TabuleiroXadrez tabuleiroAtual)
 			throws CasaOcupadaException, JogadaInvalidaException {
-		// Reinicia a lista de nós
-		listaNos = new ArrayList<NoArvore>();
+		// Inicia uma lista de nós
+		List<NoArvore> listaNos = new ArrayList<NoArvore>();
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
 				tabuleiroAtual));
@@ -223,10 +215,14 @@ public class IAElaborada extends Maquina {
 		for (int camada = 1; camada <= ALCANCEMAQUINA
 				&& atingiuTempoMaximo == false; camada++) {
 			try {
-				atingiuTempoMaximo = criaCamada();
+				listaNos = criaCamada(listaNos);
+				// Faça uma verificação de tempo para ver se deve rodar uma
+				// próxima camada
+				long fim = System.currentTimeMillis();
+				// Se o tempo máximo for alcançado
+				if ((fim - inicio) / 1000 > this.TEMPOMAXIMO)
+					atingiuTempoMaximo = true;
 			} catch (InterruptedException e) {
-				// TODO remover comentário
-				System.out.println("Erro de thread");
 				// Se apresentar algum erro de jogada, tente a IA randomica
 				return suporte(tabuleiroAtual);
 			}
@@ -237,6 +233,7 @@ public class IAElaborada extends Maquina {
 
 		// Realizo a busca em profundidade (aplicando minimax e poda alfa
 		// beta)
+		RealizaBusca busca = new RealizaBusca();
 		busca.buscaEmProfundidade(raiz);
 
 		// Cria lista de jogadas que possuem valor igual ao nó raiz
@@ -263,8 +260,6 @@ public class IAElaborada extends Maquina {
 		}
 		// Controle caso IA não seja capaz de encontrar jogada alguma
 		else {
-			// TODO remover comentário
-			System.out.println("Não retornou jogada");
 			return suporte(tabuleiroAtual);
 		}
 	}
@@ -276,7 +271,7 @@ public class IAElaborada extends Maquina {
 	 * @param tabuleiroAtual
 	 * @return
 	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException 
+	 * @throws JogadaInvalidaException
 	 */
 	public Jogada suporte(TabuleiroXadrez tabuleiroAtual)
 			throws CasaOcupadaException, JogadaInvalidaException {

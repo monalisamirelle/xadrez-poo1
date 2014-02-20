@@ -486,11 +486,9 @@ public class Controlador {
 		}
 		try {
 			manipuladorArquivo.gravarPartida(apljogo);
-			System.out.println("gravou");
 		} catch (IOException e) {
 			cli.exibirAlerta("Não foi possível gravar a partida");
 		}
-		System.out.println("graado");
 	}
 
 	/**

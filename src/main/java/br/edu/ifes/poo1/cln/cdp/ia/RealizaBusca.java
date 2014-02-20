@@ -1,14 +1,8 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
-import java.io.Serializable;
 import java.util.Stack;
 
-public class RealizaBusca implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class RealizaBusca {
 
 	private Escolha escolha = new Escolha();
 

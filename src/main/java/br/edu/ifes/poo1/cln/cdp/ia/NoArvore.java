@@ -1,6 +1,5 @@
 package br.edu.ifes.poo1.cln.cdp.ia;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +7,7 @@ import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 
-public class NoArvore implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class NoArvore {
 
 	// Nó que é pai do nó em questão
 	private NoArvore noPai;
