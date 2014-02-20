@@ -1,6 +1,5 @@
 package br.edu.ifes.poo1.cln.cdp.pecas;
 
-import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
@@ -22,10 +21,11 @@ public class Rainha extends Peca {
 
 	@Override
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) {
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino)) {
-			if ((this.medeDeslocamentoPeca(origem.getLinha(), destino.getLinha()) > 0)
+			if ((this.medeDeslocamentoPeca(origem.getLinha(),
+					destino.getLinha()) > 0)
 					|| (this.medeDeslocamentoPeca(origem.getColuna(),
 							destino.getColuna()) > 0)) {
 				return true;

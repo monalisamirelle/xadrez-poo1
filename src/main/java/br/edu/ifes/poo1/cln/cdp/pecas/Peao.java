@@ -1,6 +1,5 @@
 package br.edu.ifes.poo1.cln.cdp.pecas;
 
-import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
@@ -31,7 +30,7 @@ public class Peao extends Peca {
 
 	@Override
 	public boolean podeAndar(Posicao origem, Posicao destino,
-			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) {
 		int avanca;
 		if (this.getCorJogador() == TipoCorJogador.BRANCO)
 			avanca = 1;
@@ -56,7 +55,7 @@ public class Peao extends Peca {
 
 	@Override
 	public boolean podeAtacar(Posicao origem, Posicao destino,
-			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) {
 		// Verifica como o peão irá avançar
 		int avanca;
 		if (this.getCorJogador() == TipoCorJogador.BRANCO)

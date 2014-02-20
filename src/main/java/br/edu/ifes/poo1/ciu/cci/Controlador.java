@@ -300,7 +300,18 @@ public class Controlador {
 			Jogada jogada = null;
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
-				jogada = acaoRealizadaPessoa(apl);
+				do {
+					jogada = acaoRealizadaPessoa(apl);
+				} while (jogada == null);
+				// Verifica se jogada deixa rei em ameaça
+				if (apl.getTabuleiro().jogadaSuicida(
+						jogada.getOrigem(),
+						jogada.getDestino(),
+						TipoCorJogador.getCorOposta(apl.getJogadorTurnoAtual()
+								.getCor()))) {
+					jogada = null;
+					cli.exibirAlerta("Essa jogada não é permitida pois o rei é ameaçado de xeque");
+				}
 				// Máquina executa uma jogada
 			} else {
 				jogada = acaoRealizadaMaquina(apl);

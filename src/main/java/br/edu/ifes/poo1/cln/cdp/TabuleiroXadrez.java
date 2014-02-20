@@ -444,48 +444,38 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	}
 
 	/**
-	 * Indica se o rei está realizando uma jogada que cuminará em sua captura na
-	 * próxima jogada inimiga
+	 * Indica se o rei está realizando uma jogada que culminará em sua captura
+	 * na próxima jogada inimiga
 	 * 
 	 * @param posicaoAtual
 	 * @param posicaoDesejada
 	 * @param corPecaInimiga
 	 * @return
-	 * @throws CasaOcupadaException
 	 */
 	public boolean jogadaSuicida(Posicao posicaoAtual, Posicao posicaoDesejada,
-			TipoCorJogador corPecaInimiga) throws CasaOcupadaException {
+			TipoCorJogador corPecaInimiga) {
+		try {
+			TipoCorJogador corJogador = TipoCorJogador
+					.getCorOposta(corPecaInimiga);
+			Peca peca = this.espiarPeca(posicaoAtual);
 
-		TipoCorJogador corJogador = TipoCorJogador.getCorOposta(corPecaInimiga);
-
-		// Vemos a peça que pode ser ameaçada
-		Peca pecaAmeacada = this.espiarPeca(posicaoAtual);
-		if (this.estaInimigo(corJogador, posicaoDesejada)
-				|| this.estaVazio(posicaoDesejada)) {
-
-			// Vemos se existe uma peça na casa desejada atualmente
-			Peca pecaPossivel = this.espiarPeca(posicaoDesejada);
-
-			// Modificamos o tambuleiro para verificar se está ameaçado
-			this.retirarPeca(posicaoAtual);
-			if (this.estaInimigo(corJogador, posicaoDesejada))
-				this.retirarPeca(posicaoDesejada);
-			this.colocarPeca(posicaoDesejada, pecaAmeacada);
-
+			// Cria uma cópia do tabuleiro
+			TabuleiroXadrez copiaTabuleiro = this.tabuleiroClonado();
+			
+			// Modificamos o tabuleiro para verificar se está ameaçado
+			copiaTabuleiro.retirarPeca(posicaoAtual);
+			if (copiaTabuleiro.estaInimigo(corJogador, posicaoDesejada))
+				copiaTabuleiro.retirarPeca(posicaoDesejada);
+			copiaTabuleiro.colocarPeca(posicaoDesejada, peca);
+			
+			Posicao posicaoRei = copiaTabuleiro.encontrarRei(corJogador);
+			
 			// Verificamos se está ameaçado
-			boolean estaAmeacado = estaAmeacadoPor(posicaoDesejada,
-					corPecaInimiga);
-
-			// Retornamos o tabuleiro ao estado anterior
-			this.retirarPeca(posicaoDesejada);
-			this.colocarPeca(posicaoAtual, pecaAmeacada);
-			if (pecaPossivel != null)
-				this.colocarPeca(posicaoDesejada, pecaPossivel);
-
-			// Informamos se o rei ficará ameaçado ao realizar o movimento
-			return estaAmeacado;
+			return copiaTabuleiro.estaAmeacadoPor(posicaoRei, corPecaInimiga);
+		} catch (Exception e) {
+			// TODO e isso?
+			return true;
 		}
-		return true;
 	}
 
 	/**
@@ -497,16 +487,15 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 *            Cor do jogador que pode estar ameaçando a posição.
 	 * @return Se a o jogador da cor indicada está ameçando a posição com alguma
 	 *         peça.
-	 * @throws CasaOcupadaException
 	 */
-	public boolean estaAmeacadoPor(Posicao posicaoDesejada,
-			TipoCorJogador corPecaInimiga) throws CasaOcupadaException {
+	public boolean estaAmeacadoPor(Posicao posicaoRei,
+			TipoCorJogador corPecaInimiga) {
 		// Verifica se há alguma peça da cor indicada que ameaça a posição
 		// indicada.
 		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++) {
 			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
 				Posicao origem = new Posicao(coluna, linha);
-
+				
 				// Pula as casas vazias.
 				if (estaVazio(origem))
 					continue;
@@ -519,11 +508,10 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 					continue;
 
 				// Verifica se a peça pode atacar a posição indicada.
-				if (peca.podeAtacar(origem, posicaoDesejada, this))
+				if (peca.podeAtacar(origem, posicaoRei, this))
 					return true;
 			}
 		}
-
 		// Caso não haja peça que possa ameaçar a posição, retorna falso.
 		return false;
 	}
@@ -543,7 +531,7 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
 				// Forma a posição que estamos a verificar.
 				Posicao posicao = new Posicao(coluna, linha);
-
+				
 				// Pula se não houver peça ali.
 				if (estaVazio(posicao))
 					continue;
@@ -570,10 +558,8 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * @param cor
 	 *            Cor do rei.
 	 * @return Se a o rei está em Xeque.
-	 * @throws CasaOcupadaException
 	 */
-	public boolean verificarXeque(TipoCorJogador cor)
-			throws CasaOcupadaException {
+	public boolean verificarXeque(TipoCorJogador cor) {
 		// Encontra a posição do rei.
 		Posicao posicaoRei = encontrarRei(cor);
 		// Retorna se a posição do rei está ameaçadado.

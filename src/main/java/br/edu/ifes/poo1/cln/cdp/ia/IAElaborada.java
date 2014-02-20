@@ -205,42 +205,43 @@ public class IAElaborada extends Maquina {
 		// Crio nó raiz e informo a ele o tabuleiro atual
 		NoArvore raiz = new NoArvore(this.cor, this.nivel, new Estado(null,
 				tabuleiroAtual));
-		// Inserimos, inicialmente apenas o nó raiz
-		listaNos.add(raiz);
-		// Marca quando a análise foi iniciada
-		inicio = System.currentTimeMillis();
-		// Funciona verificando se foi atingido o tempo máximo estabelecido
-		boolean atingiuTempoMaximo = false;
-		// Crio a árvore de possibilidades
-		for (int camada = 1; camada <= ALCANCEMAQUINA
-				&& atingiuTempoMaximo == false; camada++) {
-			try {
-				listaNos = criaCamada(listaNos);
-				// Faça uma verificação de tempo para ver se deve rodar uma
-				// próxima camada
-				long fim = System.currentTimeMillis();
-				// Se o tempo máximo for alcançado
-				if ((fim - inicio) / 1000 > this.TEMPOMAXIMO)
-					atingiuTempoMaximo = true;
-			} catch (InterruptedException e) {
-				// Se apresentar algum erro de jogada, tente a IA randomica
-				return suporte(tabuleiroAtual);
-			}
-		}
-
-		// Insiro os valores nos nós folhas
-		inserirValorFolhas(listaNos);
-
-		// Realizo a busca em profundidade (aplicando minimax e poda alfa
-		// beta)
-		RealizaBusca busca = new RealizaBusca();
-		busca.buscaEmProfundidade(raiz);
 
 		// Cria lista de jogadas que possuem valor igual ao nó raiz
 		List<Jogada> possivelJogada = new ArrayList<Jogada>();
 
-		// Se o tabuleiro não já se encontra em xeque-mate
-		if (raiz.isXequeMate() == false) {
+		// Se o nó raiz não se encontra em xeque mate
+		if (!raiz.isXequeMate()) {
+			// Inserimos, inicialmente apenas o nó raiz
+			listaNos.add(raiz);
+			// Marca quando a análise foi iniciada
+			inicio = System.currentTimeMillis();
+			// Funciona verificando se foi atingido o tempo máximo estabelecido
+			boolean atingiuTempoMaximo = false;
+			// Crio a árvore de possibilidades
+			for (int camada = 1; camada <= ALCANCEMAQUINA
+					&& atingiuTempoMaximo == false; camada++) {
+				try {
+					listaNos = criaCamada(listaNos);
+					// Faça uma verificação de tempo para ver se deve rodar uma
+					// próxima camada
+					long fim = System.currentTimeMillis();
+					// Se o tempo máximo for alcançado
+					if ((fim - inicio) / 1000 > this.TEMPOMAXIMO)
+						atingiuTempoMaximo = true;
+				} catch (InterruptedException e) {
+					// Se apresentar algum erro de jogada, tente a IA randomica
+					return suporte(tabuleiroAtual);
+				}
+			}
+
+			// Insiro os valores nos nós folhas
+			inserirValorFolhas(listaNos);
+
+			// Realizo a busca em profundidade (aplicando minimax e poda alfa
+			// beta)
+			RealizaBusca busca = new RealizaBusca();
+			busca.buscaEmProfundidade(raiz);
+
 			// Para cada nó na lista de adjacência do pai (começa de 1 pois
 			// o nó pai não tem primeiro valor na lista de adjacência pois não
 			// tem pai
@@ -252,6 +253,9 @@ public class IAElaborada extends Maquina {
 					possivelJogada.add(raiz.getListaAdjacencia().get(indice)
 							.getEstado().getJogada());
 				}
+		} else {
+			// Se já se encontra em xeque mate
+			return null;
 		}
 		// Se IA encontrar uma jogada
 		if (!possivelJogada.isEmpty()) {

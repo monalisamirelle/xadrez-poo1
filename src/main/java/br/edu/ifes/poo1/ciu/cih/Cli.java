@@ -240,11 +240,29 @@ public abstract class Cli {
 	public void imprimirRecomendacao(int numeroRecomendacao, Peca peca,
 			Jogada jogada) {
 		io.imprimirLinha(numeroRecomendacao + " - Recomendação:");
-		io.imprimirLinha("Mova a peça " + peca.getTipoPeca() + " da coluna "
-				+ jogada.getOrigem().getColuna() + " e linha "
-				+ jogada.getOrigem().getLinha() + " para a coluna "
-				+ jogada.getDestino().getColuna() + " e linha "
-				+ jogada.getDestino().getLinha() + "\n");
+		switch (jogada.getTipoJogada()) {
+		case ROQUE_MENOR:
+			io.imprimirLinha("Realize o roque menor\n");
+			break;
+		case ROQUE_MAIOR:
+			io.imprimirLinha("Realize o roque maior\n");
+			break;
+		case ATACAR:
+		case ANDAR:
+			io.imprimirLinha("Mova a peça " + peca.getTipoPeca()
+					+ " da coluna " + jogada.getOrigem().getColuna()
+					+ " e linha " + jogada.getOrigem().getLinha()
+					+ " para a coluna " + jogada.getDestino().getColuna()
+					+ " e linha " + jogada.getDestino().getLinha() + "\n");
+			break;
+		case EN_PASSANT_ESQUERDA:
+		case EN_PASSANT_DIREITA:
+			io.imprimirLinha("Realize en passant" + " da coluna "
+					+ jogada.getOrigem().getColuna() + " e linha "
+					+ jogada.getOrigem().getLinha() + " para a coluna "
+					+ jogada.getDestino().getColuna() + " e linha "
+					+ jogada.getDestino().getLinha() + "\n");
+		}
 	}
 
 	/**
@@ -288,7 +306,8 @@ public abstract class Cli {
 		String[] s = { indice, dadosPessoa.getNome(),
 				dadosPessoa.getPartidasVencidas(),
 				dadosPessoa.getPartidasPerdidas() };
-		io.imprimirLinhaFormatada(s);;
+		io.imprimirLinhaFormatada(s);
+		;
 	}
 
 	/**

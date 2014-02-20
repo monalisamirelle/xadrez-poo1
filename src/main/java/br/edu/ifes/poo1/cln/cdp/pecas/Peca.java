@@ -57,10 +57,9 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @param destino
 	 *            Posição para onde a peça deve ser movida.
 	 * @return Se é possível andar com a peça até a casa desejada.
-	 * @throws CasaOcupadaException
 	 */
 	public boolean podeAndar(Posicao origem, Posicao destino,
-			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
@@ -80,10 +79,9 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @param destino
 	 *            Local a ser atacado pela peça.
 	 * @return Se é possível usar esta peça para atacar a casa indicada.
-	 * @throws CasaOcupadaException
 	 */
 	public boolean podeAtacar(Posicao origem, Posicao destino,
-			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) {
 		// Puramente verifica se a peça pode se mover para o local indicado. No
 		// caso do peão, este método será sobrescrito, pois anda de forma
 		// diferente a que ataca.
@@ -104,10 +102,9 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @param tabuleiro
 	 *            Tabuleiro em que será feita movimentação.
 	 * @return Se a peça pode se mover.
-	 * @throws CasaOcupadaException
 	 */
 	protected boolean podeSeMover(Posicao origem, Posicao destino,
-			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiro) {
 		// As posições devem ser internas ao tabuleiro.
 		if (TabuleiroXadrez.estaForaDoTabuleiro(origem)
 				|| TabuleiroXadrez.estaForaDoTabuleiro(destino))
@@ -140,8 +137,8 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @return
 	 * @throws CasaOcupadaException
 	 */
-	public List<Jogada> jogadasPeca(Posicao posicaoOrigem, TabuleiroXadrez tabuleiro)
-			throws CasaOcupadaException {
+	public List<Jogada> jogadasPeca(Posicao posicaoOrigem,
+			TabuleiroXadrez tabuleiro) throws CasaOcupadaException {
 		List<Jogada> listaJogadas = new ArrayList<Jogada>();
 		// Caminhando pelo tabuleiro
 		for (int coluna = TabuleiroXadrez.COLUNAINFERIOR; coluna <= TabuleiroXadrez.COLUNASUPERIOR; coluna++)
