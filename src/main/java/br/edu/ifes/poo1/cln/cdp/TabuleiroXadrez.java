@@ -464,8 +464,6 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 			return false;
 		}
 
-		System.out.println(novoTabuleiro.toString());
-
 		Posicao posicaoRei = novoTabuleiro.encontrarRei(corJogador);
 
 		// Verificamos se está ameaçado
