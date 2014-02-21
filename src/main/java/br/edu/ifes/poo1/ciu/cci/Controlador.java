@@ -302,7 +302,8 @@ public class Controlador {
 			Jogada jogada = null;
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
-				// FIXME aqui a pessoa escolhe uma jogada inválida (sair de uma casa que não tenha nenhuma peça)
+				// FIXME aqui a pessoa escolhe uma jogada inválida (sair de uma
+				// casa que não tenha nenhuma peça)
 				jogada = acaoRealizadaPessoa(apl);
 				// Verifica se a jogada não é nula
 				if (jogada != null)
@@ -318,10 +319,7 @@ public class Controlador {
 				// Máquina executa uma jogada
 			} else {
 				jogada = acaoRealizadaMaquina(apl);
-				if (jogada.ehPromocao())
-					System.out.println("yout");
 			}
-
 			if (jogada != null) {
 				try {
 					apl.executarJogadaTurno(jogada);

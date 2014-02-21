@@ -8,7 +8,9 @@ import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
 import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
+import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoSituacaoPartida;
 
 // TODO muitos métodos construtores, precisam ser melhor
@@ -202,15 +204,35 @@ public class AplJogo implements Serializable {
 		// Executa a jogada
 		this.getJogadorTurnoAtual().executarJogada(jogada);
 
+		// Se o jogador for uma máquina, realize a modificação da promoção
+		if (this.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.IAELABORADA
+				|| this.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.IARANDOMICA)
+			modificarMaquinaPromocao(jogada);
+
 		// Reseta as propriedades que controlam o en passant.
 		tabuleiro.resetaPodeEnPassant(TipoCorJogador.getCorOposta(turno));
-		
+
 		// Vê se o jogador conseguiu dar um Xeque Mate no oponente. E finaliza a
 		// partida, caso tenha conseguido.
 		if (tabuleiro.verificarXequeMate(this.getOponente().getCor())) {
 			finalizarPartida(getJogadorTurnoAtual(),
 					TipoSituacaoPartida.VITORIA);
 			return;
+		}
+	}
+
+	/**
+	 * Método que modifica a peça da máquina na promoção
+	 * 
+	 * @param jogada
+	 * @throws CasaOcupadaException
+	 */
+	private void modificarMaquinaPromocao(Jogada jogada)
+			throws CasaOcupadaException {
+		if (jogada.ehPromocao()) {
+			tabuleiro.retirarPeca(jogada.getDestino());
+			tabuleiro.colocarPeca(jogada.getDestino(), new Rainha(this
+					.getJogadorTurnoAtual().getCor()));
 		}
 	}
 
@@ -300,7 +322,7 @@ public class AplJogo implements Serializable {
 	 * Faz o término da partida, tendo havido um empate ou uma pausa.
 	 */
 	public void finalizarPartida(TipoSituacaoPartida situacao) {
-		this.nomeVencedor = brancas.getNome()+"/"+pretas.getNome();
+		this.nomeVencedor = brancas.getNome() + "/" + pretas.getNome();
 		switch (situacao) {
 		case PAUSA:
 			this.situacaoPartida = TipoSituacaoPartida.PAUSA;

@@ -338,7 +338,7 @@ public abstract class Cli {
 	public void exibirComandos() {
 		io.imprimirLinha("Lista de comandos:\n");
 		io.imprimirLinha("C1L1C2L2     -> Andar");
-		io.imprimirLinha("C1L1xC2L2    -> Atacar");
+		io.imprimirLinha("C1L1xC2L2    -> Atacar \\ En passant");
 		io.imprimirLinha("o-o          -> Executa roque menor");
 		io.imprimirLinha("o-o-o        -> Executa roque maior");
 		io.imprimirLinha("C1L1C2L2=X   -> Executa uma promoção para X andando");
