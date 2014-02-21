@@ -1,7 +1,6 @@
 package br.edu.ifes.poo1.ciu.cci;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +32,7 @@ import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoSituacaoPartida;
 import br.edu.ifes.poo1.cln.cgt.AplJogo;
-import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
+import br.edu.ifes.poo1.cln.cgt.ManipuladorPartidas;
 
 /**
  * Faz o intermédio entre a camada do modelo de dados e a parte da visão. Para
@@ -43,7 +42,7 @@ import br.edu.ifes.poo1.cln.cgt.ManipuladorArquivo;
  */
 public class Controlador {
 	private Cli cli;
-	private ManipuladorArquivo manipuladorArquivo = new ManipuladorArquivo();
+	private ManipuladorPartidas manipuladorPartidas = new ManipuladorPartidas();
 
 	/**
 	 * Pede ao usuário para selecionar a interface a ser usada.
@@ -368,7 +367,7 @@ public class Controlador {
 			break;
 		case "SALVAR":
 			try {
-				manipuladorArquivo.gravarPartida(apl);
+				manipuladorPartidas.gravarPartida(apl);
 			} catch (IOException e1) {
 				cli.exibirAlerta("Não foi possível salvar a partida");
 			}
@@ -512,26 +511,28 @@ public class Controlador {
 			break;
 		}
 		try {
-			manipuladorArquivo.gravarPartida(apljogo);
+			manipuladorPartidas.gravarPartida(apljogo);
 		} catch (IOException e) {
 			cli.exibirAlerta("Não foi possível gravar a partida");
 		}
 	}
 
 	/**
-	 * Método responsável por iniciar uma partida singleplayer ou multiplayer
+	 * Método responsável por reiniciar uma partida singleplayer ou multiplayer
 	 */
 	// TODO apagar entra aqui? se entrar, deveremos salvar estado ao "voltar"
 	// (ver método a ser depreciado no final da classe)
 	private void retornaPartida() {
 		// Captura de um arquivo as partidas nao finalizadas
-		List<DadosPartida> listaPartidasNaoFinalizadas = manipuladorArquivo
+		List<DadosPartida> listaPartidasNaoFinalizadas = manipuladorPartidas
 				.criarListaPartidasNaoFinalizadas();
 
-		// Este é o item do menu que o jogador escolheu (escolherá).
+		// Menu com as opções para o jogador.
 		Menu menuRetornarPartida = new MenuRetornarPartida();
 
-		boolean retornarMenu = false;
+		// Indica quando a execução deve voltar ao menu principal do jogo.
+		boolean retornarAoMenu = false;
+
 		do {
 			// Exibe as partidas atuais
 			exibirPartidasNaoFinalizadas(listaPartidasNaoFinalizadas);
@@ -540,6 +541,7 @@ public class Controlador {
 			ItemMenu itemEscolhido = menuRetornarPartida
 					.insistirPorEntradaValida(cli.getIo());
 
+			// Verifica qual opção o jogador escolheu.
 			switch (itemEscolhido.getNome()) {
 			// Se o jogador tiver escolhido jogar o singleplayer.
 			case "REINICIAR":
@@ -550,7 +552,7 @@ public class Controlador {
 					try {
 						apl.setSairPartida(false);
 						controlarPartida(apl);
-						retornarMenu = true;
+						retornarAoMenu = true;
 					} catch (Exception e) {
 						cli.exibirAlerta("Nenhuma partida foi carregada");
 					}
@@ -558,16 +560,16 @@ public class Controlador {
 				listaPartidasNaoFinalizadas = buscarApagarPartida(listaPartidasNaoFinalizadas);
 				break;
 			case "RETORNAR":
-				try {
-					manipuladorArquivo
-							.gravarListaPartidas(listaPartidasNaoFinalizadas);
-				} catch (IOException e) {
-					cli.exibirAlerta("Não foi possível gravar a partida");
-				}
-				retornarMenu = true;
+				// try {
+				// manipuladorPartidas
+				// .gravarListaPartidas(listaPartidasNaoFinalizadas);
+				// } catch (IOException e) {
+				// cli.exibirAlerta("Não foi possível gravar a partida");
+				// }
+				retornarAoMenu = true;
 				break;
 			}
-		} while (!retornarMenu);
+		} while (!retornarAoMenu);
 	}
 
 	/**
@@ -594,13 +596,14 @@ public class Controlador {
 	 */
 	private void informaDadosPartida() {
 
-		// Este é o item do menu que o jogador escolheu (escolherá).
+		// Menu com as opções para o jogador.
 		Menu menuDados = new MenuDadosPartida();
 
+		// Indica quando que a execução deve retornar para o menu principal.
 		boolean retornarMenu = false;
 		do {
 			// Captura de um arquivo as partidas concluídas
-			List<DadosPartida> listaPartidasConcluidas = manipuladorArquivo
+			List<DadosPartida> listaPartidasConcluidas = manipuladorPartidas
 					.criarListaPartidasConcluidas();
 
 			// Inicia o menu deixando a escolha para o usuário do que fazer.
@@ -613,6 +616,7 @@ public class Controlador {
 				Collections.sort(listaPartidasConcluidas);
 				exibirPartidasConcluidas(listaPartidasConcluidas);
 				break;
+
 			// Se escolher visualizar os jogadores.
 			case "JOGADORES":
 				DadosPessoa dp = new DadosPessoa();
@@ -621,14 +625,11 @@ public class Controlador {
 				Collections.sort(dadosPessoas);
 				exibirJogadores(dadosPessoas);
 				break;
+
 			case "APAGAR":
-				try {
-					manipuladorArquivo
-							.gravarListaPartidas(new ArrayList<DadosPartida>());
-				} catch (IOException e) {
-					cli.exibirAlerta("Arquivo não pôde ser apagado");
-				}
+				manipuladorPartidas.apagarTodasPartidas();
 				break;
+
 			case "RETORNAR":
 				retornarMenu = true;
 				break;
@@ -674,8 +675,7 @@ public class Controlador {
 	/**
 	 * Método que busca carregar uma partida informada por um usuário
 	 * 
-	 * @param maiorIndice
-	 * @return
+	 * @return A apl que deve ser usada para controlar o jogo.
 	 */
 	private AplJogo buscarCarregarPartida(List<DadosPartida> listaPartidas) {
 		int indice = -2;
@@ -685,20 +685,24 @@ public class Controlador {
 				try {
 					indice = Integer.parseInt(cli.pedeIndicePartidaCarregar());
 					// Lança uma exception se não conseguir
-				} catch (Exception e) {
+				} catch (NumberFormatException e) {
 					cli.exibirAlerta("Digite um número referente ao índice.");
 				}
 			} while (indice == -2);
-			// Se for um índice válido
-			if (indice >= 0 & indice < listaPartidas.size())
-				return manipuladorArquivo
-						.carregarPartida(indice, listaPartidas);
-			// Se for para retornar
-			else if (indice == -1)
+
+			// Verifica se é um índice válido.
+			if (indice >= 0 & indice < listaPartidas.size()) {
+				return manipuladorPartidas.carregarPartida(indice,
+						listaPartidas);
+			}
+			// Se for para voltar ao menu anterior.
+			else if (indice == -1) {
 				return null;
-			// Se for um índice inesperado
-			else
+			}
+			// Se for um índice inesperado.
+			else {
 				cli.exibirAlerta("O índice digitado não existe.");
+			}
 		} while (indice < 0 || indice >= listaPartidas.size());
 		cli.imprimirLinha("");
 		return null;
@@ -723,7 +727,7 @@ public class Controlador {
 			}
 			// Se for um índice válido
 			if (indice >= 0 & indice < listaPartidas.size())
-				return manipuladorArquivo.apagarPartida(indice, listaPartidas);
+				manipuladorPartidas.apagarPartida(indice, listaPartidas);
 			// Se for para retornar
 			else if (indice == -1)
 				cli.imprimirLinha("Retornando ao menu de partidas");
