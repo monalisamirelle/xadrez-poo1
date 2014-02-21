@@ -28,3 +28,4 @@ LICENSE		text
 target/		binary
 *.class		binary
 *.jar		binary
+*.dat		binary
