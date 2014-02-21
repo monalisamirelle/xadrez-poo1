@@ -180,7 +180,7 @@ public class Controlador {
 			maquina = new IARandomica("Dionísio", corMaquina);
 			break;
 		case "ARES":
-			maquina = new IAElaborada("Ares", corMaquina, 1, 45, true);
+			maquina = new IAElaborada("Ares", corMaquina, 1, 15, true);
 			break;
 		case "ZEUS":
 			maquina = new IAElaborada("Zeus", corMaquina, 10, 15, true);
@@ -564,6 +564,7 @@ public class Controlador {
 				break;
 
 			case "RETORNAR":
+				// TODO ao retornar deveos gravar os estados da partida
 				// try {
 				// manipuladorPartidas
 				// .gravarListaPartidas(listaPartidasNaoFinalizadas);

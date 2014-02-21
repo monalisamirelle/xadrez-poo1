@@ -56,28 +56,26 @@ public class GeraEstado implements Serializable {
 			// Verifica o tipo de jogada e gera o tabuleiro correto
 			switch (jogada.getTipoJogada()) {
 			case ANDAR:
-				tabuleiroNovo = estadoAndar(jogada, corJogador, copiaTabuleiro,
-						tabuleiroNovo);
+				tabuleiroNovo = estadoAndar(jogada, corJogador, copiaTabuleiro);
 				break;
 			case ATACAR:
-				tabuleiroNovo = estadoAtacar(jogada, corJogador,
-						copiaTabuleiro, tabuleiroNovo);
+				tabuleiroNovo = estadoAtacar(jogada, corJogador, copiaTabuleiro);
 				break;
 			case ROQUE_MENOR:
 				tabuleiroNovo = estadoRoqueMenor(jogada, corJogador,
-						copiaTabuleiro, tabuleiroNovo);
+						copiaTabuleiro);
 				break;
 			case ROQUE_MAIOR:
 				tabuleiroNovo = estadoRoqueMaior(jogada, corJogador,
-						copiaTabuleiro, tabuleiroNovo);
+						copiaTabuleiro);
 				break;
 			case EN_PASSANT_ESQUERDA:
 				tabuleiroNovo = estadoEnPassantEsquerda(jogada, corJogador,
-						copiaTabuleiro, tabuleiroNovo);
+						copiaTabuleiro);
 				break;
 			case EN_PASSANT_DIREITA:
 				tabuleiroNovo = estadoEnPassantDireita(jogada, corJogador,
-						copiaTabuleiro, tabuleiroNovo);
+						copiaTabuleiro);
 				break;
 			}
 			// Se a jogada a ser realizada não leva um jogador a um estado de
@@ -89,7 +87,8 @@ public class GeraEstado implements Serializable {
 	}
 
 	public TabuleiroXadrez geraTabuleiroJogada(Jogada jogada,
-			TabuleiroXadrez tabuleiroAtual, TipoCorJogador corJogador) throws CasaOcupadaException {
+			TabuleiroXadrez tabuleiroAtual, TipoCorJogador corJogador)
+			throws CasaOcupadaException {
 		// Primeiramente, cria uma cópia do tabuleiro para não atrapalhar o
 		// tabuleiro atual
 		TabuleiroXadrez copiaTabuleiro = tabuleiroAtual.tabuleiroClonado();
@@ -98,32 +97,28 @@ public class GeraEstado implements Serializable {
 		copiaTabuleiro.resetaPodeEnPassant(corJogador);
 
 		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
-		
+
 		// Verifica o tipo de jogada e gera o tabuleiro correto
 		switch (jogada.getTipoJogada()) {
 		case ANDAR:
-			tabuleiroNovo = estadoAndar(jogada, corJogador, copiaTabuleiro,
-					tabuleiroNovo);
+			tabuleiroNovo = estadoAndar(jogada, corJogador, copiaTabuleiro);
 			break;
 		case ATACAR:
-			tabuleiroNovo = estadoAtacar(jogada, corJogador, copiaTabuleiro,
-					tabuleiroNovo);
+			tabuleiroNovo = estadoAtacar(jogada, corJogador, copiaTabuleiro);
 			break;
 		case ROQUE_MENOR:
-			tabuleiroNovo = estadoRoqueMenor(jogada, corJogador,
-					copiaTabuleiro, tabuleiroNovo);
+			tabuleiroNovo = estadoRoqueMenor(jogada, corJogador, copiaTabuleiro);
 			break;
 		case ROQUE_MAIOR:
-			tabuleiroNovo = estadoRoqueMaior(jogada, corJogador,
-					copiaTabuleiro, tabuleiroNovo);
+			tabuleiroNovo = estadoRoqueMaior(jogada, corJogador, copiaTabuleiro);
 			break;
 		case EN_PASSANT_ESQUERDA:
 			tabuleiroNovo = estadoEnPassantEsquerda(jogada, corJogador,
-					copiaTabuleiro, tabuleiroNovo);
+					copiaTabuleiro);
 			break;
 		case EN_PASSANT_DIREITA:
 			tabuleiroNovo = estadoEnPassantDireita(jogada, corJogador,
-					copiaTabuleiro, tabuleiroNovo);
+					copiaTabuleiro);
 			break;
 		}
 		return tabuleiroNovo;
@@ -139,9 +134,10 @@ public class GeraEstado implements Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	private TabuleiroXadrez estadoAndar(Jogada jogada,
-			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro,
-			TabuleiroXadrez tabuleiroNovo) throws CasaOcupadaException {
+			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro)
+			throws CasaOcupadaException {
 		Peca peca = copiaTabuleiro.espiarPeca(jogada.getOrigem());
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
 		tabuleiroNovo.retirarPeca(jogada.getOrigem());
 		// Se for Promoção
 		if (jogada.ehPromocao()) {
@@ -180,9 +176,10 @@ public class GeraEstado implements Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	private TabuleiroXadrez estadoAtacar(Jogada jogada,
-			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro,
-			TabuleiroXadrez tabuleiroNovo) throws CasaOcupadaException {
+			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro)
+			throws CasaOcupadaException {
 		Peca peca = copiaTabuleiro.espiarPeca(jogada.getOrigem());
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
 		tabuleiroNovo.retirarPeca(jogada.getOrigem());
 		tabuleiroNovo.retirarPeca(jogada.getDestino());
 		// Se for Promoção
@@ -213,8 +210,9 @@ public class GeraEstado implements Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	private TabuleiroXadrez estadoRoqueMenor(Jogada jogada,
-			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro,
-			TabuleiroXadrez tabuleiroNovo) throws CasaOcupadaException {
+			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro)
+			throws CasaOcupadaException {
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
 		if (corJogador == TipoCorJogador.BRANCO) {
 			Peca novoRei = copiaTabuleiro.espiarPeca(new Posicao(5, 1)).clone();
 			novoRei.setJaMoveu();
@@ -249,8 +247,9 @@ public class GeraEstado implements Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	private TabuleiroXadrez estadoRoqueMaior(Jogada jogada,
-			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro,
-			TabuleiroXadrez tabuleiroNovo) throws CasaOcupadaException {
+			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro)
+			throws CasaOcupadaException {
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
 		if (corJogador == TipoCorJogador.BRANCO) {
 			Peca novoRei = copiaTabuleiro.espiarPeca(new Posicao(5, 1)).clone();
 			novoRei.setJaMoveu();
@@ -285,9 +284,10 @@ public class GeraEstado implements Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	private TabuleiroXadrez estadoEnPassantEsquerda(Jogada jogada,
-			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro,
-			TabuleiroXadrez tabuleiroNovo) throws CasaOcupadaException {
+			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro)
+			throws CasaOcupadaException {
 		Peca peca = copiaTabuleiro.espiarPeca(jogada.getOrigem());
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
 		// Retirar a peça de sua posição
 		tabuleiroNovo.retirarPeca(jogada.getOrigem());
 		// Retirar peça inimiga à esquerda
@@ -315,9 +315,10 @@ public class GeraEstado implements Serializable {
 	 * @throws CasaOcupadaException
 	 */
 	private TabuleiroXadrez estadoEnPassantDireita(Jogada jogada,
-			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro,
-			TabuleiroXadrez tabuleiroNovo) throws CasaOcupadaException {
+			TipoCorJogador corJogador, TabuleiroXadrez copiaTabuleiro)
+			throws CasaOcupadaException {
 		Peca peca = copiaTabuleiro.espiarPeca(jogada.getOrigem());
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
 		// Retirar a peça de sua posição
 		tabuleiroNovo.retirarPeca(jogada.getOrigem());
 		// Retirar peça inimiga à direita
