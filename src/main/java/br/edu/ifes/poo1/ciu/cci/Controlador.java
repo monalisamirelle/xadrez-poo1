@@ -74,9 +74,9 @@ public class Controlador {
 	}
 
 	/**
-	 * Inicia o jogo. Serão exibidos os menus necessários e faz todo o controle
-	 * necessário do jogo.
-	 * 
+	 * Método que inicia o jogo. Serão exibidos os menus necessários
+	 * (principais) e encaminha a um novo método conforme opção escolhida pelo
+	 * usuário
 	 */
 	public void iniciar() {
 		// Este é o item do menu que o jogador escolheu (escolherá).
@@ -193,7 +193,7 @@ public class Controlador {
 	}
 
 	/**
-	 * Prepara e captura todos os dados de uma partida Singleplayer
+	 * Método que prepara e captura todos os dados de uma partida Singleplayer
 	 * 
 	 * @return
 	 */
@@ -214,7 +214,8 @@ public class Controlador {
 	}
 
 	/**
-	 * Prepara e captura todos os dados de uma partida Multiplayer
+	 * Método que prepara e captura todos os dados necessários para uma partida
+	 * Multiplayer
 	 * 
 	 * @return
 	 */
@@ -232,7 +233,7 @@ public class Controlador {
 
 	/**
 	 * Método que força o jogador a escolher um nome diferente de uma
-	 * inteligência
+	 * inteligência e diferente de vazio
 	 * 
 	 * @return
 	 */
@@ -452,7 +453,7 @@ public class Controlador {
 	}
 
 	/**
-	 * Realiza uma requisição de empate a outro jogador. O atributo
+	 * Método que realiza uma requisição de empate a outro jogador. O atributo
 	 * "númeroEscolha" foi colocado propositalmente para fazer com que qualquer
 	 * coisa não seja considerada como false
 	 * 

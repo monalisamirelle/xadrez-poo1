@@ -12,19 +12,20 @@ import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 public class Terminal extends Cli {
 
 	/** Cor das peças brancas */
-	private final ForegroundColor corBrancas = ForegroundColor.AZUL_ESCURO;
+	private final ForegroundColor COR_BRANCAS = ForegroundColor.AZUL_ESCURO;
 
 	/** Cor das peças pretas */
-	private final ForegroundColor corPretas = ForegroundColor.VERMELHO;
+	private final ForegroundColor COR_PRETAS = ForegroundColor.VERMELHO;
 
 	/** Cor da casa do canto esquerdo das peças brancas */
-	private final BackgroundColor corInferiorEsquerdo = BackgroundColor.PRETO;
+	private final BackgroundColor COR_INFERIOR_ESQUERDO = BackgroundColor.PRETO;
 
 	/** Cor da casa do canto direito das peças brancas */
-	private final BackgroundColor corInferiorDireito = BackgroundColor.BRANCO;
+	private final BackgroundColor COR_INFERIOR_DIREITO = BackgroundColor.BRANCO;
 
 	@Override
-	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas, Jogador pretas) {
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas,
+			Jogador pretas) {
 		// Limpa a tela, antes de qualquer coisa.
 		limparTela();
 
@@ -73,13 +74,13 @@ public class Terminal extends Cli {
 	public ForegroundColor getCorPeca(Peca peca) {
 		// Se não houver peça, pouco importa a sua cor.
 		if (peca == null)
-			return corBrancas;
+			return COR_BRANCAS;
 
 		// Confere a cor da peça para retornar a cor adequada.
 		if (peca.getCorJogador() == TipoCorJogador.BRANCO)
-			return corBrancas;
+			return COR_BRANCAS;
 		else
-			return corPretas;
+			return COR_PRETAS;
 	}
 
 	/**
@@ -91,9 +92,9 @@ public class Terminal extends Cli {
 	 */
 	public BackgroundColor getCorCasa(Posicao posicao) {
 		if ((posicao.getLinha() + posicao.getColuna()) % 2 == 0)
-			return corInferiorEsquerdo;
+			return COR_INFERIOR_ESQUERDO;
 		else
-			return corInferiorDireito;
+			return COR_INFERIOR_DIREITO;
 	}
 
 	@Override
@@ -140,7 +141,7 @@ public class Terminal extends Cli {
 	}
 
 	/**
-	 * Limpar a tela e retorna o cursors
+	 * Limpar a tela e retorna o cursor
 	 */
 	public void limparTela() {
 		// Limpa a tela (ANSI_CLS)
