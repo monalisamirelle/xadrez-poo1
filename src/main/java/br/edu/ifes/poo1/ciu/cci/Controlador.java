@@ -249,6 +249,8 @@ public class Controlador {
 					|| nomeCase.equals("ARES") || nomeCase.equals("ZEUS")
 					|| nomeCase.equals("PROMETEU"))
 				cli.exibirAlerta("Nome inválido, pertence a uma máquina");
+			else if (nomeCase.trim().isEmpty())
+				cli.exibirAlerta("Nome inválido, forneça um nome que não tenha somente espaços vazios");
 			else
 				nomeValido = true;
 		} while (!nomeValido);

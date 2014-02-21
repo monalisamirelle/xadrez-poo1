@@ -337,13 +337,19 @@ public abstract class Cli {
 	 */
 	public void exibirComandos() {
 		io.imprimirLinha("Lista de comandos:\n");
-		io.imprimirLinha("Pontos     -> Exibe a pontuação da partida");
-		io.imprimirLinha("Recomendar -> Recomenda uma jogada ao jogador (máximo de 3 jogadas)");
-		io.imprimirLinha("Salvar     -> Salva o estado da partida");
-		io.imprimirLinha("Empate     -> Sugere empate ao jogador adversário");
-		io.imprimirLinha("Desistir   -> Desistir de uma partida (Perde uma partida)");
-		io.imprimirLinha("Sair       -> Sair de uma partida (Partida não é terminada)");
-		io.imprimirLinha("Ajuda      -> Exibe os comandos possíveis");
+		io.imprimirLinha("C1L1C2L2     -> Andar");
+		io.imprimirLinha("C1L1xC2L2    -> Atacar");
+		io.imprimirLinha("o-o          -> Executa roque menor");
+		io.imprimirLinha("o-o-o        -> Executa roque maior");
+		io.imprimirLinha("C1L1C2L2=X   -> Executa uma promoção para X andando");
+		io.imprimirLinha("C1L1xC2L2=X  -> Executa uma promoção para X atacando");
+		io.imprimirLinha("Pontos       -> Exibe a pontuação da partida");
+		io.imprimirLinha("Recomendar   -> Recomenda uma jogada ao jogador (máximo de 3 jogadas)");
+		io.imprimirLinha("Salvar       -> Salva o estado da partida");
+		io.imprimirLinha("Empate       -> Sugere empate ao jogador adversário");
+		io.imprimirLinha("Desistir     -> Desistir de uma partida (Perde uma partida)");
+		io.imprimirLinha("Sair         -> Sair de uma partida (Partida não é terminada)");
+		io.imprimirLinha("Ajuda        -> Exibe os comandos possíveis");
 		io.imprimirLinha("");
 	}
 }
