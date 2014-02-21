@@ -307,7 +307,6 @@ public abstract class Cli {
 				dadosPessoa.getPartidasVencidas(),
 				dadosPessoa.getPartidasPerdidas() };
 		io.imprimirLinhaFormatada(s);
-		;
 	}
 
 	/**
