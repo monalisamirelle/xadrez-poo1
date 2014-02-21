@@ -2,7 +2,6 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
