@@ -46,7 +46,7 @@ public class GeraCamada implements Runnable {
 						| JogadaInvalidaException e) {
 					return;
 				}
-			} else 
+			} else
 				return;
 	}
 
@@ -87,9 +87,9 @@ public class GeraCamada implements Runnable {
 			novaListaNos.add(noPai);
 		return novaListaNos;
 	}
-	
-	public void setAcabou(){
+
+	public void setAcabou() {
 		acabou = true;
 	}
-	
+
 }

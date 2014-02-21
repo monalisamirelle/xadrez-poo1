@@ -34,7 +34,7 @@ public class TesteIAElaborada {
 
 	@Before
 	public void before() {
-		ia = new IAElaborada("", TipoCorJogador.PRETO, 4, 45, true);
+		ia = new IAElaborada("", TipoCorJogador.PRETO, 1, 7, true);
 		tabuleiro = new TabuleiroXadrez();
 
 		reiBranco = new Rei(TipoCorJogador.BRANCO);
@@ -71,7 +71,7 @@ public class TesteIAElaborada {
 		// tabuleiro.colocarPeca(new Posicao(1, 1), torreBranca);
 		// tabuleiro.colocarPeca(new Posicao(8, 2), torrePreta);
 		tabuleiro.colocarPeca(new Posicao(7, 5), reiPreto);
-		tabuleiro.colocarPeca(new Posicao(2, 7), peaoPreto);
+		tabuleiro.colocarPeca(new Posicao(2, 2), peaoPreto);
 		// tabuleiro.colocarPeca(new Posicao(2,7), peaoPreto);
 		// tabuleiro.colocarPeca(new Posicao(1,4), peaoPreto);
 		// tabuleiro.colocarPeca(new Posicao(3,3), peaoBranco);
