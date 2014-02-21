@@ -297,22 +297,19 @@ public class Controlador {
 						apl.getJogadorPretas(), aviso);
 			// Retira a mensagem de aviso.
 			aviso = "";
+			
 			Jogada jogada = null;
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
-				do {
-					jogada = acaoRealizadaPessoa(apl);
-				} while (jogada == null);
-				// Verifica se jogada deixa rei em ameaça
-				if (apl.getTabuleiro().jogadaSuicida(
-						jogada.getOrigem(),
-						jogada.getDestino(),
-						TipoCorJogador.getCorOposta(apl.getJogadorTurnoAtual()
-								.getCor()))) {
-					jogada = null;
-					cli.exibirAlerta("Essa jogada não é permitida pois o rei é ameaçado de xeque");
-				}
-				// Máquina executa uma jogada
+				jogada = acaoRealizadaPessoa(apl);
+				// Verifica se a jogada não é nula
+				if(jogada!=null)
+					// Se a jogada for uma jogada suicída, considere ela como null
+					if(apl.getTabuleiro().jogadaSuicida(jogada, apl.getJogadorTurnoAtual().getCor())){
+						cli.exibirAlerta("Rei se encontra ameaçado");
+						jogada = null;
+					}
+			// Máquina executa uma jogada
 			} else {
 				jogada = acaoRealizadaMaquina(apl);
 			}
@@ -321,8 +318,6 @@ public class Controlador {
 				try {
 					apl.executarJogadaTurno(jogada);
 					apl.trocarTurno();
-					apl.getTabuleiro().resetaPodeEnPassant(
-							apl.getJogadorTurnoAtual().getCor());
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Jogada inválida.");
 				} catch (CasaOcupadaException e) {

@@ -449,71 +449,26 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * 
 	 * @param posicaoAtual
 	 * @param posicaoDesejada
-	 * @param corPecaInimiga
+	 * @param corJogador
 	 * @return
 	 */
-	public boolean jogadaSuicida(Posicao posicaoAtual, Posicao posicaoDesejada,
-			TipoCorJogador corPecaInimiga) {
+	public boolean jogadaSuicida(Jogada jogada, TipoCorJogador corJogador) {
 		try {
-			TipoCorJogador corJogador = TipoCorJogador
-					.getCorOposta(corPecaInimiga);
-			Peca peca = this.espiarPeca(posicaoAtual);
+			TipoCorJogador corAdversario = TipoCorJogador
+					.getCorOposta(corJogador);
 
-			// Cria uma cópia do tabuleiro
-			TabuleiroXadrez copiaTabuleiro = this.tabuleiroClonado();
-			
-			// Modificamos o tabuleiro para verificar se está ameaçado
-			copiaTabuleiro.retirarPeca(posicaoAtual);
-			if (copiaTabuleiro.estaInimigo(corJogador, posicaoDesejada))
-				copiaTabuleiro.retirarPeca(posicaoDesejada);
-			copiaTabuleiro.colocarPeca(posicaoDesejada, peca);
-			
-			Posicao posicaoRei = copiaTabuleiro.encontrarRei(corJogador);
-			
+			TabuleiroXadrez novoTabuleiro = geraEstado.geraTabuleiroJogada(
+					jogada, this, corJogador);
+			System.out.println(novoTabuleiro.toString());
+
+			Posicao posicaoRei = novoTabuleiro.encontrarRei(corJogador);
+
 			// Verificamos se está ameaçado
-			return copiaTabuleiro.estaAmeacadoPor(posicaoRei, corPecaInimiga);
+			return novoTabuleiro.estaAmeacadoPor(posicaoRei, corAdversario);
 		} catch (Exception e) {
 			// TODO e isso?
 			return true;
 		}
-	}
-
-	/**
-	 * Indica se alguma peça da cor indicada ameaça a posição indicada
-	 * 
-	 * @param posicaoObjetivo
-	 *            Posição a ser verificada.
-	 * @param corPecaInimiga
-	 *            Cor do jogador que pode estar ameaçando a posição.
-	 * @return Se a o jogador da cor indicada está ameçando a posição com alguma
-	 *         peça.
-	 */
-	public boolean estaAmeacadoPor(Posicao posicaoRei,
-			TipoCorJogador corPecaInimiga) {
-		// Verifica se há alguma peça da cor indicada que ameaça a posição
-		// indicada.
-		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++) {
-			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
-				Posicao origem = new Posicao(coluna, linha);
-				
-				// Pula as casas vazias.
-				if (estaVazio(origem))
-					continue;
-
-				// Pega a peça na casa varrida.
-				Peca peca = espiarPeca(origem);
-
-				// Pula as peças que não forem da cor indicada.
-				if (peca.getCorJogador() != corPecaInimiga)
-					continue;
-
-				// Verifica se a peça pode atacar a posição indicada.
-				if (peca.podeAtacar(origem, posicaoRei, this))
-					return true;
-			}
-		}
-		// Caso não haja peça que possa ameaçar a posição, retorna falso.
-		return false;
 	}
 
 	/**
@@ -531,7 +486,7 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
 				// Forma a posição que estamos a verificar.
 				Posicao posicao = new Posicao(coluna, linha);
-				
+
 				// Pula se não houver peça ali.
 				if (estaVazio(posicao))
 					continue;
@@ -550,6 +505,45 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		// Se o rei não for encontrado (o que não acontece em uma partida de
 		// xadrez), retorna 'null'.
 		return null;
+	}
+
+	/**
+	 * Indica se alguma peça da cor indicada ameaça a posição indicada
+	 * 
+	 * @param posicaoObjetivo
+	 *            Posição a ser verificada.
+	 * @param corAdversario
+	 *            Cor do jogador que pode estar ameaçando a posição.
+	 * @return Se a o jogador da cor indicada está ameçando a posição com alguma
+	 *         peça.
+	 */
+	public boolean estaAmeacadoPor(Posicao posicaoRei,
+			TipoCorJogador corAdversario) {
+
+		// Verifica se há alguma peça da cor indicada que ameaça a posição
+		// indicada.
+		for (int coluna = COLUNAINFERIOR; coluna <= COLUNASUPERIOR; coluna++) {
+			for (int linha = LINHAINFERIOR; linha <= LINHASUPERIOR; linha++) {
+				Posicao origem = new Posicao(coluna, linha);
+
+				// Pula as casas vazias.
+				if (estaVazio(origem))
+					continue;
+
+				// Pega a peça na casa varrida.
+				Peca peca = espiarPeca(origem);
+
+				// Pula as peças que não forem da cor indicada.
+				if (peca.getCorJogador() != corAdversario)
+					continue;
+
+				// Verifica se a peça pode atacar a posição indicada.
+				if (peca.podeAtacar(origem, posicaoRei, this))
+					return true;
+			}
+		}
+		// Caso não haja peça que possa ameaçar a posição, retorna falso.
+		return false;
 	}
 
 	/**

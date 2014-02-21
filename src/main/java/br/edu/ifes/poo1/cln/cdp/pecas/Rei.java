@@ -23,12 +23,7 @@ public class Rei extends Peca {
 	@Override
 	public boolean podeSeMover(Posicao origem, Posicao destino,
 			TabuleiroXadrez tabuleiro) {
-
-		// Verifica se o rei não vai entrar em Xeque com a jogada.
-		if (tabuleiro.jogadaSuicida(origem, destino,
-				TipoCorJogador.getCorOposta(this.getCorJogador())))
-			return false;
-
+		
 		// Verifica o movimento natural do rei.
 		if (super.podeSeMover(origem, destino, tabuleiro)
 				&& tabuleiro.podeRealizarMovimentacao(origem, destino))

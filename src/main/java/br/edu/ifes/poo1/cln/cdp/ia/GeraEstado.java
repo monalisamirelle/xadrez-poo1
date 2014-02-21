@@ -15,7 +15,7 @@ import br.edu.ifes.poo1.cln.cdp.pecas.Rainha;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
 
-public class GeraEstado implements Serializable{
+public class GeraEstado implements Serializable {
 
 	/**
 	 * 
@@ -29,7 +29,7 @@ public class GeraEstado implements Serializable{
 	 * @param corJogador
 	 * @return
 	 * @throws CasaOcupadaException
-	 * @throws JogadaInvalidaException 
+	 * @throws JogadaInvalidaException
 	 */
 	public List<Estado> proximosEstadosPossiveis(
 			TabuleiroXadrez tabuleiroAtual, TipoCorJogador corJogador)
@@ -86,6 +86,47 @@ public class GeraEstado implements Serializable{
 				proximosEstados.add(new Estado(jogada, tabuleiroNovo));
 		}
 		return proximosEstados;
+	}
+
+	public TabuleiroXadrez geraTabuleiroJogada(Jogada jogada,
+			TabuleiroXadrez tabuleiroAtual, TipoCorJogador corJogador) throws CasaOcupadaException {
+		// Primeiramente, cria uma cópia do tabuleiro para não atrapalhar o
+		// tabuleiro atual
+		TabuleiroXadrez copiaTabuleiro = tabuleiroAtual.tabuleiroClonado();
+
+		// Em seguida, reseta o estado de en passant do jogador
+		copiaTabuleiro.resetaPodeEnPassant(corJogador);
+
+		TabuleiroXadrez tabuleiroNovo = copiaTabuleiro.tabuleiroClonado();
+		
+		// Verifica o tipo de jogada e gera o tabuleiro correto
+		switch (jogada.getTipoJogada()) {
+		case ANDAR:
+			tabuleiroNovo = estadoAndar(jogada, corJogador, copiaTabuleiro,
+					tabuleiroNovo);
+			break;
+		case ATACAR:
+			tabuleiroNovo = estadoAtacar(jogada, corJogador, copiaTabuleiro,
+					tabuleiroNovo);
+			break;
+		case ROQUE_MENOR:
+			tabuleiroNovo = estadoRoqueMenor(jogada, corJogador,
+					copiaTabuleiro, tabuleiroNovo);
+			break;
+		case ROQUE_MAIOR:
+			tabuleiroNovo = estadoRoqueMaior(jogada, corJogador,
+					copiaTabuleiro, tabuleiroNovo);
+			break;
+		case EN_PASSANT_ESQUERDA:
+			tabuleiroNovo = estadoEnPassantEsquerda(jogada, corJogador,
+					copiaTabuleiro, tabuleiroNovo);
+			break;
+		case EN_PASSANT_DIREITA:
+			tabuleiroNovo = estadoEnPassantDireita(jogada, corJogador,
+					copiaTabuleiro, tabuleiroNovo);
+			break;
+		}
+		return tabuleiroNovo;
 	}
 
 	/**
