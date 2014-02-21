@@ -547,7 +547,7 @@ public class Controlador {
 			case "REINICIAR":
 				// Tente carregar uma partida
 				AplJogo apl = buscarCarregarPartida(listaPartidasNaoFinalizadas);
-				if (apl != null)
+				if (apl != null) {
 					// Tente iniciar uma partida
 					try {
 						apl.setSairPartida(false);
@@ -556,9 +556,13 @@ public class Controlador {
 					} catch (Exception e) {
 						cli.exibirAlerta("Nenhuma partida foi carregada");
 					}
+				}
+				break;
+
 			case "APAGAR":
 				listaPartidasNaoFinalizadas = buscarApagarPartida(listaPartidasNaoFinalizadas);
 				break;
+
 			case "RETORNAR":
 				// try {
 				// manipuladorPartidas

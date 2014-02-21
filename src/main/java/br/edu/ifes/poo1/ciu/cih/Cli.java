@@ -330,7 +330,7 @@ public abstract class Cli {
 
 	/** Pega um índice para carregar uma partida */
 	public String pedeIndicePartidaCarregar() {
-		return pedir("Diga o índice da partida que deseja carregar (-1 Se desistir): ");
+		return pedir("Diga o índice da partida que deseja (-1 para desistir): ");
 	}
 
 	/**
