@@ -2,6 +2,7 @@ package br.edu.ifes.poo1.cln.cdp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
@@ -24,13 +25,13 @@ public abstract class Jogador implements Serializable {
 	protected TipoCorJogador cor;
 
 	/** Peças que o jogador já capturou. */
-	List<Peca> pecasCapturadas = new ArrayList<Peca>();
+	private List<Peca> pecasCapturadas = new ArrayList<Peca>();
 
 	/** Tabuleiro no qual está jogando. */
-	protected TabuleiroXadrez tabuleiro;
+	private TabuleiroXadrez tabuleiro;
 
 	/** Tipo de jogador */
-	protected TipoJogador tipoJogador;
+	private TipoJogador tipoJogador;
 
 	/**
 	 * Constrói um jogador.
@@ -242,9 +243,10 @@ public abstract class Jogador implements Serializable {
 		Peca peca = tabuleiro.espiarPeca(jogada.getOrigem());
 		// Retirar a peça de sua posição
 		tabuleiro.retirarPeca(jogada.getOrigem());
-		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças capturadas.
-		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada.getOrigem().getColuna() - 1,
-				jogada.getOrigem().getLinha()));
+		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças
+		// capturadas.
+		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada
+				.getOrigem().getColuna() - 1, jogada.getOrigem().getLinha()));
 		this.pecasCapturadas.add(pecaCapturada);
 		// Se o en passant for favorável as peças brancas
 		if (corJogador == TipoCorJogador.BRANCO)
@@ -272,9 +274,10 @@ public abstract class Jogador implements Serializable {
 		Peca peca = tabuleiro.espiarPeca(jogada.getOrigem());
 		// Retirar a peça de sua posição
 		tabuleiro.retirarPeca(jogada.getOrigem());
-		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças capturadas.
-		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada.getOrigem().getColuna() + 1,
-				jogada.getOrigem().getLinha()));
+		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças
+		// capturadas.
+		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada
+				.getOrigem().getColuna() + 1, jogada.getOrigem().getLinha()));
 		this.pecasCapturadas.add(pecaCapturada);
 		// Se o en passant for favorável as peças brancas
 		if (corJogador == TipoCorJogador.BRANCO)
@@ -314,7 +317,14 @@ public abstract class Jogador implements Serializable {
 		return nome;
 	}
 
+	/**
+	 * Retorna uma lista de peças capturadas pelo jogador. E as peças estão
+	 * ordenadas pelo seu valor.
+	 * 
+	 * @return Lista de peças capturadas pelo jogador.
+	 */
 	public List<Peca> getPecasCapturadas() {
+		Collections.sort(pecasCapturadas);
 		return pecasCapturadas;
 	}
 

@@ -2,6 +2,7 @@ package br.edu.ifes.poo1.cln.cdp.pecas;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
@@ -17,7 +18,7 @@ import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
  * peão, rei, herdam desta classe e implementão as características específicas
  * do movimento.
  */
-public abstract class Peca implements Cloneable, Serializable {
+public abstract class Peca implements Comparable<Peca>, Cloneable, Serializable {
 
 	/**
 	 * 
@@ -214,21 +215,7 @@ public abstract class Peca implements Cloneable, Serializable {
 	 * @return
 	 */
 	public int getValor() {
-		switch (this.getTipoPeca()) {
-		case BISPO:
-		case CAVALO:
-			return 3;
-		case PEAO:
-			return 1;
-		case RAINHA:
-			return 9;
-		case REI:
-			return 0;
-		case TORRE:
-			return 5;
-		default:
-			return 0;
-		}
+		return tipoPeca.getValor();
 	}
 
 	public TipoCorJogador getCorJogador() {
@@ -246,6 +233,17 @@ public abstract class Peca implements Cloneable, Serializable {
 	/** Marca a peça como já movimentada. */
 	public void setJaMoveu() {
 		this.jaMoveu = true;
+	}
+
+	public int compareTo(Peca outra) {
+		if (this.getValor() > outra.getValor()) {
+			return 1;
+		} else if (this.getValor() == outra.getValor()) {
+			return 0;
+		} else {
+			return -1;
+		}
+
 	}
 
 }
