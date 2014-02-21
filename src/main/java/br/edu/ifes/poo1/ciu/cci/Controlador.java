@@ -297,19 +297,21 @@ public class Controlador {
 						apl.getJogadorPretas(), aviso);
 			// Retira a mensagem de aviso.
 			aviso = "";
-			
+
 			Jogada jogada = null;
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
 				jogada = acaoRealizadaPessoa(apl);
 				// Verifica se a jogada não é nula
-				if(jogada!=null)
-					// Se a jogada for uma jogada suicída, considere ela como null
-					if(apl.getTabuleiro().jogadaSuicida(jogada, apl.getJogadorTurnoAtual().getCor())){
+				if (jogada != null)
+					// Se a jogada for uma jogada suicída, considere ela como
+					// null
+					if (apl.getTabuleiro().jogadaSuicida(jogada,
+							apl.getJogadorTurnoAtual().getCor())) {
 						cli.exibirAlerta("Rei se encontra ameaçado");
 						jogada = null;
 					}
-			// Máquina executa uma jogada
+				// Máquina executa uma jogada
 			} else {
 				jogada = acaoRealizadaMaquina(apl);
 			}
@@ -350,20 +352,7 @@ public class Controlador {
 			cli.imprimirLinha("");
 			break;
 		case "RECOMENDAR":
-			boolean podeRecomendar = pessoa.verificarRecomendacoesRealizadas();
-			if (podeRecomendar) {
-				// Cria uma IARandomica e pede a ela uma jogada
-				IARandomica suporteIa = new IARandomica(apl
-						.getJogadorTurnoAtual().getCor());
-				Jogada recomendacao = suporteIa.escolherJogada(apl
-						.getTabuleiro());
-				pessoa.setRecomendacoes();
-				cli.imprimirRecomendacao(pessoa.getRecomendacoes(), apl
-						.getTabuleiro().espiarPeca(recomendacao.getOrigem()),
-						recomendacao);
-			} else
-				cli.exibirAlerta("Você já realizou suas "
-						+ pessoa.getTOTALRECOMENDACOES() + " recomendações.");
+			recomendarJogada(apl, pessoa);
 			break;
 		case "DESISTIR":
 			apl.finalizarPartida(apl.getOponente(),
@@ -397,6 +386,38 @@ public class Controlador {
 			break;
 		}
 		return jogada;
+	}
+
+	/**
+	 * Método que busca analisar o tabuleiro atual e recomendar uma jogada
+	 * 
+	 * @param pessoa
+	 */
+	private void recomendarJogada(AplJogo apl, Pessoa pessoa) {
+		boolean podeRecomendar = pessoa.verificarRecomendacoesRealizadas();
+		if (podeRecomendar) {
+			Jogada recomendacao = null;
+			try {
+				// Cria uma IAElaborada de grau 1 e pede a ela uma jogada
+				IAElaborada recomendaIa = new IAElaborada("", apl
+						.getJogadorTurnoAtual().getCor(), 1, 45, true);
+				recomendacao = recomendaIa.escolherJogada(apl.getTabuleiro());
+			} catch (CasaOcupadaException | JogadaInvalidaException e) {
+				IARandomica suporteIa = new IARandomica(apl
+						.getJogadorTurnoAtual().getCor());
+				recomendacao = suporteIa.escolherJogada(apl.getTabuleiro());
+			}
+			if (recomendacao != null) {
+				pessoa.setRecomendacoes();
+				cli.imprimirRecomendacao(pessoa.getRecomendacoes(), apl
+						.getTabuleiro().espiarPeca(recomendacao.getOrigem()),
+						recomendacao);
+			} else {
+				cli.exibirAlerta("Não foi possível realizar uma recomendação");
+			}
+		} else
+			cli.exibirAlerta("Você já realizou suas "
+					+ pessoa.getTOTALRECOMENDACOES() + " recomendações.");
 	}
 
 	/**
