@@ -22,26 +22,23 @@ public class IAElaborada extends Maquina {
 	 * método construtor alcance -> 1
 	 */
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Informa com quantas camadas estamos lidando no problema (O valor pode ser
 	 * adequado na interface conforme dificuldade escolhida pelo jogador)
 	 */
-	private final int ALCANCEMAQUINA;
+	private final int ALCANCE_MAQUINA;
 
 	/**
 	 * Informa o tempo máximo que levará em buscar camadas
 	 */
-	private final int TEMPOMAXIMO;
+	private final int TEMPO_MAXIMO;
 
 	/**
 	 * Informa se a máquina será inteligente ou burra
 	 */
-	private final boolean MAQUINAINTELIGENTE;
+	private final boolean MAQUINA_INTELIGENTE;
 
 	/**
 	 * Informa o nível que o nó raiz deve responder (MAX ou MIN)
@@ -63,9 +60,9 @@ public class IAElaborada extends Maquina {
 	public IAElaborada(String nome, TipoCorJogador cor, int alcance,
 			int tempoMaximo, boolean maquinaInteligente) {
 		super(nome, cor, TipoJogador.IAELABORADA);
-		this.ALCANCEMAQUINA = alcance;
-		this.TEMPOMAXIMO = tempoMaximo;
-		this.MAQUINAINTELIGENTE = maquinaInteligente;
+		this.ALCANCE_MAQUINA = alcance;
+		this.TEMPO_MAXIMO = tempoMaximo;
+		this.MAQUINA_INTELIGENTE = maquinaInteligente;
 		if (maquinaInteligente)
 			this.nivel = TipoNivel.MAX;
 		else
@@ -112,7 +109,7 @@ public class IAElaborada extends Maquina {
 				|| t4.getState() == State.RUNNABLE) {
 			long fim = System.currentTimeMillis();
 			// Se o tempo máximo for alcançado
-			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
+			if ((fim - inicio) / 1000 > this.TEMPO_MAXIMO) {
 
 				// Interrompa as threads e retorne true
 				parte1.setAcabou();
@@ -136,39 +133,6 @@ public class IAElaborada extends Maquina {
 		listaNos.addAll(parte3.getNovaListaNos());
 		listaNos.addAll(parte4.getNovaListaNos());
 		return listaNos;
-	}
-
-	// FIXME apagar no final, método desnecessário
-	public boolean criaCamadaM(List<NoArvore> listaNos)
-			throws InterruptedException {
-		// Construa as partes
-		GeraCamada parte1 = new GeraCamada(0, (int) listaNos.size(), listaNos);
-
-		// Construa as threads
-		Thread t1 = new Thread(parte1);
-
-		// Inicia as threads
-		t1.start();
-
-		// Enquanto as threads estão rodando
-		while (t1.getState() == State.RUNNABLE) {
-			long fim = System.currentTimeMillis();
-			// Se o tempo máximo for alcançado
-			if ((fim - inicio) / 1000 > this.TEMPOMAXIMO) {
-
-				// Interrompa as threads e retorne true
-				parte1.setAcabou();
-
-				// Espera as threads morrerem
-				t1.join();
-
-				return true;
-			}
-		}
-
-		// Crie a lista de nós
-		listaNos = parte1.getNovaListaNos();
-		return false;
 	}
 
 	/**
@@ -218,7 +182,7 @@ public class IAElaborada extends Maquina {
 			// Funciona verificando se foi atingido o tempo máximo estabelecido
 			boolean atingiuTempoMaximo = false;
 			// Crio a árvore de possibilidades
-			for (int camada = 1; camada <= ALCANCEMAQUINA
+			for (int camada = 1; camada <= ALCANCE_MAQUINA
 					&& atingiuTempoMaximo == false; camada++) {
 				try {
 					listaNos = criaCamada(listaNos);
@@ -226,7 +190,7 @@ public class IAElaborada extends Maquina {
 					// próxima camada
 					long fim = System.currentTimeMillis();
 					// Se o tempo máximo for alcançado
-					if ((fim - inicio) / 1000 > this.TEMPOMAXIMO)
+					if ((fim - inicio) / 1000 > this.TEMPO_MAXIMO)
 						atingiuTempoMaximo = true;
 				} catch (InterruptedException e) {
 					// Se apresentar algum erro de jogada, tente a IA randomica
@@ -284,14 +248,14 @@ public class IAElaborada extends Maquina {
 	}
 
 	public int getALCANCEMAQUINA() {
-		return ALCANCEMAQUINA;
+		return ALCANCE_MAQUINA;
 	}
 
 	public int getTEMPOMAXIMO() {
-		return TEMPOMAXIMO;
+		return TEMPO_MAXIMO;
 	}
 
 	public boolean isMAQUINAINTELIGENTE() {
-		return MAQUINAINTELIGENTE;
+		return MAQUINA_INTELIGENTE;
 	}
 }
