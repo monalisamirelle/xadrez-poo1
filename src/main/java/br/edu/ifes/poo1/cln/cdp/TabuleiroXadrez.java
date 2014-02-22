@@ -456,21 +456,25 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 * @return
 	 */
 	public boolean jogadaSuicida(Jogada jogada, TipoCorJogador corJogador) {
-		TipoCorJogador corAdversario = TipoCorJogador.getCorOposta(corJogador);
+		if (this.estaAliado(corJogador, jogada.getOrigem())) {
+			TipoCorJogador corAdversario = TipoCorJogador
+					.getCorOposta(corJogador);
 
-		TabuleiroXadrez novoTabuleiro;
-		try {
-			novoTabuleiro = geraEstado.geraTabuleiroJogada(jogada, this,
-					corJogador);
-		} catch (CasaOcupadaException e) {
-			// Jogada nem pode vir a ocorrer
-			return false;
+			TabuleiroXadrez novoTabuleiro;
+			try {
+				novoTabuleiro = geraEstado.geraTabuleiroJogada(jogada, this,
+						corJogador);
+			} catch (CasaOcupadaException e) {
+				// Jogada nem pode vir a ocorrer
+				return false;
+			}
+
+			Posicao posicaoRei = novoTabuleiro.encontrarRei(corJogador);
+
+			// Verificamos se está ameaçado
+			return novoTabuleiro.estaAmeacadoPor(posicaoRei, corAdversario);
 		}
-
-		Posicao posicaoRei = novoTabuleiro.encontrarRei(corJogador);
-
-		// Verificamos se está ameaçado
-		return novoTabuleiro.estaAmeacadoPor(posicaoRei, corAdversario);
+		return false;
 	}
 
 	/**
