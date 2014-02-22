@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
+import br.edu.ifes.poo1.cln.cdp.ConstrucaoTabuleiroException;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
@@ -55,8 +56,12 @@ public class AplJogo implements Serializable {
 	 * 
 	 * @param brancas
 	 * @param pretas
+	 * @throws ConstrucaoTabuleiroException
+	 *             Lançada, caso o jogo não possa ser iniciado por uma falha na
+	 *             construção do tabuleiro.
 	 */
-	public AplJogo(Jogador brancas, Jogador pretas) {
+	public AplJogo(Jogador brancas, Jogador pretas)
+			throws ConstrucaoTabuleiroException {
 
 		// Captura a data de criação do jogo
 		this.dataCriacao = new GregorianCalendar();

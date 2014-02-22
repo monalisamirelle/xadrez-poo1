@@ -19,6 +19,7 @@ import br.edu.ifes.poo1.ciu.cih.menus.MenuNivelMaquina;
 import br.edu.ifes.poo1.ciu.cih.menus.MenuPrincipal;
 import br.edu.ifes.poo1.ciu.cih.menus.MenuRetornarPartida;
 import br.edu.ifes.poo1.cln.cdp.CasaOcupadaException;
+import br.edu.ifes.poo1.cln.cdp.ConstrucaoTabuleiroException;
 import br.edu.ifes.poo1.cln.cdp.DadosPartida;
 import br.edu.ifes.poo1.cln.cdp.DadosPessoa;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
@@ -126,13 +127,23 @@ public class Controlador {
 		switch (itemEscolhido.getNome()) {
 		// Se o jogador tiver escolhido jogar o singleplayer.
 		case "SINGLEPLAYER":
-			AplJogo apl = prepararSingleplayer();
-			controlarPartida(apl);
+			try {
+				AplJogo apl = prepararSingleplayer();
+				controlarPartida(apl);
+			} catch (ConstrucaoTabuleiroException e) {
+				// Avisa ao usuário da falha no tabuleiro.
+				cli.exibirAlerta(e.getMessage());
+			}
 			break;
 		// Se o jogador tiver escolhido o multiplayer.
 		case "MULTIPLAYER":
-			apl = prepararMultiplayer();
-			controlarPartida(apl);
+			try {
+				AplJogo apl = prepararMultiplayer();
+				controlarPartida(apl);
+			} catch (ConstrucaoTabuleiroException e) {
+				// Avisa ao usuário da falha no tabuleiro.
+				cli.exibirAlerta(e.getMessage());
+			}
 			break;
 		}
 	}
@@ -196,8 +207,9 @@ public class Controlador {
 	 * Método que prepara e captura todos os dados de uma partida Singleplayer
 	 * 
 	 * @return
+	 * @throws ConstrucaoTabuleiroException
 	 */
-	private AplJogo prepararSingleplayer() {
+	private AplJogo prepararSingleplayer() throws ConstrucaoTabuleiroException {
 
 		// Cria a pessoa
 		Jogador pessoa = prepararPessoaSingleplayer();
@@ -218,8 +230,9 @@ public class Controlador {
 	 * Multiplayer
 	 * 
 	 * @return
+	 * @throws ConstrucaoTabuleiroException
 	 */
-	private AplJogo prepararMultiplayer() {
+	private AplJogo prepararMultiplayer() throws ConstrucaoTabuleiroException {
 		// Pega o nome do jogador branco.
 		String nomeBrancas = nomeValido(TipoCorJogador.BRANCO);
 		// Pega o nome do jogador preto.

@@ -60,9 +60,11 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 	 *            .getCor() Jogador que controla as peças brancas.
 	 * @param pretas
 	 *            .getCor() Jogador que controla as peças pretas.
-	 * @throws CasaOcupadaException
+	 * @throws ConstrucaoTabuleiroException
+	 *             Lançada caso a construção do tabuleiro falhe.
 	 */
-	public TabuleiroXadrez(Jogador brancas, Jogador pretas) {
+	public TabuleiroXadrez(Jogador brancas, Jogador pretas)
+			throws ConstrucaoTabuleiroException {
 		// Inicia o tabuleiro sem nenhuma peça.
 		this();
 
@@ -102,7 +104,8 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		} catch (CasaOcupadaException e) {
 			// Se a excessão for lançada, o construtor está tentando posicionar
 			// peças onde já há alguma e deve ser refeito.
-			e.printStackTrace();
+			throw new ConstrucaoTabuleiroException(
+					"Erro ao construir o tabuleiro.", e);
 		}
 	}
 
@@ -459,8 +462,8 @@ public class TabuleiroXadrez implements Tabuleiro, Serializable {
 		try {
 			novoTabuleiro = geraEstado.geraTabuleiroJogada(jogada, this,
 					corJogador);
-			// Jogada nem pode vir a ocorrer
 		} catch (CasaOcupadaException e) {
+			// Jogada nem pode vir a ocorrer
 			return false;
 		}
 
