@@ -15,10 +15,10 @@ public class NoArvore {
 	// Valor de um nó
 	private int valor;
 
-	// Indica se o n� em quest�o j� possui algum valor
+	// Indica se o nó em questão já possui algum valor
 	private boolean temValor;
 
-	// Cada n� ter� uma lista de adjac�ncia indicando seus n�s de liga��o direta
+	// Cada nó terá uma lista de adjacência indicando seus nós de ligação direta
 	private List<NoArvore> listaAdjacencia = new ArrayList<NoArvore>();
 
 	// Irá servir para indicar a posição na lista de adjacencia de um no
@@ -33,7 +33,7 @@ public class NoArvore {
 	// Se o nó se encontra no nível max ou min
 	private TipoNivel nivel;
 
-	// Ir� refletir se o nó foi podado ou não
+	// Irá refletir se o nó foi podado ou não
 	private boolean podou;
 
 	// Cada nó terá um um estado
@@ -127,7 +127,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Retorna se um n� possui n� pai
+	 * Retorna se um nó possui nó pai
 	 * 
 	 * @return
 	 */
@@ -136,28 +136,28 @@ public class NoArvore {
 	}
 
 	/**
-	 * Retorna o n� pai de um nó
+	 * Retorna o nó pai de um nó
 	 * 
 	 * @return
 	 */
 	public NoArvore getNoPai() {
-		// Se o n� possui pai
+		// Se o nó possui pai
 		if (this.noPai != null)
 			return noPai;
 		return null;
 	}
 
 	/**
-	 * Retorna se um n� possui n�s filhos
+	 * Retorna se um nó possui nós filhos
 	 * 
 	 * @return
 	 */
 	public boolean temNoFilho() {
-		// Se n�o for o n� raiz
+		// Se nóo for o nó raiz
 		if (this.temNoPai()) {
 			if (this.getListaAdjacencia().size() > 2)
 				return true;
-			// Se for o n� raiz
+			// Se for o nó raiz
 		} else {
 			if (this.getListaAdjacencia().size() > 1)
 				return true;
@@ -166,12 +166,12 @@ public class NoArvore {
 	}
 
 	/**
-	 * Pega o valor do primeiro n� filho
+	 * Pega o valor do primeiro nó filho
 	 * 
 	 * @return
 	 */
 	public NoArvore getPrimeiroFilho() {
-		// Se o n� possui filhos..
+		// Se o nó possui filhos..
 		if (this.temNoFilho() == true)
 			return this.listaAdjacencia.get(1);
 		return null;
@@ -183,12 +183,12 @@ public class NoArvore {
 	 * @param no
 	 */
 	public void addFilho(NoArvore no) {
-		// Adiciona na lista de adjac�ncias
+		// Adiciona na lista de adjacências
 		this.insereListaAdjacencia(no);
 	}
 
 	/**
-	 * Verifica se o n� possui irm�os
+	 * Verifica se o nó possui irmãos
 	 * 
 	 * @return
 	 */
@@ -230,14 +230,14 @@ public class NoArvore {
 	}
 
 	/**
-	 * Marca n� como visitado
+	 * Marca nó como visitado
 	 */
 	public void marcaNo() {
 		this.marcado = true;
 	}
 
 	/**
-	 * Pega o n�vel que um n� se encontra "Max/min"
+	 * Pega o nóvel que um nó se encontra "Max/min"
 	 * 
 	 * @return
 	 */
@@ -246,7 +246,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Coloca o n�vel em um n�, com base no n� do pai
+	 * Coloca o nóvel em um nó, com base no nó do pai
 	 * 
 	 * @param nivelNoPai
 	 * @return
@@ -267,7 +267,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Poda os filhos de um n�
+	 * Poda os filhos de um nó
 	 */
 	public void podaFilhos() {
 		int i;
