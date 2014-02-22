@@ -21,7 +21,7 @@ public class EntradaSaida {
 	public String pedir(String solicitacao) {
 		System.out.println(solicitacao);
 		System.out.print(" >> ");
-		String resposta = s.next();
+		String resposta = s.nextLine();
 		System.out.println();
 
 		return resposta;
@@ -49,5 +49,14 @@ public class EntradaSaida {
 	public void imprimir(String texto) {
 		System.out.print(texto);
 	}
-
+	
+	/**
+	 * Método que imprime uma linha com tabulações
+	 * @param texto
+	 */
+	public void imprimirLinhaFormatada(String[] texto){
+		for(int elemento = 0;elemento<texto.length;elemento++)
+			System.out.printf("%s\t\t",texto[elemento]);
+		System.out.println("");
+	}
 }

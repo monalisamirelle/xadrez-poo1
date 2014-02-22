@@ -1,9 +1,13 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogada;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
+
 /**
  * Contém as informações para uma jogada a ser realizada.
  */
 public class Jogada {
+
 	/** Origem do movimento. */
 	private Posicao origem;
 
@@ -26,14 +30,14 @@ public class Jogada {
 	 * @param tipoRoque
 	 *            Tipo da jogada que será feita. Deve ser estritamente um Roque
 	 *            Menor ou um Roque Maior.
-	 * @throws JogadaInvalidaException 
+	 * @throws JogadaInvalidaException
 	 */
 	public Jogada(TipoJogada tipoRoque) throws JogadaInvalidaException {
 		switch (tipoRoque) {
 		case ANDAR:
 		case ATACAR:
 			throw new JogadaInvalidaException(
-					"Para realizer uma jogada que não seja um Roque, você deve especificar a origem e o destino do movimento.");
+					"Para realizar uma jogada que não seja um Roque, você deve especificar a origem e o destino do movimento.");
 
 		default:
 			this.tipoJogada = tipoRoque;
@@ -55,6 +59,18 @@ public class Jogada {
 	public Jogada(Posicao origem, Posicao destino, TipoJogada tipo) {
 		this.origem = origem;
 		this.destino = destino;
+		this.tipoJogada = tipo;
+		this.ehPromocao = false;
+	}
+
+	/**
+	 * Inicia uma jogada En passant que não inclua promoção
+	 * 
+	 * @param origem
+	 * @param tipo
+	 */
+	public Jogada(Posicao origem, TipoJogada tipo) {
+		this.origem = origem;
 		this.tipoJogada = tipo;
 		this.ehPromocao = false;
 	}
@@ -97,5 +113,9 @@ public class Jogada {
 
 	public TipoPeca getPromocao() {
 		return tipoPromocao;
+	}
+
+	public void setTipoJogada(TipoJogada tipoJogada) {
+		this.tipoJogada = tipoJogada;
 	}
 }

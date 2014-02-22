@@ -1,20 +1,37 @@
 package br.edu.ifes.poo1.cln.cdp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Jogador {
+import br.edu.ifes.poo1.cln.cdp.pecas.Peao;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogada;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
+
+public abstract class Jogador implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Nome do jogador. */
 	protected String nome;
 
 	/** Cor do jogador. */
-	protected CorJogador cor;
+	protected TipoCorJogador cor;
 
 	/** Peças que o jogador já capturou. */
-	List<Peca> pecasCapturadas = new ArrayList<Peca>();
+	private List<Peca> pecasCapturadas = new ArrayList<Peca>();
 
 	/** Tabuleiro no qual está jogando. */
-	protected Tabuleiro tabuleiro;
+	private TabuleiroXadrez tabuleiro;
+
+	/** Tipo de jogador */
+	private TipoJogador tipoJogador;
 
 	/**
 	 * Constrói um jogador.
@@ -22,9 +39,10 @@ public class Jogador {
 	 * @param nome
 	 *            Nome do jogador.
 	 */
-	public Jogador(String nome, CorJogador cor) {
+	public Jogador(String nome, TipoCorJogador cor, TipoJogador tipoJogador) {
 		this.nome = nome;
 		this.cor = cor;
+		this.tipoJogador = tipoJogador;
 	}
 
 	/**
@@ -33,13 +51,15 @@ public class Jogador {
 	 * @param jogada
 	 *            Jogada que deve ser aplicada.
 	 * @throws JogadaInvalidaException
+	 * @throws CasaOcupadaException
 	 */
-	public void executarJogada(Jogada jogada) throws JogadaInvalidaException {
-		// Se for um roque menor, o executa.
+	public void executarJogada(Jogada jogada) throws JogadaInvalidaException,
+			CasaOcupadaException {
 		switch (jogada.getTipoJogada()) {
+		// Se for um roque menor, o executa.
 		case ROQUE_MENOR:
 			// Verifica se pode fazer o Roque Menor.
-			if (tabuleiro.roqueMenor(this))
+			if (tabuleiro.ehRoqueMenor(this.getCor()))
 				// ... e o faz.
 				aplicarRoqueMenor();
 			else
@@ -49,7 +69,7 @@ public class Jogador {
 
 		case ROQUE_MAIOR:
 			// Verifica se pode fazer o Roque Maior.
-			if (tabuleiro.roqueMaior(this))
+			if (tabuleiro.ehRoqueMaior(this.getCor()))
 				// ... e o faz.
 				aplicarRoqueMaior();
 			else
@@ -71,7 +91,7 @@ public class Jogador {
 					"Não há uma peça na origem do movimento.");
 
 		// E verifica se a peça em origem é do jogador
-		if (pecaOrigem.getJogador() != this)
+		if (pecaOrigem.getCorJogador() != this.getCor())
 			throw new JogadaInvalidaException(
 					"A peça que você está tentando mover não é sua.");
 
@@ -89,48 +109,73 @@ public class Jogador {
 			// E este peão deve estar se movimentando para a última linha do
 			// tabuleiro.
 			Posicao destino = jogada.getDestino();
-			if ((cor == CorJogador.BRANCO && destino.getLinha() != 8)
-					|| (cor == CorJogador.PRETO && destino.getLinha() != 1)) {
+			if ((cor == TipoCorJogador.BRANCO && destino.getLinha() != 8)
+					|| (cor == TipoCorJogador.PRETO && destino.getLinha() != 1)) {
 				throw new JogadaInvalidaException(
 						"Para haver uma promoção, o peão deve estar se movimentando para a última linha do lado oposto do tabuleiro.");
 			}
 		}
 
-		// Faz as verificações para o ataque ou um simples andar da peça.
+		// Faz as verificações para o ataque
 		if (jogada.getTipoJogada() == TipoJogada.ATACAR) {
-			// Se não houver peça no destino e for um ataque, a jogada é
-			// inválida.
-			if (pecaDestino == null)
-				throw new JogadaInvalidaException(
-						"Não há peça para ser atacada, na casa indicada.");
+			// Se a peça for um peão
+			if (tabuleiro.ehEnPassantEsquerda(jogada.getOrigem())) {
+				jogada.setTipoJogada(TipoJogada.EN_PASSANT_ESQUERDA);
+				aplicarEnPassantEsquerda(jogada, this.getCor());
+				return;
+			} else if (tabuleiro.ehEnPassantDireita(jogada.getOrigem())) {
+				jogada.setTipoJogada(TipoJogada.EN_PASSANT_DIREITA);
+				aplicarEnPassantDireita(jogada, this.getCor());
+				return;
+			} else {
 
-			// E a peça sendo atacada não pode pertencer ao jogador.
-			if (pecaDestino.getJogador() == this)
-				throw new JogadaInvalidaException(
-						"A peça que você está tentando atacar é sua!");
+				// Se não houver peça no destino e for um ataque, a jogada é
+				// inválida.
+				if (pecaDestino == null)
+					throw new JogadaInvalidaException(
+							"Não há peça para ser atacada, na casa indicada.");
 
-			// Além disso verifica se a peça pode atacar ali.
-			if (!pecaOrigem.podeAtacar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
-				throw new JogadaInvalidaException("A peça não consegue atacar a casa indicada.");
-			
-			// Remove a peça do destino e acrescenta a lista de peças
-			// capturadas, já que se trata de um ataque.
-			this.pecasCapturadas
-					.add(tabuleiro.retirarPeca(jogada.getDestino()));
-		} else {
+				// E a peça sendo atacada não pode pertencer ao jogador.
+				if (pecaDestino.getCorJogador() == this.getCor())
+					throw new JogadaInvalidaException(
+							"A peça que você está tentando atacar é sua!");
+
+				// Além disso verifica se a peça pode atacar ali.
+				if (!pecaOrigem.podeAtacar(jogada.getOrigem(),
+						jogada.getDestino(), tabuleiro))
+					throw new JogadaInvalidaException(
+							"A peça não consegue atacar a casa indicada.");
+
+				// Remove a peça do destino e acrescenta a lista de peças
+				// capturadas, já que se trata de um ataque.
+				this.pecasCapturadas.add(tabuleiro.retirarPeca(jogada
+						.getDestino()));
+			}
+		}
+
+		// Faz as verificações para o andar
+		if (jogada.getTipoJogada() == TipoJogada.ANDAR) {
 			// O destino deve estar livre, se a jogada não for um ataque.
 			if (pecaDestino != null)
 				throw new JogadaInvalidaException(
 						"A casa, para a qual você está tentando mover, está ocupada por outra peça.");
-			
+
 			// E a peça deve ser capaz de andar para ali.
-			if (!pecaOrigem.podeAndar(jogada.getOrigem(), jogada.getDestino(), tabuleiro))
-				throw new JogadaInvalidaException("A peça não consegue andar até a casa indicada.");
+			if (!pecaOrigem.podeAndar(jogada.getOrigem(), jogada.getDestino(),
+					tabuleiro))
+				throw new JogadaInvalidaException(
+						"A peça não consegue andar até a casa indicada.");
 		}
 
 		// Move a peça para o destino.
 		Peca pecaRetirada = tabuleiro.retirarPeca(jogada.getOrigem());
 		pecaRetirada.setJaMoveu(); // Marca a peça como já movida.
+		// Se peça for um peão
+		if (pecaRetirada.getTipoPeca() == TipoPeca.PEAO) {
+			Peao peao = (Peao) pecaRetirada;
+			peao.verificaEnPassant(jogada);
+		}
+
 		try {
 			tabuleiro.colocarPeca(jogada.getDestino(), pecaRetirada);
 		} catch (CasaOcupadaException e) {
@@ -185,12 +230,74 @@ public class Jogador {
 	}
 
 	/**
+	 * 
+	 * @param jogada
+	 * @param corJogador
+	 * @param copiaTabuleiro
+	 * @param tabuleiroNovo
+	 * @return
+	 * @throws CasaOcupadaException
+	 */
+	private void aplicarEnPassantEsquerda(Jogada jogada,
+			TipoCorJogador corJogador) throws CasaOcupadaException {
+		Peca peca = tabuleiro.espiarPeca(jogada.getOrigem());
+		// Retirar a peça de sua posição
+		tabuleiro.retirarPeca(jogada.getOrigem());
+		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças
+		// capturadas.
+		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada
+				.getOrigem().getColuna() - 1, jogada.getOrigem().getLinha()));
+		this.pecasCapturadas.add(pecaCapturada);
+		// Se o en passant for favorável as peças brancas
+		if (corJogador == TipoCorJogador.BRANCO)
+			tabuleiro.colocarPeca(new Posicao(
+					jogada.getOrigem().getColuna() - 1, jogada.getOrigem()
+							.getLinha() + 1), peca);
+		// Se en passant for favorável as peças pretas
+		else
+			tabuleiro.colocarPeca(new Posicao(
+					jogada.getOrigem().getColuna() - 1, jogada.getOrigem()
+							.getLinha() - 1), peca);
+	}
+
+	/**
+	 * 
+	 * @param jogada
+	 * @param corJogador
+	 * @param copiaTabuleiro
+	 * @param tabuleiro
+	 * @return
+	 * @throws CasaOcupadaException
+	 */
+	private void aplicarEnPassantDireita(Jogada jogada,
+			TipoCorJogador corJogador) throws CasaOcupadaException {
+		Peca peca = tabuleiro.espiarPeca(jogada.getOrigem());
+		// Retirar a peça de sua posição
+		tabuleiro.retirarPeca(jogada.getOrigem());
+		// Retirar a peça inimiga à esquerda e acrescentar a lista de peças
+		// capturadas.
+		Peca pecaCapturada = tabuleiro.retirarPeca(new Posicao(jogada
+				.getOrigem().getColuna() + 1, jogada.getOrigem().getLinha()));
+		this.pecasCapturadas.add(pecaCapturada);
+		// Se o en passant for favorável as peças brancas
+		if (corJogador == TipoCorJogador.BRANCO)
+			tabuleiro.colocarPeca(new Posicao(
+					jogada.getOrigem().getColuna() + 1, jogada.getOrigem()
+							.getLinha() + 1), peca);
+		// Se en passant for favorável as peças pretas
+		else
+			tabuleiro.colocarPeca(new Posicao(
+					jogada.getOrigem().getColuna() + 1, jogada.getOrigem()
+							.getLinha() - 1), peca);
+	}
+
+	/**
 	 * Devolve a linha em que o jogador faz as jogadas de roque.
 	 * 
 	 * @return Linha onde é executada o roque do jogador.
 	 */
 	private int getMinhaLinhaDeRoque() {
-		if (cor == CorJogador.BRANCO)
+		if (cor == TipoCorJogador.BRANCO)
 			return 1;
 		else
 			return 8;
@@ -210,17 +317,27 @@ public class Jogador {
 		return nome;
 	}
 
+	/**
+	 * Retorna uma lista de peças capturadas pelo jogador. E as peças estão
+	 * ordenadas pelo seu valor.
+	 * 
+	 * @return Lista de peças capturadas pelo jogador.
+	 */
 	public List<Peca> getPecasCapturadas() {
+		Collections.sort(pecasCapturadas);
 		return pecasCapturadas;
 	}
 
-	public CorJogador getCor() {
+	public TipoCorJogador getCor() {
 		return cor;
 	}
 
 	/** O tabuleiro só deve ser alterado, antes do início da partida. */
-	public void setTabuleiro(Tabuleiro tabuleiro) {
+	public void setTabuleiro(TabuleiroXadrez tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
 
+	public TipoJogador getTipoJogador() {
+		return this.tipoJogador;
+	}
 }

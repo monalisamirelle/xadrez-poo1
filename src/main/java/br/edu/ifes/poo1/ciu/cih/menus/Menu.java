@@ -1,8 +1,10 @@
-package br.edu.ifes.poo1.ciu.cih;
+package br.edu.ifes.poo1.ciu.cih.menus;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
+
+import br.edu.ifes.poo1.ciu.cih.EntradaInvalidaException;
+import br.edu.ifes.poo1.ciu.cih.EntradaSaida;
 
 /**
  * Responsável pela exibição e controle de um menu do jogo.
@@ -63,14 +65,13 @@ public abstract class Menu {
 			// Lê a escolha do usuário.
 			escolha = Integer
 					.parseInt(io.pedir("Selecione uma opção do menu:"));
-		} catch (InputMismatchException e) {
+		} catch (NumberFormatException e) {
 			// Se o jogador entrou com alguma sequência de caracteres que não
 			// possa ser identificada como um inteiro, então dizemos que a
 			// entrada escolhida foi inválida. E lançamos a seguinte excessão.
 			throw new EntradaInvalidaException(
 					"A entrada recebida não pode ser interpretada como uma das opções listadas.");
 		}
-
 		// Retorna a entrada do menu correspondente a escolha do usuário.
 		for (int i = 0; i < itens.size(); i++) {
 			if (i == escolha)
@@ -102,7 +103,7 @@ public abstract class Menu {
 				return this.selecionarItem(io);
 			} catch (EntradaInvalidaException e) {
 				// Se o jogador escolher alguma entrada inválida, avise-o...
-				io.imprimirLinha("[!] " + e.getMessage());
+				io.imprimirLinha("[!] " + e.getMessage() + "\n");
 				continue; // ... e repita o laço.
 			}
 		} while (true);

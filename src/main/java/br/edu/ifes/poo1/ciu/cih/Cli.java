@@ -1,8 +1,14 @@
 package br.edu.ifes.poo1.ciu.cih;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+
+import br.edu.ifes.poo1.cln.cdp.DadosPartida;
+import br.edu.ifes.poo1.cln.cdp.DadosPessoa;
+import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.Jogador;
-import br.edu.ifes.poo1.cln.cdp.Peca;
-import br.edu.ifes.poo1.cln.cdp.Tabuleiro;
+import br.edu.ifes.poo1.cln.cdp.TabuleiroXadrez;
+import br.edu.ifes.poo1.cln.cdp.pecas.Peca;
 
 /**
  * Interface de Linha de Comando (CLI da sigla em inglês). É responsável pela
@@ -23,14 +29,13 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as peças pretas.
 	 */
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas) {
-		// Imprime as peças capturadas pelos jogadores e suas pontuações.
-		imprimirPontuacoes(brancas, pretas);
-		imprimirLinha(""); // Dá uma folga para o próximo elemento.
-
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas,
+			Jogador pretas) {
 		// Imprime o tabuleiro.
 		imprimirTabuleiro(tabuleiro);
-		imprimirLinha(""); // Dá uma folga para o próximo elemento.
+
+		// Dá uma folga para o próximo elemento.
+		imprimirLinha("");
 	}
 
 	/**
@@ -46,14 +51,13 @@ public abstract class Cli {
 	 * @param aviso
 	 *            Aviso a ser exibido para o jogador.
 	 */
-	public void atualizar(Tabuleiro tabuleiro, Jogador brancas, Jogador pretas,
-			String aviso) {
+	public void atualizar(TabuleiroXadrez tabuleiro, Jogador brancas,
+			Jogador pretas, String aviso) {
 		// Atualiza a tela normalmente.
 		atualizar(tabuleiro, brancas, pretas);
 
 		// Exibe a mensagem de aviso.
 		exibirAlerta(aviso);
-		imprimirLinha("");
 	}
 
 	/**
@@ -63,7 +67,7 @@ public abstract class Cli {
 	 * @param tabuleiro
 	 *            Tabuleiro a ser impresso.
 	 */
-	protected abstract void imprimirTabuleiro(Tabuleiro tabuleiro);
+	protected abstract void imprimirTabuleiro(TabuleiroXadrez tabuleiro);
 
 	/**
 	 * Imprime as peças capturadas pelos jogadores e a pontuação de cada um.
@@ -73,7 +77,7 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as pretas.
 	 */
-	private void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
+	public void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
 		imprimirLinha(":: Pontuação dos jogadores");
 		imprimirLinha(":: -----------------------");
 		imprimirLinha(":: " + getDescricaoPecasCapturadas(brancas));
@@ -89,9 +93,9 @@ public abstract class Cli {
 	 * 
 	 * @return Retorna uma String com a jogada do usuário.
 	 */
-	public String lerJogada(Jogador jogador) {
-		return pedir("Entre com a jogada (vez do jogador: "
-				+ jogador.getNome() + "):");
+	public String lerAcaoJogador(Jogador jogador) {
+		return pedir("Entre com a jogada (vez do jogador: " + jogador.getNome()
+				+ "):");
 	}
 
 	/**
@@ -120,7 +124,7 @@ public abstract class Cli {
 	 */
 	public void fechamentoDaPartida(String mensagemFinalizacao) {
 		imprimirLinha("");
-		imprimirLinha(mensagemFinalizacao);
+		imprimirLinha(mensagemFinalizacao + "\n");
 	}
 
 	/**
@@ -180,7 +184,7 @@ public abstract class Cli {
 	 *            Mensagem a ser exibida para o usuário.
 	 */
 	public void exibirAlerta(String mensagem) {
-		io.imprimirLinha("[!] " + mensagem);
+		io.imprimirLinha("[!] " + mensagem + "\n");
 	}
 
 	/**
@@ -205,7 +209,7 @@ public abstract class Cli {
 	public void imprimir(String texto) {
 		io.imprimir(texto);
 	}
-	
+
 	/**
 	 * Exibe o texto recebido por parâmetro. Será escrito exatamente como
 	 * recebido no parâmetro, porém com a adição de uma quebra de linha no
@@ -218,8 +222,133 @@ public abstract class Cli {
 		io.imprimirLinha(texto);
 	}
 
+	public void imprimirLinhaFormatada(String[] texto) {
+		io.imprimirLinhaFormatada(texto);
+	}
+
 	/** Retorna o objeto usado para escrita na linha de comando. */
 	public EntradaSaida getIo() {
 		return io;
+	}
+
+	/**
+	 * Imprime uma recomendação a um jogador
+	 * 
+	 * @param jogada
+	 */
+	public void imprimirRecomendacao(int numeroRecomendacao, Peca peca,
+			Jogada jogada) {
+		io.imprimirLinha(numeroRecomendacao + " - Recomendação:");
+		switch (jogada.getTipoJogada()) {
+		case ROQUE_MENOR:
+			io.imprimirLinha("Realize o roque menor\n");
+			break;
+		case ROQUE_MAIOR:
+			io.imprimirLinha("Realize o roque maior\n");
+			break;
+		case ATACAR:
+		case ANDAR:
+			io.imprimirLinha("Mova a peça " + peca.getTipoPeca()
+					+ " da coluna " + jogada.getOrigem().getColuna()
+					+ " e linha " + jogada.getOrigem().getLinha()
+					+ " para a coluna " + jogada.getDestino().getColuna()
+					+ " e linha " + jogada.getDestino().getLinha() + "\n");
+			break;
+		case EN_PASSANT_ESQUERDA:
+		case EN_PASSANT_DIREITA:
+			io.imprimirLinha("Realize en passant" + " da coluna "
+					+ jogada.getOrigem().getColuna() + " e linha "
+					+ jogada.getOrigem().getLinha() + " para a coluna "
+					+ jogada.getDestino().getColuna() + " e linha "
+					+ jogada.getDestino().getLinha() + "\n");
+		}
+	}
+
+	/**
+	 * Informa na tela todos os dados de uma determinada partida que ainda não
+	 * terminou
+	 * 
+	 * @param dadosPartidas
+	 */
+	public void exibirDadosPartidasAndamento(String indice,
+			DadosPartida dadosPartida) {
+		String[] s = { indice,
+				manipulaData(dadosPartida.getDataInicioPartida()),
+				manipulaData(dadosPartida.getDataRegistroPartida()),
+				dadosPartida.getJogo().getJogadorBrancas().getNome(),
+				dadosPartida.getJogo().getJogadorPretas().getNome() };
+		io.imprimirLinhaFormatada(s);
+	}
+
+	/**
+	 * Informa na tela todos os dados das partidas concluídas
+	 * 
+	 * @param indice
+	 * @param dadosPartida
+	 */
+	public void exibirDadosPartidasConcluidas(String indice,
+			DadosPartida dadosPartida) {
+		String[] s = { indice,
+				manipulaData(dadosPartida.getDataInicioPartida()),
+				manipulaData(dadosPartida.getDataRegistroPartida()),
+				dadosPartida.getJogo().getNomeVencedor() };
+		io.imprimirLinhaFormatada(s);
+	}
+
+	/**
+	 * Informa na tela todos os históricos de pessoas
+	 * 
+	 * @param indice
+	 * @param dadosPessoa
+	 */
+	public void exibirDadosJogadores(String indice, DadosPessoa dadosPessoa) {
+		String[] s = { indice, dadosPessoa.getNome(),
+				dadosPessoa.getPartidasVencidas(),
+				dadosPessoa.getPartidasPerdidas() };
+		io.imprimirLinhaFormatada(s);
+	}
+
+	/**
+	 * Manipula uma data para transformá-la em uma String capaz de ser
+	 * compreendida
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private String manipulaData(GregorianCalendar data) {
+		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy"
+				+ " (" + "HH:mm:ss" + ")");
+		return dataFormatada.format(data.getTimeInMillis());
+	}
+
+	/** Pega um índice para apagar uma partida */
+	public String pedeIndicePartidaApagar() {
+		return pedir("Diga o índice da partida que deseja apagar (-1 Se desistir): ");
+	}
+
+	/** Pega um índice para carregar uma partida */
+	public String pedeIndicePartidaCarregar() {
+		return pedir("Diga o índice da partida que deseja (-1 para desistir): ");
+	}
+
+	/**
+	 * Método que informa os comandos que podem ser realizados por um jogador
+	 */
+	public void exibirComandos() {
+		io.imprimirLinha("Lista de comandos:\n");
+		io.imprimirLinha("C1L1C2L2     -> Andar");
+		io.imprimirLinha("C1L1xC2L2    -> Atacar \\ En passant");
+		io.imprimirLinha("o-o          -> Executa roque menor");
+		io.imprimirLinha("o-o-o        -> Executa roque maior");
+		io.imprimirLinha("C1L1C2L2=X   -> Executa uma promoção para X andando");
+		io.imprimirLinha("C1L1xC2L2=X  -> Executa uma promoção para X atacando");
+		io.imprimirLinha("Pontos       -> Exibe a pontuação da partida");
+		io.imprimirLinha("Recomendar   -> Recomenda uma jogada ao jogador (máximo de 3 jogadas)");
+		io.imprimirLinha("Salvar       -> Salva o estado da partida");
+		io.imprimirLinha("Empate       -> Sugere empate ao jogador adversário");
+		io.imprimirLinha("Desistir     -> Desistir de uma partida (Perde uma partida)");
+		io.imprimirLinha("Sair         -> Sair de uma partida (Partida não é terminada)");
+		io.imprimirLinha("Ajuda        -> Exibe os comandos possíveis");
+		io.imprimirLinha("");
 	}
 }

@@ -4,6 +4,7 @@ package br.edu.ifes.poo1.cln.cdp;
  * Indica uma casa do tabuleiro.
  */
 public class Posicao {
+
 	private int coluna;
 	private int linha;
 

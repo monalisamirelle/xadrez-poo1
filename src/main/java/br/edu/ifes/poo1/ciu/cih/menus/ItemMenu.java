@@ -1,4 +1,4 @@
-package br.edu.ifes.poo1.ciu.cih;
+package br.edu.ifes.poo1.ciu.cih.menus;
 
 /**
  * Possui dados de um item de um menu.

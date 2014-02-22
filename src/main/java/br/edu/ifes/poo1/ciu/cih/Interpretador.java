@@ -3,8 +3,8 @@ package br.edu.ifes.poo1.ciu.cih;
 import br.edu.ifes.poo1.cln.cdp.Jogada;
 import br.edu.ifes.poo1.cln.cdp.JogadaInvalidaException;
 import br.edu.ifes.poo1.cln.cdp.Posicao;
-import br.edu.ifes.poo1.cln.cdp.TipoJogada;
-import br.edu.ifes.poo1.cln.cdp.TipoPeca;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogada;
+import br.edu.ifes.poo1.cln.cdp.tipos.TipoPeca;
 
 /**
  * Responsável pela interpretação das entradas dos usuários.
@@ -23,9 +23,6 @@ public class Interpretador {
 	 */
 	public static Jogada interpretarJogada(String jogada)
 			throws JogadaInvalidaException {
-		// Coloca tudo em maíusculo para evitar que algumas jogadas não sejam
-		// interpretadas por essa questão.
-		jogada = jogada.toUpperCase();
 
 		// Se for uma jogada do tipo Roque, já podemos retornar a jogada
 		// construída.
