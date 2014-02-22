@@ -10,9 +10,6 @@ public class Pessoa extends Jogador {
 	public final int TOTAL_RECOMENDACOES = 3;
 	private int recomendacoes;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public Pessoa(String nome, TipoCorJogador cor) {
@@ -24,7 +21,7 @@ public class Pessoa extends Jogador {
 		return recomendacoes;
 	}
 
-	public void setRecomendacoes() {
+	public void incrementarRecomendacoes() {
 		this.recomendacoes = this.recomendacoes + 1;
 	}
 

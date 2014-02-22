@@ -429,7 +429,7 @@ public class Controlador {
 				recomendacao = suporteIa.escolherJogada(apl.getTabuleiro());
 			}
 			if (recomendacao != null) {
-				pessoa.setRecomendacoes();
+				pessoa.incrementarRecomendacoes();
 				cli.imprimirRecomendacao(pessoa.getRecomendacoes(), apl
 						.getTabuleiro().espiarPeca(recomendacao.getOrigem()),
 						recomendacao);
