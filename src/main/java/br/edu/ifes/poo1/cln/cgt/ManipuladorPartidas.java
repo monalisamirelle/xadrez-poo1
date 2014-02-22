@@ -37,6 +37,17 @@ public class ManipuladorPartidas {
 		arquivo.escrever(partidas);
 	}
 
+	public void gravarPartidas(List<DadosPartida> partidas) throws IOException {
+		// Cria um ArrayList com base nas partidas recebidas.
+		// Isso porque a classe ArrayList implementa Serializable. Para assim
+		// podermos gravar os dados.
+		ArrayList<DadosPartida> partidasAPersistir = new ArrayList<DadosPartida>(
+				partidas);
+
+		// Grava todas as partidas em um arquivo.
+		arquivo.escrever(partidasAPersistir);
+	}
+
 	/**
 	 * Retorna um jogo com base no índice informado (jogo já se encontra em
 	 * memória)

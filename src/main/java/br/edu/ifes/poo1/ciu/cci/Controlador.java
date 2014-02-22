@@ -1,6 +1,7 @@
 package br.edu.ifes.poo1.ciu.cci;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -343,7 +344,7 @@ public class Controlador {
 				} catch (JogadaInvalidaException e) {
 					cli.exibirAlerta("Jogada inválida.");
 				} catch (CasaOcupadaException e) {
-					cli.imprimirLinha("Casa se encontra ocupada.");
+					cli.exibirAlerta("Casa se encontra ocupada.");
 				}
 			}
 		}
@@ -585,13 +586,21 @@ public class Controlador {
 				break;
 
 			case "RETORNAR":
-				// TODO ao retornar deveos gravar os estados da partida
-				// try {
-				// manipuladorPartidas
-				// .gravarListaPartidas(listaPartidasNaoFinalizadas);
-				// } catch (IOException e) {
-				// cli.exibirAlerta("Não foi possível gravar a partida");
-				// }
+				// Pega as partidas já finalizadas, para serem gravadas juntos
+				// com a lista modificada de partidas não finalizadas.
+				List<DadosPartida> partidasfinalizadas = manipuladorPartidas
+						.criarListaPartidasConcluidas();
+
+				// Junta os dois tipos de partidas.
+				List<DadosPartida> todasPartidas = new ArrayList<DadosPartida>();
+				todasPartidas.addAll(partidasfinalizadas);
+				todasPartidas.addAll(listaPartidasNaoFinalizadas);
+
+				try {
+					manipuladorPartidas.gravarPartidas(todasPartidas);
+				} catch (IOException e) {
+					cli.exibirAlerta("Houve um erro ao persistir os dados.");
+				}
 				retornarAoMenu = true;
 				break;
 			}
