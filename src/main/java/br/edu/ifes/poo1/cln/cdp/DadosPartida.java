@@ -11,8 +11,14 @@ public class DadosPartida implements Serializable, Comparable<DadosPartida> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/** Armazena um jogo */
 	private AplJogo jogo;
+	
+	/** Armazena a data de criação de uma partida */
 	private GregorianCalendar dataCriacaoPartida;
+	
+	/** Armazena a data de registro pra uma partida */
 	private GregorianCalendar dataRegistroPartida;
 
 	public DadosPartida(){};
@@ -31,7 +37,7 @@ public class DadosPartida implements Serializable, Comparable<DadosPartida> {
 		return dataCriacaoPartida;
 	}
 
-	public GregorianCalendar getDataTerminoPartida() {
+	public GregorianCalendar getDataRegistroPartida() {
 		return dataRegistroPartida;
 	}
 

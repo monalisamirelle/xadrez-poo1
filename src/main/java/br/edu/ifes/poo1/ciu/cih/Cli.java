@@ -275,7 +275,7 @@ public abstract class Cli {
 			DadosPartida dadosPartida) {
 		String[] s = { indice,
 				manipulaData(dadosPartida.getDataInicioPartida()),
-				manipulaData(dadosPartida.getDataTerminoPartida()),
+				manipulaData(dadosPartida.getDataRegistroPartida()),
 				dadosPartida.getJogo().getJogadorBrancas().getNome(),
 				dadosPartida.getJogo().getJogadorPretas().getNome() };
 		io.imprimirLinhaFormatada(s);
@@ -291,7 +291,7 @@ public abstract class Cli {
 			DadosPartida dadosPartida) {
 		String[] s = { indice,
 				manipulaData(dadosPartida.getDataInicioPartida()),
-				manipulaData(dadosPartida.getDataTerminoPartida()),
+				manipulaData(dadosPartida.getDataRegistroPartida()),
 				dadosPartida.getJogo().getNomeVencedor() };
 		io.imprimirLinhaFormatada(s);
 	}
