@@ -424,7 +424,7 @@ public class Controlador {
 			}
 		} else
 			cli.exibirAlerta("Você já realizou suas "
-					+ pessoa.getTOTALRECOMENDACOES() + " recomendações.");
+					+ pessoa.TOTAL_RECOMENDACOES + " recomendações.");
 	}
 
 	/**

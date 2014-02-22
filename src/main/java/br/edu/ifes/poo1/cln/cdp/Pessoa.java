@@ -7,7 +7,7 @@ import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
  * Representação de um jogador. Há no máximo 2 jogadores para o jogo de xadrez.
  */
 public class Pessoa extends Jogador {
-	private final int TOTALRECOMENDACOES = 3;
+	public final int TOTAL_RECOMENDACOES = 3;
 	private int recomendacoes;
 
 	/**
@@ -28,12 +28,8 @@ public class Pessoa extends Jogador {
 		this.recomendacoes = this.recomendacoes + 1;
 	}
 
-	public int getTOTALRECOMENDACOES() {
-		return TOTALRECOMENDACOES;
-	}
-	
-	public boolean verificarRecomendacoesRealizadas(){
-		if(recomendacoes<TOTALRECOMENDACOES)
+	public boolean verificarRecomendacoesRealizadas() {
+		if (recomendacoes < TOTAL_RECOMENDACOES)
 			return true;
 		return false;
 	}
