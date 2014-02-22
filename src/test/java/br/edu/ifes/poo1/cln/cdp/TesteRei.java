@@ -44,11 +44,11 @@ public class TesteRei {
 				5), tabuleiro));
 
 		// Verifica se o rei se moverá para uma posição que está sendo ameaçada.
-		Assert.assertFalse(reiBranco.podeAndar(new Posicao(4, 4), new Posicao(
+		Assert.assertTrue(reiBranco.podeAndar(new Posicao(4, 4), new Posicao(
 				5, 5), tabuleiro));
-		Assert.assertFalse(reiBranco.podeAndar(new Posicao(4, 4), new Posicao(
+		Assert.assertTrue(reiBranco.podeAndar(new Posicao(4, 4), new Posicao(
 				3, 4), tabuleiro));
-		Assert.assertFalse(reiBranco.podeAndar(new Posicao(4, 4), new Posicao(
+		Assert.assertTrue(reiBranco.podeAndar(new Posicao(4, 4), new Posicao(
 				5, 4), tabuleiro));
 
 	}
@@ -96,7 +96,7 @@ public class TesteRei {
 		 * protegida
 		 */
 		tabuleiro.colocarPeca(new Posicao(2, 4), new Peao(TipoCorJogador.PRETO));
-		Assert.assertFalse(reiBranco.podeAtacar(new Posicao(2, 2), new Posicao(
+		Assert.assertTrue(reiBranco.podeAtacar(new Posicao(2, 2), new Posicao(
 				1, 3), tabuleiro));
 
 	}
