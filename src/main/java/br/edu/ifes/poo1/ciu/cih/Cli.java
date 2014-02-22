@@ -33,7 +33,9 @@ public abstract class Cli {
 			Jogador pretas) {
 		// Imprime o tabuleiro.
 		imprimirTabuleiro(tabuleiro);
-		imprimirLinha(""); // Dá uma folga para o próximo elemento.
+
+		// Dá uma folga para o próximo elemento.
+		imprimirLinha("");
 	}
 
 	/**
@@ -56,7 +58,6 @@ public abstract class Cli {
 
 		// Exibe a mensagem de aviso.
 		exibirAlerta(aviso);
-		imprimirLinha("");
 	}
 
 	/**

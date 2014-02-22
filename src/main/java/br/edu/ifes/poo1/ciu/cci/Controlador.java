@@ -342,9 +342,9 @@ public class Controlador {
 					// FIXME apenas aqui estamos verificando se a jogada é
 					// válida
 				} catch (JogadaInvalidaException e) {
-					cli.exibirAlerta("Jogada inválida.");
+					aviso = e.getMessage();
 				} catch (CasaOcupadaException e) {
-					cli.exibirAlerta("Casa se encontra ocupada.");
+					aviso = e.getMessage();
 				}
 			}
 		}
