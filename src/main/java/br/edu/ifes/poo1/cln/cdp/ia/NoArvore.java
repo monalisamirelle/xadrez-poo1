@@ -43,7 +43,7 @@ public class NoArvore {
 	private boolean xequeMate;
 
 	/**
-	 * Classe construtora de nó raiz
+	 * Construtor de nó raiz
 	 * 
 	 * @param noPai
 	 * @param valor
@@ -68,7 +68,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Classe construtora de nó
+	 * Construtor de nó
 	 * 
 	 * @param noPai
 	 * @param valor
@@ -246,7 +246,7 @@ public class NoArvore {
 	}
 
 	/**
-	 * Coloca o nóvel em um nó, com base no nó do pai
+	 * Coloca o nível em um nó, com base no nó do pai
 	 * 
 	 * @param nivelNoPai
 	 * @return

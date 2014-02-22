@@ -77,7 +77,6 @@ public abstract class Cli {
 	 * @param pretas
 	 *            Jogador que controla as pretas.
 	 */
-	// TODO está em ordem de importância como pede o trabalho?
 	public void imprimirPontuacoes(Jogador brancas, Jogador pretas) {
 		imprimirLinha(":: Pontuação dos jogadores");
 		imprimirLinha(":: -----------------------");
@@ -223,7 +222,6 @@ public abstract class Cli {
 		io.imprimirLinha(texto);
 	}
 
-	// TODO verificar
 	public void imprimirLinhaFormatada(String[] texto) {
 		io.imprimirLinhaFormatada(texto);
 	}

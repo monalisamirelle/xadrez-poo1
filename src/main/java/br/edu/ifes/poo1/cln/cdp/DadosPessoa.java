@@ -9,7 +9,6 @@ public class DadosPessoa implements Comparable<DadosPessoa> {
 	private int partidasVencidas;
 	private int partidasPerdidas;
 
-	// TODO posso fazer isso?
 	public DadosPessoa() {
 	};
 

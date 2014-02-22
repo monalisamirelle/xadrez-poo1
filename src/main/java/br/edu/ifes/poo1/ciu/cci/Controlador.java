@@ -317,15 +317,11 @@ public class Controlador {
 			Jogada jogada = null;
 			// Pessoa executa uma jogada
 			if (apl.getJogadorTurnoAtual().getTipoJogador() == TipoJogador.PESSOA) {
-				// FIXME aqui a pessoa escolhe uma jogada inválida (sair de uma
-				// casa que não tenha nenhuma peça)
 				jogada = acaoRealizadaPessoa(apl);
 				// Verifica se a jogada não é nula
 				if (jogada != null)
 					// Se a jogada for uma jogada suicída, considere ela como
 					// null
-					// FIXME Antes de executar esse método já temos que
-					// verificar se a jogada é válida
 					if (apl.getTabuleiro().jogadaSuicida(jogada,
 							apl.getJogadorTurnoAtual().getCor())) {
 						cli.exibirAlerta("Rei se encontra ameaçado");
@@ -339,8 +335,6 @@ public class Controlador {
 				try {
 					apl.executarJogadaTurno(jogada);
 					apl.trocarTurno();
-					// FIXME apenas aqui estamos verificando se a jogada é
-					// válida
 				} catch (JogadaInvalidaException e) {
 					aviso = e.getMessage();
 				} catch (CasaOcupadaException e) {
@@ -542,8 +536,6 @@ public class Controlador {
 	/**
 	 * Método responsável por reiniciar uma partida singleplayer ou multiplayer
 	 */
-	// TODO apagar entra aqui? se entrar, deveremos salvar estado ao "voltar"
-	// (ver método a ser depreciado no final da classe)
 	private void retornaPartida() {
 		// Captura de um arquivo as partidas nao finalizadas
 		List<DadosPartida> listaPartidasNaoFinalizadas = manipuladorPartidas

@@ -14,11 +14,7 @@ import br.edu.ifes.poo1.cln.cdp.tipos.TipoCorJogador;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoJogador;
 import br.edu.ifes.poo1.cln.cdp.tipos.TipoSituacaoPartida;
 
-// TODO muitos métodos construtores, precisam ser melhor
 public class AplJogo implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/** Jogador que controla as peças brancas. */
@@ -170,7 +166,6 @@ public class AplJogo implements Serializable {
 	 * @param tabuleiro
 	 * @param nome
 	 */
-	// TODO verificar necessidade
 	public AplJogo(Jogador brancas, Jogador pretas, TabuleiroXadrez tabuleiro,
 			TipoSituacaoPartida motivo) {
 		// Pega os jogadores.
